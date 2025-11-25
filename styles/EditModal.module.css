@@ -1,0 +1,478 @@
+/* ===========================
+   BACKDROP
+=========================== */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 12px;
+}
+@media (max-width: 768px) {
+  .backdrop {
+    align-items: flex-end;
+  }
+}
+
+/* ===========================
+   CONTAINER (Modal Body)
+=========================== */
+.container {
+  width: 100%;
+  max-width: 760px;
+  background: var(--surface-deep);
+  border-radius: 14px;
+  color: var(--text);
+  box-shadow: var(--shadow-strong);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  max-height: 92vh;
+}
+
+@media (max-width: 768px) {
+  .container {
+    border-radius: 12px 12px 0 0;
+    width: 100%;
+    margin-top: auto;
+  }
+}
+
+/* ===========================
+   DRAG HANDLE
+=========================== */
+.dragZone {
+  display: flex;
+  justify-content: center;
+  padding: 8px 0 2px;
+}
+
+.handle {
+  width: 56px;
+  height: 5px;
+  border-radius: 30px;
+  background: var(--glass-strong);
+  box-shadow: inset 0 1px 0 var(--glass);
+}
+
+/* ===========================
+   HEADER
+=========================== */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--stroke);
+}
+
+.titleRow {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+}
+
+.titleRow h3 {
+  margin: 0;
+  font-size: 18px;
+  color: var(--ink);
+}
+
+.stepTag {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.closeBtn {
+  width: 43px;
+  height: 43px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  border: none;
+  background: var(--glass);
+  box-shadow: var(--shadow-soft);
+  color: var(--ink);
+  transform: matrix(1);
+}
+
+/* ===========================
+   CONTENT
+=========================== */
+.content {
+  padding: 14px 16px;
+  overflow: auto;
+}
+
+/* ===========================
+   FORM / LABELS / INPUTS
+=========================== */
+.step {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+}
+
+.label {
+  color: var(--muted);
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+
+.input {
+  background: var(--glass);
+  border: 1px solid var(--stroke);
+  color: var(--text);
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  outline: none;
+}
+
+.input:disabled {
+  opacity: 0.6;
+}
+
+/* ===========================
+   SEGMENT (Link Type)
+=========================== */
+.segment {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.segmentBtn {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--stroke);
+  background: var(--glass);
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.segmentActive {
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  color: var(--onPrimary);
+  border: none;
+  box-shadow: var(--shadow-medium);
+}
+
+/* ===========================
+   PREVIEW PANE
+=========================== */
+.previewPane {
+  margin-top: 12px;
+}
+
+.previewBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.backBtn {
+  background: var(--glass);
+  border: 1px solid var(--stroke);
+  padding: 6px 10px;
+  border-radius: 8px;
+  color: var(--text);
+}
+
+.phone {
+  width: 100%;
+  height: 300px;
+  background: var(--surface-deep);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.frame {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* ===========================
+   SLUG PREVIEW
+=========================== */
+.slugPreview {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.previewVal {
+  background: var(--glass-strong);
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--text);
+}
+
+/* ===========================
+   FOOTER
+=========================== */
+.footer {
+  border-top: 1px solid var(--stroke);
+  padding: 10px 16px;
+}
+
+.nav {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.primary {
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  border: none;
+  padding: 10px 14px;
+  border-radius: 12px;
+  color: var(--onPrimary);
+  font-weight: 700;
+}
+
+.secondary {
+  background: transparent;
+  border: 1px solid var(--stroke);
+  padding: 8px 12px;
+  border-radius: 10px;
+  color: var(--text);
+}
+
+/* ===========================
+   EXTRAS
+=========================== */
+.loadingRow {
+  color: var(--muted);
+  padding: 12px 0;
+}
+
+.note {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.linkBtn {
+  color: var(--accent1);
+  background: none;
+  border: none;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Full-screen template preview */
+.fullPreview {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+  z-index: 999999 !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fullPreviewFrame {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.closePreviewBtn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: var(--accent1);
+  backdrop-filter: blur(6px);
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid var(--stroke);
+  cursor: pointer;
+}
+
+/* Spinner */
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.segmentActive {
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  color: var(--onPrimary);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.segmentActive::before {
+  content: "✓";
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.shortPreview {
+  padding: 12px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--text);
+  word-break: break-all;
+  cursor: text;
+}
+.shortInline {
+  margin-top: 1px;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text);
+  word-break: break-all;
+}
+
+.shortInline .dim {
+  opacity: 0.6;
+}
+
+.liveSlug {
+  color: var(--accent, #4f46e5);
+  font-weight: 400;
+}
+
+/* .tplGridWrap {
+  position: relative;
+  display: flex;
+  gap: 12px;
+  height: 100vh;
+  overflow: hidden;
+  min-height: 0;
+  margin-top: 16px;
+} */
+
+/* ============================
+   TEMPLATE GRID (2 columns)
+============================ */
+.tplGrid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  overflow-y: auto;
+  padding-right: 8px;
+
+  scrollbar-width: none;
+}
+.tplGrid::-webkit-scrollbar {
+  display: none;
+}
+
+/* ============================
+   TEMPLATE CARD (square)
+============================ */
+.tplCard {
+  background: var(--surface);
+  border-radius: 14px;
+  border: 1px solid var(--stroke);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  cursor: pointer;
+  aspect-ratio: 1 / 1;
+  transition: 0.15s ease;
+  margin: 4px;
+}
+
+.tplCard:hover {
+  transform: translateY(-3px);
+}
+
+.activeTpl {
+  outline: 5px solid rgba(99, 102, 241, 0.6);
+}
+
+/* ============================
+   THUMBNAIL
+============================ */
+.tplThumbWrap {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+}
+.tplThumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ============================
+   TEMPLATE INFO
+============================ */
+.tplRow {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.tplName {
+  font-weight: 700;
+  font-size: 14px;
+}
+.tplActions {
+  display: flex;
+  justify-content: flex-end;
+}
+.previewBtn {
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: var(--glass);
+  border: 1px solid var(--stroke);
+  white-space: nowrap;
+}
+[data-theme="light"] .previewBtn {
+  background: rgba(169, 166, 166, 0);
+  border-color: rgba(97, 94, 94, 0.4);
+  color: #000;
+}
+
+/* ============================
+   LOCK OVERLAY
+============================ */
+.lockOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.55);
+  color: #ffd36a;
+  border-radius: 12px;
+}
+.upgradeBtnSmall {
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  color: var(--onPrimary);
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: none;
+  font-weight: bold;
+}

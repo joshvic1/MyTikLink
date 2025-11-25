@@ -1,0 +1,710 @@
+/* ================= HOME ================= */
+.home {
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(
+    180deg,
+    rgba(var(--accent1-rgb), 0.05) 0%,
+    rgba(var(--accent2-rgb), 0.05) 40%,
+    var(--bg) 100%
+  );
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+/* layout helpers */
+.section {
+  width: 100%;
+  padding: 80px 0;
+  position: relative;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ================= HERO ================= */
+
+.hero {
+  /* padding-top: 100px; */
+  background: radial-gradient(
+      1000px 600px at 15% 10%,
+      rgba(var(--accent1-rgb), 0.12),
+      transparent 60%
+    ),
+    radial-gradient(
+      900px 600px at 85% 20%,
+      rgba(var(--accent2-rgb), 0.12),
+      transparent 60%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(var(--accent1-rgb), 0.04),
+      rgba(var(--accent2-rgb), 0.04)
+    );
+  overflow: hidden;
+}
+
+.heroBg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.shape {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(
+      circle at 30% 30%,
+      rgba(var(--ink), 0.25),
+      rgba(255, 255, 255, 0) 60%
+    ),
+    var(--glass);
+  animation: float var(--dur, 3s) ease-in-out infinite alternate;
+  filter: blur(0.5px);
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0) translateX(0) scale(1);
+  }
+  50% {
+    transform: translateY(-26px) translateX(14px) scale(1.06);
+  }
+  100% {
+    transform: translateY(0) translateX(0) scale(1);
+  }
+}
+
+.heroGrid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 48px;
+  align-items: center;
+}
+
+@media (max-width: 960px) {
+  .heroGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ================= HERO TEXT ================= */
+
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink);
+  padding: 8px 12px;
+  border: 1px solid var(--stroke);
+  border-radius: 999px;
+  background: var(--glass);
+  margin-bottom: 16px;
+}
+
+.title {
+  font-size: clamp(32px, 5vw, 54px);
+  line-height: 1.05;
+  font-weight: 900;
+  margin: 8px 0 16px;
+}
+
+.pink {
+  color: var(--primary);
+}
+
+.sub {
+  color: var(--muted);
+  font-size: 18px;
+  max-width: 620px;
+}
+
+/* ================= HERO BUTTONS ================= */
+
+.ctaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.btnPrimary,
+.btnGhost,
+.btnPrimaryLg {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  border: none;
+  font-weight: 700;
+  border-radius: 14px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease,
+    color 0.2s ease;
+}
+
+/* Filled CTA */
+.btnPrimary {
+  padding: 14px 18px;
+  background: var(--primary);
+  color: var(--onPrimary);
+  box-shadow: 0 10px 30px var(--btnGlow);
+}
+
+.btnPrimary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px var(--btnGlow2);
+}
+
+/* Ghost CTA */
+.btnGhost {
+  padding: 14px 18px;
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--stroke);
+}
+
+.btnGhost:hover {
+  background: var(--glass);
+}
+
+/* Large CTA */
+.btnPrimaryLg {
+  padding: 16px 22px;
+  background: var(--primary);
+  color: var(--onPrimary);
+  box-shadow: 0 10px 30px var(--btnGlow);
+}
+
+.btnPrimaryLg:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px var(--btnGlow2);
+}
+
+.icon {
+  vertical-align: middle;
+}
+/* ================= HERO CARD ================= */
+
+.heroCard {
+  position: relative;
+  border-radius: 22px;
+  overflow: hidden;
+  border: 1px solid var(--stroke);
+  background: linear-gradient(
+    180deg,
+    var(--glass),
+    rgba(var(--accent1-rgb), 0.04)
+  );
+  backdrop-filter: blur(16px);
+  box-shadow: 0 20px 60px var(--shadow);
+}
+
+.heroImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.heroOverlayBadges {
+  position: absolute;
+  inset: auto 12px 12px auto;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--glass) 80%, var(--accent1) 20%);
+  color: var(--text);
+  font-size: 12px;
+  border: 1px solid var(--line);
+}
+
+.badge img {
+  width: 16px;
+  height: 16px;
+}
+
+@media (max-width: 960px) {
+  .heroCard {
+    width: 100%;
+    height: 360px;
+  }
+  .heroCard .heroImage {
+    position: absolute;
+    inset: 0;
+    opacity: 0.18;
+  }
+}
+
+/* ================= PROOF ROW ================= */
+
+.proofRow {
+  margin-top: 22px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.proofRow img {
+  height: 22px;
+  opacity: 0.65;
+  filter: grayscale(1);
+  transition: 0.2s ease;
+}
+
+.proofRow img:hover {
+  opacity: 1;
+  filter: none;
+}
+
+.proofRow span {
+  color: var(--muted);
+  font-size: 13px;
+}
+/* ================= HOW IT WORKS ================= */
+
+.how {
+  background: radial-gradient(
+    800px 500px at 80% 10%,
+    rgba(var(--accent1-rgb), 0.12),
+    transparent 60%
+  );
+}
+
+.h2 {
+  font-size: clamp(28px, 3.8vw, 40px);
+  font-weight: 900;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.lead {
+  text-align: center;
+  color: var(--muted);
+  max-width: 760px;
+  margin: 0 auto 36px;
+}
+
+.stepsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+@media (max-width: 960px) {
+  .stepsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.step {
+  background: var(--card);
+  border: 1px solid var(--stroke);
+  border-radius: 18px;
+  padding: 20px;
+  overflow: hidden;
+  transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+}
+
+.step:hover {
+  transform: translateY(-6px);
+  background: var(--surface);
+  box-shadow: 0 20px 50px var(--shadow);
+}
+
+.step h4 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 12px 0 6px;
+  font-size: 18px;
+  color: var(--text);
+}
+
+.step p {
+  color: var(--muted);
+}
+
+.stepArt {
+  aspect-ratio: 16/9;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px dashed var(--stroke);
+  background: var(--glass);
+}
+
+.stepArt img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* ================= FEATURES ================= */
+
+.features {
+  background: linear-gradient(
+    180deg,
+    rgba(var(--accent1-rgb), 0.06),
+    rgba(var(--accent2-rgb), 0.04)
+  );
+}
+
+.featureGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  margin-top: 26px;
+}
+
+@media (max-width: 960px) {
+  .featureGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.featureCard {
+  background: var(--card);
+  border: 1px solid var(--stroke);
+  border-radius: 18px;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: 180px auto;
+  transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+}
+
+.featureCard:hover {
+  transform: translateY(-6px);
+  background: var(--surface);
+  box-shadow: 0 18px 46px var(--shadow);
+}
+
+.featureCard img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.featureBody {
+  padding: 16px 18px;
+}
+
+.featureBody h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 6px;
+  font-size: 18px;
+  color: var(--text);
+}
+
+.featureBody p {
+  color: var(--muted);
+}
+/* ================= SHOWCASE ================= */
+
+.showcase {
+  background: radial-gradient(
+      900px 600px at 20% 0%,
+      rgba(var(--accent1-rgb), 0.14),
+      transparent 60%
+    ),
+    radial-gradient(
+      900px 600px at 90% 70%,
+      rgba(var(--accent2-rgb), 0.1),
+      transparent 60%
+    );
+}
+
+.showcaseGrid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 34px;
+  align-items: center;
+}
+
+@media (max-width: 960px) {
+  .showcaseGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.showcaseVisual {
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid var(--stroke);
+  background: var(--card);
+}
+
+.showcaseVisual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.showcaseText .bullets {
+  margin-top: 14px;
+  display: grid;
+  gap: 10px;
+  color: var(--text);
+}
+
+.bullets li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+/* ================= PRICING ================= */
+
+.pricing {
+  background: linear-gradient(
+    180deg,
+    rgba(var(--accent1-rgb), 0.06),
+    rgba(var(--accent2-rgb), 0.06)
+  );
+}
+
+.billingToggle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin: 10px 0 26px;
+}
+
+.switch {
+  width: 58px;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--card);
+  border: 1px solid var(--stroke);
+  position: relative;
+}
+
+.knob {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--primary);
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: left 0.25s ease;
+}
+
+.knobRight {
+  left: 32px;
+}
+
+.active {
+  color: var(--accent1);
+  font-weight: 800;
+}
+
+.pricingGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+@media (max-width: 960px) {
+  .pricingGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.priceCard {
+  background: var(--card);
+  border: 1px solid var(--stroke);
+  border-radius: 18px;
+  padding: 22px;
+  display: grid;
+  gap: 14px;
+  position: relative;
+  transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+}
+
+.priceCard:hover {
+  transform: translateY(-6px);
+  background: var(--surface);
+  box-shadow: 0 18px 46px var(--shadow);
+}
+
+.price {
+  color: var(--accent1);
+  font-weight: 900;
+  font-size: 22px;
+}
+
+.priceCard ul {
+  display: grid;
+  gap: 8px;
+  color: var(--text);
+}
+
+.priceCard ul li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pop {
+  box-shadow: 0 0 0 2px rgba(var(--accent1-rgb), 0.35) inset;
+}
+
+.popBadge {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--primary);
+  color: var(--onPrimary);
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+}
+/* ================= FINAL CTA ================= */
+
+.final {
+  background: radial-gradient(
+      1000px 700px at 50% -10%,
+      rgba(var(--accent1-rgb), 0.16),
+      transparent 60%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(var(--accent1-rgb), 0.06),
+      rgba(var(--accent2-rgb), 0.06)
+    );
+  text-align: center;
+}
+/* ================= RESPONSIVE TUNING ================= */
+
+@media (max-width: 768px) {
+  .section {
+    padding: 60px 0;
+  }
+
+  .container {
+    padding: 0 18px;
+  }
+
+  .hero {
+    padding-top: 80px;
+  }
+
+  .title {
+    font-size: clamp(26px, 7vw, 42px);
+    line-height: 1.15;
+  }
+
+  .sub {
+    font-size: 16px;
+  }
+
+  .ctaRow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .proofRow {
+    justify-content: center;
+  }
+
+  .heroCard {
+    height: auto;
+    border-radius: 18px;
+  }
+}
+
+@media (max-width: 420px) {
+  .section {
+    padding: 48px 0;
+  }
+
+  .container {
+    padding: 0 14px;
+  }
+
+  .hero {
+    padding-top: 70px;
+  }
+
+  .title {
+    font-size: clamp(22px, 8vw, 34px);
+  }
+
+  .btnPrimary,
+  .btnGhost {
+    width: 100%;
+    justify-content: center;
+    font-size: 15px;
+  }
+
+  .featureGrid,
+  .stepsGrid,
+  .pricingGrid {
+    gap: 18px;
+  }
+
+  .priceCard {
+    padding: 18px;
+  }
+}
+/* ================= THEME CONSISTENCY ================= */
+
+.hero,
+.features,
+.how,
+.showcase,
+.pricing,
+.final {
+  background: var(--bg);
+  color: var(--text);
+}
+
+.step,
+.featureCard,
+.priceCard {
+  background: var(--card);
+  border: 1px solid var(--line);
+}
+
+.price {
+  color: var(--accent1);
+}
+
+.active {
+  color: var(--accent1);
+}
+
+.badge {
+  background: color-mix(in srgb, var(--glass) 80%, var(--accent1) 8%);
+  border: 1px solid var(--line);
+}
+
+/* Reveal Animations */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.inView {
+  opacity: 1;
+  transform: translateY(0);
+}

@@ -1,0 +1,617 @@
+/* ===========================
+   BASE LAYOUT
+=========================== */
+
+.layout {
+  display: grid;
+  grid-template-rows: 64px 1fr;
+  grid-template-columns: auto 1fr;
+  grid-template-areas:
+    "topbar topbar"
+    "sidebar main";
+  background: #0b0c10;
+  color: var(--text);
+  min-height: 100vh;
+}
+[data-theme="light"] .layout {
+  background: radial-gradient(
+      circle at top left,
+      rgba(var(--accent1-rgb), 0.18),
+      transparent 55%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(var(--accent2-rgb), 0.15),
+      transparent 55%
+    ),
+    var(--surface-deep);
+}
+
+/* when sidebar is expanded/collapsed we add these from JSX */
+.sidebarExpanded .main {
+  margin-left: 230px;
+}
+
+.sidebarCollapsed .main {
+  margin-left: 80px;
+}
+
+.disabledBtn {
+  opacity: 0.5;
+  cursor: not-allowed !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* ===========================
+   TOP BAR
+=========================== */
+
+.topbar {
+  grid-area: topbar;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  background: color-mix(in srgb, var(--bg) 90%, black 10%);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(10px);
+  z-index: 40;
+  position: sticky;
+  top: 0;
+  box-shadow: 0 14px 40px var(--shadow-strong);
+}
+
+[data-theme="light"] .topbar {
+  background: linear-gradient(
+    90deg,
+    rgba(15, 23, 42, 0.96),
+    rgba(15, 23, 42, 0.9)
+  );
+}
+
+.brand {
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: -0.03em;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.gradient {
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  -webkit-background-clip: text;
+  color: transparent;
+}
+[data-theme="light"] .brand {
+  color: #fff;
+}
+
+/* Top right actions */
+.topActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Primary CTA in topbar */
+.primaryBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  color: var(--onPrimary);
+  border: none;
+  border-radius: 999px;
+  padding: 9px 14px;
+  font-weight: 600;
+  font-size: 0.86rem;
+  cursor: pointer;
+  transition: all 0.22s ease;
+  box-shadow: 0 12px 28px var(--shadow-medium);
+}
+
+.primaryBtn:hover {
+  opacity: 0.95;
+  transform: translateY(-1px);
+}
+
+.primaryBtn:active {
+  transform: scale(0.97);
+}
+
+.createIcon {
+  flex-shrink: 0;
+}
+
+.createText {
+  white-space: nowrap;
+}
+
+/* ===========================
+   USER BOX
+=========================== */
+
+.userBox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid var(--stroke-strong);
+  border-radius: 999px;
+  padding: 6px 10px;
+  backdrop-filter: blur(14px);
+}
+
+.avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--accent1), var(--accent2));
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  color: var(--onPrimary);
+  font-size: 0.9rem;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+}
+[data-theme="light"] .userBox {
+  color: #fff;
+}
+
+.userName {
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+
+.userPlan {
+  font-size: 0.74rem;
+  color: var(--muted);
+}
+
+/* ===========================
+   THEME TOGGLE
+=========================== */
+
+.themeToggle {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text);
+  padding: 0;
+  transition: background 0.18s ease, border-color 0.18s ease,
+    transform 0.12s ease, box-shadow 0.18s ease;
+}
+
+[data-theme="light"] .themeToggle {
+  border-color: var(--line);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.themeToggle svg {
+  width: 18px;
+  height: 18px;
+}
+
+.themeToggle:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.18);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px var(--shadow-medium);
+}
+
+@media (max-width: 480px) {
+  .themeToggle {
+    width: 34px;
+    height: 34px;
+  }
+}
+
+/* ===========================
+   SIDEBAR
+=========================== */
+
+.sidebar {
+  grid-area: sidebar;
+  position: fixed;
+  top: 64px;
+  left: 0;
+  height: calc(100vh - 64px);
+  background: #0b0c10;
+  border-right: 1px solid var(--stroke-strong);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: width 0.22s ease, transform 0.22s ease;
+  z-index: 30;
+  overflow: hidden;
+  box-shadow: 12px 0 40px rgba(0, 0, 0, 0.6);
+}
+[data-theme="light"] .sidebar {
+  background: rgba(10, 12, 22, 0.98);
+  box-shadow: 12px 0 40px rgba(0, 0, 0, 0.2);
+}
+.expanded {
+  width: 230px;
+}
+
+.collapsed {
+  width: 80px;
+}
+
+/* Nav items */
+.nav {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 10px;
+  gap: 4px;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  color: var(--ink);
+  border-radius: 10px;
+  transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease,
+    box-shadow 0.18s ease;
+  font-size: 0.85rem;
+}
+[data-theme="light"] .navItem {
+  color: #fff;
+}
+
+.navItem:hover {
+  background: rgba(148, 163, 184, 0.08);
+  color: var(--text);
+  transform: translateX(2px);
+}
+[data-theme="light"] .navItem:hover {
+  color: #fff;
+}
+
+.icon {
+  opacity: 0.9;
+}
+
+.active {
+  background: radial-gradient(
+    circle at left,
+    rgba(var(--accent1-rgb), 0.26),
+    transparent 70%
+  );
+  color: var(--text);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.6);
+}
+
+/* Sidebar bottom actions */
+.bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 10px 16px;
+  border-top: 1px solid var(--line);
+}
+
+/* Upgrade button */
+.upgradeBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: linear-gradient(90deg, var(--accent2), var(--accent1));
+  color: var(--onPrimary);
+  border: none;
+  border-radius: 999px;
+  padding: 8px 10px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 12px 28px var(--shadow-medium);
+}
+
+.upgradeBtn:hover:not(.disabledBtn) {
+  opacity: 0.96;
+  transform: translateY(-1px);
+}
+
+.iconOnly span {
+  display: none;
+}
+
+/* Logout in sidebar (reuse mobileLogout style but scoped here) */
+.logoutBtn,
+.mobileLogout {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: var(--muted);
+  border: none;
+  font-size: 0.8rem;
+  cursor: pointer;
+  padding: 6px 2px;
+  transition: color 0.18s ease, transform 0.18s ease, opacity 0.18s ease;
+}
+
+.logoutBtn:hover,
+.mobileLogout:hover {
+  color: var(--text);
+  transform: translateX(2px);
+}
+
+/* ===========================
+   MAIN CONTENT
+=========================== */
+
+.main {
+  grid-area: main;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  flex-grow: 1;
+  overflow-x: hidden;
+  padding: 28px 40px 40px;
+  box-sizing: border-box;
+  transition: margin-left 0.22s ease;
+  min-height: 100vh;
+}
+
+.content {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ===========================
+   MOBILE / TABLET BEHAVIOUR
+=========================== */
+
+.menuToggle {
+  display: none;
+  background: rgba(15, 23, 42, 0.9);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+[data-theme="light"] .menuToggle {
+  border-color: var(--line);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+/* Mobile dropdown */
+.mobileMenu {
+  position: absolute;
+  right: 16px;
+  top: 70px;
+  background: color-mix(in srgb, var(--bg) 96%, black 5%);
+  backdrop-filter: blur(14px);
+  border-radius: 16px;
+  border: 1px solid var(--stroke-strong);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 220px;
+  z-index: 999;
+  box-shadow: 0 18px 40px var(--shadow-strong);
+  animation: fadeIn 0.22s ease-out;
+}
+[data-theme="light"] .mobileMenu {
+  background: rgba(10, 12, 22, 0.98);
+  box-shadow: 12px 0 40px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(16px);
+}
+
+.mobileDivider {
+  height: 1px;
+  background: var(--line);
+  margin: 6px 0;
+}
+
+.mobileItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border-radius: 10px;
+  color: var(--text);
+  font-weight: 500;
+  font-size: 0.85rem;
+  letter-spacing: -0.01em;
+  transition: all 0.18s ease;
+}
+[data-theme="light"] .mobileItem {
+  color: #fff;
+}
+
+.mobileItem svg {
+  width: 18px;
+  height: 18px;
+  opacity: 0.88;
+}
+
+.mobileItem:hover {
+  background: rgba(148, 163, 184, 0.14);
+  transform: translateX(3px);
+}
+
+/* mobile bottom actions container */
+.mobileBottom {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+}
+
+/* shared mobile action style */
+.mobileAction {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 10px;
+  padding: 9px 10px;
+  font-size: 0.84rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+/* Upgrade (mobile) */
+.mobileUpgrade {
+  composes: mobileAction;
+  color: var(--accent2);
+  background: color-mix(in srgb, var(--accent2) 18%, transparent);
+}
+
+.mobileUpgrade:hover {
+  background: color-mix(in srgb, var(--accent2) 30%, transparent);
+  color: var(--accent1);
+  transform: translateX(3px);
+}
+
+/* Logout (mobile) */
+.mobileLogout {
+  composes: mobileAction;
+  color: #f97373;
+  background: rgba(248, 113, 113, 0.12);
+}
+
+.mobileLogout:hover {
+  background: rgba(248, 113, 113, 0.2);
+  color: #fecaca;
+  transform: translateX(3px);
+}
+
+/* If your build doesn't support `composes`, replace the three
+   .mobileAction/.mobileUpgrade/.mobileLogout blocks above with: 
+
+.mobileAction {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 10px;
+  padding: 9px 10px;
+  font-size: 0.84rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.mobileUpgrade {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 10px;
+  padding: 9px 10px;
+  font-size: 0.84rem;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--accent2);
+  background: color-mix(in srgb, var(--accent2) 18%, transparent);
+}
+
+.mobileUpgrade:hover {
+  background: color-mix(in srgb, var(--accent2) 30%, transparent);
+  color: var(--accent1);
+  transform: translateX(3px);
+}
+
+.mobileLogout {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 10px;
+  padding: 9px 10px;
+  font-size: 0.84rem;
+  font-weight: 500;
+  cursor: pointer;
+  color: #f97373;
+  background: rgba(248, 113, 113, 0.12);
+}
+
+.mobileLogout:hover {
+  background: rgba(248, 113, 113, 0.2);
+  color: #fecaca;
+  transform: translateX(3px);
+}
+*/
+
+/* Fade-in animation for mobile dropdown */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media (max-width: 1024px) {
+  .sidebar {
+    display: none;
+  }
+
+  .main {
+    margin-left: 0 !important;
+    width: 100%;
+    padding: 22px 18px;
+  }
+
+  .menuToggle {
+    display: inline-flex;
+  }
+
+  .userBox {
+    display: none;
+  }
+
+  .primaryBtn span {
+    display: none; /* icon-only on smaller screens */
+  }
+
+  .primaryBtn {
+    padding: 8px;
+    border-radius: 12px;
+  }
+}
+
+@media (max-width: 640px) {
+  .topbar {
+    padding: 0 14px;
+  }
+
+  .main {
+    padding: 18px 14px 24px;
+  }
+
+  .brand {
+    font-size: 16px;
+  }
+}

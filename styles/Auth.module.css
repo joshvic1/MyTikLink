@@ -1,0 +1,222 @@
+/* FULL PAGE WRAPPER */
+.pageWrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--bg);
+  padding-top: 20px; /* fixes floating header overlap */
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+/* FORGOT PASSWORD BUTTON */
+.forgotBtn {
+  background: none;
+  border: none;
+  color: var(--accent2);
+  font-size: 0.88rem;
+  text-align: left;
+  margin-top: -8px;
+  margin-bottom: -2px;
+  cursor: pointer;
+  padding-left: 2px;
+  transition: 0.2s ease;
+}
+
+.forgotBtn:hover {
+  color: var(--accent1);
+  text-decoration: underline;
+}
+
+/* DIVIDER */
+.divider {
+  text-align: center;
+  margin: 20px 0;
+  font-size: 13px;
+  color: var(--muted);
+  position: relative;
+}
+
+/* GOOGLE BUTTON */
+.googleBtn {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  background: var(--glass);
+  border: 1px solid var(--line);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.googleBtn:hover {
+  background: color-mix(in srgb, var(--glass) 80%, var(--accent1) 6%);
+}
+
+.googleIcon {
+  width: 18px;
+  height: 18px;
+}
+
+/* AUTH CARD */
+.container {
+  width: 100%;
+  max-width: 420px;
+  background: var(--card);
+  padding: 2.2rem 2rem;
+  border-radius: 22px;
+  backdrop-filter: blur(12px);
+  position: relative;
+  color: var(--text);
+
+  border: 1px solid var(--stroke);
+  box-shadow: 0 0 20px rgba(var(--accent2-rgb), 0.08),
+    0 0 35px rgba(var(--accent1-rgb), 0.06);
+
+  animation: fadeUp 0.35s ease-out;
+}
+
+/* ENTRANCE ANIMATION */
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* TITLES */
+.title {
+  margin: 0;
+  font-size: 1.9rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, var(--accent2), var(--accent1));
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.subtitle {
+  margin: 4px 0 1.5rem 0;
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+
+/* FORM */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* INPUTS */
+.input {
+  padding: 0.9rem 1rem;
+  border-radius: 12px;
+  background: var(--glass);
+  border: 1px solid var(--line);
+  color: var(--text);
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.input::placeholder {
+  color: var(--muted);
+}
+
+.input:focus {
+  outline: none;
+  border-color: rgba(var(--accent2-rgb), 0.6);
+  box-shadow: 0 0 10px rgba(var(--accent2-rgb), 0.25),
+    0 0 20px rgba(var(--accent1-rgb), 0.15);
+}
+
+/* CTA BUTTON */
+.button {
+  padding: 0.9rem;
+  border-radius: 12px;
+  background: linear-gradient(90deg, var(--accent2), var(--accent1));
+  border: none;
+  font-weight: 700;
+  color: var(--onPrimary);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.button:hover {
+  transform: scale(1.02);
+}
+
+.button:active {
+  transform: scale(0.98);
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* FOOTER TEXT */
+.text {
+  margin-top: 1.5rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* LINKS */
+.link {
+  color: var(--accent2);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.link:hover {
+  color: var(--accent1);
+}
+/* ============================
+   CHECKBOX / TERMS SECTION
+============================ */
+.checkboxRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: -4px;
+}
+
+.checkboxRow input {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.checkboxLabel {
+  font-size: 0.87rem;
+  color: var(--text);
+  line-height: 1.35;
+}
+
+.checkboxLabel a {
+  color: var(--accent2);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.checkboxLabel a:hover {
+  color: var(--accent1);
+}
+
+.checkboxError {
+  color: red;
+  font-size: 0.78rem;
+  margin-top: -2px;
+}

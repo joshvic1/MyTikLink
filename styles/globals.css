@@ -1,0 +1,189 @@
+/* GLOBAL BASE STYLES */
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  background-color: white;
+  color: var(--text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+html,
+body {
+  overscroll-behavior-x: none;
+  overscroll-behavior-y: none;
+}
+
+button {
+  background-color: var(--primary);
+  color: var(--onPrimary);
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+/* ============================= */
+/*          THEME ROOTS          */
+/* ============================= */
+
+/* Default Theme (Dark) */
+:root {
+  --bg: #000;
+  --text: #fff;
+  --muted: #a7abb8;
+  --ink: #e6e7ec;
+  --line: rgba(255, 255, 255, 0.1);
+  --glass: rgba(255, 255, 255, 0.05);
+
+  /* Accent Colors */
+  --accent1: #8b5cf6;
+  --accent2: #22d3ee;
+
+  /* Gradient Colors */
+  --g1: #ff7e5f;
+  --g2: #ff00a6;
+  --g3: #6e00ff;
+  --g4: #00c6ff;
+
+  /* Buttons */
+  --primary: #ff0050;
+  --onPrimary: #fff;
+  --btnGlow: rgba(255, 0, 166, 0.4);
+  --btnGlow2: rgba(110, 0, 255, 0.4);
+
+  /* Border Radius */
+  --r: 16px;
+  --card: rgba(255, 255, 255, 0.04);
+  --stroke: rgba(255, 255, 255, 0.12);
+  --pink: var(--primary); /* your brand color */
+  --surface: rgba(255, 255, 255, 0.02); /* for subtle backgrounds */
+  --shadow: rgba(0, 0, 0, 0.4);
+
+  --accent1-rgb: 139, 92, 246; /* rgb equivalent of #8b5cf6 */
+  --accent2-rgb: 34, 211, 238; /* rgb equivalent of #22d3ee */
+
+  --shadow-strong: rgba(0, 0, 0, 0.45);
+  --shadow-medium: rgba(0, 0, 0, 0.35);
+  --success: #2ed573;
+  --success-rgb: 46, 213, 115;
+  --danger: #ff4d6d;
+  --danger-rgb: 255, 77, 109;
+
+  --surface-deep: #0b0c10; /* deep dashboard background */
+  --glass-strong: rgba(255, 255, 255, 0.12);
+  --stroke-strong: rgba(255, 255, 255, 0.15);
+
+  --surface-deep: #050712;
+  --glass-strong: rgba(255, 255, 255, 0.12);
+  --stroke-strong: rgba(255, 255, 255, 0.22);
+}
+
+/* Light Theme */
+[data-theme="light"] {
+  --bg: #f9f9fb;
+  --text: #1a1a1a;
+  --muted: #5a5d6c;
+  --ink: #2b2b2b;
+  --line: rgba(0, 0, 0, 0.1);
+  --glass: rgba(0, 0, 0, 0.05);
+
+  --accent1: #7c3aed;
+  --accent2: #0891b2;
+
+  --g1: #ff9a9e;
+  --g2: #fad0c4;
+  --g3: #a1c4fd;
+  --g4: #c2e9fb;
+
+  --primary: #ff0050;
+  --onPrimary: #fff;
+
+  --btnGlow: rgba(255, 0, 166, 0.25);
+  --btnGlow2: rgba(110, 0, 255, 0.25);
+
+  --r: 16px;
+
+  --card: rgba(255, 255, 255, 0.8);
+  --stroke: rgba(0, 0, 0, 0.08);
+  --pink: var(--primary);
+  --surface: rgba(0, 0, 0, 0.03);
+  --shadow: rgba(0, 0, 0, 0.1);
+
+  --accent1-rgb: 124, 58, 237; /* rgb of #7c3aed */
+  --accent2-rgb: 8, 145, 178; /* rgb of #0891b2 */
+
+  --shadow-strong: rgba(0, 0, 0, 0.18);
+  --shadow-medium: rgba(0, 0, 0, 0.12);
+
+  --success: #28c76f;
+  --success-rgb: 40, 199, 111;
+  --danger: #e63950;
+  --danger-rgb: 230, 57, 80;
+
+  --surface-deep: #f3f4f9;
+  --glass-strong: rgba(15, 23, 42, 0.04);
+  --stroke-strong: rgba(15, 23, 42, 0.16);
+}
+
+/* ============================= */
+/*         UTILITY CLASSES       */
+/* ============================= */
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.text-muted {
+  color: var(--muted);
+}
+
+.glass {
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+}
+
+.line {
+  border-top: 1px solid var(--line);
+}
+
+/* RESPONSIVENESS BASELINE */
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+@media (max-width: 768px) {
+  html {
+    font-size: 90%;
+  }
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 85%;
+  }
+}
+:root {
+  --header-height: 40px; /* adjust based on your actual header height */
+}

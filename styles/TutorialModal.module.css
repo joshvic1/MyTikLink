@@ -1,0 +1,146 @@
+/* BACKDROP */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(8px);
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* MODAL BOX */
+.modal {
+  width: 100%;
+  max-width: 680px;
+  background: linear-gradient(
+    135deg,
+    rgba(15, 23, 42, 0.95),
+    rgba(15, 23, 42, 0.7)
+  );
+  padding: 24px;
+  border-radius: 18px;
+  position: relative;
+  color: var(--ink);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+  animation: popIn 0.28s ease-out;
+}
+
+/* TITLE */
+.title {
+  text-align: center;
+  margin-bottom: 16px;
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
+
+/* VIDEO BOX */
+.videoWrap {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.video {
+  width: 100%;
+  height: 100%;
+}
+
+/* CLOSE BUTTON */
+.closeBtn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+
+  width: 42px;
+  height: 42px;
+
+  background: #ff4d6d; /* or var(--danger) */
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+
+  box-shadow: 0 4px 18px rgba(255, 77, 109, 0.35);
+}
+
+.closeBtn svg,
+.closeBtn i {
+  font-size: 22px; /* perfect center */
+  line-height: 1;
+}
+
+.closeBtn:hover {
+  background: #ff1f49;
+  transform: scale(1.08);
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(0.88);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.tutorialBanner {
+  width: 100%;
+  max-width: 840px;
+  margin: 0 auto 24px auto; /* <-- THIS CENTERS IT */
+  padding: 14px 18px;
+  border-radius: 14px;
+  background: linear-gradient(
+    135deg,
+    rgba(15, 23, 42, 0.95),
+    rgba(15, 23, 42, 0.7)
+  );
+  color: #d1fae5; /* soft green */
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.35s ease;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+}
+
+/* Breathe animation */
+@keyframes breatheGlow {
+  0% {
+    box-shadow: 0 0 0 rgba(34, 197, 94, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 28px rgba(34, 197, 94, 0.55);
+  }
+  100% {
+    box-shadow: 0 0 0 rgba(34, 197, 94, 0.3);
+  }
+}
+
+.tutorialBanner.breathing {
+  animation: breatheGlow 2.6s infinite ease-in-out;
+}
+
+.tutorialBanner:hover {
+  transform: translateY(-3px);
+  border-color: rgba(34, 197, 94, 0.45);
+  background: linear-gradient(
+    135deg,
+    rgba(15, 23, 42, 0.98),
+    rgba(15, 23, 42, 0.8)
+  );
+}

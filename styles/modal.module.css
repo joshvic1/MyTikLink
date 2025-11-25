@@ -1,0 +1,243 @@
+/* BACKDROP */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: color-mix(in srgb, var(--bg) 55%, transparent);
+  backdrop-filter: blur(12px);
+  z-index: 9999;
+  padding: 20px;
+}
+
+/* MODAL WRAPPER */
+.modal {
+  width: 100%;
+  max-width: 430px;
+  background: var(--card);
+  border: 1px solid var(--stroke);
+  border-radius: 22px;
+  padding: 16px 46px;
+  position: relative;
+  box-sizing: border-box;
+  color: var(--text);
+  box-shadow: 0 0 20px rgba(var(--accent2-rgb), 0.08),
+    0 0 35px rgba(var(--accent1-rgb), 0.06);
+}
+
+/* CLOSE BUTTON */
+.closeBtn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--glass);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: 0.2s ease;
+  transform: translateZ(0);
+}
+.closeBtn {
+  display: grid;
+  place-items: center;
+}
+
+[data-theme="light"] .closeBtn {
+  background: rgba(0, 0, 0, 0.08);
+  color: var(--text);
+}
+.closeBtn:hover {
+  background: color-mix(in srgb, var(--glass) 70%, var(--accent1) 10%);
+}
+
+/* TITLE */
+.title {
+  color: var(--text);
+  margin-bottom: 22px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+/* FORGOT PASSWORD */
+.forgot {
+  text-align: right;
+  font-size: 13px;
+  color: var(--accent2);
+  cursor: pointer;
+  margin-top: -4px;
+}
+
+.forgot:hover {
+  text-decoration: underline;
+}
+
+/* GOOGLE BUTTON */
+.googleBtn {
+  width: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 10px;
+  background: var(--glass);
+  border: 1px solid var(--line);
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--text);
+  transition: 0.2s ease;
+}
+
+.googleBtn:hover {
+  background: color-mix(in srgb, var(--glass) 85%, var(--accent1) 10%);
+}
+
+/* DIVIDER */
+.divider {
+  text-align: center;
+  margin: 20px 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* FORM */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* INPUT */
+.input {
+  margin: 0 auto;
+  width: 90%;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--glass);
+  color: var(--text);
+  font-size: 14px;
+  transition: 0.2s ease;
+}
+
+.input::placeholder {
+  color: var(--muted);
+}
+
+.input:focus {
+  border-color: rgba(var(--accent2-rgb), 0.7);
+  background: color-mix(in srgb, var(--glass) 70%, var(--accent2) 5%);
+  outline: none;
+  box-shadow: 0 0 10px rgba(var(--accent2-rgb), 0.25),
+    0 0 20px rgba(var(--accent1-rgb), 0.15);
+}
+
+/* SUBMIT BUTTON */
+.submitBtn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  border: none;
+  font-weight: 700;
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  color: var(--onPrimary);
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.submitBtn:hover {
+  transform: scale(1.02);
+}
+
+.submitBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* SWITCH AUTH */
+.switchAuth {
+  text-align: center;
+  margin-top: 14px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.switchAuth .link {
+  color: var(--accent2);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.switchAuth .link:hover {
+  text-decoration: underline;
+}
+
+/* OTP ROW */
+.otpRow {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 10px 0 6px;
+}
+
+/* OTP BOX */
+.otpBox,
+.otpInput {
+  width: 55px;
+  height: 58px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  border-radius: 12px;
+  background: var(--glass);
+  border: 1px solid var(--line);
+  color: var(--text);
+}
+
+.otpBox:focus,
+.otpInput:focus {
+  border-color: var(--accent2);
+  outline: none;
+  background: color-mix(in srgb, var(--glass) 80%, var(--accent2) 5%);
+}
+
+/* RESEND ROW */
+.resendRow,
+.resendArea {
+  margin-top: 14px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.timerText {
+  color: var(--muted);
+}
+
+.countdown,
+.resendLink,
+.resendBtn {
+  color: var(--accent2);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.resendBtn:hover,
+.resendLink:hover {
+  text-decoration: underline;
+}
+
+/* VERIFY EMAIL MESSAGE */
+.verifyMsg {
+  color: var(--muted);
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 20px;
+}

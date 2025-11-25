@@ -1,0 +1,559 @@
+.dashboardContainer {
+  background: radial-gradient(
+      circle at top left,
+      rgba(var(--accent1-rgb), 0.16),
+      transparent 55%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(var(--accent2-rgb), 0.14),
+      transparent 55%
+    ),
+    var(--surface-deep);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+/* main spacing can come from DashboardLayout, but this keeps things clean */
+.mainContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ===================== */
+/*       TOP SECTION     */
+/* ===================== */
+
+.topSection {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  gap: 18px;
+  width: 100%;
+}
+
+.welcomeCard {
+  background: linear-gradient(
+    135deg,
+    rgba(15, 23, 42, 0.95),
+    rgba(15, 23, 42, 0.7)
+  );
+  border: 1px solid var(--stroke-strong);
+  border-radius: 16px;
+  padding: 1.3rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: 0 18px 40px var(--shadow-strong);
+  position: relative;
+  overflow: hidden;
+}
+
+/* subtle glow */
+.welcomeCard::before {
+  content: "";
+  position: absolute;
+  inset: -30%;
+  background: radial-gradient(
+    circle at top left,
+    rgba(var(--accent1-rgb), 0.35),
+    transparent 60%
+  );
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.welcomeCard h2 {
+  font-size: 1.1rem; /* reduced */
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 0.3rem;
+  position: relative;
+  z-index: 1;
+}
+[data-theme="light"] .welcomeCard h2,
+[data-theme="light"] .welcomeCard p,
+[data-theme="light"] .mergedCard h2,
+[data-theme="light"] .mergedCard p {
+  color: #fff;
+}
+
+.welcomeCard p {
+  color: var(--muted);
+  font-size: 0.88rem; /* reduced */
+  line-height: 1.5;
+  position: relative;
+  z-index: 1;
+}
+
+/* expiry info */
+.expiryDate {
+  color: var(--accent2);
+  font-weight: 500;
+  margin-left: 4px;
+  font-size: 0.85rem;
+}
+
+.expiryWarning {
+  background: rgba(var(--danger-rgb), 0.08);
+  border: 1px solid rgba(var(--danger-rgb), 0.18);
+  color: var(--danger);
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 8px 10px;
+  border-radius: 10px;
+  margin-top: 8px;
+  text-align: left;
+  line-height: 1.4;
+  position: relative;
+  z-index: 1;
+}
+/* ================================
+   TUTORIAL BANNER (GLOBAL DASHBOARD)
+================================ */
+
+.tutorialBanner {
+  width: 100%;
+  padding: 14px 18px;
+  background: rgba(46, 204, 113, 0.12); /* green glass */
+  border: 1px solid rgba(46, 204, 113, 0.25);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 6px 22px rgba(46, 204, 113, 0.18);
+  animation: breathe 3s ease-in-out infinite;
+  transition: 0.25s ease;
+}
+
+.tutorialBanner:hover {
+  background: rgba(46, 204, 113, 0.18);
+  transform: translateY(-2px);
+}
+
+.tutorialBanner p {
+  margin: 0;
+  color: var(--success);
+  font-size: 0.95rem;
+}
+
+/* Animated breathing dot */
+.pulseDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 10px rgba(var(--success-rgb), 0.65);
+  animation: pulse 1.5s infinite;
+}
+
+/* breathing glow on banner */
+@keyframes breathe {
+  0% {
+    box-shadow: 0 0 0 rgba(46, 204, 113, 0.12);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(46, 204, 113, 0.38);
+  }
+  100% {
+    box-shadow: 0 0 0 rgba(46, 204, 113, 0.12);
+  }
+}
+
+/* dot pulse */
+@keyframes pulse {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.85);
+    opacity: 0.7;
+  }
+}
+
+/* Light mode */
+[data-theme="light"] .tutorialBanner {
+  background: rgba(46, 204, 113, 0.16);
+  border-color: rgba(46, 204, 113, 0.3);
+  box-shadow: 0 6px 18px rgba(46, 204, 113, 0.12);
+}
+
+[data-theme="light"] .tutorialBanner p {
+  color: #155e36; /* richer green for light mode */
+}
+
+[data-theme="light"] .pulseDot {
+  background: #1b9e4b;
+  box-shadow: 0 0 12px rgba(46, 204, 113, 0.7);
+}
+
+/* ===================== */
+/*      MOBILE TOP       */
+/* ===================== */
+
+.mobileTopSection {
+  display: none;
+  width: 100%;
+}
+
+.mergedCard {
+  background: linear-gradient(135deg, var(--stroke), var(--surface));
+  border: 1px solid var(--stroke);
+  border-radius: 16px;
+  padding: 1.3rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  box-shadow: 0 16px 34px var(--shadow-strong);
+}
+[data-theme="light"] .mergedCard {
+  background: linear-gradient(
+    135deg,
+    rgba(15, 23, 42, 0.95),
+    rgba(15, 23, 42, 0.7)
+  );
+}
+.mergedTitle {
+  font-size: 1.45rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.mergedText {
+  font-size: 0.86rem;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.mergedStats {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.progressRow {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.redirectsText {
+  font-size: 0.82rem;
+  color: var(--ink);
+}
+
+[data-theme="light"] .redirectsText {
+  color: #fff;
+}
+
+.progressBar {
+  background: var(--glass-strong);
+  border-radius: 999px;
+  height: 6px;
+  overflow: hidden;
+}
+
+[data-theme="light"] .progressBar {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.progressFill {
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+.upgradeBtn {
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  border: none;
+  border-radius: 999px;
+  padding: 9px 10px;
+  color: var(--onPrimary);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+  text-align: center;
+}
+
+.upgradeBtn:hover {
+  opacity: 0.9;
+}
+
+.activeBadge {
+  background: rgba(var(--success-rgb), 0.12);
+  color: var(--success);
+  border: 1px solid rgba(var(--success-rgb), 0.25);
+  border-radius: 10px;
+  padding: 8px;
+  font-size: 0.82rem;
+  text-align: center;
+}
+
+/* Mobile switch: show merged card instead of split */
+@media (max-width: 900px) {
+  .topSection {
+    display: none;
+  }
+  .mobileTopSection {
+    display: block;
+  }
+}
+
+/* ===================== */
+/*      ACTION BAR       */
+/* ===================== */
+
+.actionsBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 16px 0 10px;
+}
+
+.actionsTitle {
+  font-size: 1.08rem; /* reduced */
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+/* Premium gradient CTA */
+.createBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  color: var(--onPrimary);
+  border: none;
+  border-radius: 999px;
+  padding: 10px 16px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  box-shadow: 0 14px 36px var(--shadow-medium);
+}
+
+.createBtn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.25),
+    rgba(255, 255, 255, 0)
+  );
+  transform: skewX(-18deg);
+  transition: left 0.6s ease;
+}
+
+.createBtn:hover::before {
+  left: 130%;
+}
+
+.createBtn:hover {
+  transform: translateY(-2px);
+  opacity: 0.96;
+}
+
+.createBtn:active {
+  transform: scale(0.97);
+  opacity: 0.9;
+}
+
+.plusIcon {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--onPrimary);
+  line-height: 1;
+}
+
+@media (max-width: 768px) {
+  .actionsBar {
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .actionsTitle {
+    font-size: 1rem;
+  }
+
+  .createBtn {
+    padding: 9px 14px;
+    font-size: 0.88rem;
+    border-radius: 999px;
+  }
+}
+
+/* ===================== */
+/*   TABLE / CONTENT WRAP */
+/* ===================== */
+
+.tableContainer {
+  background: rgba(15, 23, 42, 0.94);
+  border-radius: 16px;
+  padding: 1.2rem 1.1rem;
+  border: 1px solid var(--stroke-strong);
+  box-shadow: 0 18px 40px var(--shadow-medium);
+}
+
+/* ===================== */
+/*      LOADING STATE    */
+/* ===================== */
+
+.loadingScreen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(
+      circle at top,
+      rgba(var(--accent1-rgb), 0.2),
+      transparent 60%
+    ),
+    var(--bg);
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  border: 3px solid rgba(148, 163, 184, 0.35);
+  border-top-color: #8b5cf6;
+  animation: tikSpin 0.75s linear infinite;
+}
+
+@keyframes tikSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ===================== */
+/*   SMALL SCREEN GLOBAL */
+/* ===================== */
+
+@media (max-width: 900px) {
+  .actionsBar {
+    margin-top: 10px;
+  }
+}
+/* Desktop banner inside welcome card */
+.tutorialBannerDesktop {
+  margin-top: 4px 0 2px;
+  background: rgba(34, 197, 94, 0.15);
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  padding: 2px 16px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 6px 18px rgba(34, 197, 94, 0.2);
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.tutorialBannerDesktop:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(34, 197, 94, 0.3);
+}
+
+/* Mobile version - wider, more obvious */
+.tutorialBannerMobile {
+  margin: 4px 0 2px;
+  background: rgba(34, 197, 94, 0.18);
+  border: 1px solid rgba(34, 197, 94, 0.4);
+  padding: 2px 16px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 22px rgba(34, 197, 94, 0.28);
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+/* Hover */
+.tutorialBannerMobile:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(34, 197, 94, 0.35);
+}
+
+/* Glow dot */
+.pulseDot {
+  width: 14px;
+  height: 14px;
+  background: #22c55e;
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5);
+  animation: pulseGlow 1.8s infinite;
+}
+
+@keyframes pulseGlow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+  }
+  100% {
+    box-shadow: 0 0 0 18px rgba(34, 197, 94, 0);
+  }
+}
+
+/* Hide desktop version on mobile */
+@media (max-width: 900px) {
+  .tutorialBannerDesktop {
+    display: none;
+  }
+}
+
+/* Hide mobile version on desktop */
+@media (min-width: 901px) {
+  .tutorialBannerMobile {
+    display: none;
+  }
+}
+/* ===========================
+   YOUTUBE VIDEO icon
+=========================== */
+
+.youtubeIcon {
+  width: 38px;
+  height: 25px;
+  border-radius: 10px;
+  background: #ff0033;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 900;
+  font-size: 12px;
+  box-shadow: 0 4px 14px rgba(255, 0, 60, 0.4);
+}
+
+.videoText {
+  flex: 1;
+  color: var(--text);
+  font-size: 0.95rem;
+}

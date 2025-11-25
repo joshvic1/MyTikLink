@@ -1,0 +1,33 @@
+.container {
+  padding: 2rem;
+}
+
+.title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  border: 1px solid #ddd;
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.success {
+  color: green;
+}
+
+.failed {
+  color: red;
+}
+
+.processing {
+  color: orange;
+}

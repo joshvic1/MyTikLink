@@ -1,0 +1,64 @@
+.listContainer {
+  margin-top: 2rem;
+  overflow-x: auto;
+}
+
+.empty {
+  color: #aaa;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #fff;
+}
+
+th,
+td {
+  padding: 0.8rem 1rem;
+  text-align: left;
+}
+
+th {
+  border-bottom: 2px solid #333;
+  font-weight: 600;
+}
+
+tr:nth-child(even) {
+  background-color: #1a1a1a;
+}
+
+a {
+  color: #ff2d55;
+  text-decoration: none;
+}
+
+button {
+  margin-right: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+.copyBtn {
+  background-color: #ff2d55;
+  color: #fff;
+}
+
+.copyBtn:hover {
+  background-color: #ff1d45;
+}
+
+.deleteBtn {
+  background-color: #444;
+  color: #fff;
+}
+
+.deleteBtn:hover {
+  background-color: #666;
+}

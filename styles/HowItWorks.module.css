@@ -1,0 +1,190 @@
+/* =========================================
+   HOW IT WORKS V2 — CARD VARIANT
+========================================= */
+.section {
+  width: 100%;
+  padding: 100px 0;
+  background: var(--bg);
+  color: var(--text);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle radial glow background */
+.section::before {
+  content: "";
+  position: absolute;
+  top: -200px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(
+    circle at center,
+    color-mix(in srgb, var(--accent1) 12%, transparent) 0%,
+    transparent 70%
+  );
+  opacity: 0.4;
+  filter: blur(100px);
+  z-index: 0;
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 28px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 70px;
+}
+
+.title {
+  font-size: clamp(30px, 5vw, 44px);
+  font-weight: 800;
+  color: var(--text);
+}
+
+.sub {
+  margin-top: 14px;
+  color: var(--muted);
+  font-size: 16px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+
+/* =========================================
+   CARD GRID
+========================================= */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 40px;
+  justify-items: center;
+}
+
+/* Each step card */
+.card {
+  position: relative;
+  background: var(--glass);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 32px 28px 40px;
+  max-width: 380px;
+  text-align: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  border-color: color-mix(in srgb, var(--accent2) 30%, var(--line));
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+}
+
+/* Glow overlay */
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--accent1) 10%, transparent),
+    color-mix(in srgb, var(--accent2) 10%, transparent)
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 0;
+}
+.card:hover::after {
+  opacity: 0.1;
+}
+
+/* Step number badge */
+.stepNumber {
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  font-size: 52px;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.03);
+  z-index: 0;
+}
+
+/* Icon */
+.iconWrap {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 18px auto;
+  border-radius: 14px;
+  background: var(--glass);
+  border: 1px solid var(--line);
+  color: var(--text);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+  z-index: 1;
+}
+
+/* Text */
+.card h4 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.card p {
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Image */
+.media {
+  width: 100%;
+  border-radius: var(--r);
+  border: 1px solid var(--line);
+  display: block;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.25);
+}
+
+.media:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+@media (max-width: 768px) {
+  .section {
+    padding: 80px 0;
+  }
+
+  .cards {
+    gap: 28px;
+  }
+
+  .card {
+    padding: 28px 22px 36px;
+  }
+
+  .stepNumber {
+    font-size: 42px;
+  }
+}
