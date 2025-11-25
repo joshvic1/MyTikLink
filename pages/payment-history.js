@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
-import styles from "@/styles/PaymentHistory.module.css";
+import styles from "@/styles/paymentHistory.module.css";
 
 export default function PaymentHistory() {
   const [payments, setPayments] = useState([]);
