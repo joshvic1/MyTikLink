@@ -12,6 +12,8 @@
   background: #0b0c10;
   color: var(--text);
   min-height: 100vh;
+  overflow: hidden; /* NEW */
+  height: 100vh; /* NEW */
 }
 [data-theme="light"] .layout {
   background: radial-gradient(
@@ -358,16 +360,11 @@
 
 .main {
   grid-area: main;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  flex-grow: 1;
+  height: 100%;
+  overflow-y: auto; /* scrolls */
   overflow-x: hidden;
   padding: 28px 40px 40px;
   box-sizing: border-box;
-  transition: margin-left 0.22s ease;
-  min-height: 100vh;
 }
 
 .content {

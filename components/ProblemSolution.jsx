@@ -100,9 +100,9 @@ export default function ProblemSolution() {
             </div>
             <h3 className={styles.cardTitle}>How TikLink fixes it</h3>
             <p className={styles.text}>
-              TikLink has solved this problem. And we make it safe and possible
-              for people to contact you straight from TikTok without your link
-              getting broken.
+              TikLink has solved this problem. We will generate a link for you
+              making it safe and possible for people to contact you straight
+              from TikTok without your link getting broken.
             </p>
             <div className={styles.media}>
               <img src="/images/problem-fixed.png" alt="Working TikLink" />

@@ -42,7 +42,12 @@ export default function LinksCardView({
 
   const visible = useMemo(() => {
     if (!Array.isArray(redirects)) return [];
-    return expanded ? redirects : redirects.slice(0, initialCount);
+
+    const sorted = [...redirects].sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    );
+
+    return expanded ? sorted : sorted.slice(0, initialCount);
   }, [redirects, expanded]);
 
   if (!Array.isArray(redirects) || redirects.length === 0) {
@@ -160,14 +165,9 @@ export default function LinksCardView({
                 </button>
 
                 <button
-                  className={`${s.iconDanger} ${
-                    !canUseProActions ? s.disabled : ""
-                  }`}
-                  disabled={!canUseProActions}
-                  onClick={() => canUseProActions && onDelete && onDelete(link)}
-                  data-tooltip={
-                    !canUseProActions ? "Upgrade to unlock" : undefined
-                  }
+                  className={`${s.iconDanger}`}
+                  onClick={() => onDelete && onDelete(link)}
+                  data-tooltip={"Delete Link"}
                 >
                   <Trash2 size={16} />
                 </button>

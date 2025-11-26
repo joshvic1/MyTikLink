@@ -17,7 +17,7 @@ import { planConfig } from "@/config/planConfig";
 import EditRedirectModal from "@/components/EditRedirectModal";
 import TutorialModal from "@/components/TutorialModal";
 
-export default function Dashboard() {
+export default function Dashboard({ userPlan }) {
   const [redirects, setRedirects] = useState([]);
   const [showCreate, setShowCreate] = useState(false);
   const [showUpgrade, setShowUpgrade] = useState(false);
@@ -325,8 +325,11 @@ export default function Dashboard() {
           isOpen={true}
           linkTitle={deleteTarget?.title || "Untitled Link"}
           onClose={() => setShowDelete(false)}
+          userPlan={userPlan}
+          onRequestUpgrade={() => setShowUpgrade(true)}
           onConfirm={async () => {
             await handleDelete(deleteTarget._id);
+
             setShowDelete(false);
           }}
         />

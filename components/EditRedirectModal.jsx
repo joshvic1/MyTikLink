@@ -357,9 +357,20 @@ export default function EditRedirectModal({
                   <input
                     className={styles.input}
                     value={whatsInput}
-                    onChange={(e) => setWhatsInput(e.target.value)}
+                    onChange={(e) =>
+                      isPro ? setWhatsInput(e.target.value) : null
+                    }
+                    disabled={!isPro}
                     placeholder="e.g. 2348012345678"
                   />
+
+                  {!isPro && (
+                    <div className={styles.note}>
+                      This feature is available for Pro users only. Upgrade to
+                      get access{" "}
+                    </div>
+                  )}
+
                   <label className={styles.label}>
                     Prefill message (Optional)
                   </label>
@@ -376,9 +387,18 @@ export default function EditRedirectModal({
                   <input
                     className={styles.input}
                     value={whatsInput}
-                    onChange={(e) => setWhatsInput(e.target.value)}
+                    onChange={(e) =>
+                      isPro ? setWhatsInput(e.target.value) : null
+                    }
+                    disabled={!isPro}
                     placeholder="e.g https://chat.whatsapp.com/XXXXX"
                   />
+                  {!isPro && (
+                    <div className={styles.note}>
+                      This feature is available for Pro users only. Upgrade to
+                      get access{" "}
+                    </div>
+                  )}
                 </>
               )}
             </div>
