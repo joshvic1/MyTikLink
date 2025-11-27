@@ -11,7 +11,7 @@ export default function Footer() {
             <span className={styles.accent}>Tik</span>Link
           </h3>
           <p className={styles.desc}>
-            Smart links & analytics built for creators
+            Smart links & analytics built for creators and businesses on TikTok.
           </p>
 
           <b className={styles.desc}>Email: support@MyTikLink.com</b>
