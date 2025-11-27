@@ -11,13 +11,13 @@ export default function Footer() {
             <span className={styles.accent}>Tik</span>Link
           </h3>
           <p className={styles.desc}>
-            Smart links & analytics built for creators and businesses on TikTok.
+            Smart links & analytics built for creators and businesses on TikTok
           </p>
 
           <b className={styles.desc}>Email: support@MyTikLink.com</b>
 
-          <div className={styles.socials}>
-            <a href="#" aria-label="Twitter">
+          <div className={styles.social}>
+            <a href="/" aria-label="Twitter">
               <FaTwitter />
             </a>
             <a href="#" aria-label="Instagram">
