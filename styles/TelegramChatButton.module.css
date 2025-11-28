@@ -14,7 +14,7 @@
   cursor: pointer;
   transition: transform 0.3s ease, opacity 0.3s ease;
   opacity: 0;
-  z-index: 9999;
+  z-index: 9997;
 }
 
 /* Fade + bounce entrance */
