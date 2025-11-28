@@ -10,6 +10,7 @@ export default function PaymentHistory() {
   useEffect(() => {
     fetchPayments();
   }, []);
+  
 
   const fetchPayments = async () => {
     try {

@@ -77,7 +77,7 @@ export default function HowItWorks() {
             </p>
             <img
               className={styles.media}
-              src="/images/how-step-1.png"
+              src="/images/register.png"
               alt="Create your TikLink"
             />
           </motion.div>
@@ -93,7 +93,7 @@ export default function HowItWorks() {
             </p>
             <img
               className={styles.media}
-              src="/images/how-step-2.png"
+              src="/images/profile1.png"
               alt="Add to TikTok bio"
             />
           </motion.div>
@@ -105,11 +105,11 @@ export default function HowItWorks() {
             <h4>Watch chats come in</h4>
             <p>
               When people click, WhatsApp opens correctly and they can message
-              you without friction.
+              you without friction. No more "Action can't be completed" errors!
             </p>
             <img
               className={styles.media}
-              src="/images/how-step-3.png"
+              src="/images/leads.png"
               alt="Leads coming in"
             />
           </motion.div>

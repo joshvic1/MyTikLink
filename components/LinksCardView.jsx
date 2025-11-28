@@ -176,6 +176,10 @@ export default function LinksCardView({
               {copied === shortLink && (
                 <div className={s.copiedTag}>Copied</div>
               )}
+              <p className={s.note}>
+                Make sure your TikTok account is set to a{" "}
+                <b>Business Account</b> for this link to work properly.
+              </p>
             </article>
           );
         })}

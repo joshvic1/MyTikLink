@@ -105,7 +105,7 @@ export default function ProblemSolution() {
               from TikTok without your link getting broken.
             </p>
             <div className={styles.media}>
-              <img src="/images/problem-fixed.png" alt="Working TikLink" />
+              <img src="/images/solution.png" alt="Working TikLink" />
             </div>
           </motion.div>
         </motion.div>

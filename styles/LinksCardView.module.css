@@ -336,3 +336,11 @@
     max-width: 72%;
   }
 }
+.note {
+  margin-top: 10px;
+  font-size: 11px;
+  color: #ff4d6d; /* soft red */
+  opacity: 0.85;
+  line-height: 1.4;
+  font-weight: 500;
+}
