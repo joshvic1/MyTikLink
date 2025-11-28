@@ -47,20 +47,28 @@ export default function Showcase() {
     };
   }, []);
 
-  const rowTop = [
-    "/images/showcase-tiktok-flow.png",
-    "/images/feature-templates.png",
-    "/images/how-1.png",
-    "/images/how-2.png",
-    "/images/how-3.png",
+  const testimonialsTop = [
+    "This platform really helped me reduce all the back-and-forth I usually have with customers. People now join my WhatsApp group directly from TikTok without any stress, and everything works smoothly even for just 2k. I’m honestly impressed because it has removed a big load from my head. Thank you so much boss 🙏🏿. I’ll definitely be coming back soon to upgrade to the pro once I finish setting up everything properly.",
+
+    "Good evening sir. I finally got my way around the setup and the whole thing is surprisingly easy and extremely fast. I didn’t expect it to be this straightforward at all. Thank you so much — you’ve genuinely made my day easier like this 🥹. And abeg forgive my impatience earlier 😅. The link is working perfectly well now and customers are flowing in without any stress at all.",
+
+    "This link made it very easy for people to message me directly on WhatsApp without that usual problem of asking them to download the app first. I’m honestly so happy because I’ve tried several links before and it always gave the same story — issues, errors, or confusion. But this one is different, fast, reliable, and extremely easy for customers to use. I really love it, truly.",
+
+    "I honestly need to commend the people that created this website. God bless them because they really thought about business owners. My business has not moved this smoothly and easily in a long while. Everything works fast, clean, and without stress. It has removed so many small issues I used to face on TikTok and has made customer conversion very straightforward for me.",
+
+    "Omo! Other websites go think say na AI 😂. This one is too smooth and it’s a hotcake. I’m not even ready to cast it because once too many people see it, they might increase the price for us. The link is clean, fast, and very reliable. I love how professional everything feels and how it has helped my page grow without any stress.",
   ];
 
-  const rowBottom = [
-    "/images/feature-analytics.png",
-    "/images/showcase-tiktok-flow.png",
-    "/images/how-3.png",
-    "/images/feature-templates.png",
-    "/images/how-2.png",
+  const testimonialsBottom = [
+    "So there’s actually a website like this and nobody told us? 😭 Nigerians and hoarding updates sha. This thing is extremely helpful, especially for small business owners like me. My old TikTok link was basically for decoration because it never worked. But once I switched to this one, everything changed. Nobody even enters my TikTok DM anymore — they go straight to WhatsApp smoothly.",
+
+    "Finally! A TikTok link-in-bio that ACTUALLY works 🤭. No glitches, no long story, everything is smooth and professional. I really love how fast the redirect is and how customers don’t even complain. It feels like something every seller should be using because it just makes everything easier and more organized.",
+
+    "You can tell the person who built this website really had business owners in mind. It has removed the stress of adding customers to my WhatsApp group one by one. Now people just join directly from my bio without me lifting a finger. The whole process is fast, simple, and honestly well-thought-out.",
+
+    "The dashboard is clean, fast and stress-free. I especially love the templates section — it makes my link page look very organized and professional without me stressing myself. Everything loads instantly and customers navigate without any issues. I honestly recommend it for anyone selling on TikTok.",
+
+    "Honestly, I wasn’t expecting this to work the way it’s been working. I thought it would lag or give errors like the other platforms I’ve tried, but it has been perfect so far. Smooth redirects, zero problems, and very dependable. I didn’t think it would be this reliable, but it has exceeded my expectations. I fully recommend it!",
   ];
 
   const headerVariants = {
@@ -133,9 +141,22 @@ export default function Showcase() {
             whileInView="show"
             viewport={{ once: true, amount: 0.2 }}
           >
-            {rowTop.concat(rowTop).map((src, index) => (
+            {testimonialsTop.concat(testimonialsTop).map((text, index) => (
               <div key={`row1-${index}`} className={styles.card}>
-                <img src={src} alt="" />
+                <span className={styles.quoteMark}>"</span>
+
+                <p>{text}</p>
+
+                <div className={styles.profile}>
+                  <div className={styles.badge}>
+                    {text.trim().charAt(0).toUpperCase()}
+                  </div>
+
+                  <div className={styles.profileText}>
+                    <span className={styles.name}>TikLink User</span>
+                    <span className={styles.role}>Small Business Owner</span>
+                  </div>
+                </div>
               </div>
             ))}
           </motion.div>
@@ -148,11 +169,26 @@ export default function Showcase() {
             whileInView="show"
             viewport={{ once: true, amount: 0.2 }}
           >
-            {rowBottom.concat(rowBottom).map((src, index) => (
-              <div key={`row2-${index}`} className={styles.cardAlt}>
-                <img src={src} alt="" />
-              </div>
-            ))}
+            {testimonialsBottom
+              .concat(testimonialsBottom)
+              .map((text, index) => (
+                <div key={`row2-${index}`} className={styles.cardAlt}>
+                  <span className={styles.quoteMark}>"</span>
+
+                  <p>{text}</p>
+
+                  <div className={styles.profile}>
+                    <div className={styles.badge}>
+                      {text.trim().charAt(0).toUpperCase()}
+                    </div>
+
+                    <div className={styles.profileText}>
+                      <span className={styles.name}>TikLink User</span>
+                      <span className={styles.role}>Content Creator</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
           </motion.div>
         </div>
       </div>

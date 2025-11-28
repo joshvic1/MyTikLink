@@ -1,7 +1,6 @@
 /* =========================================
-   SHOWCASE — PERFECT CENTER + DIFFERENT ROWS
+   SECTION WRAPPER
 ========================================= */
-
 .section {
   width: 100%;
   padding: 120px 0;
@@ -11,13 +10,7 @@
   overflow: hidden;
 }
 
-/* Remove purple tint */
-.card::after,
-.cardAlt::after {
-  display: none !important;
-}
-
-/* Glowing background */
+/* Glow background */
 .bgGlow {
   position: absolute;
   inset: 0;
@@ -35,7 +28,9 @@
   opacity: 0.45;
 }
 
-/* CENTER EVERYTHING */
+/* =========================================
+   CONTAINER
+========================================= */
 .container {
   max-width: 1220px;
   margin: 0 auto;
@@ -49,7 +44,7 @@
 }
 
 /* =========================================
-   HEADER RESTORED
+   HEADER
 ========================================= */
 .header {
   text-align: center;
@@ -75,7 +70,7 @@
 }
 
 /* =========================================
-   SCROLLER WRAPPER — perfectly centered
+   SCROLLER WRAPPER + ROWS
 ========================================= */
 .scrollerWrapper {
   width: 100%;
@@ -85,9 +80,15 @@
   flex-direction: column;
   gap: 50px;
   overflow: hidden;
+
+  overscroll-behavior-x: contain;
+  cursor: grab;
 }
 
-/* Both rows aligned to CENTER */
+.scrollerWrapper:active {
+  cursor: grabbing;
+}
+
 .row,
 .rowAlt {
   display: flex;
@@ -97,58 +98,121 @@
   justify-content: center;
   position: relative;
   will-change: transform;
+
+  overflow-x: scroll !important;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x;
+}
+
+/* Hide scrollbar */
+.row::-webkit-scrollbar,
+.rowAlt::-webkit-scrollbar {
+  display: none;
 }
 
 /* =========================================
-   CARDS
+   TESTIMONIAL CARD (UPGRADED DESIGN)
 ========================================= */
 .card,
 .cardAlt {
-  min-width: 330px;
-  height: 230px;
-  border-radius: var(--r);
-  background: var(--card);
-  border: 1px solid var(--line);
-  box-shadow: 0 10px 34px var(--shadow-strong);
-  overflow: hidden;
+  min-width: 340px;
+  max-width: 340px;
+  padding: 22px;
+  border-radius: 20px;
+  background: linear-gradient(
+      to bottom right,
+      rgba(255, 255, 255, 0.06),
+      rgba(255, 255, 255, 0.02)
+    ),
+    var(--surface-deep);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+  color: var(--ink);
+  backdrop-filter: blur(14px);
+
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  transition: all 0.3s ease;
+
+  pointer-events: none; /* allow scroll through cards */
+}
+
+.card *,
+.cardAlt * {
+  pointer-events: auto; /* restore interactions inside */
+}
+
+/* Hover effect */
+.card:hover,
+.cardAlt:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.45);
+  border-color: rgba(var(--accent2-rgb), 0.5);
+}
+
+/* Quote mark */
+.quoteMark {
+  font-size: 26px;
+  opacity: 0.4;
+  color: var(--accent2);
+}
+
+/* Profile section */
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.badge {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent1), var(--accent2));
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 16px;
   flex-shrink: 0;
+  box-shadow: 0 4px 14px rgba(var(--accent1-rgb), 0.3);
 }
 
-.card img,
-.cardAlt img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.profileText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
-/* =========================================
-   ANIMATION — smooth + centered
-========================================= */
-
-.row {
-  animation: scrollLeft 90s linear infinite;
+.profileText .name {
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
 }
 
-.rowAlt {
-  animation: scrollRight 90s linear infinite;
+.profileText .role {
+  color: var(--muted);
+  font-size: 12px;
 }
 
-@keyframes scrollLeft {
-  0% {
-    transform: translateX(-25%);
-  }
-  100% {
-    transform: translateX(-75%);
-  }
+/* Text */
+.card p,
+.cardAlt p {
+  margin: 0;
+  line-height: 1.55;
+  font-size: 14px;
+  color: var(--ink);
 }
 
-@keyframes scrollRight {
-  0% {
-    transform: translateX(-75%);
-  }
-  100% {
-    transform: translateX(-25%);
-  }
+/* Slight variant for second row */
+.cardAlt {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(var(--accent1-rgb), 0.15);
 }
 
 /* =========================================
@@ -159,19 +223,12 @@
   .rowAlt {
     animation: none;
     overflow-x: auto;
-    scroll-snap-type: x mandatory;
     gap: 20px;
-  }
-
-  .row::-webkit-scrollbar,
-  .rowAlt::-webkit-scrollbar {
-    display: none;
   }
 
   .card,
   .cardAlt {
-    min-width: 240px;
-    height: 170px;
-    scroll-snap-align: center;
+    min-width: 260px;
+    max-width: 260px;
   }
 }
