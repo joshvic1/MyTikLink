@@ -479,7 +479,6 @@ export default function EditRedirectModal({
                                 className={styles.previewBtn}
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  if (locked) return onRequestUpgrade?.();
                                   openLivePreview(tpl);
                                 }}
                               >

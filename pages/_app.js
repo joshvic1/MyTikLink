@@ -2,6 +2,7 @@ import "@/styles/globals.css";
 import { Toaster } from "react-hot-toast";
 import Layout from "@/components/Layout";
 import { useRouter } from "next/router";
+import TelegramChatButton from "@/components/TelegramChatButton";
 
 export default function App({ Component, pageProps }) {
   const router = useRouter();
@@ -26,6 +27,7 @@ export default function App({ Component, pageProps }) {
   return (
     <Layout>
       <Component {...pageProps} />
+      <TelegramChatButton username="mytiklink" />
       <Toaster position="top-center" />
     </Layout>
   );

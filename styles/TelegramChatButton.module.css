@@ -1,0 +1,39 @@
+.fab {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  background: #2aabee; /* Telegram blue */
+  color: white;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  opacity: 0;
+  z-index: 9999;
+}
+
+/* Fade + bounce entrance */
+.show {
+  opacity: 1;
+  transform: translateY(0);
+  animation: bounce 1s ease infinite;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.fab:hover {
+  transform: scale(1.08);
+}
