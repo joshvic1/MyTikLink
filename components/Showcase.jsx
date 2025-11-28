@@ -50,9 +50,9 @@ export default function Showcase() {
   const testimonialsTop = [
     "This platform really helped me reduce all the back-and-forth I usually have with customers. People now join my WhatsApp group directly from TikTok without any stress, and everything works smoothly even for just 2k. I’m honestly impressed because it has removed a big load from my head. Thank you so much boss 🙏🏿. I’ll definitely be coming back soon to upgrade to the pro once I finish setting up everything properly.",
 
-    "Good evening sir. I finally got my way around the setup and the whole thing is surprisingly easy and extremely fast. I didn’t expect it to be this straightforward at all. Thank you so much — you’ve genuinely made my day easier like this 🥹. And abeg forgive my impatience earlier 😅. The link is working perfectly well now and customers are flowing in without any stress at all.",
+    "Good evening sir. I finally got my way around the setup and the whole thing is surprisingly easy and extremely fast. I didn’t expect it to be this straightforward at all. Thank you so much... you’ve genuinely made my day easier like this 🥹. And abeg forgive my impatience earlier 😅. The link is working perfectly well now and customers are flowing in without any stress at all.",
 
-    "This link made it very easy for people to message me directly on WhatsApp without that usual problem of asking them to download the app first. I’m honestly so happy because I’ve tried several links before and it always gave the same story — issues, errors, or confusion. But this one is different, fast, reliable, and extremely easy for customers to use. I really love it, truly.",
+    "This link made it very easy for people to message me directly on WhatsApp without that usual problem of asking them to download the app first. I’m honestly so happy because I’ve tried several links before and it always gave the same story.. issues, errors, or confusion. But this one is different, fast, reliable, and extremely easy for customers to use. I really love it, truly.",
 
     "I honestly need to commend the people that created this website. God bless them because they really thought about business owners. My business has not moved this smoothly and easily in a long while. Everything works fast, clean, and without stress. It has removed so many small issues I used to face on TikTok and has made customer conversion very straightforward for me.",
 
@@ -66,7 +66,7 @@ export default function Showcase() {
 
     "You can tell the person who built this website really had business owners in mind. It has removed the stress of adding customers to my WhatsApp group one by one. Now people just join directly from my bio without me lifting a finger. The whole process is fast, simple, and honestly well-thought-out.",
 
-    "The dashboard is clean, fast and stress-free. I especially love the templates section — it makes my link page look very organized and professional without me stressing myself. Everything loads instantly and customers navigate without any issues. I honestly recommend it for anyone selling on TikTok.",
+    "The dashboard is clean, fast and stress-free. I especially love the templates section, it makes my link page look very organized and professional without me stressing myself. Everything loads instantly and customers navigate without any issues. I honestly recommend it for anyone selling on TikTok.",
 
     "Honestly, I wasn’t expecting this to work the way it’s been working. I thought it would lag or give errors like the other platforms I’ve tried, but it has been perfect so far. Smooth redirects, zero problems, and very dependable. I didn’t think it would be this reliable, but it has exceeded my expectations. I fully recommend it!",
   ];
@@ -154,7 +154,7 @@ export default function Showcase() {
 
                   <div className={styles.profileText}>
                     <span className={styles.name}>TikLink User</span>
-                    <span className={styles.role}>Small Business Owner</span>
+                    {/* <span className={styles.role}>Small Business Owner</span> */}
                   </div>
                 </div>
               </div>
