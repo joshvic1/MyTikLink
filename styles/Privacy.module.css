@@ -1,0 +1,101 @@
+/* ============================
+   WRAPPER
+============================ */
+.pageWrap {
+  min-height: 100vh;
+  padding: 96px 24px 40px; /* space for fixed header */
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Dark Mode (default) */
+.pageWrap {
+  background: #0b0c10;
+  color: #d1d5db;
+}
+
+/* Light Mode */
+[data-theme="light"] .pageWrap {
+  background: #ffffff;
+  color: #1f2937;
+}
+
+/* ============================
+   CONTAINER
+============================ */
+.container {
+  max-width: 850px;
+  margin: 0 auto;
+  padding-bottom: 40px;
+}
+
+/* ============================
+   HEADER TEXT
+============================ */
+.title {
+  font-size: 2rem;
+  font-weight: 800;
+  text-align: center;
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.subtitle {
+  text-align: center;
+  margin-top: 6px;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+[data-theme="light"] .subtitle {
+  color: #4b5563;
+}
+
+/* ============================
+   SECTIONS
+============================ */
+.sectionTitle {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-top: 32px;
+  margin-bottom: 10px;
+  color: var(--accent1);
+}
+
+[data-theme="light"] .sectionTitle {
+  color: var(--accent2);
+}
+
+.text {
+  line-height: 1.65;
+  font-size: 0.95rem;
+  margin-bottom: 14px;
+}
+
+/* ============================
+   LISTS
+============================ */
+.list {
+  margin-left: 20px;
+  margin-bottom: 14px;
+}
+
+.list li {
+  margin-bottom: 6px;
+}
+
+/* ============================
+   HIGHLIGHT BLOCK
+============================ */
+.block {
+  margin-top: 16px;
+  padding: 16px 18px;
+  border-radius: 14px;
+  border: 1px solid var(--stroke-strong);
+  background: color-mix(in srgb, var(--bg) 90%, black 10%);
+}
+
+[data-theme="light"] .block {
+  background: rgba(255, 255, 255, 0.65);
+  border-color: rgba(0, 0, 0, 0.08);
+}

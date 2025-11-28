@@ -113,10 +113,10 @@ export default function Showcase() {
           whileInView="show"
           viewport={{ once: true, amount: 0.3 }}
         >
-          <h2 className={styles.title}>See TikLink in action</h2>
+          <h2 className={styles.title}>Testimonials</h2>
           <p className={styles.sub}>
-            Real previews of how TikTok clicks move instantly to WhatsApp, no
-            lag, just smooth connection.
+            Reviews from some of the creators and business owners thats used
+            TikLink to change their TikTok to WhatsApp link experience.
           </p>
         </motion.div>
 

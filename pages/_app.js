@@ -9,8 +9,10 @@ export default function App({ Component, pageProps }) {
   // ⛔ Skip layout for redirect pages & dashboard
   const isRedirectPage = router.pathname.startsWith("/r/");
   const isDashboardPage = router.pathname.startsWith("/dashboard");
+  const isTermsPage = router.pathname === "/terms";
+  const isPrivacyPage = router.pathname === "/privacy";
 
-  if (isRedirectPage || isDashboardPage) {
+  if (isRedirectPage || isDashboardPage || isTermsPage || isPrivacyPage) {
     // ✅ Return without layout (no header/footer)
     return (
       <>

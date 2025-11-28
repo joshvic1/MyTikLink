@@ -16,7 +16,7 @@ export default function Footer() {
 
           <b className={styles.desc}>Email: support@MyTikLink.com</b>
 
-          <div className={styles.social}>
+          <div className={styles.socials}>
             <a href="/" aria-label="Twitter">
               <FaTwitter />
             </a>

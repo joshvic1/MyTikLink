@@ -1,0 +1,102 @@
+/* ============================
+   WRAPPER
+============================ */
+.pageWrap {
+  min-height: 100vh;
+  padding: 96px 24px 40px; /* leaves space for your fixed header */
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Dark theme (default) */
+.pageWrap {
+  background: #0b0c10;
+  color: #d1d5db;
+}
+
+/* Light theme */
+[data-theme="light"] .pageWrap {
+  background: #f9fafb;
+  color: #1f2937;
+}
+
+/* ============================
+   CONTAINER
+============================ */
+.container {
+  max-width: 850px;
+  margin: 0 auto;
+  padding-bottom: 40px;
+}
+
+/* ============================
+   HEADERS
+============================ */
+.title {
+  font-size: 2rem;
+  font-weight: 800;
+  text-align: center;
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.subtitle {
+  margin-top: 6px;
+  font-size: 0.9rem;
+  text-align: center;
+  color: var(--muted);
+}
+
+/* Light mode subtitle */
+[data-theme="light"] .subtitle {
+  color: #4b5563;
+}
+
+/* ============================
+   SECTION HEADINGS
+============================ */
+.sectionTitle {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-top: 32px;
+  margin-bottom: 10px;
+  color: var(--accent1);
+}
+
+[data-theme="light"] .sectionTitle {
+  color: var(--accent2);
+}
+
+/* ============================
+   PARAGRAPHS + LISTS
+============================ */
+.text {
+  line-height: 1.65;
+  font-size: 0.95rem;
+  margin-bottom: 14px;
+}
+
+.list {
+  margin-left: 20px;
+  margin-bottom: 10px;
+}
+
+.list li {
+  margin-bottom: 6px;
+}
+
+/* ============================
+   CARD BLOCK (optional premium styling)
+============================ */
+.block {
+  margin-top: 18px;
+  padding: 16px 18px;
+  border-radius: 14px;
+  border: 1px solid var(--stroke-strong);
+  background: color-mix(in srgb, var(--bg) 90%, black 10%);
+}
+
+[data-theme="light"] .block {
+  background: rgba(255, 255, 255, 0.6);
+  border-color: rgba(0, 0, 0, 0.07);
+}
