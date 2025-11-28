@@ -476,17 +476,15 @@ export default function CreateRedirectModal({
                         <div className={s.tplInfoRow}>
                           <div className={s.tplName}>{tpl.name}</div>
                           <div className={s.tplActions}>
-                            {!locked && (
-                              <button
-                                className={s.miniGhost}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  openLivePreview(tpl);
-                                }}
-                              >
-                                <Eye size={14} /> Preview
-                              </button>
-                            )}
+                            <button
+                              className={s.miniGhost}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                openLivePreview(tpl);
+                              }}
+                            >
+                              <Eye size={14} /> Preview
+                            </button>
                           </div>
                         </div>
                       </div>
