@@ -22,6 +22,8 @@ export default function ExpiredPage() {
         }}
       >
         This link’s subscription has expired.
+        <br /> If this is your link, you have exceeded the 250 clicks limit for
+        the free user plan.
       </h2>
 
       <p
