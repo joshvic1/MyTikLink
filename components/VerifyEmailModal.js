@@ -21,6 +21,8 @@ export default function VerifyEmailModal({
   const [inputs, setInputs] = useState(["", "", "", ""]);
   const [timer, setTimer] = useState(60);
   const [loading, setLoading] = useState(false);
+  const isOtpComplete = inputs.every((digit) => digit !== "");
+
   const inputRefs = useRef([]);
 
   /** TIMER COUNTDOWN */
@@ -162,7 +164,7 @@ export default function VerifyEmailModal({
 
         <button
           className={styles.submitBtn}
-          disabled={loading}
+          disabled={loading || !isOtpComplete}
           onClick={handleVerify}
         >
           {loading ? "Verifying..." : "Verify Email"}

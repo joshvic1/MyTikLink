@@ -84,11 +84,7 @@ export default function AuthModal({
         email: form.email,
         password: form.password,
       });
-      // AFTER successful verification:
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({
-        event: "tiklink_complete_registration",
-      });
+
       toast.success("Verification code sent!");
       setShowVerify(true);
     } catch (err) {
