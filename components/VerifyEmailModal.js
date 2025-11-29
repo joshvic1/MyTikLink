@@ -95,11 +95,11 @@ export default function VerifyEmailModal({
 
       login(res.data.token);
       toast.success("Account verified!");
-      // AFTER successful verification:
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({
-        event: "tiklink_complete_registration",
-      });
+
+      // TikTok Pixel - CompleteRegistration event
+      if (typeof window !== "undefined" && window.ttq) {
+        window.ttq.track("CompleteRegistration");
+      }
 
       onClose();
       router.push("/dashboard");
