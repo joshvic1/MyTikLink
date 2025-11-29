@@ -95,6 +95,11 @@ export default function VerifyEmailModal({
 
       login(res.data.token);
       toast.success("Account verified!");
+      // AFTER successful verification:
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: "tiklink_complete_registration",
+      });
 
       onClose();
       router.push("/dashboard");
