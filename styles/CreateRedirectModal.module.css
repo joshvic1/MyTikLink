@@ -379,6 +379,66 @@
   border: 1px solid var(--stroke);
   cursor: pointer;
 }
+.previewTopBar {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  width: calc(100% - 32px);
+  z-index: 20;
+}
+
+.selectTemplateBtn {
+  flex: 1;
+  padding: 12px 18px;
+  border-radius: 12px;
+
+  background: linear-gradient(90deg, #7b45ff, #9a57ff);
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  font-size: 15px;
+  cursor: pointer;
+
+  box-shadow: 0 4px 14px rgba(123, 69, 255, 0.3);
+  transition: 0.2s ease;
+}
+
+.selectTemplateBtn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(123, 69, 255, 0.35);
+}
+
+.closePreviewBtn2 {
+  background: linear-gradient(90deg, #7b45ff, #9a57ff);
+  color: #fff;
+  border: none;
+
+  padding: 12px;
+  border-radius: 12px;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 54px;
+  height: 48px;
+
+  box-shadow: 0 4px 14px rgba(123, 69, 255, 0.3);
+  transition: 0.2s ease;
+}
+
+.closePreviewBtn2:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(123, 69, 255, 0.35);
+}
 
 /* misc */
 .metaBlock {
@@ -545,4 +605,89 @@
   border-radius: 8px;
   background: var(--glass);
   border: 1px solid var(--stroke);
+}
+.infoText {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.5;
+}
+
+.businessLink {
+  font-size: 14px;
+  color: #6b4bff;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.videoBtn {
+  background: #000;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.videoBtn:hover {
+  background: #222;
+}
+.videoFullscreen {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.92);
+  z-index: 999999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.videoFullscreen iframe {
+  width: 100vw;
+  height: 100vh;
+  border: none;
+}
+.videoOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
+.videoBox {
+  position: relative;
+  width: 100%;
+  height: 90%;
+}
+
+.videoIframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.videoClose {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #7c3aed;
+  color: #fff;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-size: 15px;
+  z-index: 999999;
+  cursor: pointer;
+}
+
+.videoClose:hover {
+  opacity: 0.8;
 }

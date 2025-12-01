@@ -38,6 +38,7 @@ export default function CreateRedirectModal({
   const API = process.env.NEXT_PUBLIC_API_URL || "";
   const PREVIEW_BASE = API.replace(/\/api\/?$/i, "") || "http://localhost:5000";
   const placeholderThumb = "/mnt/data/Screenshot 2025-11-23 232011.png";
+  const tutorialVideo = "https://www.youtube.com/embed/oNGguNKnpoQ";
 
   // steps: 0 Title, 1 Type & Whatsapp, 2 Templates, 3 Create
   const [step, setStep] = useState(0);
@@ -58,6 +59,8 @@ export default function CreateRedirectModal({
   const [showPreviewForTplId, setShowPreviewForTplId] = useState(null);
   const [previewSrc, setPreviewSrc] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [showTikTokHelp, setShowTikTokHelp] = useState(false);
+  const [showVideo, setShowVideo] = useState(false);
 
   // fetch templates
   useEffect(() => {
@@ -325,7 +328,7 @@ export default function CreateRedirectModal({
         <div className={s.header}>
           <div className={s.titleRow}>
             <h3>Create New Link</h3>
-            <small className={s.stepTag}>Step {step + 1} / 3</small>
+            <small className={s.stepTag}>Step {step + 1} / 4</small>
           </div>
 
           <button
@@ -494,6 +497,35 @@ export default function CreateRedirectModal({
               )}
             </div>
           )}
+
+          {step === 3 && (
+            <div
+              className={s.step}
+              style={{ display: "flex", flexDirection: "column", gap: "12px" }}
+            >
+              <h4 className={s.label}>Before you continue…</h4>
+
+              <p className={s.infoText}>
+                To make your link work on your TikTok profile, you must switch
+                your TikTok account to a <b>Business Account</b>. Without doing
+                this,This link you are about to create might not work properly.
+              </p>
+
+              <a
+                href="https://vt.tiktok.com/ZSfgsdUcU/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={s.businessLink}
+              >
+                How to switch to Business Account →
+              </a>
+
+              {/* OPTIONAL: add TikTok video popup trigger */}
+              <button className={s.primary} onClick={() => setShowVideo(true)}>
+                Watch Tutorial Video
+              </button>
+            </div>
+          )}
         </div>
 
         <div className={s.footer}>
@@ -507,7 +539,7 @@ export default function CreateRedirectModal({
               {step === 0 ? "Close" : "Back"}
             </button>
 
-            {step < 2 && (
+            {step < 3 && (
               <button
                 className={s.primary}
                 onClick={() => {
@@ -547,7 +579,7 @@ export default function CreateRedirectModal({
               </button>
             )}
 
-            {step === 2 && (
+            {step === 3 && (
               <button
                 className={s.primary}
                 onClick={handleSubmit}
@@ -557,7 +589,7 @@ export default function CreateRedirectModal({
                   "Creating..."
                 ) : (
                   <>
-                    <CheckCircle2 size={14} /> Create Link
+                    <CheckCircle2 size={14} /> I Know, Create Link
                   </>
                 )}
               </button>
@@ -565,17 +597,57 @@ export default function CreateRedirectModal({
 
             {showPreviewForTplId && (
               <div className={s.fullPreview}>
-                <button
-                  className={s.closePreviewBtn}
-                  onClick={closeLivePreview}
-                >
-                  <X size={22} />
-                </button>
+                <div className={s.previewTopBar}>
+                  <button
+                    className={s.selectTemplateBtn}
+                    onClick={() => {
+                      setSelectedTplId(showPreviewForTplId);
+                      toast.success("Template selected!");
+                      closeLivePreview();
+                    }}
+                  >
+                    Select This Template
+                  </button>
+
+                  <button
+                    className={s.closePreviewBtn2}
+                    onClick={closeLivePreview}
+                  >
+                    ✕
+                  </button>
+                </div>
+
                 <iframe
                   className={s.fullPreviewFrame}
                   src={previewSrc}
                   sandbox="allow-scripts allow-same-origin"
                 />
+              </div>
+            )}
+
+            {showVideo && (
+              <div
+                className={s.videoOverlay}
+                onClick={() => setShowVideo(false)}
+              >
+                <div
+                  className={s.videoBox}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <button
+                    className={s.videoClose}
+                    onClick={() => setShowVideo(false)}
+                  >
+                    ✕ Close Video
+                  </button>
+
+                  <iframe
+                    className={s.videoIframe}
+                    src={tutorialVideo}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  ></iframe>
+                </div>
               </div>
             )}
           </div>
