@@ -199,10 +199,13 @@ export default function LinksCardView({
               {copied === shortLink && (
                 <div className={s.copiedTag}>Copied</div>
               )}
-              <p className={s.note}>
-                Make sure your TikTok account is set to a{" "}
-                <b>Business Account</b> for this link to work properly.
-              </p>
+              {userPlan === "free" && (
+                <p className={s.note}>
+                  Your link will expire once you reach 250 clicks. Please{" "}
+                  <b onClick={onUpgrade}>Upgrade</b> to unlock more clicks limit
+                  and more benefits. You currently have {clicks} clicks.
+                </p>
+              )}
             </article>
           );
         })}
