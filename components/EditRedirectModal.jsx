@@ -290,6 +290,14 @@ export default function EditRedirectModal({
     return () => window.removeEventListener("keydown", onKey);
   }, [setShowModal]);
 
+  // check if template is locked
+  const isTemplateLocked = (tplId) => {
+    const tpl = templates.find((t) => t._id === tplId);
+    if (!tpl) return false;
+
+    return !tpl.allowedPlans?.includes(userPlan);
+  };
+
   return (
     <div className={styles.backdrop} onClick={() => setShowModal(false)}>
       <div
@@ -599,12 +607,31 @@ export default function EditRedirectModal({
         </div>
         {showPreviewForTplId && (
           <div className={styles.fullPreview}>
-            <button
-              className={styles.closePreviewBtn}
-              onClick={closeLivePreview}
-            >
-              <X size={22} />
-            </button>
+            <div className={styles.previewTopBar}>
+              <button
+                className={styles.selectTplBtn}
+                onClick={() => {
+                  if (isTemplateLocked(showPreviewForTplId)) {
+                    toast.error("Template only available for Pro users.");
+                    closeLivePreview();
+                    return;
+                  }
+
+                  setSelectedTplId(showPreviewForTplId);
+                  toast.success("Template selected");
+                  closeLivePreview();
+                }}
+              >
+                Select This Template
+              </button>
+
+              <button
+                className={styles.closePreviewBtn}
+                onClick={closeLivePreview}
+              >
+                <X size={22} />
+              </button>
+            </div>
 
             <iframe
               className={styles.fullPreviewFrame}

@@ -312,6 +312,12 @@ export default function CreateRedirectModal({
       setSelectedTplId(null);
     }
   }, [templates]);
+  const isTemplateLocked = (tplId) => {
+    const tpl = templates.find((t) => t._id === tplId);
+    if (!tpl) return false;
+
+    return !tpl.allowedPlans?.includes(userPlan);
+  };
 
   // UI
   return (
@@ -601,8 +607,14 @@ export default function CreateRedirectModal({
                   <button
                     className={s.selectTemplateBtn}
                     onClick={() => {
+                      if (isTemplateLocked(showPreviewForTplId)) {
+                        toast.error("Template only available for Pro users.");
+                        closeLivePreview();
+                        return;
+                      }
+
                       setSelectedTplId(showPreviewForTplId);
-                      toast.success("Template selected!");
+                      toast.success("Template selected");
                       closeLivePreview();
                     }}
                   >
