@@ -10,6 +10,7 @@ import {
   Pointer,
   MousePointer2,
   TrendingUp,
+  Zap,
 } from "lucide-react";
 import s from "@/styles/LinksCardView.module.css";
 
@@ -25,6 +26,7 @@ export default function LinksCardView({
   userPlan = "free",
   onDelete,
   onEdit,
+  onUpgrade,
 }) {
   const [expanded, setExpanded] = useState(false);
   const [copied, setCopied] = useState(null);
@@ -89,6 +91,27 @@ export default function LinksCardView({
 
   return (
     <section className={s.wrap}>
+      {/* 🔥 UPGRADE BANNER HERE */}
+      {!paidPlans.includes(userPlan) && redirects.length > 0 && (
+        <div className={s.upgradeBanner} onClick={onUpgrade}>
+          <div className={s.iconWrap}>
+            <Zap size={18} />
+          </div>
+
+          <div className={s.txt}>
+            <span className={s.big}>Upgrade & Unlock Unlimited Clicks</span>
+            <span className={s.small}>
+              Unlimited Links • Faster Redirect • Unlimited Templates •
+              Customized links & more
+            </span>
+          </div>
+
+          <button className={s.ctaMini} onClick={onUpgrade}>
+            Upgrade
+          </button>
+        </div>
+      )}
+
       <div className={s.grid}>
         {visible.map((link) => {
           const shortLink = shortFrom(link);
@@ -184,7 +207,6 @@ export default function LinksCardView({
           );
         })}
       </div>
-
       {redirects.length > initialCount && (
         <div className={s.viewMoreWrap}>
           <button className={s.viewMore} onClick={() => setExpanded((v) => !v)}>

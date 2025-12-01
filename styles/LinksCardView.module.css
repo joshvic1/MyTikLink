@@ -344,3 +344,79 @@
   line-height: 1.4;
   font-weight: 500;
 }
+.upgradeBanner {
+  width: 100%;
+  padding: 12px 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+
+  background: linear-gradient(90deg, #6b4bff, #8738ff);
+  border-radius: 14px;
+
+  box-shadow: 0 4px 18px rgba(121, 61, 255, 0.28);
+  cursor: pointer;
+
+  margin-bottom: 18px;
+  transition: 0.25s ease;
+}
+
+.upgradeBanner:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(121, 61, 255, 0.36);
+}
+
+.iconWrap {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 8px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  backdrop-filter: blur(6px);
+  color: white;
+}
+
+.txt {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+  flex: 1;
+}
+
+.big {
+  font-weight: 600;
+  font-size: 13px;
+  color: white;
+}
+
+.small {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.75);
+  margin-top: 2px;
+}
+
+.ctaMini {
+  background: white;
+  color: #6b4bff;
+  border: none;
+
+  padding: 6px 14px;
+  font-size: 12px;
+  border-radius: 8px;
+
+  font-weight: 600;
+  white-space: nowrap;
+  transition: 0.25s ease;
+}
+
+.ctaMini:hover {
+  background: #f3edff;
+}
+.upgradeBanner {
+  width: calc(100% - 40px);
+  margin: 0 auto 18px;
+}

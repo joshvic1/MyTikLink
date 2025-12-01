@@ -288,6 +288,7 @@ export default function Dashboard({ userPlan }) {
           setShowDelete(true);
         }}
         onEdit={(link) => setEditing(link)}
+        onUpgrade={() => setShowUpgrade(true)}
       />
 
       {editing && (
