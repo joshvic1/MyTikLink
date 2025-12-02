@@ -22,6 +22,7 @@ export default function AdminLinksPage() {
 
   const [selectedLink, setSelectedLink] = useState(null);
   const [showDrawer, setShowDrawer] = useState(false);
+  const [totalLinks, setTotalLinks] = useState(0);
 
   const openDrawer = (link) => {
     setSelectedLink(link);
@@ -49,6 +50,7 @@ export default function AdminLinksPage() {
       );
 
       setLinks(res.data.links || []);
+      setTotalLinks(res.data.total || 0);
       setTotalPages(res.data.totalPages || 1);
     } catch (err) {
       console.error("Fetch links error:", err);
@@ -60,7 +62,9 @@ export default function AdminLinksPage() {
   return (
     <AdminDashboardLayout>
       <div className={styles.pageWrap}>
-        <h2 className={styles.pageTitle}>All Links</h2>
+        <h2 className={styles.pageTitle}>
+          Links <span className={styles.count}>({totalLinks})</span>
+        </h2>
 
         {/* Filters */}
         <div className={styles.filters}>

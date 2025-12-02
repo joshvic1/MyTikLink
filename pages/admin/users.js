@@ -23,6 +23,7 @@ export default function AdminUsersPage() {
   const [dateTo, setDateTo] = useState("");
   const [selectedUser, setSelectedUser] = useState(null);
   const [showDrawer, setShowDrawer] = useState(false);
+  const [totalUsers, setTotalUsers] = useState(0);
 
   const openDrawer = (user) => {
     setSelectedUser(user);
@@ -58,6 +59,7 @@ export default function AdminUsersPage() {
       );
 
       setUsers(res.data.users || []);
+      setTotalUsers(res.data.totalUsers || 0);
       setTotalPages(res.data.totalPages || 1);
     } catch (err) {
       console.error("Fetch users error:", err);
@@ -69,7 +71,9 @@ export default function AdminUsersPage() {
   return (
     <AdminDashboardLayout>
       <div className={styles.pageWrap}>
-        <h2 className={styles.pageTitle}>Users</h2>
+        <h2 className={styles.pageTitle}>
+          Users <span className={styles.count}>({totalUsers})</span>
+        </h2>
 
         {/* Filters */}
         <div className={styles.filters}>
