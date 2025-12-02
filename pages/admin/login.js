@@ -27,7 +27,12 @@ export default function AdminLogin() {
     try {
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/admin/auth/login`,
-        form
+        form,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
       );
 
       localStorage.setItem("admin_token", res.data.token);
