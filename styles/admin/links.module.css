@@ -1,0 +1,163 @@
+/* WRAPPER */
+.pageWrap {
+  padding: 20px;
+}
+
+.pageTitle {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 18px;
+  color: var(--text);
+}
+
+/* FILTERS */
+.filters {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.input {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--stroke);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
+  flex: 1;
+  min-width: 150px;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--accent1);
+  background: rgba(var(--accent1-rgb), 0.1);
+}
+
+/* TABLE CARD */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(15px);
+  border: 1px solid var(--stroke);
+}
+
+.table thead {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.table th {
+  padding: 14px 12px;
+  font-size: 13px;
+  color: var(--muted);
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--stroke);
+}
+
+.table td {
+  padding: 14px 12px;
+  border-bottom: 1px solid var(--stroke);
+  color: var(--text);
+  font-size: 14px;
+}
+
+.table tr:hover {
+  background: rgba(var(--accent1-rgb), 0.07);
+  transition: 0.25s;
+}
+
+/* USER EMAIL SMALL */
+.email {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+/* LINK TYPE BADGES */
+.type {
+  padding: 4px 10px;
+  font-size: 12px;
+  border-radius: 10px;
+  display: inline-block;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.type.group {
+  background: rgba(var(--accent2-rgb), 0.2);
+  color: var(--accent2);
+}
+
+.type.dm {
+  background: rgba(var(--accent1-rgb), 0.2);
+  color: var(--accent1);
+}
+
+/* VIEW BUTTON */
+.viewBtn {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: none;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  font-size: 13px;
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  color: #fff;
+  cursor: pointer;
+}
+
+.viewBtn:hover {
+  opacity: 0.9;
+}
+
+/* PAGINATION */
+.paginationWrap {
+  margin-top: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+}
+
+.navBtn {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.navBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pageIndicator {
+  color: var(--text);
+  font-size: 14px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 800px) {
+  .table th:nth-child(3),
+  .table td:nth-child(3),
+  .table th:nth-child(7),
+  .table td:nth-child(7) {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .filters {
+    flex-direction: column;
+  }
+
+  .input {
+    width: 100%;
+  }
+}

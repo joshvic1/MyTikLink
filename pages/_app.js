@@ -12,8 +12,15 @@ export default function App({ Component, pageProps }) {
   const isDashboardPage = router.pathname.startsWith("/dashboard");
   const isTermsPage = router.pathname === "/terms";
   const isPrivacyPage = router.pathname === "/privacy";
+  const isAdminRoute = router.pathname.startsWith("/admin");
 
-  if (isRedirectPage || isDashboardPage || isTermsPage || isPrivacyPage) {
+  if (
+    isRedirectPage ||
+    isDashboardPage ||
+    isTermsPage ||
+    isPrivacyPage ||
+    isAdminRoute
+  ) {
     // ✅ Return without layout (no header/footer)
     return (
       <>

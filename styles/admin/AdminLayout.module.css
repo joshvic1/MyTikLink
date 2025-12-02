@@ -1,0 +1,206 @@
+/* GLOBAL WRAPPER */
+.wrapper {
+  display: flex;
+  height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+}
+
+/* ============================= */
+/* DESKTOP SIDEBAR */
+/* ============================= */
+.sidebar {
+  width: 250px;
+  background: rgba(20, 20, 30, 0.65);
+  backdrop-filter: blur(22px);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 28px 20px;
+  display: none; /* hidden by default (mobile-first) */
+}
+
+@media (min-width: 900px) {
+  .sidebar {
+    display: block; /* visible only on desktop */
+  }
+}
+
+/* ============================= */
+/* MOBILE SIDEBAR (SLIDE-IN) */
+/* ============================= */
+.mobileSidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100%;
+  background: rgba(20, 20, 30, 0.92);
+  backdrop-filter: blur(25px);
+  padding: 28px 20px;
+  z-index: 60;
+  transform: translateX(-110%); /* hidden on load */
+  transition: transform 0.35s ease;
+  display: block; /* mobile only */
+}
+
+.mobileSidebar.open {
+  transform: translateX(0);
+}
+
+/* Hide mobile sidebar entirely on desktop */
+@media (min-width: 900px) {
+  .mobileSidebar {
+    display: none !important;
+  }
+}
+
+/* OVERLAY (mobile only) */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 50;
+}
+
+@media (min-width: 900px) {
+  .overlay {
+    display: none !important;
+  }
+}
+
+/* ============================= */
+/* SIDEBAR INNER STRUCTURE */
+/* ============================= */
+.sidebarInner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 40px;
+  letter-spacing: -1px;
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+/* ============================= */
+/* MENU LIST */
+/* ============================= */
+.menuList {
+  list-style: none;
+  padding: 0;
+  flex: 1;
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  font-size: 15px;
+  border-radius: 10px;
+  color: var(--muted);
+  transition: 0.25s;
+}
+
+.menuItem:hover {
+  background: rgba(var(--accent1-rgb), 0.12);
+  color: #fff;
+  box-shadow: 0 0 12px rgba(var(--accent1-rgb), 0.22);
+}
+
+/* ACTIVE NAV */
+.active {
+  background: linear-gradient(
+    90deg,
+    rgba(var(--accent1-rgb), 0.25),
+    rgba(var(--accent2-rgb), 0.2)
+  );
+  color: #fff !important;
+  border: 1px solid rgba(var(--accent1-rgb), 0.4);
+  box-shadow: inset 0 0 20px rgba(var(--accent1-rgb), 0.35);
+}
+
+/* LOGOUT BUTTON */
+.logoutBtn {
+  margin-top: auto;
+  padding: 12px 15px;
+  border-radius: 10px;
+  background: var(--danger);
+  color: #fff;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+}
+
+/* ============================= */
+/* MAIN SECTION */
+/* ============================= */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* ============================= */
+/* TOPBAR */
+/* ============================= */
+.topbar {
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 22px;
+  border-bottom: 1px solid var(--stroke-strong);
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(12px);
+}
+
+/* BURGER MENU (mobile only) */
+.menuBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  background: none;
+  border: none;
+  color: var(--text);
+  cursor: pointer;
+}
+
+@media (min-width: 900px) {
+  .menuBtn {
+    display: none !important; /* hide burger on desktop */
+  }
+}
+
+.pageTitle {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(120deg, var(--accent1), var(--accent2));
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-weight: 700;
+}
+
+/* ============================= */
+/* CONTENT AREA */
+/* ============================= */
+.content {
+  padding: 25px;
+  overflow-y: auto;
+}
