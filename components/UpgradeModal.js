@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import styles from "@/styles/UpgradeModal.module.css";
+import { planConfig } from "@/config/planConfig";
 
 export default function UpgradeModal({ currentPlan, setShowModal, onUpgrade }) {
   const [billingCycle, setBillingCycle] = useState("monthly");
@@ -20,13 +21,13 @@ export default function UpgradeModal({ currentPlan, setShowModal, onUpgrade }) {
   const dragging = useRef(false);
 
   // Plans
-  const plans = useMemo(
-    () => [
+  const plans = useMemo(() => {
+    return [
       {
         id: "standard",
         name: "Standard",
-        monthly: 2000,
-        yearly: 18000,
+        monthly: planConfig.standard_monthly.price,
+        yearly: planConfig.standard_yearly.price,
         limit: "Create up to 3 links",
         features: [
           { id: "f1", title: "Create up to 3 links", desc: "Monthly" },
@@ -38,43 +39,38 @@ export default function UpgradeModal({ currentPlan, setShowModal, onUpgrade }) {
           {
             id: "f3",
             title: "5000 Link click Limit",
-            desc: "Each link you create can only be clicked 5000 times in a month",
+            desc: "Each link is capped per month",
           },
           {
             id: "f4",
             title: "Priority Support",
-            desc: "Get fast support from the TikLink team",
+            desc: "Get fast support from TikLink",
           },
         ],
       },
       {
         id: "pro",
         name: "Pro",
-        monthly: 5000,
-        yearly: 40000,
+        monthly: planConfig.pro_monthly.price,
+        yearly: planConfig.pro_yearly.price,
         limit: "Create Unlimited Links",
         features: [
           { id: "f1", title: "Create unlimited Links", desc: "Monthly" },
           {
             id: "f2",
             title: "Templates",
-            desc: "Get access to unlimited stunning templates",
+            desc: "Unlimited stunning templates",
           },
           {
             id: "f3",
             title: "Unlimited click Limit",
-            desc: "Your links can be clicked unlimited times",
+            desc: "Unlimited clicks always",
           },
-          {
-            id: "f3",
-            title: "Priority Support",
-            desc: "Get extra fast support from the TikLink team",
-          },
+          { id: "f4", title: "Priority Support", desc: "Extra fast support" },
         ],
       },
-    ],
-    []
-  );
+    ];
+  }, []);
 
   const currency = (amount) =>
     new Intl.NumberFormat("en-NG", {
@@ -133,34 +129,42 @@ export default function UpgradeModal({ currentPlan, setShowModal, onUpgrade }) {
       const token = localStorage.getItem("token");
       if (!token) return toast.error("Please login");
 
+      // 🚀 call backend
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/payments/initiate`,
-        { plan: name, amount: price, cycle },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { plan: name, cycle }, // ← use the cycle parameter
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       const { email, paymentId } = res.data;
 
+      // Load Paystack script if missing
       if (!window.PaystackPop) {
         await new Promise((resolve) => {
-          const s = document.createElement("script");
-          s.src = "https://js.paystack.co/v1/inline.js";
-          s.onload = resolve;
-          document.body.appendChild(s);
+          const script = document.createElement("script");
+          script.src = "https://js.paystack.co/v1/inline.js";
+          script.onload = resolve;
+          document.body.appendChild(script);
         });
       }
 
+      // 🚨 DO NOT add amount for subscription plans
       const handler = window.PaystackPop.setup({
         key: process.env.NEXT_PUBLIC_PAYSTACK_KEY,
         email,
-        amount: price * 100,
+        plan: planConfig[`${name}_${cycle}`].paystackPlan, // ⭐ add plan
         ref: paymentId,
         callback: (response) => verifyPayment(response.reference),
         onClose: () => setLoadingPlan(null),
       });
 
       handler.openIframe();
-    } catch (e) {
+    } catch (error) {
+      console.error(error);
       toast.error("Payment failed");
       setLoadingPlan(null);
     }
@@ -328,7 +332,7 @@ export default function UpgradeModal({ currentPlan, setShowModal, onUpgrade }) {
                         if (disabled) return;
                         handleUpgrade({
                           id: plan.id,
-                          name: plan.name,
+                          name: plan.id, // <— send "standard" or "pro"
                           price,
                           cycle: billingCycle,
                         });

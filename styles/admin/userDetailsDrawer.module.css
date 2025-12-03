@@ -2,28 +2,28 @@
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(6px);
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(8px);
   display: flex;
   justify-content: flex-end;
-  z-index: 200;
+  z-index: 300;
 }
 
-/* RIGHT SLIDE DRAWER */
+/* DRAWER PANEL */
 .drawer {
   width: 420px;
   height: 100%;
-  background: rgba(15, 15, 25, 0.88);
-  backdrop-filter: blur(30px);
-  padding: 25px;
+  background: rgba(22, 22, 34, 0.92);
+  backdrop-filter: blur(32px);
+  padding: 28px;
   border-left: 1px solid rgba(255, 255, 255, 0.08);
   overflow-y: auto;
-  animation: slideIn 0.28s ease;
+  animation: slideIn 0.25s ease;
 }
 
 @keyframes slideIn {
   from {
-    transform: translateX(100px);
+    transform: translateX(130px);
     opacity: 0;
   }
   to {
@@ -32,13 +32,20 @@
   }
 }
 
+/* CLOSE BUTTON */
 .closeBtn {
-  background: none;
+  background: rgba(255, 255, 255, 0.06);
   border: none;
   color: var(--muted);
+  border-radius: 8px;
   float: right;
+  padding: 8px;
   cursor: pointer;
-  margin-bottom: 10px;
+  transition: 0.2s;
+}
+.closeBtn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
 }
 
 /* HEADER */
@@ -46,47 +53,54 @@
   display: flex;
   gap: 14px;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
 .avatar {
-  width: 52px;
-  height: 52px;
+  width: 60px;
+  height: 60px;
   background: linear-gradient(135deg, var(--accent1), var(--accent2));
   color: white;
-  font-size: 22px;
+  font-size: 24px;
   font-weight: bold;
-  border-radius: 50%;
+  border-radius: 18px;
   display: grid;
   place-items: center;
 }
 
 .name {
-  font-size: 20px;
+  font-size: 21px;
   font-weight: 700;
 }
 
 .email {
   color: var(--muted);
   font-size: 14px;
+  margin-bottom: 6px;
 }
 
 .planBadge {
-  padding: 5px 10px;
-  border-radius: 8px;
+  padding: 6px 12px;
+  border-radius: 10px;
   font-size: 12px;
+  font-weight: 600;
   display: inline-block;
-  margin-top: 6px;
+  text-transform: capitalize;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
 }
 
 .free {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
 }
-.standard {
-  background: rgba(var(--accent1-rgb), 0.25);
+.standard_monthly,
+.standard_yearly {
+  background: rgba(var(--accent1-rgb), 0.2);
+  color: var(--accent1);
 }
-.pro {
-  background: rgba(var(--accent2-rgb), 0.25);
+.pro_monthly,
+.pro_yearly {
+  background: rgba(var(--accent2-rgb), 0.2);
+  color: var(--accent2);
 }
 
 /* TABS */
@@ -100,95 +114,161 @@
   flex: 1;
   padding: 10px;
   background: rgba(255, 255, 255, 0.05);
-  border-radius: 10px;
+  border-radius: 12px;
   border: none;
   color: var(--muted);
   font-size: 14px;
   cursor: pointer;
+  transition: 0.2s;
+}
+
+.tab:hover {
+  background: rgba(255, 255, 255, 0.09);
 }
 
 .activeTab {
   background: linear-gradient(90deg, var(--accent1), var(--accent2));
   color: white;
+  font-weight: 600;
 }
 
-/* CONTENT CARDS */
+/* CARD */
 .card {
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 12px;
-  border: 1px solid var(--stroke);
-  padding: 16px;
-  margin-bottom: 20px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  padding: 18px;
+  margin-bottom: 22px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
 }
 
 .card h3 {
-  font-size: 15px;
-  margin-bottom: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 14px;
 }
 
 /* ROWS */
 .row {
   padding: 12px 0;
-  border-bottom: 1px solid var(--stroke);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
+.row:last-child {
+  border-bottom: none;
+}
+
 .rowTitle {
   font-weight: 600;
+  font-size: 15px;
 }
 
 .rowSub {
   font-size: 12px;
   color: var(--muted);
+  margin-top: 3px;
 }
 
-/* STATUS BADGES */
-.status {
+.rightInfo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.views {
+  background: rgba(255, 255, 255, 0.08);
   padding: 4px 8px;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 12px;
+}
+
+/* PAYMENT STATUS */
+.status {
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
 }
 
 .successful {
   background: rgba(46, 213, 115, 0.25);
   color: #2ed573;
 }
-
 .failed {
   background: rgba(255, 77, 109, 0.25);
   color: #ff4d6d;
 }
 
-/* ACTION BUTTONS */
-.actionBtn {
-  width: 100%;
-  background: rgba(255, 255, 255, 0.07);
-  border: none;
-  padding: 12px;
-  border-radius: 8px;
-  margin-bottom: 10px;
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  color: var(--text);
-  cursor: pointer;
-}
-
-.deleteBtn {
-  width: 100%;
-  background: rgba(255, 0, 0, 0.2);
-  border: none;
-  padding: 12px;
-  border-radius: 8px;
-  color: #ff4d6d;
-  font-weight: bold;
-  cursor: pointer;
-}
-
+/* EMPTY */
 .empty {
   color: var(--muted);
   font-size: 14px;
   padding: 10px 0;
+}
+
+/* ACTION BUTTONS */
+.actionBtn {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.06);
+  border: none;
+  padding: 14px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.actionBtn:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.deleteBtn {
+  width: 100%;
+  background: rgba(255, 0, 0, 0.25);
+  border: none;
+  padding: 14px;
+  border-radius: 10px;
+  color: #ff4d6d;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 14px;
+  transition: 0.2s;
+}
+
+.deleteBtn:hover {
+  background: rgba(255, 0, 0, 0.35);
+}
+
+/* INPUTS */
+.input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 12px;
+  border-radius: 10px;
+  color: var(--text);
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.saveBtn {
+  width: 100%;
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  border: none;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  color: white;
+  margin-top: 10px;
+  cursor: pointer;
 }
