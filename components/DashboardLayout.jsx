@@ -15,6 +15,7 @@ import {
   HomeIcon,
   Moon,
   Sun,
+  LayoutTemplate,
 } from "lucide-react";
 import s from "@/styles/DashboardLayout.module.css";
 import AuthModal from "@/components/AuthModal";
@@ -45,6 +46,11 @@ export default function DashboardLayout({
       { href: "/dashboard/links", label: "My Links", icon: Link2 },
       { href: "/dashboard/analytics", label: "Analytics", icon: BarChart3 },
       { href: "/dashboard/settings", label: "Settings", icon: Settings },
+      {
+        href: "/get-a-landing-page",
+        label: "Get a Landing Page",
+        icon: LayoutTemplate,
+      },
     ],
     []
   );
