@@ -76,3 +76,48 @@
   font-weight: 600;
   margin-top: 1rem;
 }
+.price {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: var(--text);
+}
+
+.price span {
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.successMsg {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-top: 1rem;
+}
+.price {
+  font-weight: 800;
+  font-size: 1.3rem;
+  color: var(--primary);
+}
+
+.list {
+  text-align: left;
+  max-width: 500px;
+  margin: 1rem auto 2rem;
+  padding-left: 1rem;
+  color: var(--text);
+  line-height: 1.6;
+  font-size: 1.05rem;
+}
+
+.list li {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+.successMsg {
+  margin-top: 1.5rem;
+  color: #22c55e;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
