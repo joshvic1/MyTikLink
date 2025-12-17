@@ -162,3 +162,8 @@ export default function SegmentUsersPage() {
     </AdminDashboardLayout>
   );
 }
+export async function getServerSideProps() {
+  return {
+    props: {},
+  };
+}
