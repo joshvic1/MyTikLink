@@ -1,0 +1,70 @@
+.pageWrap {
+  padding: 20px;
+}
+
+.pageTitle {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 20px;
+}
+
+.table {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--stroke);
+  border-radius: 12px;
+  border-collapse: collapse;
+  overflow: hidden;
+}
+
+.table th {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 12px;
+  font-size: 13px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.table td {
+  padding: 12px;
+  border-bottom: 1px solid var(--stroke);
+  color: var(--text);
+}
+
+.table tr:hover {
+  background: rgba(var(--accent1-rgb), 0.07);
+  transition: 0.2s;
+}
+
+.viewBtn {
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  font-size: 13px;
+  color: #fff;
+}
+
+.paginationWrap {
+  margin-top: 22px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.navBtn {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text);
+}
+
+.navBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pageIndicator {
+  color: var(--text);
+}

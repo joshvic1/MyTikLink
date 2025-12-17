@@ -167,3 +167,119 @@
   color: var(--accent2);
   margin-left: 6px;
 }
+/* TABLE WRAPPER */
+.tableWrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* FORCE TABLE TO RESPECT WIDTH */
+.table {
+  table-layout: fixed;
+  width: 100%;
+}
+/* GENERIC CELL PROTECTION */
+.table td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ALLOW MULTI-LINE FOR TITLES */
+.titleCell {
+  white-space: normal;
+  line-height: 1.4;
+  max-height: 3.2em;
+  overflow: hidden;
+}
+
+/* EMAIL / IDS */
+.email,
+.linkId,
+.url {
+  font-size: 12px;
+  opacity: 0.75;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+}
+/* ===============================
+   TABLE WRAP (CRITICAL)
+================================ */
+.tableWrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* FORCE TABLE TO BE RESPONSIVE */
+.table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+/* ===============================
+   CELL SAFETY
+================================ */
+.table td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* TITLE (ALLOW MULTI-LINE) */
+.titleCell {
+  white-space: normal;
+  line-height: 1.4;
+  max-height: 3.2em;
+  overflow: hidden;
+}
+
+/* LINK ID */
+.linkId {
+  max-width: 180px;
+  font-size: 12px;
+  opacity: 0.75;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* USER CELL */
+.userCell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-width: 200px;
+}
+
+.userName {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.email {
+  font-size: 12px;
+  opacity: 0.7;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* DATE */
+.date {
+  font-size: 12px;
+  opacity: 0.75;
+}
+
+/* ACTION BUTTON SAFETY */
+.viewBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  max-width: 100%;
+}

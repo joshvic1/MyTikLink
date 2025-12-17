@@ -9,6 +9,7 @@ import {
   CreditCard,
   Settings,
   LogOut,
+  Mail,
 } from "lucide-react";
 import styles from "@/styles/admin/AdminLayout.module.css";
 import useAdminAuth from "@/hooks/useAdminAuth";
@@ -25,6 +26,12 @@ export default function AdminSidebar({ closeDrawer }) {
       name: "Payments",
       href: "/admin/payments",
       icon: <CreditCard size={18} />,
+    },
+
+    {
+      name: "Email Segment",
+      href: "/admin/email/segment",
+      icon: <Mail size={18} />,
     },
     { name: "Settings", href: "/admin/settings", icon: <Settings size={18} /> },
   ];

@@ -1,0 +1,241 @@
+/* ===============================
+   OVERLAY
+================================ */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 16px; /* prevents edge overflow on mobile */
+}
+
+/* ===============================
+   MODAL
+================================ */
+.modal {
+  width: 100%;
+  max-width: 720px;
+  max-height: 92vh; /* 🔑 NEVER exceed viewport */
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.06),
+    rgba(255, 255, 255, 0.02)
+  );
+  border-radius: 20px;
+  border: 1px solid var(--stroke);
+  backdrop-filter: blur(20px);
+  display: flex;
+  flex-direction: column; /* 🔑 enables fixed header/footer */
+  animation: modalIn 0.25s ease;
+}
+
+/* ===============================
+   SCROLL BODY
+================================ */
+.modalBody {
+  padding: 18px 22px;
+  overflow-y: auto;
+  flex: 1;
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Hide scrollbar (WebKit) */
+.modalBody::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+/* ===============================
+   ANIMATION
+================================ */
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ===============================
+   HEADER
+================================ */
+.header {
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--stroke);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* SEGMENT CHIP */
+.segment {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent2);
+  background: rgba(var(--accent2-rgb), 0.18);
+  padding: 6px 10px;
+  border-radius: 999px;
+}
+
+/* ===============================
+   MODE SWITCH
+================================ */
+.modes {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.modes button {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--stroke);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.modes button.active {
+  background: linear-gradient(135deg, var(--accent1), var(--accent2));
+  color: #fff;
+  border: none;
+}
+
+/* ===============================
+   LABELS
+================================ */
+.label {
+  display: block;
+  margin-top: 14px;
+  margin-bottom: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+/* ===============================
+   INPUT
+================================ */
+.input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--stroke);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--accent1);
+}
+
+/* ===============================
+   TEXTAREA
+================================ */
+.textarea {
+  width: 100%;
+  min-height: 200px;
+  padding: 14px;
+  border-radius: 14px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--stroke);
+  resize: vertical;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: var(--accent1);
+}
+
+/* ===============================
+   PREVIEW
+================================ */
+.preview {
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--stroke);
+  margin-top: 12px;
+}
+
+.previewFrame {
+  width: 100%;
+  height: min(420px, 45vh); /* 🔑 responsive height */
+  border: none;
+  background: white;
+}
+
+/* ===============================
+   FOOTER
+================================ */
+.footer {
+  padding: 16px 22px;
+  border-top: 1px solid var(--stroke);
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* CANCEL */
+.cancel {
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+  border: 1px solid var(--stroke);
+  cursor: pointer;
+}
+
+/* SEND */
+.send {
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: white;
+  background: linear-gradient(135deg, var(--accent1), var(--accent2));
+  border: none;
+  cursor: pointer;
+}
+
+.send:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ===============================
+   MOBILE
+================================ */
+@media (max-width: 600px) {
+  .modal {
+    max-height: 95vh;
+  }
+
+  .previewFrame {
+    height: 40vh;
+  }
+}
