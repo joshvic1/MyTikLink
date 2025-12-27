@@ -6,6 +6,7 @@ import AdminDashboardLayout from "@/components/admin/AdminLayout";
 import styles from "@/styles/admin/links.module.css";
 import AdminLinkTable from "@/components/admin/AdminLinkTable";
 import LinkDetailsDrawer from "@/components/admin/LinkDetailsDrawer";
+import UserEmailModal from "@/components/admin/UserEmailModal";
 
 export default function AdminLinksPage() {
   const [links, setLinks] = useState([]);
@@ -22,6 +23,11 @@ export default function AdminLinksPage() {
 
   const [selectedLink, setSelectedLink] = useState(null);
   const [showDrawer, setShowDrawer] = useState(false);
+
+  // 🔹 NEW (EMAIL MODAL)
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [showEmailModal, setShowEmailModal] = useState(false);
+
   const [totalLinks, setTotalLinks] = useState(0);
 
   const openDrawer = (link) => {
@@ -31,6 +37,17 @@ export default function AdminLinksPage() {
 
   const closeDrawer = () => setShowDrawer(false);
 
+  // 🔹 NEW
+  const openEmailModal = (user) => {
+    setSelectedUser(user);
+    setShowEmailModal(true);
+  };
+
+  const closeEmailModal = () => {
+    setSelectedUser(null);
+    setShowEmailModal(false);
+  };
+
   useEffect(() => {
     fetchLinks();
   }, [page, search, type, sort]);
@@ -38,7 +55,6 @@ export default function AdminLinksPage() {
   async function fetchLinks() {
     try {
       setLoading(true);
-
       const token = localStorage.getItem("admin_token");
 
       const res = await axios.get(
@@ -102,7 +118,11 @@ export default function AdminLinksPage() {
           <p className={styles.loading}>Loading links...</p>
         ) : (
           <>
-            <AdminLinkTable links={links} onOpen={openDrawer} />
+            <AdminLinkTable
+              links={links}
+              onOpen={openDrawer}
+              onEmail={openEmailModal} // 🔹 NEW
+            />
 
             <div className={styles.paginationWrap}>
               <button
@@ -130,6 +150,11 @@ export default function AdminLinksPage() {
 
         {showDrawer && selectedLink && (
           <LinkDetailsDrawer link={selectedLink} onClose={closeDrawer} />
+        )}
+
+        {/* 🔹 EMAIL MODAL */}
+        {showEmailModal && selectedUser && (
+          <UserEmailModal user={selectedUser} onClose={closeEmailModal} />
         )}
       </div>
     </AdminDashboardLayout>

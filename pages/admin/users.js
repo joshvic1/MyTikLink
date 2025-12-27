@@ -6,24 +6,30 @@ import AdminDashboardLayout from "@/components/admin/AdminLayout";
 import UserTable from "@/components/admin/UserTable";
 import styles from "@/styles/admin/users.module.css";
 import UserDetailsDrawer from "@/components/admin/UserDetailsDrawer";
+import UserEmailModal from "@/components/admin/UserEmailModal";
 
 export default function AdminUsersPage() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Pagination
+  // pagination
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [totalUsers, setTotalUsers] = useState(0);
 
-  // Filters
+  // filters
   const [search, setSearch] = useState("");
   const [planFilter, setPlanFilter] = useState("all");
   const [sort, setSort] = useState("newest");
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
+
+  // drawer
   const [selectedUser, setSelectedUser] = useState(null);
   const [showDrawer, setShowDrawer] = useState(false);
-  const [totalUsers, setTotalUsers] = useState(0);
+
+  // 🔑 EMAIL MODAL (NEW)
+  const [emailUser, setEmailUser] = useState(null);
 
   const openDrawer = (user) => {
     setSelectedUser(user);
@@ -32,6 +38,14 @@ export default function AdminUsersPage() {
 
   const closeDrawer = () => setShowDrawer(false);
 
+  const openEmailModal = (user) => {
+    setEmailUser(user);
+  };
+
+  const closeEmailModal = () => {
+    setEmailUser(null);
+  };
+
   useEffect(() => {
     fetchUsers();
   }, [page, search, planFilter, sort, dateFrom, dateTo]);
@@ -39,7 +53,6 @@ export default function AdminUsersPage() {
   async function fetchUsers() {
     try {
       setLoading(true);
-
       const token = localStorage.getItem("admin_token");
 
       const res = await axios.get(
@@ -75,14 +88,13 @@ export default function AdminUsersPage() {
           Users <span className={styles.count}>({totalUsers})</span>
         </h2>
 
-        {/* Filters */}
+        {/* FILTERS */}
         <div className={styles.filters}>
           <input
-            type="text"
+            className={styles.input}
             placeholder="Search name/email..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className={styles.input}
           />
 
           <select
@@ -124,12 +136,16 @@ export default function AdminUsersPage() {
           />
         </div>
 
-        {/* Users Table */}
+        {/* TABLE */}
         {loading ? (
           <p className={styles.loading}>Loading users...</p>
         ) : (
           <>
-            <UserTable users={users} onOpen={openDrawer} />
+            <UserTable
+              users={users}
+              onOpen={openDrawer}
+              onEmail={openEmailModal} // 🔑 NEW
+            />
 
             <div className={styles.paginationWrap}>
               <button
@@ -155,8 +171,15 @@ export default function AdminUsersPage() {
           </>
         )}
       </div>
+
+      {/* USER DRAWER */}
       {showDrawer && selectedUser && (
         <UserDetailsDrawer user={selectedUser} onClose={closeDrawer} />
+      )}
+
+      {/* EMAIL MODAL */}
+      {emailUser && (
+        <UserEmailModal user={emailUser} onClose={closeEmailModal} />
       )}
     </AdminDashboardLayout>
   );

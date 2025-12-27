@@ -283,3 +283,24 @@
   white-space: nowrap;
   max-width: 100%;
 }
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.emailBtn {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--stroke);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  font-size: 13px;
+  cursor: pointer;
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.emailBtn:hover {
+  background: rgba(var(--accent1-rgb), 0.15);
+}
