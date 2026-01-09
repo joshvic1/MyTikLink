@@ -5,7 +5,7 @@ export default function Document() {
     <Html lang="en">
       <Head>
         {/* TikTok Pixel */}
-        <script
+        {/* <script
           dangerouslySetInnerHTML={{
             __html: `
               !function (w, d, t) {
@@ -50,7 +50,7 @@ export default function Document() {
               }(window, document, 'ttq');
             `,
           }}
-        />
+        /> */}
       </Head>
 
       <body className="antialiased">

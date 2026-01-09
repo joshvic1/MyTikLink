@@ -1,4 +1,54 @@
 "use client";
+
+function loadTikTokPixel(pixelId) {
+  if (!pixelId || window.ttq) return;
+
+  !(function (w, d, t) {
+    w.TiktokAnalyticsObject = t;
+    var ttq = (w[t] = w[t] || []);
+    ttq.methods = [
+      "page",
+      "track",
+      "identify",
+      "instances",
+      "debug",
+      "on",
+      "off",
+      "once",
+      "ready",
+      "alias",
+      "group",
+      "enableCookie",
+      "disableCookie",
+    ];
+    ttq.setAndDefer = function (t, e) {
+      t[e] = function () {
+        t.push([e].concat(Array.prototype.slice.call(arguments, 0)));
+      };
+    };
+    for (var i = 0; i < ttq.methods.length; i++) {
+      ttq.setAndDefer(ttq, ttq.methods[i]);
+    }
+    ttq.load = function (e) {
+      var i = "https://analytics.tiktok.com/i18n/pixel/events.js";
+      ttq._i = ttq._i || {};
+      ttq._i[e] = [];
+      ttq._i[e]._u = i;
+      ttq._t = ttq._t || {};
+      ttq._t[e] = +new Date();
+      var o = d.createElement("script");
+      o.type = "text/javascript";
+      o.async = true;
+      o.src = i + "?sdkid=" + e + "&lib=" + t;
+      var a = d.getElementsByTagName("script")[0];
+      a.parentNode.insertBefore(o, a);
+    };
+
+    ttq.load(pixelId);
+    ttq.page();
+  })(window, document, "ttq");
+}
+
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -49,6 +99,9 @@ export default function RedirectPage() {
         const data = await res.json();
         if (!mounted) return;
         setLinkData(data);
+        if (data.tiktokPixelId) {
+          loadTikTokPixel(data.tiktokPixelId);
+        }
 
         // 2) ask backend to increment count AND check limit
         const countRes = await fetch(
@@ -86,6 +139,10 @@ export default function RedirectPage() {
               window.location.href = data.fallback;
             }, 1200);
           } else {
+            if (window.ttq) {
+              window.ttq.track("CompleteRegistration");
+            }
+
             // if no deepLink provided, fallback straight away
             window.location.href = data.fallback;
           }

@@ -45,6 +45,11 @@ export default function DashboardLayout({
       { href: "/dashboard", label: "Dashboard", icon: LayoutGrid },
       { href: "/dashboard/links", label: "My Links", icon: Link2 },
       { href: "/dashboard/analytics", label: "Analytics", icon: BarChart3 },
+      {
+        href: "/dashboard/tiktok-pixel",
+        label: "TikTok Pixel",
+        icon: ArrowUpCircle,
+      },
       { href: "/dashboard/settings", label: "Settings", icon: Settings },
       {
         href: "/get-a-landing-page",
