@@ -131,21 +131,24 @@ export default function RedirectPage() {
         const delay = data.redirectDelay ?? 6000;
 
         setTimeout(() => {
-          if (data.deepLink) {
-            // primary deep link (app)
-            window.location.href = data.deepLink;
-            // fallback to web after a short pause (gives app a chance to open)
-            setTimeout(() => {
-              window.location.href = data.fallback;
-            }, 1200);
-          } else {
-            if (window.ttq) {
-              window.ttq.track("CompleteRegistration");
-            }
-
-            // if no deepLink provided, fallback straight away
-            window.location.href = data.fallback;
+          // 🔥 FIRE EVENT FIRST (for ALL cases)
+          if (window.ttq) {
+            window.ttq.track("CompleteRegistration");
           }
+
+          // ⏳ Give TikTok time to send request
+          setTimeout(() => {
+            if (data.deepLink) {
+              window.location.href = data.deepLink;
+
+              // fallback after app attempt
+              setTimeout(() => {
+                window.location.href = data.fallback;
+              }, 1200);
+            } else {
+              window.location.href = data.fallback;
+            }
+          }, 300); // <-- CRITICAL delay
         }, delay);
       } catch (err) {
         console.error("Redirect page error:", err);
