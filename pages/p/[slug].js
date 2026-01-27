@@ -235,6 +235,35 @@ export default function PublicPage() {
     };
   }, [page, slug]);
 
+  /* =========================
+   HANDLE CTA BUTTON (NO FORM)
+========================= */
+  useEffect(() => {
+    if (!page) return;
+
+    const ctaBtn = document.querySelector("[data-cta='true']");
+    if (!ctaBtn) return; // not a button template
+
+    const handleClick = () => {
+      if (!page.redirectUrl) {
+        alert("No redirect URL set for this page");
+        return;
+      }
+
+      if (window.ttq) {
+        window.ttq.track("CompleteRegistration");
+      }
+
+      smartRedirect(page.redirectUrl);
+    };
+
+    ctaBtn.addEventListener("click", handleClick);
+
+    return () => {
+      ctaBtn.removeEventListener("click", handleClick);
+    };
+  }, [page]);
+
   if (loading) return null;
 
   if (!page) {
