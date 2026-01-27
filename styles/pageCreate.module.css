@@ -4,25 +4,29 @@
 
 .bottomBar {
   position: fixed;
-  bottom: 16px;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: 0;
+  left: 0;
+  width: 100%;
 
-  width: calc(100% - 32px);
-  max-width: 720px;
-
-  padding: 14px 18px;
+  padding: 14px 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 
-  background: rgba(15, 23, 42, 0.9);
+  background: var(--surface-deep);
   backdrop-filter: blur(12px);
-  border-radius: 16px;
-  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-top: 1px solid var(--stroke-strong);
 
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
   z-index: 9999;
+  box-sizing: border-box;
+}
+@media (min-width: 768px) {
+  .bottomBar {
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 960px;
+    border-radius: 14px 14px 0 0;
+  }
 }
 
 /* Back button */
@@ -41,6 +45,11 @@
   font-weight: 600;
   cursor: pointer;
   transition: 0.2s ease;
+}
+
+[data-theme="light"] .backBtn {
+  background: rgba(148, 163, 184, 0.08);
+  color: #1e293b;
 }
 
 .backBtn:hover {
@@ -86,10 +95,6 @@
 
 /* Mobile tweak */
 @media (max-width: 640px) {
-  .bottomBar {
-    padding: 12px 14px;
-  }
-
   .backBtn,
   .nextBtn {
     padding: 10px 14px;
@@ -98,14 +103,14 @@
 }
 .grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, 2fr);
   gap: 16px;
   margin-top: 16px;
 }
 
-@media (max-width: 640px) {
+@media (min-width: 640px) {
   .grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 2fr;
   }
 }
 
@@ -187,11 +192,18 @@
   color: #000000;
 }
 
+[data-theme="dark"] .customCard .plus {
+  color: #e5e7eb;
+}
+
 /* main text */
 .customCard span {
   font-weight: 600;
   font-size: 0.9rem;
   color: #000000;
+}
+[data-theme="dark"] .customCard span {
+  color: #e5e7eb;
 }
 
 /* Coming soon badge */

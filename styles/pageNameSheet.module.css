@@ -10,13 +10,13 @@
   justify-content: center;
   align-items: flex-end;
 
-  padding: 16px; /* space from screen edges */
+  padding: 16px 5px 0 5px; /* space from screen edges */
 }
 
 /* Bottom Sheet */
 .sheet {
   width: 100%;
-  max-width: 520px;
+  max-width: 620px;
 
   background: var(--surface-deep);
   border: 1px solid var(--stroke);
