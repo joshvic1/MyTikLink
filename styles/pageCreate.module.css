@@ -1,32 +1,46 @@
-/* ===================== */
-/* BOTTOM ACTION BAR */
-/* ===================== */
-
 .bottomBar {
   position: fixed;
   bottom: 0;
-  left: 0;
-  width: 100%;
+
+  left: var(--sidebar-width);
+  width: calc(100% - var(--sidebar-width));
+
+  display: flex;
+  justify-content: center;
 
   padding: 14px 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
   background: var(--surface-deep);
   backdrop-filter: blur(12px);
   border-top: 1px solid var(--stroke-strong);
-
   z-index: 9999;
-  box-sizing: border-box;
 }
-@media (min-width: 768px) {
+
+.bottomBarInner {
+  max-width: 960px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
   .bottomBar {
     left: 50%;
     transform: translateX(-50%);
-    max-width: 960px;
-    border-radius: 14px 14px 0 0;
+    width: calc(100% - 32px); /* 👈 same margin as page */
   }
+
+  .bottomBarInner {
+    max-width: 960px;
+    width: 100%;
+  }
+}
+
+.pageContainer {
+  max-width: 960px;
+  margin: 0 auto;
+  width: 100%;
+  padding-bottom: 90px; /* space for bottom bar */
 }
 
 /* Back button */
@@ -103,14 +117,22 @@
 }
 .grid {
   display: grid;
-  grid-template-columns: repeat(2, 2fr);
+  grid-template-columns: repeat(2, 1fr); /* mobile = 2 columns */
   gap: 16px;
   margin-top: 16px;
 }
 
+/* Tablet */
 @media (min-width: 640px) {
   .grid {
-    grid-template-columns: 2fr;
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 

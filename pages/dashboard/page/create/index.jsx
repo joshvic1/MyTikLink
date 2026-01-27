@@ -60,48 +60,52 @@ export default function CreatePage() {
 
   return (
     <DashboardLayout>
-      <div className={styles.wrapper}>
-        <h2>Create Page</h2>
-        <p className={styles.sub}>
-          Select a template and click on <b>NEXT</b>
-        </p>
+      <div className={styles.pageContainer}>
+        <div className={styles.wrapper}>
+          <h2>Create Page</h2>
+          <p className={styles.sub}>
+            Select a template and click on <b>NEXT</b>
+          </p>
 
-        <div className={styles.grid}>
-          {templates.map((tpl) => (
-            <div
-              key={tpl._id}
-              className={`${styles.card} ${
-                selected === tpl._id ? styles.active : ""
-              }`}
-              onClick={() => setSelected(tpl._id)}
-            >
-              <img src={tpl.thumbnailUrl} alt={tpl.name} />
-              <span>{tpl.name}</span>
+          <div className={styles.grid}>
+            {templates.map((tpl) => (
+              <div
+                key={tpl._id}
+                className={`${styles.card} ${
+                  selected === tpl._id ? styles.active : ""
+                }`}
+                onClick={() => setSelected(tpl._id)}
+              >
+                <img src={tpl.thumbnailUrl} alt={tpl.name} />
+                <span>{tpl.name}</span>
+              </div>
+            ))}
+
+            <div className={styles.customCard}>
+              <div className={styles.plus}>+</div>
+              <span>Create your own template</span>
             </div>
-          ))}
-
-          <div className={styles.customCard}>
-            <div className={styles.plus}>+</div>
-            <span>Create your own template</span>
           </div>
         </div>
-      </div>
 
-      {/* STICKY ACTION BAR */}
-      <div className={styles.bottomBar}>
-        <button className={styles.backBtn} onClick={handleBack}>
-          <ArrowLeft size={18} />
-          Back
-        </button>
+        {/* STICKY ACTION BAR */}
+        <div className={styles.bottomBar}>
+          <div className={styles.bottomBarInner}>
+            <button className={styles.backBtn} onClick={handleBack}>
+              <ArrowLeft size={18} />
+              Back
+            </button>
 
-        <button
-          className={`${styles.nextBtn} ${!selected ? styles.disabledBtn : ""}`}
-          onClick={handleNext}
-          disabled={!selected}
-        >
-          Next
-          <ArrowRight size={18} />
-        </button>
+            <button
+              className={`${styles.nextBtn} ${!selected ? styles.disabledBtn : ""}`}
+              onClick={handleNext}
+              disabled={!selected}
+            >
+              Next
+              <ArrowRight size={18} />
+            </button>
+          </div>
+        </div>
       </div>
     </DashboardLayout>
   );
