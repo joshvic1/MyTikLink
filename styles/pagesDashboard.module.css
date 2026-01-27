@@ -1,0 +1,152 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Button */
+.createBtn {
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  border: none;
+  padding: 10px 16px;
+  border-radius: 999px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* Empty state */
+.empty {
+  padding: 40px;
+  text-align: center;
+  opacity: 0.8;
+}
+
+.proNote {
+  color: #f87171;
+  margin-top: 8px;
+}
+
+/* List */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Card */
+.card {
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid var(--stroke);
+  padding: 16px;
+  border-radius: 14px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.actions button {
+  background: transparent;
+  border: 1px solid var(--stroke);
+  color: var(--text);
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.delete {
+  color: #f87171;
+}
+
+/* ===================== */
+/*      LOADING STATE    */
+/* ===================== */
+
+.loadingScreen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(
+      circle at top,
+      rgba(var(--accent1-rgb), 0.2),
+      transparent 60%
+    ),
+    var(--bg);
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  border: 3px solid rgba(148, 163, 184, 0.35);
+  border-top-color: #8b5cf6;
+  animation: tikSpin 0.75s linear infinite;
+}
+
+@keyframes tikSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ===================== */
+/*     RESPONSIVE        */
+/* ===================== */
+
+/* Tablet & below */
+@media (max-width: 900px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .createBtn {
+    align-self: flex-end;
+  }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .createBtn {
+    width: 100%;
+    text-align: center;
+    padding: 12px;
+  }
+
+  .empty {
+    padding: 24px;
+    font-size: 14px;
+  }
+
+  .card {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .actions {
+    justify-content: space-between;
+  }
+
+  .actions button {
+    flex: 1;
+    text-align: center;
+  }
+}

@@ -9,6 +9,7 @@ export default function App({ Component, pageProps }) {
 
   // ⛔ Skip layout for redirect pages & dashboard
   const isRedirectPage = router.pathname.startsWith("/r/");
+  const isPageRoute = router.pathname.startsWith("/p/");
   const isDashboardPage = router.pathname.startsWith("/dashboard");
   const isTermsPage = router.pathname === "/terms";
   const isPrivacyPage = router.pathname === "/privacy";
@@ -16,6 +17,7 @@ export default function App({ Component, pageProps }) {
 
   if (
     isRedirectPage ||
+    isPageRoute ||
     isDashboardPage ||
     isTermsPage ||
     isPrivacyPage ||

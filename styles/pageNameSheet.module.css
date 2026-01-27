@@ -1,0 +1,160 @@
+/* Overlay */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  z-index: 9999;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+
+  padding: 16px; /* space from screen edges */
+}
+
+/* Bottom Sheet */
+.sheet {
+  width: 100%;
+  max-width: 520px;
+
+  background: var(--surface-deep);
+  border: 1px solid var(--stroke);
+
+  border-radius: 20px;
+  padding: 20px 18px 26px;
+
+  animation: slideUp 0.25s ease-out;
+  box-sizing: border-box;
+  box-shadow: 0 20px 50px var(--shadow-strong);
+}
+
+/* Drag handle */
+.handle {
+  width: 48px;
+  height: 5px;
+  background: var(--stroke-strong);
+  border-radius: 999px;
+  margin: 0 auto 14px;
+}
+
+/* Title */
+.title {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* Subtitle */
+.subtitle {
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 6px;
+  margin-bottom: 18px;
+  line-height: 1.5;
+}
+
+/* Inputs */
+.input {
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid var(--stroke);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 14px;
+  outline: none;
+  margin-bottom: 12px;
+  box-sizing: border-box;
+}
+
+.input::placeholder {
+  color: var(--muted);
+}
+
+/* Error */
+.error {
+  color: var(--danger);
+  font-size: 12px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* Button */
+.button {
+  width: 100%;
+  padding: 14px;
+  border-radius: 999px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  color: var(--onPrimary);
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  box-shadow: 0 12px 30px rgba(var(--accent1-rgb), 0.35);
+  margin-top: 6px;
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Upgrade text */
+.upgradeText {
+  margin-top: 12px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--danger);
+}
+
+.upgradeText span {
+  color: var(--accent1);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Animation */
+@keyframes slideUp {
+  from {
+    transform: translateY(120%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@media (min-width: 1024px) {
+  .overlay {
+    align-items: center;
+  }
+}
+/* Input */
+.input {
+  width: 100%;
+  padding: 16px 14px 12px;
+  border-radius: 14px;
+  border: 1px solid var(--stroke);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+/* Label */
+.label {
+  font-size: 13px;
+  color: var(--muted);
+  pointer-events: none;
+  transition: 0.2s ease;
+  background: var(--surface-deep);
+  padding: 0 6px;
+  border-radius: 6px;
+}
+
+/* Focus ring */
+.input:focus {
+  border-color: var(--accent1);
+  box-shadow: 0 0 0 2px rgba(var(--accent1-rgb), 0.15);
+}

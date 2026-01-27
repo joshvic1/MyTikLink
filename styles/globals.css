@@ -6,15 +6,16 @@ body {
   font-family: "Inter", sans-serif;
   background-color: white;
   color: var(--text);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 a {
   color: inherit;
   text-decoration: none;
 }
-html,
-body {
+html {
   overscroll-behavior-x: none;
   overscroll-behavior-y: none;
 }

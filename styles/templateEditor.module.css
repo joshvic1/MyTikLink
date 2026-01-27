@@ -1,0 +1,94 @@
+.editor {
+  position: relative;
+  min-height: 100vh;
+  overflow: visible;
+}
+
+/* Floating pencil */
+.editBtn {
+  position: absolute;
+  transform: translate(6px, -6px);
+
+  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  border: none;
+  color: white;
+
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  z-index: 9999;
+
+  box-shadow:
+    0 4px 14px rgba(124, 58, 237, 0.6),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.editBtn:hover {
+  transform: translate(6px, -6px) scale(1.15);
+  box-shadow:
+    0 6px 20px rgba(168, 85, 247, 0.8),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+}
+
+/* Modal overlay */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+/* Modal box */
+.modal {
+  background: #0f172a;
+  padding: 24px;
+  border-radius: 16px;
+  width: 320px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+}
+
+.modal h3 {
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.modal input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+}
+
+/* Modal actions */
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.actions button {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.save {
+  background: linear-gradient(90deg, #7c3aed, #a855f7);
+  color: white;
+}

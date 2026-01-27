@@ -78,7 +78,7 @@ export default function Dashboard() {
       try {
         const res = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}/users/plan`,
-          { headers: { Authorization: `Bearer ${token}` } }
+          { headers: { Authorization: `Bearer ${token}` } },
         );
 
         setUser({
@@ -109,7 +109,7 @@ export default function Dashboard() {
       toast.error(
         `You've reached your ${
           limit === Infinity ? "" : limit
-        } link limit for the ${user.plan} plan.`
+        } link limit for the ${user.plan} plan.`,
       );
       setShowUpgrade(true);
       return;

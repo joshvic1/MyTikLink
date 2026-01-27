@@ -16,6 +16,7 @@ import {
   Moon,
   Sun,
   LayoutTemplate,
+  FileText,
 } from "lucide-react";
 import s from "@/styles/DashboardLayout.module.css";
 import AuthModal from "@/components/AuthModal";
@@ -44,6 +45,7 @@ export default function DashboardLayout({
       { href: "/", label: "Home", icon: HomeIcon },
       { href: "/dashboard", label: "Dashboard", icon: LayoutGrid },
       { href: "/dashboard/links", label: "My Links", icon: Link2 },
+      { href: "/dashboard/page", label: "My Pages", icon: FileText },
       { href: "/dashboard/analytics", label: "Analytics", icon: BarChart3 },
       {
         href: "/dashboard/tiktok-pixel",
@@ -57,7 +59,7 @@ export default function DashboardLayout({
         icon: LayoutTemplate,
       },
     ],
-    []
+    [],
   );
   useEffect(() => {
     // Read saved theme or system preference
