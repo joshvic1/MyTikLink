@@ -342,10 +342,17 @@ export default function PublicPage() {
 
   const { template, config, title } = page;
 
-  const renderedHTML = template.html.replace(
-    /{{(.*?)}}/g,
-    (_, key) => config[key.trim()] || "",
-  );
+  const renderedHTML = template.html.replace(/{{(.*?)}}/g, (_, key) => {
+    const val = config[key.trim()];
+    if (!val) return "";
+
+    // ✅ image field support
+    if (typeof val === "object" && val.url) {
+      return val.url;
+    }
+
+    return val;
+  });
 
   return (
     <>
