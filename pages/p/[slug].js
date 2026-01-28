@@ -1,6 +1,16 @@
 "use client";
 function loadTikTokPixel(pixelId) {
-  if (!pixelId || window.ttq) return;
+  if (!pixelId) {
+    console.log("❌ No TikTok Pixel ID found");
+    return;
+  }
+
+  if (window.ttq) {
+    console.log("⚠️ TikTok pixel already loaded");
+    return;
+  }
+
+  console.log("🚀 Loading TikTok Pixel:", pixelId);
 
   !(function (w, d, t) {
     w.TiktokAnalyticsObject = t;
@@ -30,21 +40,25 @@ function loadTikTokPixel(pixelId) {
     }
     ttq.load = function (e) {
       var i = "https://analytics.tiktok.com/i18n/pixel/events.js";
-      ttq._i = ttq._i || {};
-      ttq._i[e] = [];
-      ttq._i[e]._u = i;
-      ttq._t = ttq._t || {};
-      ttq._t[e] = +new Date();
       var o = d.createElement("script");
       o.type = "text/javascript";
       o.async = true;
       o.src = i + "?sdkid=" + e + "&lib=" + t;
+
+      o.onload = () => {
+        console.log("✅ TikTok Pixel script loaded");
+      };
+
       var a = d.getElementsByTagName("script")[0];
       a.parentNode.insertBefore(o, a);
     };
 
     ttq.load(pixelId);
     ttq.page();
+
+    ttq.ready(() => {
+      console.log("🎯 TikTok Pixel is READY");
+    });
   })(window, document, "ttq");
 }
 
@@ -191,7 +205,11 @@ export default function PublicPage() {
         const res = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}/pages/public/${slug}`,
         );
+
+        console.log("📦 API RESPONSE:", res.data); // 👈 ADD THIS
+
         setPage(res.data);
+
         if (res.data.tiktokPixelId) {
           loadTikTokPixel(res.data.tiktokPixelId);
         }

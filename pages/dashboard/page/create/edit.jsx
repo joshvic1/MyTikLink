@@ -99,7 +99,7 @@ export default function PageEditor() {
   if (loading) {
     return (
       <div className={styles.loadingScreen}>
-        <div className={styles.spinner} />
+        <div className={styles.spinner} /> Loading editor...
       </div>
     );
   }
