@@ -193,6 +193,19 @@ export default function PublicPage() {
 
   const [page, setPage] = useState(null);
   const [loading, setLoading] = useState(true);
+  const COOLDOWN_MS = 2 * 60 * 1000; // 2 minutes
+  const [cooldownActive, setCooldownActive] = useState(false);
+  // =========================
+  // Detect cooldown
+  // =========
+  useEffect(() => {
+    if (!slug) return;
+
+    const last = localStorage.getItem("submitted_" + slug);
+    if (last && Date.now() - Number(last) < COOLDOWN_MS) {
+      setCooldownActive(true);
+    }
+  }, [slug]);
 
   /* =========================
      FETCH PAGE
@@ -231,6 +244,22 @@ export default function PublicPage() {
     if (!page) return;
 
     const form = document.querySelector("[data-lead-form='true']");
+
+    if (cooldownActive && form) {
+      const link = document.createElement("a");
+      link.href = page.redirectUrl;
+      link.innerText = "👉 Tap here to join";
+      link.style.display = "block";
+      link.style.fontWeight = "700";
+      link.style.marginTop = "16px";
+      link.style.color = "#22c55e";
+      link.style.textAlign = "center";
+      link.style.fontSize = "16px";
+
+      form.replaceWith(link);
+      return;
+    }
+
     if (!form) return; // 👈 pages without form will skip this entirely
 
     const nameInput = form.querySelector("input[name='name']");
@@ -265,48 +294,45 @@ export default function PublicPage() {
     const handleSubmit = async (e) => {
       e.preventDefault();
 
+      if (cooldownActive) return;
+
       const name = nameInput.value.trim();
       const whatsapp = whatsappInput.value.trim();
+      const companyInput = form.querySelector("input[name='company']");
+      const company = companyInput ? companyInput.value : "";
 
       if (!name || !whatsapp) {
         alert("Please fill all fields");
         return;
       }
 
-      // 🔥 LOADING STATE
       const originalText = submitBtn.innerText;
       submitBtn.disabled = true;
       submitBtn.innerText = "Redirecting...";
-      submitBtn.style.opacity = "0.7";
-      submitBtn.style.cursor = "not-allowed";
 
       try {
         const res = await axios.post(
           `${process.env.NEXT_PUBLIC_API_URL}/pages/public/${slug}/lead`,
-          { name, whatsapp },
+          { name, whatsapp, company },
         );
 
+        // ✅ SAVE COOLDOWN
+        localStorage.setItem("submitted_" + slug, Date.now());
+        setCooldownActive(true);
+
         if (res.data.redirectUrl) {
-          if (window.ttq) {
-            window.ttq.track("CompleteRegistration");
-          }
+          if (window.ttq) window.ttq.track("CompleteRegistration");
 
           setTimeout(() => {
             smartRedirect(res.data.redirectUrl);
           }, 300);
-        } else {
-          alert("No redirect URL found");
         }
       } catch (err) {
-        console.error("Lead submit error:", err);
+        console.error(err);
+        alert(err.response?.data?.message || "Failed");
 
-        // ♻️ restore button if error
         submitBtn.disabled = false;
         submitBtn.innerText = originalText;
-        submitBtn.style.opacity = "1";
-        submitBtn.style.cursor = "pointer";
-
-        alert("Failed to submit form");
       }
     };
 
