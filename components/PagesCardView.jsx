@@ -1,3 +1,4 @@
+// frontend/components/PagesCardView.jsx
 "use client";
 
 import { ExternalLink, Copy, Pencil, Trash2, Users } from "lucide-react";

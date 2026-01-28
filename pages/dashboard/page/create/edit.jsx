@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -12,7 +12,7 @@ import styles from "@/styles/pageEditor.module.css";
 
 export default function PageEditor() {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const { templateId, pageId } = router.query;
 
   const [template, setTemplate] = useState(null);
   const [config, setConfig] = useState({});
@@ -20,9 +20,12 @@ export default function PageEditor() {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [pageTitle, setPageTitle] = useState("");
+  const [pageRedirectUrl, setPageRedirectUrl] = useState("");
 
-  const templateId = searchParams.get("templateId");
-
+  /* =========================
+     AUTH
+  ========================= */
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     if (!storedToken) {
@@ -32,31 +35,57 @@ export default function PageEditor() {
     setToken(storedToken);
   }, [router]);
 
+  /* =========================
+     LOAD DATA
+  ========================= */
   useEffect(() => {
-    if (!token || !templateId) return;
+    if (!token) return;
 
     const init = async () => {
       try {
-        const [tplRes, userRes] = await Promise.all([
-          axios.get(
-            `${process.env.NEXT_PUBLIC_API_URL}/page-templates/${templateId}`,
-            { headers: { Authorization: `Bearer ${token}` } },
-          ),
-          axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/plan`, {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
-        ]);
+        // ✅ fetch user
+        const userRes = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/users/plan`,
+          { headers: { Authorization: `Bearer ${token}` } },
+        );
 
-        setTemplate(tplRes.data);
         setUser(userRes.data);
 
-        const initialConfig = {};
-        tplRes.data.editableSchema.fields.forEach((f) => {
-          initialConfig[f.key] = f.defaultValue || "";
-        });
+        let tplRes;
+        let initialConfig = {};
 
+        if (pageId) {
+          const pageRes = await axios.get(
+            `${process.env.NEXT_PUBLIC_API_URL}/pages/${pageId}`,
+            { headers: { Authorization: `Bearer ${token}` } },
+          );
+
+          tplRes = await axios.get(
+            `${process.env.NEXT_PUBLIC_API_URL}/page-templates/${pageRes.data.templateId}`,
+            { headers: { Authorization: `Bearer ${token}` } },
+          );
+
+          initialConfig = pageRes.data.config || {};
+          setPageRedirectUrl(pageRes.data.redirectUrl || "");
+          setPageTitle(pageRes.data.title || "");
+        } else if (templateId) {
+          // ===== CREATE MODE =====
+          tplRes = await axios.get(
+            `${process.env.NEXT_PUBLIC_API_URL}/page-templates/${templateId}`,
+            { headers: { Authorization: `Bearer ${token}` } },
+          );
+
+          tplRes.data.editableSchema.fields.forEach((f) => {
+            initialConfig[f.key] = f.defaultValue || "";
+          });
+        } else {
+          return;
+        }
+
+        setTemplate(tplRes.data);
         setConfig(initialConfig);
       } catch (err) {
+        console.error(err);
         toast.error("Failed to load editor");
         router.push("/dashboard/page");
       } finally {
@@ -65,7 +94,7 @@ export default function PageEditor() {
     };
 
     init();
-  }, [token, templateId, router]);
+  }, [token, templateId, pageId, router]);
 
   if (loading) {
     return (
@@ -108,23 +137,29 @@ export default function PageEditor() {
       {showNameSheet && (
         <PageNameSheet
           isPro={isPro}
+          initialTitle={pageTitle}
+          initialRedirectUrl={pageRedirectUrl}
           onClose={() => setShowNameSheet(false)}
           onSave={async ({ title, redirectUrl }) => {
             if (!isPro) return;
 
             try {
-              await axios.post(
-                `${process.env.NEXT_PUBLIC_API_URL}/pages`,
-                {
-                  templateId: template._id,
-                  title,
-                  redirectUrl,
-                  config,
-                },
-                { headers: { Authorization: `Bearer ${token}` } },
-              );
+              if (pageId) {
+                await axios.put(
+                  `${process.env.NEXT_PUBLIC_API_URL}/pages/${pageId}`,
+                  { title, redirectUrl, config },
+                  { headers: { Authorization: `Bearer ${token}` } },
+                );
+                toast.success("Page updated");
+              } else {
+                await axios.post(
+                  `${process.env.NEXT_PUBLIC_API_URL}/pages`,
+                  { templateId: template._id, title, redirectUrl, config },
+                  { headers: { Authorization: `Bearer ${token}` } },
+                );
+                toast.success("Page created");
+              }
 
-              toast.success("Page created");
               router.push("/dashboard/page");
             } catch {
               toast.error("Failed to save page");

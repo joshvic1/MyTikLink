@@ -122,6 +122,56 @@ function smartRedirect(url) {
   // ===== DEFAULT =====
   window.location.href = clean.startsWith("http") ? clean : `https://${clean}`;
 }
+function LoadingScreen() {
+  return (
+    <div className="loading-wrap">
+      <div className="loader-card">
+        <div className="pulse-ring"></div>
+        <p>Loading page…</p>
+      </div>
+
+      <style jsx>{`
+        .loading-wrap {
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: radial-gradient(circle at top, #052e24, #020617);
+          color: white;
+          font-family: Inter, system-ui, sans-serif;
+        }
+
+        .loader-card {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 16px;
+        }
+
+        .pulse-ring {
+          width: 64px;
+          height: 64px;
+          border-radius: 50%;
+          border: 4px solid rgba(34, 197, 94, 0.3);
+          border-top-color: #22c55e;
+          animation: spin 1s linear infinite;
+        }
+
+        p {
+          font-size: 14px;
+          color: #86efac;
+          letter-spacing: 0.3px;
+        }
+
+        @keyframes spin {
+          to {
+            transform: rotate(360deg);
+          }
+        }
+      `}</style>
+    </div>
+  );
+}
 
 export default function PublicPage() {
   const router = useRouter();
@@ -205,6 +255,13 @@ export default function PublicPage() {
         return;
       }
 
+      // 🔥 LOADING STATE
+      const originalText = submitBtn.innerText;
+      submitBtn.disabled = true;
+      submitBtn.innerText = "Redirecting...";
+      submitBtn.style.opacity = "0.7";
+      submitBtn.style.cursor = "not-allowed";
+
       try {
         const res = await axios.post(
           `${process.env.NEXT_PUBLIC_API_URL}/pages/public/${slug}/lead`,
@@ -219,9 +276,18 @@ export default function PublicPage() {
           setTimeout(() => {
             smartRedirect(res.data.redirectUrl);
           }, 300);
+        } else {
+          alert("No redirect URL found");
         }
       } catch (err) {
         console.error("Lead submit error:", err);
+
+        // ♻️ restore button if error
+        submitBtn.disabled = false;
+        submitBtn.innerText = originalText;
+        submitBtn.style.opacity = "1";
+        submitBtn.style.cursor = "pointer";
+
         alert("Failed to submit form");
       }
     };
@@ -264,7 +330,7 @@ export default function PublicPage() {
     };
   }, [page]);
 
-  if (loading) return null;
+  if (loading) return <LoadingScreen />;
 
   if (!page) {
     return (

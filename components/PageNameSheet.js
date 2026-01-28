@@ -1,15 +1,27 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "@/styles/pageNameSheet.module.css";
 
-export default function PageNameSheet({ isPro, onClose, onSave }) {
-  const [title, setTitle] = useState("");
-  const [redirectUrl, setRedirectUrl] = useState("");
+export default function PageNameSheet({
+  isPro,
+  onClose,
+  onSave,
+  initialTitle = "",
+  initialRedirectUrl = "",
+}) {
+  const [title, setTitle] = useState(initialTitle);
+  const [redirectUrl, setRedirectUrl] = useState(initialRedirectUrl);
 
   const [titleError, setTitleError] = useState("");
   const [linkError, setLinkError] = useState("");
   const [saving, setSaving] = useState(false);
+
+  // 🔥 THIS is what makes edit mode prefill work
+  useEffect(() => {
+    setTitle(initialTitle);
+    setRedirectUrl(initialRedirectUrl);
+  }, [initialTitle, initialRedirectUrl]);
 
   const normalizeUrl = (url) => {
     if (!url.startsWith("http://") && !url.startsWith("https://")) {

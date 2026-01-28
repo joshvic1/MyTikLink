@@ -1,6 +1,8 @@
+// frontend/components/TemplateEditor.jsx
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
+
 import { Pencil } from "lucide-react";
 import styles from "@/styles/templateEditor.module.css";
 
@@ -10,23 +12,33 @@ export default function TemplateEditor({ template, config, onChange }) {
   const [activeField, setActiveField] = useState(null);
   const [value, setValue] = useState("");
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!containerRef.current) return;
 
-    const items = template.editableSchema.fields
-      .map((field) => {
-        const el = containerRef.current.querySelector(field.selector);
-        if (!el) return null;
+    const timeout = setTimeout(() => {
+      const containerRect = containerRef.current.getBoundingClientRect();
 
-        return {
-          field,
-          top: el.offsetTop,
-          left: el.offsetLeft + el.offsetWidth,
-        };
-      })
-      .filter(Boolean);
+      const items = template.editableSchema.fields
+        .map((field) => {
+          const el = containerRef.current.querySelector(field.selector);
+          if (!el) return null;
 
-    setEditables(items);
+          const rect = el.getBoundingClientRect();
+
+          const BUTTON_SIZE = 32;
+
+          return {
+            field,
+            top: rect.top - containerRect.top - 6,
+            left: rect.right - containerRect.left - BUTTON_SIZE / 2,
+          };
+        })
+        .filter(Boolean);
+
+      setEditables(items);
+    }, 0);
+
+    return () => clearTimeout(timeout);
   }, [template, config]);
 
   const openEditor = (field) => {
@@ -52,7 +64,28 @@ export default function TemplateEditor({ template, config, onChange }) {
       <style dangerouslySetInnerHTML={{ __html: template.css }} />
 
       <div ref={containerRef} className={styles.editor}>
-        <div dangerouslySetInnerHTML={{ __html: renderedHTML }} />
+        <div
+          className={styles.preview}
+          onClick={(e) => {
+            const target = e.target;
+
+            // block links
+            if (target.closest("a")) {
+              e.preventDefault();
+            }
+
+            // block buttons
+            if (target.closest("button")) {
+              e.preventDefault();
+            }
+
+            // block form submit
+            if (target.closest("form")) {
+              e.preventDefault();
+            }
+          }}
+          dangerouslySetInnerHTML={{ __html: renderedHTML }}
+        />
 
         {editables.map(({ field, top, left }) => (
           <button
@@ -61,7 +94,7 @@ export default function TemplateEditor({ template, config, onChange }) {
             style={{ top, left }}
             onClick={() => openEditor(field)}
           >
-            <Pencil size={14} />
+            <Pencil className={styles.icon} />
           </button>
         ))}
       </div>
@@ -71,10 +104,11 @@ export default function TemplateEditor({ template, config, onChange }) {
           <div className={styles.modal}>
             <h3>Edit text</h3>
 
-            <input
+            <textarea
               value={value}
               onChange={(e) => setValue(e.target.value)}
               autoFocus
+              rows={3}
             />
 
             <div className={styles.actions}>

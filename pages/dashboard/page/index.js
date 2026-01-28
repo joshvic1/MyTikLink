@@ -1,3 +1,4 @@
+// pages/dashboard/page/index.js
 "use client";
 
 import { useEffect, useState } from "react";
@@ -140,9 +141,7 @@ export default function PagesDashboard() {
         <PagesCardView
           pages={pages}
           onEdit={(page) =>
-            router.push(
-              `/dashboard/page/create/edit?templateId=${page.templateId}`,
-            )
+            router.push(`/dashboard/page/create/edit?pageId=${page._id}`)
           }
           onViewLeads={(page) => {
             setActivePage(page);
