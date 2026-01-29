@@ -22,6 +22,7 @@ export default function AdminSidebar({ closeDrawer }) {
     { name: "Dashboard", href: "/admin", icon: <Grid size={18} /> },
     { name: "Users", href: "/admin/users", icon: <Users size={18} /> },
     { name: "Links", href: "/admin/links", icon: <LinkIcon size={18} /> },
+    { name: "Pages", href: "/admin/pages", icon: <Grid size={18} /> },
     {
       name: "Payments",
       href: "/admin/payments",

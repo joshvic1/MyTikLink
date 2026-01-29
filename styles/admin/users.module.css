@@ -35,7 +35,7 @@
   background: rgba(var(--accent1-rgb), 0.1);
 }
 
-/* TABLE */
+/* TABLE CARD */
 .tableCard {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid var(--stroke);
@@ -45,9 +45,18 @@
   overflow: hidden;
 }
 
+/* SCROLL WRAPPER */
+.tableWrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* TABLE */
 .table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
 }
 
 .table thead {
@@ -67,6 +76,9 @@
   padding: 16px 14px;
   border-bottom: 1px solid var(--stroke);
   color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .table tr:hover {
@@ -77,13 +89,17 @@
 /* USER CELL */
 .userCell {
   display: flex;
-  align-items: center;
-  gap: 8px;
+  flex-direction: column;
+  gap: 4px;
+  max-width: 200px;
 }
 
 .email {
   font-size: 12px;
   opacity: 0.7;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* PLAN BADGES */
@@ -93,6 +109,7 @@
   font-size: 12px;
   font-weight: 700;
   text-transform: capitalize;
+  white-space: nowrap;
 }
 
 .plan.free {
@@ -115,7 +132,7 @@
 /* VIEW BUTTON */
 .viewBtn {
   padding: 8px 14px;
-  display: flex;
+  display: inline-flex;
   gap: 6px;
   align-items: center;
   background: linear-gradient(90deg, var(--accent1), var(--accent2));
@@ -124,6 +141,7 @@
   border-radius: 10px;
   font-size: 13px;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .viewBtn:hover {
@@ -137,6 +155,7 @@
   justify-content: center;
   gap: 20px;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .navBtn {
@@ -157,27 +176,51 @@
   color: var(--text);
 }
 
-/* RESPONSIVE */
-@media (max-width: 800px) {
+/* COUNT */
+.count {
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--accent1);
+  margin-left: 6px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+/* TABLE COLUMN HIDING */
+@media (max-width: 900px) {
   .table th:nth-child(5),
-  .table td:nth-child(5),
+  .table td:nth-child(5) {
+    display: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .table th:nth-child(4),
+  .table td:nth-child(4),
   .table th:nth-child(6),
   .table td:nth-child(6) {
     display: none;
   }
 }
 
+/* FILTER STACK */
 @media (max-width: 600px) {
   .filters {
     flex-direction: column;
   }
+
   .input {
     width: 100%;
   }
-}
-.count {
-  font-weight: 600;
-  font-size: 16px;
-  color: var(--accent1);
-  margin-left: 6px;
+
+  .pageTitle {
+    font-size: 22px;
+  }
+
+  .viewBtn {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
 }
