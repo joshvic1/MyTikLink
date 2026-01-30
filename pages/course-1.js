@@ -77,7 +77,7 @@ export default function CoursePage() {
     const handler = window.PaystackPop.setup({
       key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY,
       email: form.email,
-      amount: 2000 * 100,
+      amount: 100 * 100,
       currency: "NGN",
       metadata: {
         name: form.name,
@@ -96,7 +96,7 @@ export default function CoursePage() {
                 content_id: "tiktok-ads-course",
                 content_type: "product",
                 quantity: 1,
-                price: 2000,
+                price: 100,
               },
             ],
           });
