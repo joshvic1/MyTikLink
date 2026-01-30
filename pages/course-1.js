@@ -9,7 +9,7 @@ export default function CoursePage() {
   const [loading, setLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
 
-  const TEST_MODE = true; // 👈 change to false when going live
+  const TEST_MODE = false; // 👈 change to false when going live
 
   const [form, setForm] = useState({
     name: "",
@@ -99,7 +99,7 @@ export default function CoursePage() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             email: form.email,
-            link: "https://your-course-link.com",
+            link: "https://mytiklink.com/r/42ehcp",
           }),
         });
       } catch (err) {
@@ -116,7 +116,7 @@ export default function CoursePage() {
     const handler = window.PaystackPop.setup({
       key: process.env.NEXT_PUBLIC_PAYSTACK_KEY, // ✅ FIXED KEY NAME
       email: form.email,
-      amount: 2000 * 100,
+      amount: 100 * 100,
       currency: "NGN",
       metadata: {
         name: form.name,
@@ -144,7 +144,7 @@ export default function CoursePage() {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               email: form.email,
-              link: "https://your-course-link.com",
+              link: "https://mytiklink.com/r/42ehcp",
             }),
           });
         } catch (err) {
@@ -346,7 +346,7 @@ export default function CoursePage() {
             </p>
 
             <a
-              href="https://wa.me/2348143017102?text=I%20just%20paid%20for%20your%20tutorial"
+              href="https://mytiklink.com/r/42ehcp"
               target="_blank"
               className={styles.whatsappBtn}
             >
