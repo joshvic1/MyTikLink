@@ -68,7 +68,7 @@ export default function CoursePage() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const startPayment = () => {
+  const startPayment = async () => {
     if (!form.name || !form.email || !form.whatsapp) {
       alert("Please fill all fields");
       return;
@@ -76,32 +76,24 @@ export default function CoursePage() {
 
     setLoading(true);
 
-    const handler = window.PaystackPop.setup({
-      key: process.env.NEXT_PUBLIC_PAYSTACK_KEY,
-      email: form.email,
-      amount: 100 * 100,
-      currency: "NGN",
-      metadata: {
-        name: form.name,
-        whatsapp: form.whatsapp,
-      },
-      callback: async function (response) {
-        alert("Payment successful!");
+    // ✅ TEST MODE (NO PAYSTACK)
+    if (TEST_MODE) {
+      alert("TEST MODE: Fake purchase successful");
 
-        // 🔥 Fire TikTok Purchase
-        if (window.ttq) {
-          window.ttq.track("Purchase", {
-            value: 2000,
-            currency: "NGN",
-          });
-        }
+      // 🔥 TikTok Purchase event
+      if (window.ttq) {
+        window.ttq.track("Purchase", {
+          value: 2000,
+          currency: "NGN",
+        });
+      }
 
-        // ✅ VERIFY PAYMENT IN BACKEND
+      // simulate backend verify + email
+      try {
         await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/course/verify/${response.reference}`,
+          `${process.env.NEXT_PUBLIC_API_URL}/course/verify/test-reference`,
         );
 
-        // ✅ SEND COURSE ACCESS EMAIL
         await fetch(`${process.env.NEXT_PUBLIC_API_URL}/send-access`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -110,18 +102,67 @@ export default function CoursePage() {
             link: "https://your-course-link.com",
           }),
         });
+      } catch (err) {
+        console.error("Backend test error:", err);
+      }
+
+      setLoading(false);
+      setShowModal(false);
+      setShowSuccess(true);
+      return;
+    }
+
+    // 🔴 REAL PAYSTACK MODE
+    const handler = window.PaystackPop.setup({
+      key: process.env.NEXT_PUBLIC_PAYSTACK_KEY, // ✅ FIXED KEY NAME
+      email: form.email,
+      amount: 2000 * 100,
+      currency: "NGN",
+      metadata: {
+        name: form.name,
+        whatsapp: form.whatsapp,
+      },
+
+      callback: async function (response) {
+        alert("Payment successful!");
+
+        // 🔥 TikTok Purchase
+        if (window.ttq) {
+          window.ttq.track("Purchase", {
+            value: 2000,
+            currency: "NGN",
+          });
+        }
+
+        try {
+          await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/course/verify/${response.reference}`,
+          );
+
+          await fetch(`${process.env.NEXT_PUBLIC_API_URL}/send-access`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: form.email,
+              link: "https://your-course-link.com",
+            }),
+          });
+        } catch (err) {
+          console.error("Backend error:", err);
+        }
 
         setShowModal(false);
         setShowSuccess(true);
+        setLoading(false);
       },
 
       onClose: function () {
         alert("Payment cancelled");
+        setLoading(false); // ✅ VERY IMPORTANT
       },
     });
 
     handler.openIframe();
-    setLoading(false);
   };
 
   return (
@@ -297,9 +338,9 @@ export default function CoursePage() {
         <div className={styles.modalOverlay}>
           <div className={styles.successModal}>
             <div className={styles.checkIcon}>✓</div>
-            <h2>Payment Successful 🎉</h2>
+            <h2 style={{ color: "#111827" }}>Payment Successful 🎉</h2>
 
-            <p>
+            <p style={{ color: "#000" }}>
               Your payment was successful and your course access has been sent
               to your email.
             </p>
