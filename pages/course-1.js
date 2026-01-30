@@ -9,7 +9,7 @@ export default function CoursePage() {
   const [loading, setLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
 
-  const TEST_MODE = false; // 👈 change to false when going live
+  const TEST_MODE = true; // 👈 change to false when going live
 
   const [form, setForm] = useState({
     name: "",
@@ -103,7 +103,7 @@ export default function CoursePage() {
     const handler = window.PaystackPop.setup({
       key: process.env.NEXT_PUBLIC_PAYSTACK_KEY, // ✅ correct env key
       email: form.email,
-      amount: 100 * 100,
+      amount: 2000 * 100,
       currency: "NGN",
       metadata: {
         name: form.name,
