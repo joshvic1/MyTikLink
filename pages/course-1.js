@@ -68,7 +68,7 @@ export default function CoursePage() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const startPayment = async () => {
+  const startPayment = () => {
     if (!form.name || !form.email || !form.whatsapp) {
       alert("Please fill all fields");
       return;
@@ -76,34 +76,15 @@ export default function CoursePage() {
 
     setLoading(true);
 
-    // ✅ TEST MODE (NO PAYSTACK)
+    // ✅ TEST MODE
     if (TEST_MODE) {
       alert("TEST MODE: Fake purchase successful");
 
-      // 🔥 TikTok Purchase event
       if (window.ttq) {
         window.ttq.track("Purchase", {
           value: 2000,
           currency: "NGN",
         });
-      }
-
-      // simulate backend verify + email
-      try {
-        await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/course/verify/test-reference`,
-        );
-
-        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/send-access`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: form.email,
-            link: "https://mytiklink.com/r/42ehcp",
-          }),
-        });
-      } catch (err) {
-        console.error("Backend test error:", err);
       }
 
       setLoading(false);
@@ -113,8 +94,14 @@ export default function CoursePage() {
     }
 
     // 🔴 REAL PAYSTACK MODE
+    if (!window.PaystackPop) {
+      alert("Paystack not loaded yet. Refresh page.");
+      setLoading(false);
+      return;
+    }
+
     const handler = window.PaystackPop.setup({
-      key: process.env.NEXT_PUBLIC_PAYSTACK_KEY, // ✅ FIXED KEY NAME
+      key: process.env.NEXT_PUBLIC_PAYSTACK_KEY, // ✅ correct env key
       email: form.email,
       amount: 100 * 100,
       currency: "NGN",
@@ -123,7 +110,8 @@ export default function CoursePage() {
         whatsapp: form.whatsapp,
       },
 
-      callback: async function (response) {
+      // ✅ MUST be normal function (not async)
+      callback: function (response) {
         alert("Payment successful!");
 
         // 🔥 TikTok Purchase
@@ -134,22 +122,25 @@ export default function CoursePage() {
           });
         }
 
-        try {
-          await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/course/verify/${response.reference}`,
-          );
+        // run async logic safely
+        (async () => {
+          try {
+            await fetch(
+              `${process.env.NEXT_PUBLIC_API_URL}/course/verify/${response.reference}`,
+            );
 
-          await fetch(`${process.env.NEXT_PUBLIC_API_URL}/send-access`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              email: form.email,
-              link: "https://mytiklink.com/r/42ehcp",
-            }),
-          });
-        } catch (err) {
-          console.error("Backend error:", err);
-        }
+            await fetch(`${process.env.NEXT_PUBLIC_API_URL}/send-access`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                email: form.email,
+                link: "https://your-course-link.com",
+              }),
+            });
+          } catch (err) {
+            console.error("Backend error:", err);
+          }
+        })();
 
         setShowModal(false);
         setShowSuccess(true);
@@ -158,7 +149,7 @@ export default function CoursePage() {
 
       onClose: function () {
         alert("Payment cancelled");
-        setLoading(false); // ✅ VERY IMPORTANT
+        setLoading(false);
       },
     });
 
