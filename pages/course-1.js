@@ -75,7 +75,7 @@ export default function CoursePage() {
     setLoading(true);
 
     const handler = window.PaystackPop.setup({
-      key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY,
+      key: process.env.NEXT_PUBLIC_PAYSTACK_KEY,
       email: form.email,
       amount: 100 * 100,
       currency: "NGN",
