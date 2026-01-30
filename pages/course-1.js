@@ -7,6 +7,8 @@ import { FaLock, FaWhatsapp, FaUserShield, FaStar } from "react-icons/fa";
 export default function CoursePage() {
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+
   const TEST_MODE = true; // 👈 change to false when going live
 
   const [form, setForm] = useState({
@@ -83,27 +85,36 @@ export default function CoursePage() {
         name: form.name,
         whatsapp: form.whatsapp,
       },
-      callback: function (response) {
+      callback: async function (response) {
         alert("Payment successful!");
 
-        // 🔥 TikTok Purchase Event
+        // 🔥 Fire TikTok Purchase
         if (window.ttq) {
           window.ttq.track("Purchase", {
             value: 2000,
             currency: "NGN",
-            contents: [
-              {
-                content_id: "tiktok-ads-course",
-                content_type: "product",
-                quantity: 1,
-                price: 100,
-              },
-            ],
           });
         }
 
+        // ✅ VERIFY PAYMENT IN BACKEND
+        await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/course/verify/${response.reference}`,
+        );
+
+        // ✅ SEND COURSE ACCESS EMAIL
+        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/send-access`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: form.email,
+            link: "https://your-course-link.com",
+          }),
+        });
+
         setShowModal(false);
+        setShowSuccess(true);
       },
+
       onClose: function () {
         alert("Payment cancelled");
       },
@@ -278,6 +289,34 @@ export default function CoursePage() {
               onClick={() => setShowModal(false)}
             >
               Cancel
+            </button>
+          </div>
+        </div>
+      )}
+      {showSuccess && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.successModal}>
+            <div className={styles.checkIcon}>✓</div>
+            <h2>Payment Successful 🎉</h2>
+
+            <p>
+              Your payment was successful and your course access has been sent
+              to your email.
+            </p>
+
+            <a
+              href="https://wa.me/2348143017102?text=I%20just%20paid%20for%20your%20tutorial"
+              target="_blank"
+              className={styles.whatsappBtn}
+            >
+              Message me on WhatsApp
+            </a>
+
+            <button
+              className={styles.closeBtn}
+              onClick={() => setShowSuccess(false)}
+            >
+              Close
             </button>
           </div>
         </div>

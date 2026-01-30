@@ -255,3 +255,40 @@
   border-radius: 12px;
   border: none;
 }
+.successModal {
+  background: white;
+  padding: 24px;
+  width: 90%;
+  max-width: 380px;
+  border-radius: 18px;
+  text-align: center;
+  animation: pop 0.4s ease;
+}
+
+.checkIcon {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 10px;
+  background: #16a34a;
+  color: white;
+  font-size: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.whatsappBtn {
+  display: block;
+  margin-top: 16px;
+  background: #25d366;
+  color: white;
+  padding: 14px;
+  border-radius: 14px;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.whatsappBtn:hover {
+  opacity: 0.9;
+}
