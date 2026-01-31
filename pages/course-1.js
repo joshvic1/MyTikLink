@@ -52,7 +52,7 @@ export default function CoursePage() {
         o.src = i + "?sdkid=" + e + "&lib=" + t;
         d.head.appendChild(o);
       };
-      ttq.load("D5T3U3JC77UAR2VTVUHG");
+      ttq.load("D5UVLSBC77UAR2VU2LK0");
       ttq.page();
     })(window, document, "ttq");
   }, []);
