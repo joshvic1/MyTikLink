@@ -9,7 +9,7 @@ export default function CoursePage() {
   const [loading, setLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
 
-  const TEST_MODE = true; // 👈 change to false when going live
+  const TEST_MODE = false; // 👈 change to false when going live
 
   const [form, setForm] = useState({
     name: "",
