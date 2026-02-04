@@ -68,11 +68,6 @@ export default function Course2Page() {
 
     setLoading(true);
 
-    // 🔥 TikTok Lead Event (FREE funnel)
-    if (window.ttq) {
-      window.ttq.track("SubmitForm");
-    }
-
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/course/send-access`,
@@ -88,6 +83,11 @@ export default function Course2Page() {
 
       if (!res.ok) {
         throw new Error("Email failed");
+      }
+
+      // ✅ ONLY fire after email is successfully sent
+      if (window.ttq) {
+        window.ttq.track("CompleteRegistration");
       }
 
       setShowModal(false);
