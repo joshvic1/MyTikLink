@@ -139,7 +139,7 @@ export default function Course2Page() {
           but no sales? You dey boost posts well? Or even if you know how to run
           Advert well, one thing is certain, you get plenty messages but you
           won't get sales at all...I now have a working solution for that and i
-          will show you for just ₦2,000 only .
+          will show you for FREEEE .
           <br />
           <br />
           After running TikTok ads for myself and my clients for years, I have
