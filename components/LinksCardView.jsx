@@ -1,5 +1,7 @@
+// frontend/components/LinksCardView.jsx
 "use client";
-import { useMemo, useState } from "react";
+
+import { forwardRef, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import {
   Copy,
@@ -8,26 +10,21 @@ import {
   BarChart3,
   ExternalLink,
   Pointer,
-  MousePointer2,
-  TrendingUp,
   Zap,
 } from "lucide-react";
 import s from "@/styles/LinksCardView.module.css";
 
-/**
- * Props:
- * - redirects: array of link objects
- * - userPlan: "free" | "standard" | "pro"
- * - onDelete(id)
- * - onEdit(link)
- */
-export default function LinksCardView({
-  redirects = [],
-  userPlan = "free",
-  onDelete,
-  onEdit,
-  onUpgrade,
-}) {
+const LinksCardView = forwardRef(function LinksCardView(
+  {
+    redirects = [],
+    userPlan = "free",
+    onDelete,
+    onEdit,
+    onUpgrade,
+    horizontal = false, // ✅ NEW
+  },
+  ref,
+) {
   const [expanded, setExpanded] = useState(false);
   const [copied, setCopied] = useState(null);
 
@@ -39,20 +36,19 @@ export default function LinksCardView({
   ];
 
   const canUseProActions = paidPlans.includes(userPlan);
-
   const initialCount = 10;
 
   const visible = useMemo(() => {
     if (!Array.isArray(redirects)) return [];
 
     const sorted = [...redirects].sort(
-      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
     );
 
     return expanded ? sorted : sorted.slice(0, initialCount);
   }, [redirects, expanded]);
 
-  if (!Array.isArray(redirects) || redirects.length === 0) {
+  if (!redirects.length) {
     return <p className={s.noLinks}>No links created yet.</p>;
   }
 
@@ -70,7 +66,7 @@ export default function LinksCardView({
   const shortFrom = (link) => {
     const base = (process.env.NEXT_PUBLIC_FRONTEND_URL || "").replace(
       "/api",
-      ""
+      "",
     );
     return `${base}/r/${link.linkId}`;
   };
@@ -81,7 +77,6 @@ export default function LinksCardView({
     }
 
     const phone = String(link.whatsappCode || "").replace(/\D/g, "");
-
     const textParam = link.prefill
       ? `?text=${encodeURIComponent(link.prefill)}`
       : "";
@@ -91,7 +86,7 @@ export default function LinksCardView({
 
   return (
     <section className={s.wrap}>
-      {/* 🔥 UPGRADE BANNER HERE */}
+      {/* UPGRADE BANNER */}
       {!paidPlans.includes(userPlan) && redirects.length > 0 && (
         <div className={s.upgradeBanner} onClick={onUpgrade}>
           <div className={s.iconWrap}>
@@ -101,18 +96,19 @@ export default function LinksCardView({
           <div className={s.txt}>
             <span className={s.big}>Upgrade & Unlock Unlimited Clicks</span>
             <span className={s.small}>
-              Unlimited Links • Faster Redirect • Unlimited Templates •
-              Customized links & more
+              Unlimited Links • Faster Redirect • Unlimited Templates
             </span>
           </div>
 
-          <button className={s.ctaMini} onClick={onUpgrade}>
-            Upgrade
-          </button>
+          <button className={s.ctaMini}>Upgrade</button>
         </div>
       )}
 
-      <div className={s.grid}>
+      {/* GRID / SCROLLER */}
+      <div
+        ref={horizontal ? ref : null} // ✅ key fix
+        className={`${s.grid} ${horizontal ? s.horizontalGrid : ""}`}
+      >
         {visible.map((link) => {
           const shortLink = shortFrom(link);
           const targetLink = targetFrom(link);
@@ -122,7 +118,7 @@ export default function LinksCardView({
             <article key={link._id} className={s.card}>
               <header className={s.header}>
                 <h3 className={s.title}>{link.title || "Untitled"}</h3>
-                <span className={s.clicks} title={`${clicks} total clicks`}>
+                <span className={s.clicks}>
                   <Pointer size={16} />
                   {clicks}
                 </span>
@@ -136,15 +132,14 @@ export default function LinksCardView({
                     href={shortLink}
                     target="_blank"
                     rel="noreferrer"
-                    title="Open short link"
                   >
                     {shortLink}
                     <ExternalLink size={14} className={s.ext} />
                   </a>
+
                   <button
                     className={s.iconBtn}
                     onClick={() => handleCopy(shortLink)}
-                    title="Copy short link"
                   >
                     <Copy size={16} />
                   </button>
@@ -153,9 +148,7 @@ export default function LinksCardView({
 
               <div className={s.row}>
                 <div className={s.label}>Target URL</div>
-                <div className={`${s.value} ${s.truncate}`} title={targetLink}>
-                  {targetLink}
-                </div>
+                <div className={`${s.value} ${s.truncate}`}>{targetLink}</div>
               </div>
 
               <div className={s.actions}>
@@ -164,13 +157,10 @@ export default function LinksCardView({
                     !canUseProActions ? s.disabled : ""
                   }`}
                   disabled={!canUseProActions}
-                  onClick={() => canUseProActions && onEdit && onEdit(link)}
-                  data-tooltip={
-                    !canUseProActions ? "Upgrade to unlock" : undefined
-                  }
+                  onClick={() => onEdit?.(link)}
                 >
                   <Edit2 size={14} />
-                  <span>Edit</span>
+                  Edit
                 </button>
 
                 <button
@@ -178,19 +168,14 @@ export default function LinksCardView({
                     !canUseProActions ? s.disabled : ""
                   }`}
                   disabled={!canUseProActions}
-                  onClick={() => {}}
-                  data-tooltip={
-                    !canUseProActions ? "Upgrade to unlock" : undefined
-                  }
                 >
                   <BarChart3 size={14} />
-                  <span>Analytics</span>
+                  Analytics
                 </button>
 
                 <button
-                  className={`${s.iconDanger}`}
-                  onClick={() => onDelete && onDelete(link)}
-                  data-tooltip={"Delete Link"}
+                  className={s.iconDanger}
+                  onClick={() => onDelete?.(link)}
                 >
                   <Trash2 size={16} />
                 </button>
@@ -199,26 +184,29 @@ export default function LinksCardView({
               {copied === shortLink && (
                 <div className={s.copiedTag}>Copied</div>
               )}
+
               {userPlan === "free" && (
                 <p className={s.note}>
-                  Your link will expire once you reach 250 clicks. Please{" "}
-                  <b onClick={onUpgrade}>Upgrade</b> to unlock more clicks limit
-                  and more benefits. You currently have {clicks} clicks.
+                  Your link will expire at 250 clicks.{" "}
+                  <b onClick={onUpgrade}>Upgrade</b> to unlock more.
                 </p>
               )}
             </article>
           );
         })}
       </div>
+
       {redirects.length > initialCount && (
         <div className={s.viewMoreWrap}>
           <button className={s.viewMore} onClick={() => setExpanded((v) => !v)}>
             {expanded
               ? "Show less"
-              : `View more (${redirects.length - initialCount} more)`}
+              : `View more (${redirects.length - initialCount})`}
           </button>
         </div>
       )}
     </section>
   );
-}
+});
+
+export default LinksCardView;

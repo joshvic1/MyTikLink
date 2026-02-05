@@ -1,16 +1,21 @@
 // frontend/components/PagesCardView.jsx
 "use client";
 
+import { forwardRef } from "react";
 import { ExternalLink, Copy, Pencil, Trash2, Users } from "lucide-react";
 import toast from "react-hot-toast";
 import styles from "@/styles/LinksCardView.module.css";
 
-export default function PagesCardView({
-  pages,
-  onEdit,
-  onViewLeads,
-  onDelete,
-}) {
+const PagesCardView = forwardRef(function PagesCardView(
+  {
+    pages = [],
+    onEdit,
+    onViewLeads,
+    onDelete,
+    horizontal = false, // ✅ NEW
+  },
+  ref,
+) {
   if (!pages.length) {
     return <p className={styles.noLinks}>No pages created yet.</p>;
   }
@@ -22,23 +27,29 @@ export default function PagesCardView({
   };
 
   return (
-    <div className={styles.grid}>
+    <div
+      ref={horizontal ? ref : null} // ✅ key fix
+      className={`${styles.grid} ${horizontal ? styles.horizontalGrid : ""}`}
+    >
       {pages.map((page) => {
         const pageUrl = `${window.location.origin}/p/${page.slug}`;
 
         return (
           <div key={page._id} className={styles.card}>
-            {/* HEADER */}
             <div className={styles.header}>
               <h4 className={styles.title}>{page.title}</h4>
             </div>
 
-            {/* PAGE LINK */}
             <div className={styles.row}>
               <span className={styles.label}>Page link</span>
 
               <div className={styles.valueInline}>
-                <a href={pageUrl} target="_blank" className={styles.shortLink}>
+                <a
+                  href={pageUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={styles.shortLink}
+                >
                   {pageUrl}
                   <ExternalLink size={14} className={styles.ext} />
                 </a>
@@ -50,12 +61,11 @@ export default function PagesCardView({
                     toast.success("Page link copied");
                   }}
                 >
-                  <Copy />
+                  <Copy size={16} />
                 </button>
               </div>
             </div>
 
-            {/* 🎯 REDIRECT URL */}
             {page.redirectUrl && (
               <div className={styles.row}>
                 <span className={styles.label}>Redirect Url</span>
@@ -63,22 +73,20 @@ export default function PagesCardView({
                 <a
                   href={page.redirectUrl}
                   target="_blank"
+                  rel="noreferrer"
                   className={`${styles.value} ${styles.truncate}`}
-                  title={page.redirectUrl}
                 >
                   {page.redirectUrl}
                 </a>
               </div>
             )}
 
-            {/* ACTIONS */}
             <div className={styles.actions}>
               <button className={styles.pillBtn} onClick={() => onEdit(page)}>
                 <Pencil size={14} />
                 Edit
               </button>
 
-              {/* 🔢 VIEW LEADS + COUNT */}
               <button
                 className={styles.pillBtn}
                 onClick={() => onViewLeads(page)}
@@ -98,7 +106,7 @@ export default function PagesCardView({
                 className={styles.iconDanger}
                 onClick={() => onDelete(page)}
               >
-                <Trash2 />
+                <Trash2 size={16} />
               </button>
             </div>
           </div>
@@ -106,4 +114,6 @@ export default function PagesCardView({
       })}
     </div>
   );
-}
+});
+
+export default PagesCardView;

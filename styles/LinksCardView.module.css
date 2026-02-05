@@ -482,3 +482,52 @@
   background: rgba(34, 197, 94, 0.25);
   color: #22c55e;
 }
+.horizontalGrid {
+  display: flex;
+  gap: 18px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 6px 6px 16px;
+}
+
+.horizontalGrid::-webkit-scrollbar {
+  display: none;
+}
+.horizontalGrid {
+  scrollbar-width: none;
+}
+
+.horizontalGrid .card {
+  min-width: 280px;
+  max-width: 300px;
+  flex-shrink: 0;
+  scroll-snap-align: start;
+}
+/* =============================
+   HORIZONTAL MODE (LINKS & PAGES)
+============================= */
+
+.horizontalGrid {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 6px;
+}
+
+.horizontalGrid::-webkit-scrollbar {
+  display: none;
+}
+
+.horizontalGrid > * {
+  min-width: 320px;
+  max-width: 320px;
+  scroll-snap-align: start;
+}
+
+@media (max-width: 768px) {
+  .horizontalGrid > * {
+    min-width: 88%;
+    max-width: 88%;
+  }
+}

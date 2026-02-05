@@ -9,6 +9,7 @@ import PlanCard from "@/components/PlanCard";
 import CreateRedirectModal from "@/components/CreateRedirectModal";
 import UpgradeModal from "@/components/UpgradeModal";
 import LinksCardView from "@/components/LinksCardView";
+import PagesCardView from "@/components/PagesCardView";
 
 import { Plus } from "lucide-react";
 import styles from "@/styles/dashboard.module.css";
@@ -16,9 +17,15 @@ import styles from "@/styles/dashboard.module.css";
 import { planConfig } from "@/config/planConfig";
 import EditRedirectModal from "@/components/EditRedirectModal";
 import TutorialModal from "@/components/TutorialModal";
+import LeadsModal from "@/components/LeadsModal";
+import { useRef } from "react";
 
 export default function Dashboard({ userPlan }) {
+  const linksRef = useRef(null);
+  const pagesRef = useRef(null);
   const [redirects, setRedirects] = useState([]);
+  const [pages, setPages] = useState([]);
+
   const [showCreate, setShowCreate] = useState(false);
   const [showUpgrade, setShowUpgrade] = useState(false);
   const [user, setUser] = useState({ name: "User", plan: "free" });
@@ -28,6 +35,7 @@ export default function Dashboard({ userPlan }) {
   const [showDelete, setShowDelete] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [showTutorial, setShowTutorial] = useState(false);
+  const [selectedPage, setSelectedPage] = useState(null);
 
   const paidProPlans = ["pro_monthly", "pro_yearly"];
   const isPro = paidProPlans.includes(user.plan);
@@ -67,6 +75,27 @@ export default function Dashboard({ userPlan }) {
       toast.error("Failed to load redirects");
     }
   };
+  const fetchPages = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/pages`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!res.ok) throw new Error("Failed to fetch pages");
+
+      const data = await res.json();
+      setPages(data);
+    } catch (err) {
+      console.error("Error fetching pages:", err);
+      toast.error("Failed to load pages");
+    }
+  };
 
   useEffect(() => {
     const init = async () => {
@@ -82,7 +111,7 @@ export default function Dashboard({ userPlan }) {
       try {
         const res = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}/users/plan`,
-          { headers: { Authorization: `Bearer ${token}` } }
+          { headers: { Authorization: `Bearer ${token}` } },
         );
 
         setUser({
@@ -92,6 +121,7 @@ export default function Dashboard({ userPlan }) {
         });
 
         await fetchRedirects();
+        await fetchPages();
         setAuthorized(true);
       } catch (err) {
         console.error("Auth failed:", err);
@@ -113,7 +143,7 @@ export default function Dashboard({ userPlan }) {
       toast.error(
         `You can only create ${limit === Infinity ? "" : limit} link on the ${
           user.plan
-        } plan, Upgrade to increase your limit.`
+        } plan, Upgrade to increase your limit.`,
       );
       setShowUpgrade(true);
       return;
@@ -121,11 +151,48 @@ export default function Dashboard({ userPlan }) {
 
     setShowCreate(true);
   };
+  const handleEditPage = (page) => {
+    router.push(`/dashboard/pages/${page._id}/edit`);
+  };
+
+  const handleViewLeads = (page) => {
+    setSelectedPage(page);
+  };
+
+  const handleDeletePage = async (page) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      await axios.delete(
+        `${process.env.NEXT_PUBLIC_API_URL}/page/${page._id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+
+      toast.success("Page deleted");
+      fetchPages();
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to delete page");
+    }
+  };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     toast.success("Logged out");
     router.push("/?auth=login");
+  };
+  const scrollPages = (dir) => {
+    const el = document.getElementById("pages-scroll");
+    if (!el) return;
+
+    const amount = el.offsetWidth * 0.85;
+    el.scrollBy({
+      left: dir === "left" ? -amount : amount,
+      behavior: "smooth",
+    });
   };
 
   if (loading) {
@@ -271,25 +338,129 @@ export default function Dashboard({ userPlan }) {
       </div>
 
       {/* ACTION BAR */}
-      <div className={styles.actionsBar}>
-        <h2 className={styles.actionsTitle}>My Links</h2>
+      {/* ===================== */}
+      {/* MY LINKS SECTION */}
+      {/* ===================== */}
+      <section className={styles.section}>
+        <div className={styles.linksSection}>
+          <div className={styles.sectionHeader}>
+            <h2>My Links</h2>
 
-        <button className={styles.createBtn} onClick={handleCreateClick}>
-          <Plus size={16} className={styles.plusIcon} />
-          Create Link
-        </button>
+            <div className={styles.sectionActions}>
+              <button
+                className={styles.navBtn}
+                onClick={() =>
+                  linksRef.current?.scrollBy({
+                    left: -linksRef.current.offsetWidth * 0.8,
+                    behavior: "smooth",
+                  })
+                }
+              >
+                ‹
+              </button>
+
+              <button
+                className={styles.navBtn}
+                onClick={() =>
+                  linksRef.current?.scrollBy({
+                    left: linksRef.current.offsetWidth * 0.8,
+                    behavior: "smooth",
+                  })
+                }
+              >
+                ›
+              </button>
+
+              <button
+                className={styles.createInlineBtn}
+                onClick={handleCreateClick}
+              >
+                + Create link
+              </button>
+
+              <button
+                className={styles.seeAllBtn}
+                onClick={() => router.push("/dashboard/links")}
+              >
+                See all →
+              </button>
+            </div>
+          </div>
+
+          <div id="links-scroll" className={styles.horizontalScroller}>
+            <LinksCardView
+              ref={linksRef}
+              redirects={redirects}
+              userPlan={user.plan}
+              onDelete={(link) => {
+                setDeleteTarget(link);
+                setShowDelete(true);
+              }}
+              onEdit={(link) => setEditing(link)}
+              onUpgrade={() => setShowUpgrade(true)}
+              horizontal
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* ===================== */}
+      {/*      MY PAGES         */}
+      {/* ===================== */}
+      <div className={styles.sectionHeader}>
+        <h2>My Pages</h2>
+
+        <div className={styles.sectionActions}>
+          <button
+            className={styles.navBtn}
+            onClick={() =>
+              pagesRef.current?.scrollBy({
+                left: -pagesRef.current.offsetWidth * 0.8,
+                behavior: "smooth",
+              })
+            }
+          >
+            ‹
+          </button>
+
+          <button
+            className={styles.navBtn}
+            onClick={() =>
+              pagesRef.current?.scrollBy({
+                left: pagesRef.current.offsetWidth * 0.8,
+                behavior: "smooth",
+              })
+            }
+          >
+            ›
+          </button>
+
+          <button
+            className={styles.createInlineBtn}
+            onClick={() => router.push("/dashboard/page/create")}
+          >
+            + Create Page
+          </button>
+
+          <button
+            className={styles.seeAllBtn}
+            onClick={() => router.push("/dashboard/page")}
+          >
+            See all →
+          </button>
+        </div>
       </div>
 
-      <LinksCardView
-        redirects={redirects}
-        userPlan={user.plan}
-        onDelete={(link) => {
-          setDeleteTarget(link);
-          setShowDelete(true);
-        }}
-        onEdit={(link) => setEditing(link)}
-        onUpgrade={() => setShowUpgrade(true)}
-      />
+      <div className={styles.horizontalScroller} id="pages-scroll">
+        <PagesCardView
+          ref={pagesRef}
+          pages={pages}
+          onEdit={handleEditPage}
+          onViewLeads={handleViewLeads}
+          onDelete={handleDeletePage}
+          horizontal
+        />
+      </div>
 
       {editing && (
         <EditRedirectModal
@@ -336,6 +507,9 @@ export default function Dashboard({ userPlan }) {
         />
       )}
       {showTutorial && <TutorialModal setShowModal={setShowTutorial} />}
+      {selectedPage && (
+        <LeadsModal page={selectedPage} onClose={() => setSelectedPage(null)} />
+      )}
     </DashboardLayout>
   );
 }

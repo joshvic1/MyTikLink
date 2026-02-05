@@ -1,5 +1,6 @@
 .dashboardContainer {
-  background: radial-gradient(
+  background:
+    radial-gradient(
       circle at top left,
       rgba(var(--accent1-rgb), 0.16),
       transparent 55%
@@ -427,7 +428,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(
+  background:
+    radial-gradient(
       circle at top,
       rgba(var(--accent1-rgb), 0.2),
       transparent 60%
@@ -472,7 +474,9 @@
   cursor: pointer;
   backdrop-filter: blur(8px);
   box-shadow: 0 6px 18px rgba(34, 197, 94, 0.2);
-  transition: transform 0.15s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.2s ease;
 }
 
 .tutorialBannerDesktop:hover {
@@ -493,7 +497,9 @@
   cursor: pointer;
   backdrop-filter: blur(10px);
   box-shadow: 0 8px 22px rgba(34, 197, 94, 0.28);
-  transition: transform 0.15s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.2s ease;
 }
 
 /* Hover */
@@ -556,4 +562,187 @@
   flex: 1;
   color: var(--text);
   font-size: 0.95rem;
+}
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sectionTitle {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.seeAllBtn {
+  background: transparent;
+  border: none;
+  color: var(--accent1);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 999px;
+  transition: 0.2s ease;
+}
+
+.seeAllBtn:hover {
+  background: rgba(var(--accent1-rgb), 0.12);
+}
+
+.horizontalScroll {
+  width: 100%;
+  overflow-x: auto;
+}
+.horizontalGrid > .card {
+  min-width: 300px;
+  max-width: 320px;
+  flex-shrink: 0;
+}
+.horizontalGrid {
+  padding-left: 6px;
+}
+.sectionActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.navBtn {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid var(--stroke);
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navBtn:active {
+  transform: scale(0.95);
+}
+.createInlineBtn {
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  color: var(--onPrimary);
+  border: none;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 6px 18px var(--shadow-medium);
+  transition: 0.2s ease;
+}
+
+.createInlineBtn:hover {
+  opacity: 0.95;
+}
+@media (max-width: 768px) {
+  .sectionHeader {
+    gap: 10px;
+  }
+
+  .sectionActions {
+    gap: 8px;
+  }
+
+  .navBtn {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    font-size: 14px;
+  }
+
+  .createInlineBtn {
+    padding: 7px 12px;
+    font-size: 0.78rem;
+  }
+
+  .seeAllBtn {
+    font-size: 0.8rem;
+  }
+}
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.sectionActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+/* ===================== */
+/*   HORIZONTAL SCROLL   */
+/* ===================== */
+
+.horizontalScroll {
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 10px;
+}
+
+/* hide scrollbar */
+.horizontalScroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* force PagesCardView grid to row */
+.horizontalScroll :global(.grid) {
+  display: flex;
+  gap: 16px;
+}
+
+/* snap cards */
+.horizontalScroll :global(.card) {
+  scroll-snap-align: start;
+}
+@media (max-width: 768px) {
+  .horizontalScroll :global(.card) {
+    min-width: 260px;
+    max-width: 260px;
+  }
+}
+/* =============================
+   HORIZONTAL MODE (LINKS & PAGES)
+============================= */
+
+.horizontalGrid {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 6px;
+}
+
+.horizontalGrid::-webkit-scrollbar {
+  display: none;
+}
+
+.horizontalGrid > * {
+  min-width: 320px;
+  max-width: 320px;
+  scroll-snap-align: start;
+}
+
+@media (max-width: 768px) {
+  .horizontalGrid > * {
+    min-width: 88%;
+    max-width: 88%;
+  }
 }
