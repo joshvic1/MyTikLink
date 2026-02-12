@@ -22,6 +22,7 @@ export default function PageEditor() {
   const [loading, setLoading] = useState(true);
   const [pageTitle, setPageTitle] = useState("");
   const [pageRedirectUrl, setPageRedirectUrl] = useState("");
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
   /* =========================
      AUTH
@@ -137,6 +138,7 @@ export default function PageEditor() {
       {showNameSheet && (
         <PageNameSheet
           isPro={isPro}
+          onUpgrade={() => setShowUpgradeModal(true)}
           initialTitle={pageTitle}
           initialRedirectUrl={pageRedirectUrl}
           onClose={() => setShowNameSheet(false)}
@@ -166,6 +168,9 @@ export default function PageEditor() {
             }
           }}
         />
+      )}
+      {showUpgradeModal && (
+        <UpgradeModal onClose={() => setShowUpgradeModal(false)} />
       )}
     </>
   );

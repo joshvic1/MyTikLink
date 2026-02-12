@@ -7,6 +7,7 @@ export default function PageNameSheet({
   isPro,
   onClose,
   onSave,
+  onUpgrade,
   initialTitle = "",
   initialRedirectUrl = "",
 }) {
@@ -138,7 +139,9 @@ export default function PageNameSheet({
         {!isPro && (
           <p className={styles.upgradeText}>
             This feature is only available to Pro users.
-            <span> Upgrade</span>
+            <span className={styles.upgradeLink} onClick={onUpgrade}>
+              Upgrade
+            </span>
           </p>
         )}
       </div>

@@ -13,6 +13,7 @@ import {
   Zap,
 } from "lucide-react";
 import s from "@/styles/LinksCardView.module.css";
+import { useRouter } from "next/navigation";
 
 const LinksCardView = forwardRef(function LinksCardView(
   {
@@ -25,6 +26,7 @@ const LinksCardView = forwardRef(function LinksCardView(
   },
   ref,
 ) {
+  const router = useRouter();
   const [expanded, setExpanded] = useState(false);
   const [copied, setCopied] = useState(null);
 
@@ -96,7 +98,7 @@ const LinksCardView = forwardRef(function LinksCardView(
           <div className={s.txt}>
             <span className={s.big}>Upgrade & Unlock Unlimited Clicks</span>
             <span className={s.small}>
-              Unlimited Links • Faster Redirect • Unlimited Templates
+              Unlimited Links, Templates & • Faster Redirect
             </span>
           </div>
 
@@ -195,16 +197,6 @@ const LinksCardView = forwardRef(function LinksCardView(
           );
         })}
       </div>
-
-      {redirects.length > initialCount && (
-        <div className={s.viewMoreWrap}>
-          <button className={s.viewMore} onClick={() => setExpanded((v) => !v)}>
-            {expanded
-              ? "Show less"
-              : `View more (${redirects.length - initialCount})`}
-          </button>
-        </div>
-      )}
     </section>
   );
 });

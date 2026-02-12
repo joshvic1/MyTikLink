@@ -13,6 +13,7 @@ import PagesCardView from "@/components/PagesCardView";
 
 import { Plus } from "lucide-react";
 import styles from "@/styles/dashboard.module.css";
+import s from "@/styles/LinksCardView.module.css";
 
 import { planConfig } from "@/config/planConfig";
 import EditRedirectModal from "@/components/EditRedirectModal";
@@ -152,7 +153,7 @@ export default function Dashboard({ userPlan }) {
     setShowCreate(true);
   };
   const handleEditPage = (page) => {
-    router.push(`/dashboard/pages/${page._id}/edit`);
+    router.push(`/dashboard/page/create/edit/?templateId=${page._id}`);
   };
 
   const handleViewLeads = (page) => {
@@ -377,13 +378,6 @@ export default function Dashboard({ userPlan }) {
               >
                 + Create link
               </button>
-
-              <button
-                className={styles.seeAllBtn}
-                onClick={() => router.push("/dashboard/links")}
-              >
-                See all →
-              </button>
             </div>
           </div>
 
@@ -401,6 +395,14 @@ export default function Dashboard({ userPlan }) {
               horizontal
             />
           </div>
+        </div>
+        <div className={s.viewMoreWrap}>
+          <button
+            className={s.viewMore}
+            onClick={() => router.push("/dashboard/links")}
+          >
+            See all your links
+          </button>
         </div>
       </section>
 
@@ -441,13 +443,6 @@ export default function Dashboard({ userPlan }) {
           >
             + Create Page
           </button>
-
-          <button
-            className={styles.seeAllBtn}
-            onClick={() => router.push("/dashboard/page")}
-          >
-            See all →
-          </button>
         </div>
       </div>
 
@@ -460,6 +455,14 @@ export default function Dashboard({ userPlan }) {
           onDelete={handleDeletePage}
           horizontal
         />
+      </div>
+      <div className={s.viewMoreWrap}>
+        <button
+          className={s.viewMore}
+          onClick={() => router.push("/dashboard/page")}
+        >
+          See all your pages
+        </button>
       </div>
 
       {editing && (

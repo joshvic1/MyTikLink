@@ -219,14 +219,18 @@ export default function PublicPage() {
           `${process.env.NEXT_PUBLIC_API_URL}/pages/public/${slug}`,
         );
 
-        console.log("📦 API RESPONSE:", res.data); // 👈 ADD THIS
-
         setPage(res.data);
 
         if (res.data.tiktokPixelId) {
           loadTikTokPixel(res.data.tiktokPixelId);
         }
       } catch (err) {
+        // 🔥 EXPIRED → REDIRECT
+        if (err.response?.status === 403) {
+          router.replace("/expired");
+          return;
+        }
+
         console.error("Public page error:", err);
         setPage(null);
       } finally {
@@ -382,6 +386,9 @@ export default function PublicPage() {
         <h2>404 – Page not found</h2>
       </div>
     );
+  }
+  if (!page?.template?.html) {
+    return null;
   }
 
   const { template, config, title } = page;
