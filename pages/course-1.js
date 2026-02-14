@@ -129,14 +129,17 @@ export default function CoursePage() {
               `${process.env.NEXT_PUBLIC_API_URL}/course/verify/${response.reference}`,
             );
 
-            await fetch(`${process.env.NEXT_PUBLIC_API_URL}/send-access`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                email: form.email,
-                link: "https://your-course-link.com",
-              }),
-            });
+            await fetch(
+              `${process.env.NEXT_PUBLIC_API_URL}/course/send-access`,
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  email: form.email,
+                  link: "https://www.youtube.com/playlist?list=PLiF2fraj3mTcolRwvw4QsPTDO_4xWVSs1",
+                }),
+              },
+            );
           } catch (err) {
             console.error("Backend error:", err);
           }
@@ -332,16 +335,17 @@ export default function CoursePage() {
             <h2 style={{ color: "#111827" }}>Payment Successful 🎉</h2>
 
             <p style={{ color: "#000" }}>
-              Your payment was successful and your course access has been sent
-              to your email.
+              Your payment was successful and here's the link to access the
+              tutorial videos immediately. You can message me here if you need
+              help 07072571740
             </p>
 
             <a
-              href="https://mytiklink.com/r/42ehcp"
+              href="https://www.youtube.com/playlist?list=PLiF2fraj3mTcolRwvw4QsPTDO_4xWVSs1"
               target="_blank"
               className={styles.whatsappBtn}
             >
-              Message me on WhatsApp
+              Watch the tutorials here
             </a>
 
             <button

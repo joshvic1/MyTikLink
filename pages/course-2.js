@@ -76,7 +76,7 @@ export default function Course2Page() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             email: form.email,
-            link: "https://drive.google.com/drive/folders/1NKa170xi8t0k12QqmfawvZSTROQnOUc2?usp=drive_link",
+            link: "https://www.youtube.com/playlist?list=PLiF2fraj3mTcolRwvw4QsPTDO_4xWVSs1",
           }),
         },
       );
