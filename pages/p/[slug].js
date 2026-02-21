@@ -78,18 +78,21 @@ function smartRedirect(url) {
 
   // ===== WHATSAPP GROUP =====
   if (lower.includes("chat.whatsapp.com")) {
-    const code = clean.split("/").pop();
+    const urlObj = new URL(
+      clean.startsWith("http") ? clean : `https://${clean}`,
+    );
 
-    // 🔥 Try deep link FIRST
+    const code = urlObj.pathname.split("/").pop();
+
+    // 🔥 FIRST deep link immediately
     window.location.href = `whatsapp://chat?code=${code}`;
 
-    // 🌐 Fallback to web (TikTok will usually land here)
-    setTimeout(() => {
-      window.location.href = clean.startsWith("http")
-        ? clean
-        : `https://${clean}`;
-    }, 800);
+    // 🔥 THEN fallback to web after short delay (in case app isn't installed)
 
+    // Slight fallback AFTER
+    setTimeout(() => {
+      window.location.href = urlObj.toString();
+    }, 1200); // give more time
     return;
   }
 
@@ -327,9 +330,7 @@ export default function PublicPage() {
         if (res.data.redirectUrl) {
           if (window.ttq) window.ttq.track("CompleteRegistration");
 
-          setTimeout(() => {
-            smartRedirect(res.data.redirectUrl);
-          }, 300);
+          smartRedirect(res.data.redirectUrl);
         }
       } catch (err) {
         console.error(err);
@@ -419,3 +420,4 @@ export default function PublicPage() {
     </>
   );
 }
+300;

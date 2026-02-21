@@ -32,7 +32,9 @@
   box-shadow: 0 20px 60px var(--shadow-medium);
   padding: 0 16px;
 
-  transition: background 0.3s ease, border-color 0.3s ease;
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease;
 }
 
 @media (max-width: 600px) {
@@ -83,7 +85,9 @@
   color: var(--muted);
   font-size: 14px;
   padding: 0 2px;
-  transition: color 0.2s ease, text-shadow 0.2s ease;
+  transition:
+    color 0.2s ease,
+    text-shadow 0.2s ease;
 }
 
 .navItem:hover {
@@ -134,8 +138,12 @@
   font-size: 13.5px;
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease,
-    color 0.2s ease, border-color 0.2s ease;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .btnText {
@@ -186,7 +194,10 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background 0.2s ease, border-color 0.2s ease, transform 0.12s ease;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.12s ease;
 }
 .mobileToggle:hover,
 .userQuick:hover {
@@ -249,7 +260,10 @@
   overflow: hidden;
   max-height: 0;
   opacity: 0;
-  transition: max-height 0.35s ease, opacity 0.3s ease, margin 0.3s ease;
+  transition:
+    max-height 0.35s ease,
+    opacity 0.3s ease,
+    margin 0.3s ease;
   width: calc(100% - 4rem);
   margin: 0 2rem;
   border-radius: var(--r);
@@ -279,7 +293,10 @@
   padding: 12px;
   color: var(--muted);
   border-radius: 10px;
-  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
   border: 1px solid transparent;
 }
 .mobileLink:hover {
@@ -305,7 +322,10 @@
   font-weight: 600;
   border-radius: 12px;
   cursor: pointer;
-  transition: transform 0.12s ease, background 0.2s ease, border-color 0.2s ease;
+  transition:
+    transform 0.12s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .mobileBtn {
@@ -359,7 +379,10 @@
   justify-content: center;
   cursor: pointer;
   color: var(--accent1);
-  transition: background 0.2s ease, border-color 0.2s ease, transform 0.12s ease;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.12s ease;
 }
 
 .themeToggle:hover {

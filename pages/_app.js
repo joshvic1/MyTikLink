@@ -3,11 +3,17 @@ import { Toaster } from "react-hot-toast";
 import Layout from "@/components/Layout";
 import { useRouter } from "next/router";
 import TelegramChatButton from "@/components/TelegramChatButton";
+import { Plus_Jakarta_Sans } from "next/font/google";
+
+// ✅ MUST be at module level (outside component)
+const plusJakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+});
 
 export default function App({ Component, pageProps }) {
   const router = useRouter();
 
-  // ⛔ Skip layout for redirect pages & dashboard
   const isRedirectPage = router.pathname.startsWith("/r/");
   const isPageRoute = router.pathname.startsWith("/p/");
   const isCourseRoute = router.pathname.startsWith("/course");
@@ -16,6 +22,7 @@ export default function App({ Component, pageProps }) {
   const isPrivacyPage = router.pathname === "/privacy";
   const isAdminRoute = router.pathname.startsWith("/admin");
 
+  // ✅ Pages without layout
   if (
     isRedirectPage ||
     isPageRoute ||
@@ -25,21 +32,22 @@ export default function App({ Component, pageProps }) {
     isPrivacyPage ||
     isAdminRoute
   ) {
-    // ✅ Return without layout (no header/footer)
     return (
-      <>
+      <main className={plusJakarta.className}>
         <Component {...pageProps} />
         <Toaster position="top-center" />
-      </>
+      </main>
     );
   }
 
-  // ✅ Normal pages still use layout
+  // ✅ Normal pages with layout
   return (
-    <Layout>
-      <Component {...pageProps} />
-      <TelegramChatButton username="mytiklink" />
-      <Toaster position="top-center" />
-    </Layout>
+    <main className={plusJakarta.className}>
+      <Layout>
+        <Component {...pageProps} />
+        <TelegramChatButton username="mytiklink" />
+        <Toaster position="top-center" />
+      </Layout>
+    </main>
   );
 }

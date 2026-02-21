@@ -21,7 +21,8 @@
 .bgGlow {
   position: absolute;
   inset: 0;
-  background: radial-gradient(
+  background:
+    radial-gradient(
       circle at 70% 20%,
       color-mix(in srgb, var(--accent1) 20%, transparent) 0%,
       transparent 60%
@@ -288,7 +289,8 @@
   transform-style: preserve-3d;
   transform: var(--enter);
 
-  animation: phoneFlyIn 1.1s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+  animation:
+    phoneFlyIn 1.1s cubic-bezier(0.16, 1, 0.3, 1) forwards,
     phoneFloat 12s ease-in-out infinite 1.12s;
 }
 
