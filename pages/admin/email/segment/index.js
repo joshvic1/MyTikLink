@@ -26,7 +26,7 @@ export default function AdminEmailIndexPage() {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
 
       setSegments(res.data || []);

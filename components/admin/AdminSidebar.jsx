@@ -25,7 +25,7 @@ export default function AdminSidebar({ closeDrawer }) {
     { name: "Pages", href: "/admin/pages", icon: <Grid size={18} /> },
     {
       name: "Payments",
-      href: "/admin/payments",
+      href: "/admin/payment",
       icon: <CreditCard size={18} />,
     },
 

@@ -93,6 +93,7 @@ function smartRedirect(url) {
     setTimeout(() => {
       window.location.href = urlObj.toString();
     }, 1200); // give more time
+
     return;
   }
 
@@ -420,4 +421,3 @@ export default function PublicPage() {
     </>
   );
 }
-300;
