@@ -68,6 +68,45 @@ import axios from "axios";
 import Head from "next/head";
 
 /* =========================
+   BROWSER + OS DETECTION
+========================= */
+
+function isTikTokBrowser() {
+  return /tiktok|ttwebview/i.test(navigator.userAgent);
+}
+
+function getOS() {
+  const ua = navigator.userAgent;
+
+  if (/android/i.test(ua)) return "android";
+  if (/iphone|ipad|ipod/i.test(ua)) return "ios";
+
+  return "other";
+}
+
+function getCTAFromUrl(url) {
+  const lower = url.toLowerCase();
+
+  if (lower.includes("chat.whatsapp.com")) {
+    return "Click here to join the WhatsApp group";
+  }
+
+  if (lower.includes("wa.me")) {
+    return "Click here to message on WhatsApp";
+  }
+
+  if (lower.includes("instagram.com")) {
+    return "Click here to open Instagram";
+  }
+
+  if (lower.includes("t.me")) {
+    return "Click here to open Telegram";
+  }
+
+  return "Click here to proceed";
+}
+
+/* =========================
    SMART REDIRECT
 ========================= */
 function smartRedirect(url) {
@@ -85,7 +124,16 @@ function smartRedirect(url) {
     const code = urlObj.pathname.split("/").pop();
 
     // 🔥 FIRST deep link immediately
-    window.location.href = `whatsapp://chat?code=${code}`;
+    const os = getOS();
+
+    if (os === "android") {
+      window.open(
+        `intent://chat/${code}#Intent;scheme=whatsapp;package=com.whatsapp;end`,
+        "_self",
+      );
+    } else {
+      window.open(`whatsapp://chat?code=${code}`, "_self");
+    }
 
     // 🔥 THEN fallback to web after short delay (in case app isn't installed)
 
@@ -102,7 +150,16 @@ function smartRedirect(url) {
     const phone = clean.match(/\d+/)?.[0];
     if (!phone) return;
 
-    window.location.href = `whatsapp://send?phone=${phone}`;
+    const os = getOS();
+
+    if (os === "android") {
+      window.open(
+        `intent://send?phone=${phone}#Intent;scheme=whatsapp;package=com.whatsapp;end`,
+        "_self",
+      );
+    } else {
+      window.open(`whatsapp://send?phone=${phone}`, "_self");
+    }
 
     setTimeout(() => {
       window.location.href = `https://wa.me/${phone}`;
@@ -140,6 +197,30 @@ function smartRedirect(url) {
   // ===== DEFAULT =====
   window.location.href = clean.startsWith("http") ? clean : `https://${clean}`;
 }
+
+function showRedirectButton(form, redirectUrl) {
+  const btn = document.createElement("button");
+
+  btn.innerText = getCTAFromUrl(redirectUrl);
+
+  btn.style.marginTop = "20px";
+  btn.style.padding = "14px";
+  btn.style.width = "100%";
+  btn.style.fontSize = "16px";
+  btn.style.fontWeight = "600";
+  btn.style.background = "#22c55e";
+  btn.style.color = "white";
+  btn.style.border = "none";
+  btn.style.borderRadius = "8px";
+  btn.style.cursor = "pointer";
+
+  btn.addEventListener("click", () => {
+    smartRedirect(redirectUrl);
+  });
+
+  form.replaceWith(btn);
+}
+
 function LoadingScreen() {
   return (
     <div className="loading-wrap">
@@ -331,7 +412,16 @@ export default function PublicPage() {
         if (res.data.redirectUrl) {
           if (window.ttq) window.ttq.track("CompleteRegistration");
 
-          smartRedirect(res.data.redirectUrl);
+          const redirectUrl = res.data.redirectUrl;
+
+          // If NOT TikTok → auto redirect
+          if (!isTikTokBrowser()) {
+            smartRedirect(redirectUrl);
+            return;
+          }
+
+          // If TikTok → show button instead
+          showRedirectButton(form, redirectUrl);
         }
       } catch (err) {
         console.error(err);
