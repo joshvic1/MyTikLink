@@ -150,3 +150,63 @@
     text-align: center;
   }
 }
+
+/* ===============================
+   SURVEY CARD
+================================ */
+.surveyCard {
+  margin: 25px 0;
+  padding: 22px;
+  border-radius: 16px;
+  background: linear-gradient(
+    135deg,
+    rgba(var(--accent1-rgb), 0.12),
+    rgba(var(--accent2-rgb), 0.12)
+  );
+  border: 1px solid rgba(var(--accent1-rgb), 0.3);
+  backdrop-filter: blur(12px);
+  transition: 0.3s ease;
+}
+
+.surveyCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(var(--accent1-rgb), 0.2);
+}
+
+.surveyContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.surveyTitle {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: var(--text);
+}
+
+.surveyText {
+  font-size: 14px;
+  opacity: 0.8;
+  max-width: 450px;
+}
+
+.surveyButton {
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  color: white;
+  transition: 0.25s ease;
+  white-space: nowrap;
+}
+
+.surveyButton:hover {
+  opacity: 0.9;
+  transform: scale(1.05);
+}

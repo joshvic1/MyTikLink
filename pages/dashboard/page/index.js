@@ -16,6 +16,7 @@ import styles from "@/styles/pagesDashboard.module.css";
 
 export default function PagesDashboard() {
   const [pages, setPages] = useState([]);
+
   const [user, setUser] = useState({ plan: "free", name: "User" });
   const [loading, setLoading] = useState(true);
   const [authorized, setAuthorized] = useState(false);
@@ -114,6 +115,33 @@ export default function PagesDashboard() {
     );
   }
 
+  // This is a temporary card to gather feedback from users about their landing pages. We want to understand if it's converting well, what can be improved, and any other feedback they have. The survey takes less than 1 minute to complete and will help us prioritize improvements to the landing page feature.
+
+  function SurveyCard() {
+    return (
+      <div className={styles.surveyCard}>
+        <div className={styles.surveyContent}>
+          <div>
+            <h3 className={styles.surveyTitle}>Help Us Improve TikLink 🚀</h3>
+            <p className={styles.surveyText}>
+              You’ve created a landing page. We’d love your honest feedback. Is
+              it converting well? What should we improve?
+            </p>
+          </div>
+
+          <a
+            href="https://forms.gle/AH32zsUY86Wg9sqm8"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.surveyButton}
+          >
+            Take 1-Minute Survey →
+          </a>
+        </div>
+      </div>
+    );
+  }
+
   /* =========================
      BLOCK UNAUTHORIZED
   ========================= */
@@ -127,7 +155,7 @@ export default function PagesDashboard() {
           Create Page
         </button>
       </div>
-
+      {pages.length > 0 && <SurveyCard />}
       {pages.length === 0 ? (
         <div className={styles.empty}>
           <p>You do not have any page yet.</p>
