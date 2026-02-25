@@ -61,7 +61,46 @@ function loadTikTokPixel(pixelId) {
     });
   })(window, document, "ttq");
 }
+function loadMetaPixel(pixelId) {
+  if (!pixelId) {
+    console.log("❌ No Meta Pixel ID found");
+    return;
+  }
 
+  if (window.fbq) {
+    console.log("⚠️ Meta Pixel already loaded");
+    return;
+  }
+
+  console.log("🚀 Loading Meta Pixel:", pixelId);
+
+  !(function (f, b, e, v, n, t, s) {
+    if (f.fbq) return;
+    n = f.fbq = function () {
+      n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = true;
+    n.version = "2.0";
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = true;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s);
+  })(
+    window,
+    document,
+    "script",
+    "https://connect.facebook.net/en_US/fbevents.js",
+  );
+
+  window.fbq("init", pixelId);
+  window.fbq("track", "PageView");
+
+  console.log("🎯 Meta Pixel Initialized");
+}
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
@@ -309,6 +348,9 @@ export default function PublicPage() {
         if (res.data.tiktokPixelId) {
           loadTikTokPixel(res.data.tiktokPixelId);
         }
+        if (res.data.metaPixelId) {
+          loadMetaPixel(res.data.metaPixelId);
+        }
       } catch (err) {
         // 🔥 EXPIRED → REDIRECT
         if (err.response?.status === 403) {
@@ -411,7 +453,7 @@ export default function PublicPage() {
 
         if (res.data.redirectUrl) {
           if (window.ttq) window.ttq.track("CompleteRegistration");
-
+          if (window.fbq) window.fbq("track", "Lead");
           const redirectUrl = res.data.redirectUrl;
 
           // If NOT TikTok → auto redirect
@@ -460,6 +502,9 @@ export default function PublicPage() {
         window.ttq.track("CompleteRegistration");
       }
 
+      if (window.fbq) {
+        window.fbq("track", "Lead");
+      }
       smartRedirect(page.redirectUrl);
     };
 

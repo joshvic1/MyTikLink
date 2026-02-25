@@ -7,6 +7,9 @@ export default function TikTokPixelPage() {
   const [pixelInput, setPixelInput] = useState("");
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
+  const [metaPixelInput, setMetaPixelInput] = useState("");
+  const [metaStatus, setMetaStatus] = useState("");
+  const [metaLoading, setMetaLoading] = useState(false);
 
   // 🔹 Fetch saved pixel on page load
   useEffect(() => {
@@ -24,6 +27,9 @@ export default function TikTokPixelPage() {
 
         if (data.user?.tiktokPixelId) {
           setPixelInput(data.user.tiktokPixelId);
+        }
+        if (data.user?.metaPixelId) {
+          setMetaPixelInput(data.user.metaPixelId);
         }
       } catch (err) {
         console.error("Failed to load TikTok pixel", err);
@@ -52,7 +58,7 @@ export default function TikTokPixelPage() {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
           body: JSON.stringify({ pixelId: pixelInput }),
-        }
+        },
       );
 
       const data = await res.json();
@@ -71,33 +77,105 @@ export default function TikTokPixelPage() {
       setLoading(false);
     }
   };
+  const saveMetaPixel = async () => {
+    if (!metaPixelInput.trim()) {
+      setMetaStatus("Please enter a Meta Pixel ID or code");
+      return;
+    }
 
+    try {
+      setMetaLoading(true);
+      setMetaStatus("");
+
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/users/meta-pixel`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({ pixelId: metaPixelInput }),
+        },
+      );
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setMetaStatus(data.message || "Something went wrong");
+        setMetaLoading(false);
+        return;
+      }
+
+      setMetaStatus("✅ Meta Pixel saved successfully");
+      setMetaLoading(false);
+    } catch (err) {
+      console.error(err);
+      setMetaStatus("Server error. Try again.");
+      setMetaLoading(false);
+    }
+  };
   return (
     <DashhboardLayout>
       <div className={styles.page}>
-        <div className={styles.card}>
-          <h1 className={styles.title}>TikTok Pixel</h1>
-          <p className={styles.subtitle}>
-            Paste your TikTok Pixel ID or full pixel code (Pro users only)
-          </p>
+        <div className={styles.wrapper}>
+          {/* TikTok Card */}
+          <div className={styles.card}>
+            <h2 className={styles.cardTitle}>TikTok Pixel</h2>
+            <p className={styles.cardSubtitle}>
+              Paste your TikTok Pixel ID or full code (Pro users only)
+            </p>
+            <textarea
+              className={styles.input}
+              rows={5}
+              placeholder="Paste TikTok Pixel ID or full code"
+              value={pixelInput}
+              onChange={(e) => setPixelInput(e.target.value)}
+            />
+            <button
+              className={styles.button}
+              onClick={savePixel}
+              disabled={loading}
+            >
+              {loading ? "Saving..." : "Save TikTok Pixel"}
+            </button>
+            {status && (
+              <div className={styles.statusBox}>
+                <span className={styles.statusIcon}>✓</span>
+                <span>{status}</span>
+              </div>
+            )}
+          </div>
 
-          <textarea
-            className={styles.input}
-            rows={5}
-            placeholder="Paste Pixel ID or full TikTok pixel code here"
-            value={pixelInput}
-            onChange={(e) => setPixelInput(e.target.value)}
-          />
+          {/* Meta Card */}
+          <div className={styles.card}>
+            <h2 className={styles.cardTitle}>Meta (Facebook) Pixel</h2>
+            <p className={styles.cardSubtitle}>
+              Paste your Meta Pixel ID or full code (Pro users only)
+            </p>
 
-          <button
-            className={styles.button}
-            onClick={savePixel}
-            disabled={loading}
-          >
-            {loading ? "Saving..." : "Save Pixel"}
-          </button>
+            <textarea
+              className={styles.input}
+              rows={5}
+              placeholder="Paste Meta Pixel ID or full code"
+              value={metaPixelInput}
+              onChange={(e) => setMetaPixelInput(e.target.value)}
+            />
 
-          {status && <p className={styles.status}>{status}</p>}
+            <button
+              className={styles.button}
+              onClick={saveMetaPixel}
+              disabled={metaLoading}
+            >
+              {metaLoading ? "Saving..." : "Save Meta Pixel"}
+            </button>
+            {metaStatus && (
+              <div className={styles.statusBox}>
+                <span className={styles.statusIcon}>✓</span>
+                <span>{metaStatus}</span>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </DashhboardLayout>
