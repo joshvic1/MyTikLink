@@ -166,10 +166,7 @@ function smartRedirect(url) {
     const os = getOS();
 
     if (os === "android") {
-      window.open(
-        `intent://chat/${code}#Intent;scheme=whatsapp;package=com.whatsapp;end`,
-        "_self",
-      );
+      window.open(`intent://chat/${code}#Intent;scheme=whatsapp;end`, "_self");
     } else {
       window.open(`whatsapp://chat?code=${code}`, "_self");
     }
@@ -193,7 +190,7 @@ function smartRedirect(url) {
 
     if (os === "android") {
       window.open(
-        `intent://send?phone=${phone}#Intent;scheme=whatsapp;package=com.whatsapp;end`,
+        `intent://send?phone=${phone}#Intent;scheme=whatsapp;end`,
         "_self",
       );
     } else {
