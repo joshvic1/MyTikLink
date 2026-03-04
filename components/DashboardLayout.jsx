@@ -21,6 +21,7 @@ import {
 import s from "@/styles/DashboardLayout.module.css";
 import AuthModal from "@/components/AuthModal";
 import useAuth from "@/hooks/useAuth";
+import TawkChat from "@/components/TawkChat";
 
 export default function DashboardLayout({
   user = { name: "User", plan: "free" },
@@ -240,6 +241,8 @@ export default function DashboardLayout({
           }}
         />
       )}
+      {/* Dashboard support chat */}
+      <TawkChat user={user} />
     </div>
   );
 }
