@@ -2,7 +2,7 @@
 
 import Script from "next/script";
 
-export default function TawkChat({ user }) {
+export default function TawkChat() {
   return (
     <Script
       id="tawk-chat"
@@ -11,6 +11,11 @@ export default function TawkChat({ user }) {
         __html: `
           var Tawk_API = Tawk_API || {};
           var Tawk_LoadStart = new Date();
+
+          Tawk_API.onLoad = function() {
+            // hide default widget
+            Tawk_API.hideWidget();
+          };
 
           (function(){
             var s1=document.createElement("script"),
@@ -21,20 +26,6 @@ export default function TawkChat({ user }) {
             s1.setAttribute('crossorigin','*');
             s0.parentNode.insertBefore(s1,s0);
           })();
-
-          Tawk_API.onLoad = function () {
-            ${
-              user
-                ? `
-            Tawk_API.setAttributes({
-              name: "${user.name || ""}",
-              email: "${user.email || ""}",
-              plan: "${user.plan || ""}"
-            });
-            `
-                : ""
-            }
-          };
         `,
       }}
     />
