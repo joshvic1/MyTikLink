@@ -23,8 +23,6 @@ export default function TawkChat({ user }) {
           })();
 
           Tawk_API.onLoad = function () {
-            Tawk_API.hideWidget();
-
             ${
               user
                 ? `
