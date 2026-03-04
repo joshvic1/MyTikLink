@@ -2,8 +2,8 @@ import "@/styles/globals.css";
 import { Toaster } from "react-hot-toast";
 import Layout from "@/components/Layout";
 import { useRouter } from "next/router";
-import TelegramChatButton from "@/components/TelegramChatButton";
 import { Plus_Jakarta_Sans } from "next/font/google";
+import TawkChat from "@/components/TawkChat";
 
 // ✅ MUST be at module level (outside component)
 const plusJakarta = Plus_Jakarta_Sans({
@@ -35,6 +35,7 @@ export default function App({ Component, pageProps }) {
     return (
       <main className={plusJakarta.className}>
         <Component {...pageProps} />
+        <TawkChat user={pageProps.user} />
         <Toaster position="top-center" />
       </main>
     );
@@ -45,7 +46,7 @@ export default function App({ Component, pageProps }) {
     <main className={plusJakarta.className}>
       <Layout>
         <Component {...pageProps} />
-        <TelegramChatButton username="mytiklink" />
+        <TawkChat user={pageProps.user} />
         <Toaster position="top-center" />
       </Layout>
     </main>

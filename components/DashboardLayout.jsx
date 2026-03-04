@@ -21,7 +21,6 @@ import {
 import s from "@/styles/DashboardLayout.module.css";
 import AuthModal from "@/components/AuthModal";
 import useAuth from "@/hooks/useAuth";
-import TelegramChatButton from "./TelegramChatButton";
 
 export default function DashboardLayout({
   user = { name: "User", plan: "free" },
@@ -241,7 +240,6 @@ export default function DashboardLayout({
           }}
         />
       )}
-      <TelegramChatButton username="mytiklink" />
     </div>
   );
 }
