@@ -1,8 +1,52 @@
 "use client";
 
 import Script from "next/script";
+import { useEffect } from "react";
 
-export default function TawkChat() {
+export default function TawkChat({ user }) {
+  useEffect(() => {
+    console.log("Tawk received user:", user);
+
+    const waitForTawk = setInterval(() => {
+      if (window.Tawk_API && window.Tawk_API.setAttributes) {
+        console.log("Tawk API ready");
+
+        if (!user) {
+          console.log("No user passed to Tawk");
+          clearInterval(waitForTawk);
+          return;
+        }
+
+        const name = user?.name || "";
+        const email = user?.email || "";
+        const plan = user?.plan || "";
+
+        console.log("Sending to Tawk:", { name, email, plan });
+
+        // Only send email if valid
+        const attributes = {
+          name,
+        };
+
+        if (email && email.includes("@")) {
+          attributes.email = email;
+        }
+
+        window.Tawk_API.setAttributes(attributes, function (error) {
+          if (error) {
+            console.error("Tawk attribute error:", error);
+          } else {
+            console.log("Tawk attributes attached successfully");
+          }
+        });
+
+        clearInterval(waitForTawk);
+      }
+    }, 500);
+
+    return () => clearInterval(waitForTawk);
+  }, [user]);
+
   return (
     <Script
       id="tawk-chat"
@@ -13,7 +57,7 @@ export default function TawkChat() {
           var Tawk_LoadStart = new Date();
 
           Tawk_API.onLoad = function() {
-            // hide default widget
+            console.log("Tawk widget loaded");
             Tawk_API.hideWidget();
           };
 

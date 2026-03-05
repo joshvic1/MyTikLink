@@ -117,6 +117,7 @@ export default function Dashboard({ userPlan }) {
 
         setUser({
           name: res.data.name || "User",
+          email: res.data.email || null,
           plan: res.data.plan || "free",
           planExpiry: res.data.planExpiry || null,
         });

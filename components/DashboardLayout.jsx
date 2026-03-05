@@ -50,7 +50,7 @@ export default function DashboardLayout({
       { href: "/dashboard/analytics", label: "Analytics", icon: BarChart3 },
       {
         href: "/dashboard/tiktok-pixel",
-        label: "TikTok Pixel",
+        label: "TikTok/Meta Pixel",
         icon: ArrowUpCircle,
       },
       { href: "/dashboard/settings", label: "Settings", icon: Settings },
