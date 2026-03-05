@@ -26,6 +26,7 @@ export default function TawkChat({ user }) {
         // Only send email if valid
         const attributes = {
           name,
+          plan,
         };
 
         if (email && email.includes("@")) {
