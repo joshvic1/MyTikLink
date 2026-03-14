@@ -205,23 +205,49 @@ function smartRedirect(url) {
   }
 
   // ===== TELEGRAM =====
+  // ===== TELEGRAM =====
   if (lower.includes("t.me")) {
     try {
       const urlObj = new URL(
         clean.startsWith("http") ? clean : `https://${clean}`,
       );
+      const path = urlObj.pathname.replace("/", "");
 
-      // extract username safely
-      const username = urlObj.pathname.replace("/", "").split("/")[0];
+      // Invite links (new format)
+      if (path.startsWith("+")) {
+        const invite = path.replace("+", "");
 
-      // deep link
+        window.location.href = `tg://join?invite=${invite}`;
+
+        setTimeout(() => {
+          window.location.href = urlObj.toString();
+        }, 1200);
+
+        return;
+      }
+
+      // Invite links (old format)
+      if (path.startsWith("joinchat/")) {
+        const invite = path.split("joinchat/")[1];
+
+        window.location.href = `tg://join?invite=${invite}`;
+
+        setTimeout(() => {
+          window.location.href = urlObj.toString();
+        }, 1200);
+
+        return;
+      }
+
+      // Username / public channel
+      const username = path.split("/")[0];
+
       window.location.href = `tg://resolve?domain=${username}`;
 
-      // fallback
       setTimeout(() => {
         window.location.href = urlObj.toString();
-      }, 900);
-    } catch (err) {
+      }, 1200);
+    } catch {
       window.location.href = clean;
     }
 
