@@ -206,12 +206,24 @@ function smartRedirect(url) {
 
   // ===== TELEGRAM =====
   if (lower.includes("t.me")) {
-    const username = clean.replace(/^https?:\/\/t\.me\//, "");
-    window.location.href = `tg://resolve?domain=${username}`;
+    try {
+      const urlObj = new URL(
+        clean.startsWith("http") ? clean : `https://${clean}`,
+      );
 
-    setTimeout(() => {
-      window.location.href = `https://t.me/${username}`;
-    }, 800);
+      // extract username safely
+      const username = urlObj.pathname.replace("/", "").split("/")[0];
+
+      // deep link
+      window.location.href = `tg://resolve?domain=${username}`;
+
+      // fallback
+      setTimeout(() => {
+        window.location.href = urlObj.toString();
+      }, 900);
+    } catch (err) {
+      window.location.href = clean;
+    }
 
     return;
   }
