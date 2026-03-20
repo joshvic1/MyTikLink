@@ -34,6 +34,7 @@ export default function Dashboard({ userPlan }) {
   const [authorized, setAuthorized] = useState(false);
   const [editing, setEditing] = useState(null);
   const [showDelete, setShowDelete] = useState(false);
+  const [pageToDelete, setPageToDelete] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [showTutorial, setShowTutorial] = useState(false);
   const [selectedPage, setSelectedPage] = useState(null);
@@ -160,21 +161,16 @@ export default function Dashboard({ userPlan }) {
   const handleViewLeads = (page) => {
     setSelectedPage(page);
   };
-
-  const handleDeletePage = async (page) => {
+  const handleDeletePage = async (id) => {
     try {
       const token = localStorage.getItem("token");
-      if (!token) return;
 
-      await axios.delete(
-        `${process.env.NEXT_PUBLIC_API_URL}/pages/${page._id}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      );
+      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/pages/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       toast.success("Page deleted");
-      fetchPages();
+      fetchPages(); // refresh pages
     } catch (err) {
       console.error(err);
       toast.error("Failed to delete page");
@@ -453,7 +449,10 @@ export default function Dashboard({ userPlan }) {
           pages={pages}
           onEdit={handleEditPage}
           onViewLeads={handleViewLeads}
-          onDelete={handleDeletePage}
+          onDelete={(page) => {
+            setDeleteTarget(page);
+            setShowDelete(true);
+          }}
           horizontal
         />
       </div>
@@ -504,8 +503,7 @@ export default function Dashboard({ userPlan }) {
           userPlan={userPlan}
           onRequestUpgrade={() => setShowUpgrade(true)}
           onConfirm={async () => {
-            await handleDelete(deleteTarget._id);
-
+            await handleDeletePage(deleteTarget._id);
             setShowDelete(false);
           }}
         />
