@@ -154,7 +154,7 @@ export default function Dashboard({ userPlan }) {
     setShowCreate(true);
   };
   const handleEditPage = (page) => {
-    router.push(`/dashboard/page/create/edit/?templateId=${page._id}`);
+    router.push(`/dashboard/page/create/edit?pageId=${page._id}`);
   };
 
   const handleViewLeads = (page) => {

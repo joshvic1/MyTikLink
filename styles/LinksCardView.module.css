@@ -89,7 +89,9 @@
 ============================= */
 .row {
   display: grid;
-  grid-template-columns: 96px 1fr;
+
+  grid-template-columns: 96px minmax(0, 1fr); /* 🔥 important */
+
   align-items: center;
   gap: 10px;
   padding: 6px 0;
@@ -129,13 +131,13 @@
   text-decoration: none;
   border-bottom: 1px dashed color-mix(in srgb, var(--accent2) 60%, transparent);
   padding-bottom: 1px;
-  transition:
-    color 0.15s ease,
-    border-color 0.15s ease;
+
   max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+
+  /* 🔥 KEY FIX */
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .shortLink:hover {
