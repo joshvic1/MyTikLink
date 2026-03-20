@@ -5,14 +5,9 @@ import { useEffect } from "react";
 
 export default function TawkChat({ user }) {
   useEffect(() => {
-    console.log("Tawk received user:", user);
-
     const waitForTawk = setInterval(() => {
       if (window.Tawk_API && window.Tawk_API.setAttributes) {
-        console.log("Tawk API ready");
-
         if (!user) {
-          console.log("No user passed to Tawk");
           clearInterval(waitForTawk);
           return;
         }
@@ -20,8 +15,6 @@ export default function TawkChat({ user }) {
         const name = user?.name || "";
         const email = user?.email || "";
         const plan = user?.plan || "";
-
-        console.log("Sending to Tawk:", { name, email, plan });
 
         // Only send email if valid
         const attributes = {
@@ -32,14 +25,6 @@ export default function TawkChat({ user }) {
         if (email && email.includes("@")) {
           attributes.email = email;
         }
-
-        window.Tawk_API.setAttributes(attributes, function (error) {
-          if (error) {
-            console.error("Tawk attribute error:", error);
-          } else {
-            console.log("Tawk attributes attached successfully");
-          }
-        });
 
         clearInterval(waitForTawk);
       }
@@ -58,7 +43,7 @@ export default function TawkChat({ user }) {
           var Tawk_LoadStart = new Date();
 
           Tawk_API.onLoad = function() {
-            console.log("Tawk widget loaded");
+            
             Tawk_API.hideWidget();
           };
 

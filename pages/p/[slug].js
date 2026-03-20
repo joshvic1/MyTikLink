@@ -154,57 +154,67 @@ function smartRedirect(url) {
   const clean = url.trim();
   const lower = clean.toLowerCase();
 
-  // ===== WHATSAPP GROUP =====
-  if (lower.includes("chat.whatsapp.com")) {
+  // ===== WHATSAPP (ALL TYPES) =====
+  if (lower.includes("wa.me")) {
     const urlObj = new URL(
       clean.startsWith("http") ? clean : `https://${clean}`,
     );
 
-    const code = urlObj.pathname.split("/").pop();
-
-    // 🔥 FIRST deep link immediately
-    const os = getOS();
-
-    if (os === "android") {
-      window.open(`intent://chat/${code}#Intent;scheme=whatsapp;end`, "_self");
-    } else {
-      window.open(`whatsapp://chat?code=${code}`, "_self");
-    }
-
-    // 🔥 THEN fallback to web after short delay (in case app isn't installed)
-
-    // Slight fallback AFTER
-    setTimeout(() => {
-      window.location.href = urlObj.toString();
-    }, 1200); // give more time
-
-    return;
-  }
-
-  // ===== WHATSAPP DM =====
-  if (lower.includes("wa.me")) {
-    const phone = clean.match(/\d+/)?.[0];
-    if (!phone) return;
+    const path = urlObj.pathname;
 
     const os = getOS();
 
-    if (os === "android") {
-      window.open(
-        `intent://send?phone=${phone}#Intent;scheme=whatsapp;end`,
-        "_self",
-      );
-    } else {
-      window.open(`whatsapp://send?phone=${phone}`, "_self");
+    // =========================
+    // TYPE 1: wa.me/message/XXXXX
+    // =========================
+    if (path.includes("/message/")) {
+      const fullUrl = urlObj.toString();
+
+      if (os === "android") {
+        window.open(
+          `intent://${fullUrl.replace("https://", "")}#Intent;scheme=https;package=com.whatsapp;end`,
+          "_self",
+        );
+      } else {
+        window.location.href = fullUrl;
+      }
+
+      setTimeout(() => {
+        window.location.href = fullUrl;
+      }, 1500);
+
+      return;
     }
 
-    setTimeout(() => {
-      window.location.href = `https://wa.me/${phone}`;
-    }, 800);
+    // =========================
+    // TYPE 2: wa.me/PHONE
+    // =========================
+    const phone = path.replace("/", "").match(/\d+/)?.[0];
 
+    if (phone) {
+      if (os === "android") {
+        window.open(
+          `intent://send?phone=${phone}#Intent;scheme=whatsapp;end`,
+          "_self",
+        );
+      } else {
+        window.open(`whatsapp://send?phone=${phone}`, "_self");
+      }
+
+      setTimeout(() => {
+        window.location.href = `https://wa.me/${phone}`;
+      }, 1200);
+
+      return;
+    }
+
+    // =========================
+    // FALLBACK
+    // =========================
+    window.location.href = urlObj.toString();
     return;
   }
 
-  // ===== TELEGRAM =====
   // ===== TELEGRAM =====
   if (lower.includes("t.me")) {
     try {
