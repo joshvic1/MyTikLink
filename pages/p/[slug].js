@@ -388,11 +388,22 @@ export default function PublicPage() {
           `${process.env.NEXT_PUBLIC_API_URL}/pages/public/${slug}`,
         );
 
-        setPage(res.data);
+        const pageData = res.data;
 
-        if (res.data.tiktokPixelId) {
-          loadTikTokPixel(res.data.tiktokPixelId);
+        setPage(pageData);
+
+        if (pageData.tiktokPixelId) {
+          loadTikTokPixel(pageData.tiktokPixelId);
         }
+
+        setTimeout(() => {
+          if (window.ttq) {
+            window.ttq.track("ViewContent", {
+              content_name: pageData.title,
+              content_id: pageData.slug,
+            });
+          }
+        }, 1000);
         if (res.data.metaPixelId) {
           loadMetaPixel(res.data.metaPixelId);
         }
@@ -544,6 +555,7 @@ export default function PublicPage() {
       }
 
       if (window.ttq) {
+        window.ttq.track("Lead");
         window.ttq.track("CompleteRegistration");
       }
 
