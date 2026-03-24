@@ -1,0 +1,80 @@
+.navbar {
+  width: 100%;
+  background: #f5f5f5;
+  padding: 10px 0;
+  display: flex;
+  justify-content: center;
+}
+
+/* floating white container */
+.container {
+  width: 100%;
+
+  padding: 10px 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+}
+
+/* logo */
+.logo {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+/* nav links */
+.navLinks {
+  display: flex;
+  gap: 10px;
+}
+
+/* default links */
+.navLinks a {
+  text-decoration: none;
+  color: #777;
+  font-size: 14px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  transition: all 0.25s ease;
+}
+
+/* hover */
+.navLinks a:hover {
+  background: #f2f2f2;
+  color: #111;
+}
+
+/* ACTIVE LINK (THIS is key difference) */
+.navLinks a:first-child {
+  background: #000;
+  color: #fff;
+}
+
+/* actions */
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* primary button */
+.primaryBtn {
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+/* secondary button */
+.secondaryBtn {
+  background: transparent;
+  border: none;
+  font-size: 13px;
+  color: #555;
+  cursor: pointer;
+}

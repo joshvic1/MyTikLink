@@ -192,3 +192,13 @@ html,
 body {
   overflow-x: hidden !important;
 }
+body {
+  background: #f5f5f5;
+  color: #111;
+  font-family: "Inter", sans-serif;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+  background: #fafafa;
+  color: #111;
+}

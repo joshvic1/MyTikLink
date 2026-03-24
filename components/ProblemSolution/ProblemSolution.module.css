@@ -1,0 +1,68 @@
+.section {
+  padding: 70px 0;
+  background: #f7f7f7;
+}
+
+.container {
+  width: 90%;
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* Heading */
+.heading {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.highlight {
+  font-weight: 700;
+}
+
+/* Sub */
+.sub {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 25px;
+}
+
+/* Tags */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.tag {
+  background: #fff;
+  border: 1px solid #eee;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+/* Button */
+.button {
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 14px 22px;
+  border-radius: 999px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* 📱 Mobile */
+@media (max-width: 600px) {
+  .heading {
+    font-size: 22px;
+  }
+
+  .sub {
+    font-size: 13px;
+  }
+}

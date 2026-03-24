@@ -1,0 +1,85 @@
+.hero {
+  background: #f5f5f5;
+  padding: 80px 20px 60px;
+  text-align: center;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* MAIN HEADING */
+.heading {
+  font-size: 52px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -1px;
+  color: #b0b0b0; /* light grey like design */
+}
+
+/* THIS is the black part */
+.heading span {
+  color: #000;
+}
+
+/* sub text */
+.sub {
+  margin-top: 16px;
+  font-size: 14px;
+  color: #777;
+}
+
+/* trust text */
+.trust {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #aaa;
+}
+
+/* CTA */
+.cta {
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* input + button style (like design) */
+.primaryBtn {
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 999px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.secondaryBtn {
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 12px 18px;
+  border-radius: 999px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* cards section */
+.cards {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* minimal cards */
+.card {
+  background: #fff;
+  padding: 14px 18px;
+  border-radius: 12px;
+  font-size: 13px;
+  color: #333;
+  border: 1px solid #eee;
+}

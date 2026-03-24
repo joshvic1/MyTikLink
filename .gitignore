@@ -11,6 +11,9 @@
 !.yarn/versions
 
 # testing
+/pages/home.js
+
+# testing
 /coverage
 
 # next.js

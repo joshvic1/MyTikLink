@@ -1,0 +1,123 @@
+.section {
+  padding: 80px 0;
+}
+
+/* Container */
+.container {
+  width: 90%;
+  max-width: 1100px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* Label */
+.label {
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: #999;
+  margin-bottom: 10px;
+}
+
+/* Heading */
+.heading {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 50px;
+  letter-spacing: -0.3px;
+}
+
+.highlight {
+  font-weight: 700;
+}
+
+/* Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+/* Card */
+.card {
+  background: #fff;
+  padding: 22px;
+  border-radius: 18px;
+  text-align: left;
+  border: 1px solid #eee;
+
+  transition: all 0.3s ease;
+
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.6s ease forwards;
+}
+
+/* Hover effect */
+.card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  border-color: #ddd;
+}
+
+/* Icon */
+.iconWrapper {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: #f5f5f5;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 18px;
+  margin-bottom: 12px;
+
+  transition: 0.3s ease;
+}
+
+/* Icon hover */
+.card:hover .iconWrapper {
+  background: #000;
+  color: #fff;
+  transform: rotate(-5deg) scale(1.1);
+}
+
+/* Title */
+.title {
+  font-size: 15px;
+  margin-bottom: 6px;
+}
+
+/* Desc */
+.desc {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* Animation */
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .heading {
+    font-size: 22px;
+  }
+}

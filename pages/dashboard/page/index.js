@@ -142,6 +142,28 @@ export default function PagesDashboard() {
     );
   }
 
+  function WhatsAppSupportCard() {
+    return (
+      <div className={styles.whatsappMiniCard}>
+        <div className={styles.whatsappMiniContent}>
+          <p className={styles.whatsappMiniText}>
+            💬 Need a guide setting up your landing page? Have any question?{" "}
+            <strong>Join our WhatsApp support (8AM–10AM)</strong>
+          </p>
+
+          <a
+            href="https://chat.whatsapp.com/KPnBwqSxyIXCka5if0Tzoy?mode=gi_t"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.whatsappMiniButton}
+          >
+            Join →
+          </a>
+        </div>
+      </div>
+    );
+  }
+
   /* =========================
      BLOCK UNAUTHORIZED
   ========================= */
@@ -155,7 +177,7 @@ export default function PagesDashboard() {
           Create Page
         </button>
       </div>
-      {pages.length > 0 && <SurveyCard />}
+      {pages.length > 0 && <WhatsAppSupportCard />}
       {pages.length === 0 ? (
         <div className={styles.empty}>
           <p>You do not have any page yet.</p>

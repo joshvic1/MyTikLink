@@ -11,12 +11,12 @@ export default function SupportChatButton() {
       setShowTip(false);
     }, 4000);
 
-    // Auto open chat after 20 seconds
+    // Auto open chat afte 200 seconds (just an example, can be removed or adjusted)
     const chatTimer = setTimeout(() => {
       if (window.Tawk_API) {
         window.Tawk_API.toggle();
       }
-    }, 20000);
+    }, 2000000);
 
     return () => {
       clearTimeout(tipTimer);
