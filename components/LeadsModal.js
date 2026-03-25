@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import { X, MessageCircle } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import styles from "@/styles/leadsModal.module.css";
+import { parsePhoneNumberFromString } from "libphonenumber-js";
 
 const PER_PAGE = 10;
 
@@ -48,6 +49,19 @@ export default function LeadsModal({ page, onClose }) {
   const start = (pageIndex - 1) * PER_PAGE;
   const visibleLeads = leads.slice(start, start + PER_PAGE);
 
+  function formatWhatsAppNumber(number) {
+    try {
+      const phone = parsePhoneNumberFromString(number, "NG");
+
+      if (phone && phone.isValid()) {
+        return phone.number.replace("+", ""); // remove +
+      }
+
+      return number.replace(/\D/g, "");
+    } catch {
+      return number.replace(/\D/g, "");
+    }
+  }
   return (
     <div className={styles.backdrop} onClick={onClose}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
@@ -70,28 +84,33 @@ export default function LeadsModal({ page, onClose }) {
           ) : (
             <div className={styles.scrollArea}>
               <ul className={styles.list}>
-                {visibleLeads.map((lead) => (
-                  <li key={lead._id} className={styles.item}>
-                    <div className={styles.leadInfo}>
-                      <strong>{lead.name}</strong>
-                      <span>{lead.whatsapp}</span>
-                    </div>
+                {visibleLeads.map((lead) => {
+                  const number = formatWhatsAppNumber(lead.whatsapp);
 
-                    <div className={styles.leadActions}>
-                      <a
-                        href={`https://wa.me/${lead.whatsapp.replace(/\D/g, "")}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={styles.whatsappBtn}
-                        title="Chat on WhatsApp"
-                      >
-                        <FaWhatsapp />
-                      </a>
+                  return (
+                    <li key={lead._id} className={styles.item}>
+                      <div className={styles.leadInfo}>
+                        <strong>{lead.name}</strong>
+                        <span>{lead.whatsapp}</span>
+                      </div>
 
-                      <small>{new Date(lead.createdAt).toLocaleString()}</small>
-                    </div>
-                  </li>
-                ))}
+                      <div className={styles.leadActions}>
+                        <a
+                          href={`https://api.whatsapp.com/send?phone=${number}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={styles.whatsappBtn}
+                        >
+                          <FaWhatsapp />
+                        </a>
+
+                        <small>
+                          {new Date(lead.createdAt).toLocaleString()}
+                        </small>
+                      </div>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           )}
