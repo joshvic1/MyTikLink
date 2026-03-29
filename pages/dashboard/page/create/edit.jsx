@@ -9,6 +9,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import TemplateEditor from "@/components/TemplateEditor";
 import PageNameSheet from "@/components/PageNameSheet";
 import styles from "@/styles/pageEditor.module.css";
+import UpgradeModal from "@/components/UpgradeModal";
 
 export default function PageEditor() {
   const router = useRouter();

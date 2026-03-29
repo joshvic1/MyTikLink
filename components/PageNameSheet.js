@@ -139,7 +139,12 @@ export default function PageNameSheet({
         {!isPro && (
           <p className={styles.upgradeText}>
             This feature is only available to Pro users.
-            <span className={styles.upgradeLink} onClick={onUpgrade}>
+            <span
+              className={styles.upgradeLink}
+              onClick={() => {
+                if (onUpgrade) onUpgrade();
+              }}
+            >
               Upgrade
             </span>
           </p>
