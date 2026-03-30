@@ -688,3 +688,13 @@
 .downloadBtn:hover {
   transform: scale(1.02);
 }
+.dateField {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dateField label {
+  font-size: 11px;
+  color: #94a3b8;
+}

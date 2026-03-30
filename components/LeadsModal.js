@@ -257,23 +257,21 @@ export default function LeadsModal({ page, onClose }) {
                         Select the period you want to export
                       </p>
 
-                      <div className={styles.dateColumn}>
+                      <div className={styles.dateField}>
+                        <label>Start date</label>
                         <input
                           type="date"
                           value={startDate}
-                          onChange={(e) => {
-                            setStartDate(e.target.value);
-                            setDateError("");
-                          }}
+                          onChange={(e) => setStartDate(e.target.value)}
                         />
+                      </div>
 
+                      <div className={styles.dateField}>
+                        <label>End date</label>
                         <input
                           type="date"
                           value={endDate}
-                          onChange={(e) => {
-                            setEndDate(e.target.value);
-                            setDateError("");
-                          }}
+                          onChange={(e) => setEndDate(e.target.value)}
                         />
                       </div>
 
