@@ -37,7 +37,7 @@ export default function LeadsModal({ page, onClose }) {
 
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `leads_${page.title}.csv`);
+    link.setAttribute("download", `MyTikLInk-Leads-${page.title}.csv`);
     document.body.appendChild(link);
 
     link.click();

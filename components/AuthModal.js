@@ -60,7 +60,7 @@ export default function AuthModal({
     } catch (err) {
       toast.error(
         err.response?.data?.message ||
-          "Temporary downtime, we are working on it",
+          "Incorrect Login Details or Account Not Found",
       );
     } finally {
       setLoading(false);
