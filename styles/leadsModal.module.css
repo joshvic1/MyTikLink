@@ -48,8 +48,8 @@
 
 /* CLOSE */
 .closeBtn {
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 30px;
   background: #ff4d6d;
   border-radius: 12px;
   border: none;
@@ -266,4 +266,425 @@
     transform: scale(1);
     opacity: 1;
   }
+}
+.titleWrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.count {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.headerActions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.downloadBtn {
+  width: 35px;
+  height: 30px;
+  border-radius: 12px;
+
+  background: rgba(139, 92, 246, 0.15);
+  border: 1px solid rgba(139, 92, 246, 0.35);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  transition: all 0.25s ease;
+}
+
+.downloadBtn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.downloadBtn:hover {
+  transform: translateY(-2px) scale(1.05);
+  background: rgba(139, 92, 246, 0.3);
+}
+.downloadContent {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 20px;
+  text-align: center;
+}
+
+.downloadTitle {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.downloadSub {
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+/* CARDS */
+.downloadCardWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.downloadCard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 14px;
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.downloadCard:hover {
+  transform: translateY(-2px);
+  background: rgba(139, 92, 246, 0.15);
+}
+
+.downloadCard strong {
+  font-size: 14px;
+}
+
+.downloadCard span {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+/* DIVIDER */
+.divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* RANGE BOX */
+.rangeBox {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rangeBox label {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.dateInputs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dateInputs input {
+  flex: 1;
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+  background: rgba(255, 255, 255, 0.06);
+  color: white;
+}
+
+.rangeBtn {
+  padding: 10px;
+  border-radius: 10px;
+
+  background: linear-gradient(135deg, #8b5cf6, #6366f1);
+  border: none;
+  color: white;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.rangeBtn:hover {
+  transform: scale(1.03);
+}
+
+/* CANCEL */
+.cancelBtn {
+  font-size: 13px;
+  color: #94a3b8;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.cancelBtn:hover {
+  text-decoration: underline;
+}
+.exportWrap {
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* HEADER */
+.exportHeader h2 {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.exportHeader p {
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+/* OPTIONS */
+.exportOptions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* CARD */
+.exportCard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 18px;
+  border-radius: 16px;
+
+  background: linear-gradient(
+    135deg,
+    rgba(139, 92, 246, 0.12),
+    rgba(99, 102, 241, 0.12)
+  );
+
+  border: 1px solid rgba(139, 92, 246, 0.25);
+
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.exportCard:hover {
+  transform: translateY(-2px) scale(1.02);
+  background: linear-gradient(
+    135deg,
+    rgba(139, 92, 246, 0.25),
+    rgba(99, 102, 241, 0.25)
+  );
+}
+
+.exportCard strong {
+  font-size: 15px;
+}
+
+.exportCard span {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.arrow {
+  font-size: 18px;
+}
+
+/* helper text */
+.helperText {
+  font-size: 11px;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+/* vertical layout */
+.dateColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* each field */
+.dateField {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dateField label {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+/* input */
+.dateField input {
+  width: 100%;
+  padding: 9px 10px;
+
+  border-radius: 8px;
+  border: none;
+
+  background: rgba(255, 255, 255, 0.06);
+  color: white;
+
+  font-size: 12px;
+}
+
+/* PRIMARY BUTTON */
+.primaryBtn {
+  padding: 10px;
+  border-radius: 10px;
+
+  background: linear-gradient(135deg, #8b5cf6, #6366f1);
+  border: none;
+
+  font-size: 7px;
+  font-weight: 600;
+
+  color: white;
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.primaryBtn:hover {
+  transform: scale(1.02);
+}
+
+/* CANCEL */
+.cancelBtn {
+  font-size: 12px;
+  color: #94a3b8;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.cancelBtn:hover {
+  color: white;
+}
+.exportWrap {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.exportTitle {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* RADIO GROUP */
+.radioGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.radioItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 10px 12px;
+  border-radius: 10px;
+
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  cursor: pointer;
+}
+
+.radioItem input {
+  accent-color: #8b5cf6;
+}
+
+.radioItem span {
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+}
+
+.radioItem small {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+/* DATE SECTION */
+.dateSection {
+  padding: 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.helperText {
+  font-size: 11px;
+  color: #64748b;
+}
+
+.dateColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dateColumn input {
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+
+  background: rgba(255, 255, 255, 0.06);
+  color: white;
+  font-size: 12px;
+}
+
+/* ERROR */
+.errorText {
+  font-size: 11px;
+  color: #f87171;
+}
+
+/* ACTION BUTTONS */
+.actionsRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.cancelBtn {
+  flex: 1;
+  padding: 10px;
+
+  border-radius: 10px;
+  border: none;
+
+  background: rgba(255, 255, 255, 0.06);
+  color: #94a3b8;
+  cursor: pointer;
+}
+
+.downloadBtn {
+  flex: 1;
+  padding: 10px;
+
+  border-radius: 10px;
+  border: none;
+
+  background: linear-gradient(135deg, #8b5cf6, #6366f1);
+  color: white;
+  font-weight: 500;
+
+  cursor: pointer;
+}
+
+.downloadBtn:hover {
+  transform: scale(1.02);
 }
