@@ -24,22 +24,24 @@ export default function PageNameSheet({
     setRedirectUrl(initialRedirectUrl);
   }, [initialTitle, initialRedirectUrl]);
 
-  const normalizeUrl = (url) => {
+  const normalizeUrl = (url = "") => {
+    if (typeof url !== "string") return "";
+
     if (!url.startsWith("http://") && !url.startsWith("https://")) {
       return "https://" + url;
     }
+
     return url;
   };
 
   const isValidUrl = (url) => {
+    if (!url || typeof url !== "string") return false;
+
     try {
       const finalUrl = normalizeUrl(url);
       const parsed = new URL(finalUrl);
 
-      // must contain a dot in hostname (e.g. wa.me, google.com)
       if (!parsed.hostname.includes(".")) return false;
-
-      // prevent short junk like wa1, abcd
       if (parsed.hostname.length < 4) return false;
 
       return true;
@@ -61,7 +63,7 @@ export default function PageNameSheet({
       hasError = true;
     }
 
-    if (!redirectUrl.trim()) {
+    if (!redirectUrl || !redirectUrl.trim()) {
       setLinkError("Please enter a redirect link");
       hasError = true;
     } else if (!isValidUrl(redirectUrl)) {
@@ -76,7 +78,8 @@ export default function PageNameSheet({
     try {
       setSaving(true);
 
-      const finalUrl = normalizeUrl(redirectUrl.trim());
+      const cleaned = redirectUrl?.trim() || "";
+      const finalUrl = normalizeUrl(cleaned);
 
       await onSave({
         title: title.trim(),
@@ -120,7 +123,7 @@ export default function PageNameSheet({
           <input
             className={styles.input}
             placeholder="https://wa.me/123456789"
-            value={redirectUrl}
+            value={redirectUrl || ""}
             onChange={(e) => {
               setRedirectUrl(e.target.value);
               setLinkError("");

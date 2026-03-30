@@ -50,7 +50,7 @@ export default function AuthModal({
         {
           email: form.email,
           password: form.password,
-        }
+        },
       );
 
       login(res.data.token);
@@ -58,7 +58,10 @@ export default function AuthModal({
       handleClose();
       router.push("/dashboard");
     } catch (err) {
-      toast.error(err.response?.data?.message || "Incorrect login details");
+      toast.error(
+        err.response?.data?.message ||
+          "Temporary downtime, we are working on it",
+      );
     } finally {
       setLoading(false);
     }
@@ -101,7 +104,7 @@ export default function AuthModal({
     try {
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/auth/register`,
-        form
+        form,
       );
 
       login(res.data.token);
@@ -122,7 +125,7 @@ export default function AuthModal({
     try {
       await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/auth/forgot-password`,
-        { email: form.email }
+        { email: form.email },
       );
 
       toast.success("Password reset link sent!");
@@ -148,10 +151,10 @@ export default function AuthModal({
           mode === "login"
             ? "Login to TikLink"
             : mode === "register"
-            ? "Create your TikLink account"
-            : mode === "forgot"
-            ? "Reset Your Password"
-            : ""
+              ? "Create your TikLink account"
+              : mode === "forgot"
+                ? "Reset Your Password"
+                : ""
         }
       >
         <div className={styles.container}>

@@ -18,8 +18,8 @@ export default function TemplateEditor({ template, config, onChange }) {
     const recalc = () => {
       const containerRect = containerRef.current.getBoundingClientRect();
 
-      const items = template.editableSchema.fields
-        .map((field) => {
+      const items = template?.editableSchema?.fields
+        ?.map((field) => {
           const el = containerRef.current.querySelector(field.selector);
           if (!el) return null;
 
@@ -46,7 +46,7 @@ export default function TemplateEditor({ template, config, onChange }) {
   const openEditor = (field) => {
     setActiveField(field);
 
-    const currentVal = config[field.key];
+    const currentVal = config?.[field.key];
 
     if (field.type === "image") {
       setValue(currentVal?.url || field.defaultValue || "");
@@ -64,7 +64,14 @@ export default function TemplateEditor({ template, config, onChange }) {
   };
 
   const renderedHTML = template.html.replace(/{{(.*?)}}/g, (_, key) => {
-    const val = config[key.trim()];
+    if (!key || typeof key !== "string") return "";
+
+    const cleanKey = key.trim();
+
+    if (!cleanKey) return "";
+
+    const val = config?.[cleanKey];
+
     if (!val) return "";
 
     if (typeof val === "object" && val.url) {

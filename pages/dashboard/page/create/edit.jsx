@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -13,8 +14,11 @@ import UpgradeModal from "@/components/UpgradeModal";
 
 export default function PageEditor() {
   const router = useRouter();
-  const { templateId, pageId } = router.query;
 
+  const searchParams = useSearchParams();
+
+  const templateId = searchParams.get("templateId");
+  const pageId = searchParams.get("pageId");
   const [template, setTemplate] = useState(null);
   const [config, setConfig] = useState({});
   const [showNameSheet, setShowNameSheet] = useState(false);
