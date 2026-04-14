@@ -7,7 +7,7 @@ import styles from "@/styles/TelegramChatButton.module.css";
 import Modal from "@/components/Modal";
 
 export default function TelegramChatButton({
-  groupLink = "https://chat.whatsapp.com/KPnBwqSxyIXCka5if0Tzoy?mode=gi_t",
+  groupLink = "https://mytiklink.com/r/mytiklink",
 }) {
   const [visible, setVisible] = useState(false);
   const [openModal, setOpenModal] = useState(false);
