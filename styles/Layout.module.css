@@ -23,3 +23,6 @@
   flex: 1;
   padding-top: var(--header-height, 80px); /* space below floating header */
 }
+.footer {
+  margin-top: 200px; /* pushes footer to bottom if content is short */
+}

@@ -71,6 +71,9 @@ export default function Home() {
       {/* ===== FAQ ===== */}
       <FAQ />
 
+      {/* ===== FOOTER ===== */}
+      <Footer />
+
       {/* ===== AUTH MODAL ===== */}
       {authMode && (
         <AuthModal

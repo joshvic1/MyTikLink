@@ -6,6 +6,8 @@ import Footer from "./Footer/Footer";
 import { useState, useEffect } from "react";
 import useAuth from "@/hooks/useAuth";
 import { useSearchParams } from "next/navigation";
+import AuthModal from "@/components/AuthModal";
+import Toast from "@/components/Toast";
 
 export default function Layout({ children }) {
   const { login, subscribe } = useAuth();
@@ -41,7 +43,6 @@ export default function Layout({ children }) {
     <div className={styles.container}>
       <Navbar openAuth={openAuth} isLoggedIn={isLoggedIn} />
       <main className={styles.main}>{children}</main>
-      <Footer />
     </div>
   );
 }
