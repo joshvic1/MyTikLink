@@ -1,0 +1,75 @@
+.section {
+  position: relative;
+  background: #000;
+  color: white;
+
+  padding: 60px 20px 160px;
+  text-align: center;
+
+  overflow: hidden;
+}
+
+/* CURVED BOTTOM */
+.section::after {
+  content: "";
+  position: absolute;
+  bottom: -100px;
+  left: 0;
+  width: 100%;
+  height: 240px;
+
+  background: #f8fafc; /* your page background */
+
+  border-top-left-radius: 100% 80px;
+  border-top-right-radius: 100% 80px;
+}
+
+/* CONTENT */
+.inner {
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.inner h2 {
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 40px;
+}
+
+/* BUTTONS */
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+/* PRIMARY BUTTON */
+.primary {
+  background: white;
+  color: #000;
+
+  padding: 14px 28px;
+  border-radius: 8px;
+  border: none;
+
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* SECONDARY BUTTON */
+.secondary {
+  background: transparent;
+  color: white;
+
+  padding: 14px 28px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+
+  font-weight: 600;
+  cursor: pointer;
+}

@@ -1,80 +1,427 @@
+/* NAVBAR */
 .navbar {
-  width: 100%;
-  background: #f5f5f5;
-  padding: 10px 0;
-  display: flex;
-  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  z-index: 1100;
+
+  padding: 0 120px;
+  background: rgba(0, 0, 0, 0.98);
+  backdrop-filter: blur(10px);
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* floating white container */
+/* CONTAINER */
 .container {
-  width: 100%;
-
-  padding: 10px 16px;
+  max-width: 1200px;
+  margin: 0 auto;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+  padding: 16px 20px;
 }
 
-/* logo */
-.logo {
-  font-weight: 600;
-  font-size: 16px;
+/* LOGO */
+.logo img {
+  height: 46px;
+  object-fit: contain;
 }
 
-/* nav links */
+/* DESKTOP NAV */
 .navLinks {
   display: flex;
-  gap: 10px;
+  gap: 30px;
 }
 
-/* default links */
 .navLinks a {
-  text-decoration: none;
-  color: #777;
   font-size: 14px;
-  padding: 6px 14px;
-  border-radius: 999px;
-  transition: all 0.25s ease;
-}
-
-/* hover */
-.navLinks a:hover {
-  background: #f2f2f2;
-  color: #111;
-}
-
-/* ACTIVE LINK (THIS is key difference) */
-.navLinks a:first-child {
-  background: #000;
   color: #fff;
+  text-decoration: none;
+  position: relative;
 }
 
-/* actions */
+.navLinks a::after,
+.link::after,
+.link2::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #2f8cff;
+  transition: 0.3s;
+}
+
+.navLinks a:hover::after {
+  width: 100%;
+}
+
+/* RIGHT SIDE */
 .actions {
   display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.link {
+  font-size: 14px;
+  color: #fff;
+  text-decoration: none;
+}
+
+.link2 {
+  font-size: 14px;
+  color: #fff;
+  text-decoration: none;
+}
+.link2:hover {
+  cursor: pointer;
+}
+/* CTA */
+.cta {
+  padding: 14px 16px;
+  border-radius: 6px;
+
+  background: linear-gradient(135deg, #2f8cff, #8b5cf6);
+  border: none;
+  color: #fff;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+/* MOBILE MENU BUTTON */
+.menuBtn {
+  display: none;
+  color: white;
+  cursor: pointer;
+  z-index: 1200;
+}
+
+/* OVERLAY */
+.overlay {
+  position: fixed;
+  inset: 0;
+
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(6px);
+
+  opacity: 0;
+  pointer-events: none;
+
+  transition: 0.3s;
+  z-index: 1000;
+}
+
+.show {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* MOBILE MENU */
+.mobileMenu {
+  display: none;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 65vh;
+  background: #000;
+
+  transform: translateY(-100%) scale(0.95);
+  opacity: 0;
+  transition: 0.4s ease;
+
+  z-index: 1050;
+  padding: 20px;
+
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.open {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+/* MOBILE TOP */
+.mobileTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 30px;
+}
+
+.mobileTop img {
+  height: 20px;
+}
+
+/* MOBILE LINKS */
+.mobileLinks {
+  display: flex;
+  flex-direction: column;
+
   gap: 10px;
 }
 
-/* primary button */
-.primaryBtn {
-  background: #000;
-  color: #fff;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 999px;
-  font-size: 13px;
-  cursor: pointer;
+.mobileItem {
+  padding: 16px 18px;
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.03); /* 🔥 subtle card bg */
+  border: 1px solid rgba(255, 255, 255, 0.05);
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  color: white;
+  font-size: 15px;
+  font-weight: 500;
+
+  transition: all 0.25s ease;
+  backdrop-filter: blur(8px);
+}
+.mobileItem:hover {
+  background: rgba(255, 255, 255, 0.06);
+  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.08);
 }
 
-/* secondary button */
-.secondaryBtn {
-  background: transparent;
+/* MOBILE CTA */
+/* .mobileCTA {
+  margin-top: 20px;
+
+  padding: 14px;
+  border-radius: 8px;
+
+  background: linear-gradient(135deg, #2f8cff, #8b5cf6);
   border: none;
-  font-size: 13px;
-  color: #555;
-  cursor: pointer;
+
+  color: white;
+  font-weight: 600;
+} */
+
+/* RESPONSIVE */
+
+@media (max-width: 1100px) {
+  .actions .link {
+    display: none; /* hide FAQs/Login only */
+  }
+}
+@media (max-width: 900px) {
+  .navLinks,
+  .actions {
+    display: none;
+  }
+
+  .container {
+    padding: 12px 4px; /* 👈 reduce side padding */
+  }
+
+  .logo img {
+    height: 35px; /* slightly smaller = cleaner */
+  }
+
+  .menuBtn {
+    display: block;
+  }
+
+  .menuBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 40px;
+    height: 40px;
+  }
+
+  .mobileMenu {
+    display: block;
+  }
+
+  .navbar {
+    padding: 0 20px;
+  }
+  .CTA {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    margin-top: 20px;
+  }
+  .mobileCTA,
+  .mobileCTA2 {
+    flex: 1; /* 🔥 makes them equal width */
+    padding: 14px 0;
+
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: 0.2s ease;
+  }
+  .mobileCTA {
+    background: linear-gradient(135deg, #2f8cff, #8b5cf6);
+    border: none;
+    color: white;
+  }
+
+  .mobileCTA:hover {
+    transform: translateY(-1px);
+    opacity: 0.95;
+  }
+  .mobileCTA2 {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+  }
+
+  .mobileCTA2:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+  .mobileCTA2 {
+    backdrop-filter: blur(6px);
+  }
+}
+.cta {
+  position: relative;
+  padding: 14px 18px;
+  border-radius: 8px;
+
+  background: linear-gradient(135deg, #2f8cff, #8b5cf6);
+  color: white;
+  font-weight: 600;
+
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+/* GLOW */
+.cta::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+
+  background: linear-gradient(135deg, #2f8cff, #8b5cf6);
+  filter: blur(12px);
+  opacity: 0.5;
+
+  z-index: -1;
+}
+
+/* SHIMMER */
+.cta::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+
+  transition: 0.6s;
+}
+
+.cta:hover::after {
+  left: 100%;
+}
+
+.cta:hover {
+  transform: translateY(-2px) scale(1.03);
+}
+.mobileCTA {
+  position: relative;
+  overflow: hidden;
+
+  background: linear-gradient(135deg, #2f8cff, #8b5cf6);
+  border: none;
+  color: white;
+
+  transition: all 0.3s ease;
+}
+
+/* GLOW */
+.mobileCTA::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+
+  background: linear-gradient(135deg, #2f8cff, #8b5cf6);
+  filter: blur(10px);
+  opacity: 0.5;
+
+  z-index: -1;
+}
+
+/* SHIMMER SWEEP */
+.mobileCTA::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+
+  width: 100%;
+  height: 100%;
+
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+
+  transition: 0.6s;
+}
+
+.mobileCTA:hover::after {
+  left: 100%;
+}
+@keyframes pulseGlow {
+  0% {
+    box-shadow: 0 0 0 rgba(47, 140, 255, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(47, 140, 255, 0.4);
+  }
+  100% {
+    box-shadow: 0 0 0 rgba(47, 140, 255, 0.3);
+  }
+}
+
+.mobileCTA {
+  animation: pulseGlow 3s infinite;
+}
+.mobileCTA2 {
+  position: relative;
+
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+
+  backdrop-filter: blur(10px);
+
+  transition: all 0.3s ease;
+}
+
+.mobileCTA2:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: translateY(-1px);
 }

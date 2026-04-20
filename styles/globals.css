@@ -142,11 +142,11 @@ button:hover {
 /*         UTILITY CLASSES       */
 /* ============================= */
 
-.container {
+/* .container {
   width: 90%;
   max-width: 1200px;
   margin: 0 auto;
-}
+} */
 
 .flex-center {
   display: flex;
@@ -201,4 +201,13 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
   background: #fafafa;
   color: #111;
+}
+/* GLOBAL CONTAINER */
+/* .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 120px 80px; 
+} */
+html {
+  scroll-behavior: smooth;
 }

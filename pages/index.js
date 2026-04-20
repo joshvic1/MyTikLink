@@ -1,46 +1,35 @@
 "use client";
-import { useEffect, useState } from "react";
 
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 import useAuth from "@/hooks/useAuth";
 import AuthModal from "@/components/AuthModal";
 import Toast from "@/components/Toast";
-import {
-  ArrowRight,
-  Check,
-  X,
-  Activity,
-  Sparkles,
-  Users,
-  BarChart3,
-  Link as LinkIcon,
-  Smartphone,
-  Shield,
-} from "lucide-react";
-import s from "@/styles/HomeV3.module.css";
-import styles from "@/styles/Home.module.css";
-import HeroMinimal from "@/components/HeroMinimal";
-import ProblemSolution from "@/components/ProblemSolution";
-import HowItWorks from "@/components/HowItWorks";
-import Features from "@/components/Features";
-import Stats from "@/components/Stats";
-import Pricing from "@/components/Pricing";
-import Showcase from "@/components/Showcase";
-import FinalCTA from "@/components/FinalCTA";
 
-export default function HomeV3() {
-  const router = useRouter();
+/* ===== NEW UI COMPONENTS ===== */
+import Navbar from "@/components/Navbar/Navbar";
+import Hero from "@/components/Hero/Hero";
+import Features from "@/components/Features/Features";
+import Pricing from "@/components/Pricing/Pricing";
+import Testimonials from "@/components/Testimonials/Testimonials";
+import FinalCTA from "@/components/FinalCta/FinalCta";
+import FAQ from "@/components/FAQS/FAQS";
+import Footer from "@/components/Footer/Footer";
+
+export default function Home() {
   const { login, subscribe } = useAuth();
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [authMode, setAuthMode] = useState(null);
   const [toast, setToast] = useState(null);
-  const [billing, setBilling] = useState("monthly");
 
   const searchParams = useSearchParams();
 
+  /* ===== HANDLE URL AUTH (?auth=login) ===== */
   useEffect(() => {
     const auth = searchParams.get("auth");
+
     if (auth === "login") {
       setAuthMode("login");
     } else if (auth === "register") {
@@ -48,62 +37,47 @@ export default function HomeV3() {
     }
   }, [searchParams]);
 
+  /* ===== LISTEN TO AUTH STATE ===== */
   useEffect(() => {
     const unsub = subscribe(setIsLoggedIn);
     return unsub;
   }, [subscribe]);
 
+  /* ===== HELPERS ===== */
   const openAuth = (mode) => setAuthMode(mode);
   const closeAuth = () => setAuthMode(null);
   const showToast = (message, type = "success") => setToast({ message, type });
 
-  // Reveal on scroll
-  useEffect(() => {
-    const els = document.querySelectorAll(`.${styles.reveal}`);
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) e.target.classList.add(styles.inView);
-        });
-      },
-      { threshold: 0.18 }
-    );
-    els.forEach((el) => io.observe(el));
-    return () => io.disconnect();
-  }, []);
-
   return (
-    <main className={styles.page}>
+    <main style={{ background: "#f9f9f9" }}>
+      {/* ===== NAVBAR ===== */}
+      <Navbar openAuth={openAuth} isLoggedIn={isLoggedIn} />
+
       {/* ===== HERO ===== */}
-      <HeroMinimal />
-      {/* ===== PROBLEM / SOLUTION ===== */}
-      <ProblemSolution />
+      <Hero openAuth={openAuth} />
 
-      {/* ===== HOW IT WORKS (3 steps) ===== */}
-      <HowItWorks />
-
-      {/* ===== FEATURES (4 minimal cards) ===== */}
+      {/* ===== FEATURES ===== */}
       <Features />
 
-      {/* ===== WHY CREATORS LOVE TIKLINK (stats/testimonials) ===== */}
-      <Stats />
-
       {/* ===== PRICING ===== */}
-      <Pricing />
+      <Pricing openAuth={openAuth} />
 
-      {/* ===== SHOWCASE (looping animation slot) ===== */}
-      <Showcase />
+      {/* ===== TESTIMONIALS ===== */}
+      <Testimonials />
 
       {/* ===== FINAL CTA ===== */}
-      <FinalCTA />
+      <FinalCTA openAuth={openAuth} />
 
-      {/* AUTH + TOAST */}
+      {/* ===== FAQ ===== */}
+      <FAQ />
+
+      {/* ===== AUTH MODAL ===== */}
       {authMode && (
         <AuthModal
           isOpen={!!authMode}
           mode={authMode}
           onClose={closeAuth}
-          switchMode={setAuthMode} // 👈 ADD THIS
+          switchMode={setAuthMode}
           onAuthSuccess={(msg, token) => {
             login(token);
             showToast(msg, "success");
@@ -112,6 +86,7 @@ export default function HomeV3() {
         />
       )}
 
+      {/* ===== TOAST ===== */}
       {toast && (
         <Toast
           message={toast.message}
