@@ -197,6 +197,15 @@
   transform: translateY(-1px);
   border-color: rgba(255, 255, 255, 0.08);
 }
+.mobileItem button {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 0;
+  cursor: pointer;
+}
 
 /* MOBILE CTA */
 /* .mobileCTA {

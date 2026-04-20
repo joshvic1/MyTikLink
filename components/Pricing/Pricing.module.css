@@ -28,15 +28,13 @@
 
 /* WRAP */
 .pricingWrap {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 24px;
-  justify-content: center;
-  align-items: stretch;
 }
 
 /* CARD */
 .card {
-  flex: 1;
   max-width: 100%;
 
   background: #020617;
@@ -140,7 +138,9 @@
   .pricingWrap {
     gap: 18px;
   }
-
+  .pricingWrap {
+    grid-template-columns: repeat(3, 1fr);
+  }
   .card {
     max-width: 280px;
     padding: 24px;
@@ -173,17 +173,13 @@
   }
 
   .pricingWrap {
-    flex-direction: column;
-    align-items: center;
-    gap: 18px;
+    grid-template-columns: 1fr;
+    justify-items: center;
   }
 
   .card {
     width: 100%;
-    max-width: 320px; /* 👈 THIS is the fix */
-    margin: 0 auto; /* 👈 center on mobile */
-    padding: 30px;
-    border-radius: 4px;
+    max-width: 320px;
   }
 
   /* 🔥 IMPORTANT: REMOVE SCALE ON MOBILE */
@@ -213,9 +209,7 @@
     width: 100%;
   }
 }
-.pricingWrap {
-  flex-wrap: wrap; /* prevents overflow */
-}
+
 .card {
   backdrop-filter: blur(6px);
 }

@@ -193,24 +193,42 @@ export default function Navbar({ openAuth }) {
           }}
         >
           <motion.div
-            className={styles.mobileItem}
             variants={{
               hidden: { opacity: 0, y: 20 },
               show: { opacity: 1, y: 0 },
             }}
+          >
+            <a
+              href="/blog"
+              className={styles.mobileItem}
+              onClick={handleNavLinkClick}
+            >
+              Blog
+            </a>
+          </motion.div>
+          <a
+            href="#features"
+            className={styles.mobileItem}
             onClick={handleNavLinkClick}
           >
-            <a href="/blog">Blog</a>
-          </motion.div>
-          <div className={styles.mobileItem} onClick={handleNavLinkClick}>
-            <a href="#features">How It Works</a>
-          </div>
-          <div className={styles.mobileItem} onClick={handleNavLinkClick}>
-            <a href="#pricing">Pricing</a>
-          </div>
-          <div className={styles.mobileItem} onClick={handleNavLinkClick}>
-            <a href="#faqs">FAQs</a>
-          </div>
+            How It Works
+          </a>
+
+          <a
+            href="#pricing"
+            className={styles.mobileItem}
+            onClick={handleNavLinkClick}
+          >
+            Pricing
+          </a>
+
+          <a
+            href="#faqs"
+            className={styles.mobileItem}
+            onClick={handleNavLinkClick}
+          >
+            FAQs
+          </a>
 
           {/* MOBILE CTA */}
           <div className={styles.CTA}>
