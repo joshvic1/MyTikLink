@@ -90,7 +90,7 @@ export default function Testimonials() {
               {/* CARD 1 */}
               <div className={`${styles.card} ${styles.red}`}>
                 <div className={styles.cardTop}>
-                  <img src="/user1.jpg" alt="" />
+                  <img src="/user1.png" alt="" />
                   <div>
                     <h4>Joshspot Media</h4>
                     <span>Digital Marketer</span>
@@ -121,7 +121,7 @@ export default function Testimonials() {
               {/* CARD 1 */}
               <div className={`${styles.card} ${styles.purple}`}>
                 <div className={styles.cardTop}>
-                  <img src="/user1.jpg" alt="" />
+                  <img src="/user2.png" alt="" />
                   <div>
                     <h4>Chinedu Isaac</h4>
                     <span>Business Owner</span>
@@ -154,7 +154,7 @@ export default function Testimonials() {
               {/* CARD 2 */}
               <div className={`${styles.card} ${styles.pink}`}>
                 <div className={styles.cardTop}>
-                  <img src="/user2.jpg" alt="" />
+                  <img src="/user3.png" alt="" />
                   <div>
                     <h4>Aisha Bello</h4>
                     <span>Skincare Vendor</span>
@@ -187,7 +187,7 @@ export default function Testimonials() {
               {/* CARD 3 */}
               <div className={`${styles.card} ${styles.blue}`}>
                 <div className={styles.cardTop}>
-                  <img src="/user3.jpg" alt="" />
+                  <img src="/user4.png" alt="" />
                   <div>
                     <h4>Daniel James</h4>
                     <span>Digital Marketer</span>
@@ -218,7 +218,7 @@ export default function Testimonials() {
               {/* CARD 4 */}
               <div className={`${styles.card} ${styles.brown}`}>
                 <div className={styles.cardTop}>
-                  <img src="/user3.jpg" alt="" />
+                  <img src="/user5.png" alt="" />
                   <div>
                     <h4>Tobi Adeyemi</h4>
                     <span>Social Media Influencer</span>
@@ -248,7 +248,7 @@ export default function Testimonials() {
               {/* CARD 5 */}
               <div className={`${styles.card} ${styles.red}`}>
                 <div className={styles.cardTop}>
-                  <img src="/user3.jpg" alt="" />
+                  <img src="/user6.png" alt="" />
                   <div>
                     <h4>Titilayo Grace</h4>
                     <span>Whatsapp Vendor</span>
