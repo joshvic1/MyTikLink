@@ -142,7 +142,7 @@ export default function Settings() {
       showToast("Code sent to your email", "success");
 
       // ✅ Start timer
-      setTimer(4);
+      setTimer(120);
     } catch (err) {
       const message = err?.response?.data?.message || "Failed to send code";
 
