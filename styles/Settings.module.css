@@ -1,0 +1,434 @@
+.page {
+  background: #000;
+  min-height: 100vh;
+  color: white;
+  padding: 40px 20px;
+  margin: 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* TITLE */
+.title {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+.headerRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.backBtn {
+  width: 36px;
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.backBtn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateX(-2px);
+}
+/* GRID */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+/* CARD */
+.card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  border-radius: 18px;
+  padding: 20px;
+
+  backdrop-filter: blur(12px);
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  transition: 0.3s ease;
+}
+
+.card:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* USER */
+.userRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 4px;
+}
+
+.userRow img {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.userRow h4 {
+  font-size: 14px;
+  margin-bottom: 1px;
+  margin-top: 1px;
+}
+
+.userRow span {
+  font-size: 12px;
+  color: #94a3b8;
+  padding-top: 1px;
+}
+
+.planBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 6px 10px;
+  border-radius: 999px;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* 🔴 FREE PLAN */
+.freePlan {
+  background: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* 🟢 ACTIVE PLAN */
+.activePlan {
+  background: rgba(34, 197, 94, 0.12);
+  color: #22c55e;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+/* INPUT */
+.field label {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.inputRow {
+  display: flex;
+  gap: 10px;
+  margin-top: 5px;
+}
+
+.inputRow input {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  color: white;
+  font-size: 13px;
+}
+
+.inputRow button {
+  padding: 10px 14px;
+  border-radius: 8px;
+
+  background: #1d4ed8;
+  border: none;
+  color: white;
+
+  cursor: pointer;
+}
+
+.inputRow input[readonly] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.activeInput {
+  border: 1px solid #2f8cff !important;
+  box-shadow: 0 0 0 2px rgba(47, 140, 255, 0.2);
+}
+.codeBtn {
+  transition: 0.2s;
+}
+
+.disabledBtn {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #334155 !important; /* muted grey */
+}
+.primaryBtn {
+  transition: 0.2s;
+}
+
+.primaryBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+/* FULL INPUT */
+.fullInput {
+  width: 100%;
+  padding: 12px;
+
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  background: rgba(255, 255, 255, 0.03);
+  color: white;
+}
+
+/* BUTTONS */
+.fullBtn {
+  width: 100%;
+  padding: 12px;
+
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.primaryBtn {
+  width: 100%;
+  padding: 12px;
+
+  border-radius: 10px;
+  border: none;
+
+  background: linear-gradient(135deg, #2f8cff, #8b5cf6);
+  color: white;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.outlineBtn {
+  padding: 10px 14px;
+
+  border-radius: 8px;
+  border: 1px solid #334155;
+
+  background: transparent;
+  color: white;
+
+  cursor: pointer;
+}
+
+/* TEXT */
+.sub {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+/* PLAN */
+.planTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.planBadge {
+  font-size: 12px;
+  padding: 6px 10px;
+
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* LINK ROW */
+.linkRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+
+  cursor: pointer;
+}
+
+/* BILLING */
+.billingRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.billingRow h4 {
+  font-size: 14px;
+}
+
+.expire {
+  font-size: 12px;
+  color: #ef4444;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* SWITCH */
+.switchRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.switch {
+  width: 64px;
+  height: 24px;
+
+  background: #1e293b;
+  border-radius: 999px;
+
+  display: flex;
+  align-items: center;
+  padding: 3px;
+
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.circle {
+  width: 15px;
+  height: 15px;
+
+  background: white;
+  border-radius: 50%;
+
+  transition: 0.3s;
+}
+
+.active {
+  background: #3b82f6;
+}
+
+.active .circle {
+  transform: translateX(20px);
+}
+
+/* UPGRADE BOX */
+.upgradeBox {
+  margin-top: 40px;
+
+  max-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 18px;
+  padding: 20px;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  text-align: center;
+}
+
+.planCard {
+  margin: 20px 0;
+
+  padding: 16px;
+  border-radius: 14px;
+
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.planCard h4 {
+  font-size: 16px;
+}
+
+.planCard p {
+  font-size: 14px;
+  margin-top: 6px;
+}
+
+.planCard span {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+/* CANCEL */
+.cancel {
+  display: block;
+  margin-top: 10px;
+  font-size: 13px;
+  color: #94a3b8;
+  cursor: pointer;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 699px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .title {
+    font-size: 26px;
+  }
+
+  .billingRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .actions {
+    width: 100%;
+  }
+
+  .actions button {
+    flex: 1;
+  }
+}
+.planBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 16px;
+  border-radius: 16px;
+
+  border: 1px solid #334155;
+  background: rgba(255, 255, 255, 0.02);
+
+  margin-bottom: 16px;
+}
+
+.checkIcon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #22c55e;
+  color: black;
+  font-size: 14px;
+  font-weight: bold;
+}

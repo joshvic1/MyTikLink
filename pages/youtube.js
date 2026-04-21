@@ -1,142 +1,214 @@
-export default function Page() {
+import React, { useState } from "react";
+
+const Kiddies3DPage = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Form Submitted:", formData);
+    alert("Submitted successfully!");
+  };
+
   return (
-    <div className="yt-wrap">
-      <div className="yt-card">
-        <div className="yt-badge">▶ YOUTUBE EXCLUSIVE</div>
-
-        <h1>Watch My Exclusive YouTube Content</h1>
-
-        <p className="yt-sub">
-          This content is only available for a limited time. Don’t miss out.
-        </p>
-
-        <div className="yt-stats">
-          <div>
-            <strong>120K+</strong>
-            <span>Subscribers</span>
-          </div>
-          <div>
-            <strong>5M+</strong>
-            <span>Total Views</span>
-          </div>
-          <div>
-            <strong>100+</strong>
-            <span>Videos</span>
-          </div>
-        </div>
-
-        <button className="yt-btn">Watch Now</button>
-
-        <p className="yt-note">Limited access. Watch before it gets removed.</p>
-      </div>
-
-      <style jsx>{`
-        .yt-wrap {
+    <>
+      <style>{`
+        .kid-wrap {
           min-height: 100vh;
-          background: radial-gradient(circle at top, #0f0f0f, #000);
+          background: linear-gradient(180deg, #2f6fa5, #1c4f78);
+          font-family: Inter, sans-serif;
+
           display: flex;
+          flex-direction: column;
           align-items: center;
           justify-content: center;
-          padding: 24px;
-          font-family: Inter, system-ui, sans-serif;
+
+          padding: 30px 20px;
+          position: relative;
+          overflow: hidden;
         }
 
-        .yt-card {
-          background: #111;
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          border-radius: 20px;
-          padding: 40px 28px;
-          max-width: 480px;
-          width: 100%;
+        /* Background Glow */
+        .kid-wrap::before {
+          content: "";
+          position: absolute;
+          bottom: -100px;
+          left: -100px;
+          width: 400px;
+          height: 400px;
+          background: radial-gradient(circle, #f59e0b, transparent 70%);
+          filter: blur(80px);
+        }
+
+        .kid-wrap::after {
+          content: "";
+          position: absolute;
+          top: -100px;
+          right: -100px;
+          width: 400px;
+          height: 400px;
+          background: radial-gradient(circle, #38bdf8, transparent 70%);
+          filter: blur(80px);
+        }
+
+        .kid-hero {
           text-align: center;
-          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+          margin-bottom: 10px;
+          z-index: 1;
+          gap: 2px;
         }
 
-        .yt-badge {
-          display: inline-block;
-          background: #ff0000;
-          color: white;
-          font-weight: 700;
-          font-size: 12px;
-          padding: 6px 14px;
-          border-radius: 999px;
-          margin-bottom: 18px;
-          letter-spacing: 1px;
-        }
+     .kid-hero h1 {
+  font-size: clamp(28px, 8vw, 42px);
+  font-weight: 900;
+  color: #f59e0b;
+  margin-bottom: 4px;
 
-        h1 {
-          font-size: 26px;
-          font-weight: 900;
-          color: white;
-          margin-bottom: 14px;
-          line-height: 1.3;
-        }
+  /* 🔥 REAL 3D STACK */
+  text-shadow:
+    0 2px 0 #b45309,
+    0 4px 0 #b45309,
+    0 6px 0 #b45309,
+    0 8px 0 #92400e,
+    0 10px 0 #78350f,
+    0 12px 15px rgba(0,0,0,0.6),
+    0 20px 40px rgba(0,0,0,0.4);
 
-        .yt-sub {
-          font-size: 15px;
-          color: #bbb;
-          margin-bottom: 28px;
-          line-height: 1.6;
-        }
+  transform: perspective(500px) rotateX(10deg);
+}
+.kid-hero h1 {
+  animation: pop 1.2s ease;
+}
 
-        .yt-stats {
-          display: flex;
-          justify-content: space-between;
-          margin-bottom: 30px;
-          gap: 12px;
-        }
-
-        .yt-stats div {
-          flex: 1;
-          background: rgba(255, 255, 255, 0.05);
-          padding: 12px;
-          border-radius: 14px;
-        }
-
-        .yt-stats strong {
-          display: block;
-          font-size: 18px;
-          color: white;
-          margin-bottom: 4px;
-        }
-
-        .yt-stats span {
-          font-size: 12px;
-          color: #999;
-        }
-
-        .yt-btn {
-          width: 100%;
-          background: #ff0000;
-          color: white;
-          font-size: 16px;
+@keyframes pop {
+  0% {
+    transform: scale(0.8) rotateX(20deg);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) rotateX(10deg);
+    opacity: 1;
+  }
+}
+  
+        .kid-hero h2 {
+          font-size: clamp(20px, 6vw, 28px);
           font-weight: 800;
+          color: #38bdf8;
+          text-shadow: 0 4px 0 #0369a1, 0 10px 25px rgba(0,0,0,0.4);
+          margin-top: 0px;
+        }
+
+        .kid-card {
+          width: 100%;
+          max-width: 420px;
+
+          background: rgba(255,255,255,0.06);
+          backdrop-filter: blur(12px);
+
+          border-radius: 20px;
+          padding: 20px 14px;
+margin: 20px;
+          box-shadow: 0 25px 80px rgba(0,0,0,.5);
+          z-index: 1;
+        }
+
+        .kid-text {
+          font-size: clamp(13px, 4vw, 14px);
+          color: #e2e8f0;
+          margin-bottom: 20px;
+          text-align: center;
+        }
+
+        .kid-form {
+          display: flex;
+          flex-direction: column;
+          gap: 14px;
+        }
+
+        .kid-form input {
           padding: 14px;
-          border: none;
           border-radius: 12px;
+          border: none;
+          font-size: 14px;
+          outline: none;
+        }
+
+        .kid-form button {
+          background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+          color: white;
+          font-weight: 800;
+
+          padding: 14px;
+          border-radius: 999px;
+          border: none;
+
           cursor: pointer;
+
+          box-shadow: 0 10px 30px rgba(56,189,248,.5);
           transition: 0.3s;
-          box-shadow: 0 8px 25px rgba(255, 0, 0, 0.4);
         }
 
-        .yt-btn:hover {
-          background: #e60000;
-          transform: translateY(-2px);
-          box-shadow: 0 12px 30px rgba(255, 0, 0, 0.5);
+        .kid-form button:hover {
+          transform: translateY(-2px) scale(1.03);
+          box-shadow: 0 20px 50px rgba(56,189,248,.6);
         }
 
-        .yt-note {
-          margin-top: 18px;
-          font-size: 12px;
-          color: #777;
-        }
-
+        /* MOBILE FIX */
         @media (max-width: 480px) {
-          .yt-stats {
-            flex-direction: column;
+          .kid-card {
+            padding: 24px 12px;
+            margin: 20px;
           }
         }
       `}</style>
-    </div>
+
+      <div className="kid-wrap">
+        <div className="kid-hero">
+          <h1>GLORY-DEMO</h1>
+          <h2>Kiddies Store 🛒</h2>
+        </div>
+
+        <div className="kid-card">
+          <p className="kid-text">
+            Enter your details below to get access to our latest kids
+            collections and exclusive offers.
+          </p>
+
+          <form className="kid-form" onSubmit={handleSubmit}>
+            <input
+              type="text"
+              name="name"
+              placeholder="Your Name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
+
+            <input
+              type="tel"
+              name="phone"
+              placeholder="WhatsApp Number"
+              value={formData.phone}
+              onChange={handleChange}
+              required
+            />
+
+            <button type="submit">Submit & Continue</button>
+          </form>
+        </div>
+      </div>
+    </>
   );
-}
+};
+
+export default Kiddies3DPage;
