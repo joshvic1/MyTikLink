@@ -152,7 +152,7 @@ export default function PagesDashboard() {
           </p>
 
           <a
-            href="/p/mytiklink"
+            href="/r/mytiklink"
             target="_blank"
             rel="noopener noreferrer"
             className={styles.whatsappMiniButton}

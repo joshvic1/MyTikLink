@@ -1,6 +1,6 @@
 import styles from "./FinalCta.module.css";
 
-export default function FinalCTA() {
+export default function FinalCTA({ onOpenAI }) {
   // Link button to dashbooard
   const handleGetStarted = () => {
     // Implementation for linking to dashboard
@@ -16,7 +16,9 @@ export default function FinalCTA() {
           <button className={styles.primary} onClick={handleGetStarted}>
             Get Started
           </button>
-          <button className={styles.secondary}>Ask a Question</button>
+          <button className={styles.secondary} onClick={onOpenAI}>
+            Ask a Question
+          </button>
         </div>
       </div>
     </section>

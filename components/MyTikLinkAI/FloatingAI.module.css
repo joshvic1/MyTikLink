@@ -1,0 +1,115 @@
+.wrapper {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9997;
+}
+
+/* BUTTON */
+.button {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+
+  border: none;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: white;
+
+  background: linear-gradient(135deg, #6d5dfc, #9b7bff);
+
+  box-shadow: 0 10px 25px rgba(109, 93, 252, 0.4);
+  transition: all 0.25s ease;
+}
+
+/* Hover effect */
+.button:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 15px 35px rgba(109, 93, 252, 0.6);
+}
+
+/* Click effect */
+.button:active {
+  transform: scale(0.95);
+}
+
+/* Subtle glow */
+.button::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+
+  background: radial-gradient(
+    circle,
+    rgba(155, 123, 255, 0.4) 0%,
+    transparent 70%
+  );
+
+  z-index: -1;
+  filter: blur(15px);
+}
+
+/* TOOLTIP */
+.tooltip {
+  position: absolute;
+  bottom: 75px;
+  right: 0;
+
+  width: 220px;
+
+  background: rgba(20, 20, 30, 0.95);
+  color: #fff;
+
+  padding: 12px 14px;
+  border-radius: 12px;
+
+  font-size: 13px;
+
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+
+  animation: fadeIn 0.3s ease;
+}
+
+.tooltip span {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.tooltip p {
+  margin: 0;
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+/* Arrow */
+.tooltip::after {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  right: 14px;
+
+  width: 10px;
+  height: 10px;
+
+  background: rgba(20, 20, 30, 0.95);
+  transform: rotate(45deg);
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

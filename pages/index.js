@@ -16,6 +16,8 @@ import Testimonials from "@/components/Testimonials/Testimonials";
 import FinalCTA from "@/components/FinalCta/FinalCta";
 import FAQ from "@/components/FAQS/FAQS";
 import Footer from "@/components/Footer/Footer";
+import FloatingAI from "@/components/MyTikLinkAI/FloatingAI";
+import AIChat from "@/components/MyTikLinkAI/AIChat";
 
 export default function Home() {
   const { login, subscribe } = useAuth();
@@ -23,7 +25,7 @@ export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [authMode, setAuthMode] = useState(null);
   const [toast, setToast] = useState(null);
-
+  const [openAI, setOpenAI] = useState(false);
   const searchParams = useSearchParams();
 
   /* ===== HANDLE URL AUTH (?auth=login) ===== */
@@ -43,6 +45,27 @@ export default function Home() {
     return unsub;
   }, [subscribe]);
 
+  useEffect(() => {
+    const lastClosed = localStorage.getItem("ai_last_closed");
+
+    const now = Date.now();
+    const THREE_HOURS = 3 * 60 * 60 * 1000;
+
+    if (lastClosed && now - Number(lastClosed) < THREE_HOURS) {
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      setOpenAI(true);
+    }, 20000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleCloseAI = () => {
+    localStorage.setItem("ai_last_closed", Date.now());
+    setOpenAI(false);
+  };
   /* ===== HELPERS ===== */
   const openAuth = (mode) => setAuthMode(mode);
   const closeAuth = () => setAuthMode(null);
@@ -66,7 +89,7 @@ export default function Home() {
       <Testimonials />
 
       {/* ===== FINAL CTA ===== */}
-      <FinalCTA openAuth={openAuth} />
+      <FinalCTA openAuth={openAuth} onOpenAI={() => setOpenAI(true)} />
 
       {/* ===== FAQ ===== */}
       <FAQ />
@@ -88,6 +111,9 @@ export default function Home() {
           }}
         />
       )}
+
+      <FloatingAI onOpen={() => setOpenAI(true)} />
+      {openAI && <AIChat onClose={handleCloseAI} />}
 
       {/* ===== TOAST ===== */}
       {toast && (

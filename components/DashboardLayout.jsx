@@ -23,6 +23,8 @@ import AuthModal from "@/components/AuthModal";
 import useAuth from "@/hooks/useAuth";
 import TawkChat from "@/components/TawkChat";
 import TelegramChatButton from "./TelegramChatButton";
+import FloatingAI from "@/components/MyTikLinkAI/FloatingAI";
+import AIChat from "@/components/MyTikLinkAI/AIChat";
 
 export default function DashboardLayout({
   user = { name: "User", plan: "free" },
@@ -38,6 +40,7 @@ export default function DashboardLayout({
   const [expanded, setExpanded] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isPro = user?.plan?.toLowerCase().includes("pro");
+  const [openAI, setOpenAI] = useState(false);
 
   const { login } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -243,7 +246,9 @@ export default function DashboardLayout({
         />
       )}
       {/* Dashboard support chat */}
-      <TelegramChatButton />
+
+      <FloatingAI onOpen={() => setOpenAI(true)} />
+      {openAI && <AIChat onClose={() => setOpenAI(false)} />}
     </div>
   );
 }
