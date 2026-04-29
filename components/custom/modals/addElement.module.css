@@ -1,0 +1,155 @@
+body,
+html {
+  overflow-x: hidden;
+}
+.container {
+  padding: 4px 2px;
+}
+
+/* TITLE */
+.title {
+  font-size: 17px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 14px;
+}
+
+/* SEARCH */
+.search {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  font-size: 14px;
+  outline: none;
+  margin-bottom: 18px;
+  background: #fafafa;
+  transition: all 0.2s ease;
+}
+
+.search:focus {
+  border-color: #6366f1;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.08);
+}
+
+/* GRID */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* CARD */
+.card {
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 16px;
+  padding: 18px 14px;
+  text-align: center;
+  cursor: pointer;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+
+  backdrop-filter: blur(10px);
+
+  transition: all 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* HOVER = premium feel */
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  border-color: rgba(99, 102, 241, 0.25);
+}
+
+/* CLICK FEEDBACK */
+.card:active {
+  transform: scale(0.97);
+}
+
+/* ICON WRAP (THIS makes it feel expensive) */
+.iconWrap {
+  width: 42px;
+  height: 42px;
+  margin: 0 auto 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.12),
+    rgba(99, 102, 241, 0.04)
+  );
+
+  color: #4f46e5;
+
+  transition: all 0.2s ease;
+}
+
+/* ICON HOVER */
+.card:hover .iconWrap {
+  transform: scale(1.08);
+  background: rgba(99, 102, 241, 0.15);
+}
+
+/* LABEL */
+.label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+}
+.container {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* SEARCH */
+.search {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box; /* VERY IMPORTANT */
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr)); /* FIX */
+  gap: 12px;
+  width: 100%;
+}
+.card {
+  width: 100%;
+  box-sizing: border-box;
+}
+/* SCROLLBAR BASE */
+*::-webkit-scrollbar {
+  width: 5px;
+  height: 1px;
+}
+
+/* TRACK */
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* THUMB (THE IMPORTANT PART) */
+*::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    rgba(99, 102, 241, 0.6),
+    rgba(139, 92, 246, 0.6)
+  );
+  border-radius: 999px;
+  backdrop-filter: blur(6px);
+}
+
+/* HOVER EFFECT */
+*::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    180deg,
+    rgba(99, 102, 241, 0.9),
+    rgba(139, 92, 246, 0.9)
+  );
+}

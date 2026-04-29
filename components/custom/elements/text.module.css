@@ -1,0 +1,71 @@
+.wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+/* TEXT */
+.text {
+  word-break: break-word;
+}
+
+/* HOVER OUTLINE (editor feedback) */
+.wrapper:hover {
+  outline: 1px solid #c7d2fe;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* FLOATING ACTIONS */
+.actions {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  display: flex;
+  gap: 4px;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: all 0.15s ease;
+}
+
+/* Show on hover */
+.wrapper:hover .actions {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* BUTTON BASE (GLASS STYLE) */
+.actions button {
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(8px);
+  border-radius: 6px;
+  padding: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ICON SIZE */
+.actions button svg {
+  width: 13px;
+  height: 13px;
+}
+
+/* EDIT */
+.edit {
+  color: #4f46e5;
+}
+
+.edit:hover {
+  background: rgba(79, 70, 229, 0.15);
+}
+
+/* DELETE */
+.delete {
+  color: #ef4444;
+}
+
+.delete:hover {
+  background: rgba(239, 68, 68, 0.15);
+}

@@ -562,6 +562,13 @@ export default function PublicPage() {
       if (window.fbq) {
         window.fbq("track", "Lead");
       }
+
+      // ✅ FIX: TikTok handling
+      if (isTikTokBrowser()) {
+        showRedirectButton(ctaBtn, page.redirectUrl);
+        return;
+      }
+
       smartRedirect(page.redirectUrl);
     };
 

@@ -1,0 +1,141 @@
+.section {
+  border: 1px solid transparent;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  position: relative;
+  transition:
+    border 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+/* Hover = editor feedback only */
+.section:hover {
+  border: 1px solid #c7d2fe;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.08);
+}
+
+/* HEADER (editor UI only) */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+/* Show controls only on hover (clean builder feel) */
+.section:hover .header {
+  opacity: 1;
+}
+
+/* LABEL */
+.label {
+  font-size: 10px;
+  color: rgba(0, 0, 0, 0.6);
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(6px);
+  padding: 2px 6px;
+  border-radius: 999px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+/* ACTION BUTTONS */
+.actions {
+  display: flex;
+  gap: 4px;
+}
+
+.iconBtn,
+.iconBtnDanger {
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  padding: 5px;
+  border-radius: 6px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(8px);
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Smaller icons */
+.iconBtn svg,
+.iconBtnDanger svg {
+  width: 14px;
+  height: 14px;
+}
+
+.iconBtn {
+  color: #4f46e5;
+}
+
+.iconBtn:hover {
+  background: rgba(79, 70, 229, 0.15);
+}
+
+.iconBtnDanger {
+  color: #ef4444;
+}
+
+.iconBtnDanger:hover {
+  background: rgba(239, 68, 68, 0.15);
+}
+
+/* CONTENT AREA (DO NOT TOUCH USER LAYOUT) */
+.inner {
+  min-height: 40px; /* just to keep it clickable when empty */
+}
+
+/* ELEMENT WRAPPER (non-intrusive) */
+.elementBox {
+  position: relative;
+}
+
+/* ELEMENT HOVER OUTLINE (VERY IMPORTANT UX) */
+.elementBox:hover {
+  outline: 1px solid #c7d2fe;
+  outline-offset: 2px;
+}
+
+/* FLOAT DELETE BUTTON */
+.deleteSmall {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 11px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.elementBox:hover .deleteSmall {
+  opacity: 1;
+}
+
+/* ADD BUTTON (non-invasive) */
+.add {
+  margin-top: 8px;
+  width: 100%;
+  padding: 10px;
+  border: 1px dashed #c7d2fe;
+  border-radius: 8px;
+  background: transparent;
+  color: #4f46e5;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.add:hover {
+  background: #eef2ff;
+  border-color: #4f46e5;
+}
