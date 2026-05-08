@@ -4,8 +4,7 @@ function loadTikTokPixel(pixelId) {
     console.log("❌ No TikTok Pixel ID found");
     return;
   }
-
-  if (window.ttq && window.__TT_READY__) {
+  if (window.ttq && window.__loadedTikTokPixel === pixelId) {
     console.log("⚠️ TikTok pixel already loaded");
     return;
   }
@@ -29,6 +28,9 @@ function loadTikTokPixel(pixelId) {
       "group",
       "enableCookie",
       "disableCookie",
+      "holdConsent",
+      "revokeConsent",
+      "grantConsent",
     ];
     ttq.setAndDefer = function (t, e) {
       t[e] = function () {
@@ -54,14 +56,10 @@ function loadTikTokPixel(pixelId) {
     };
 
     ttq.load(pixelId);
+    window.__loadedTikTokPixel = pixelId;
+    ttq.page();
 
-    ttq.ready(() => {
-      console.log("🎯 TikTok Pixel is READY");
-
-      ttq.page();
-
-      window.__TT_READY__ = true;
-    });
+    console.log("🎯 TikTok Pixel Initialized");
   })(window, document, "ttq");
 }
 function loadMetaPixel(pixelId) {
@@ -401,7 +399,7 @@ export default function PublicPage() {
         }
 
         setTimeout(() => {
-          if (window.ttq && window.__TT_READY__) {
+          if (window.ttq) {
             window.ttq.track("ViewContent", {
               content_name: pageData.title,
               content_id: pageData.slug,
@@ -512,8 +510,21 @@ export default function PublicPage() {
         setCooldownActive(true);
 
         if (res.data.redirectUrl) {
-          if (window.ttq && window.__TT_READY__)
+          if (window.ttq) {
+            let cleanPhone = whatsapp.replace(/\D/g, "");
+
+            if (cleanPhone.startsWith("0")) {
+              cleanPhone = "234" + cleanPhone.slice(1);
+            }
+
+            window.ttq.identify({
+              phone_number: cleanPhone,
+            });
+
+            window.ttq.track("Lead");
+
             window.ttq.track("CompleteRegistration");
+          }
           if (window.fbq) window.fbq("track", "Lead");
           const redirectUrl = res.data.redirectUrl;
 
@@ -559,8 +570,13 @@ export default function PublicPage() {
         return;
       }
 
-      if (window.ttq && window.__TT_READY__) {
+      if (window.ttq) {
+        window.ttq.identify({
+          external_id: page.slug,
+        });
+
         window.ttq.track("Lead");
+
         window.ttq.track("CompleteRegistration");
       }
 
