@@ -1,0 +1,81 @@
+export default function RenderButton({ element, tiktokPixelId, metaPixelId }) {
+  const shadowMap = {
+    none: "none",
+    light: "0 4px 10px rgba(0,0,0,0.08)",
+    medium: "0 8px 20px rgba(0,0,0,0.12)",
+    large: "0 12px 30px rgba(0,0,0,0.18)",
+  };
+
+  const radiusMap = {
+    rectangle: 6,
+    rounded: 14,
+    pill: 999,
+  };
+
+  const sizeMap = {
+    small: "10px 18px",
+    medium: "14px 24px",
+    large: "18px 32px",
+  };
+
+  return (
+    <div
+      style={{
+        textAlign: element.align || "center",
+
+        padding: element.padding || 3,
+
+        margin: element.margin || 0,
+      }}
+    >
+      <a
+        href={element.url || "#"}
+        target={element.newTab ? "_blank" : "_self"}
+        onClick={() => {
+          // TIKTOK EVENT
+          if (typeof window !== "undefined" && window.ttq) {
+            window.ttq.track("CompleteRegistration");
+          }
+
+          // META EVENT
+          if (typeof window !== "undefined" && window.fbq) {
+            window.fbq("track", "Lead");
+          }
+        }}
+        style={{
+          textDecoration: "none",
+        }}
+      >
+        <button
+          style={{
+            background: element.bg,
+
+            color: element.color,
+
+            fontWeight: element.fontWeight,
+
+            borderRadius: radiusMap[element.shape],
+
+            padding: sizeMap[element.size],
+
+            width: element.fullWidth ? "100%" : "auto",
+
+            boxShadow: shadowMap[element.shadow],
+
+            border: element.borderEnabled
+              ? `${element.borderWidth}px solid ${element.borderColor}`
+              : "none",
+
+            cursor: "pointer",
+
+            fontSize: "15px",
+
+            transition: "all 0.2s ease",
+          }}
+        >
+          {element.text}
+        </button>
+      </a>
+    </div>
+  );
+}

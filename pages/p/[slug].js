@@ -5,7 +5,7 @@ function loadTikTokPixel(pixelId) {
     return;
   }
 
-  if (window.ttq) {
+  if (window.ttq && window.__TT_READY__) {
     console.log("⚠️ TikTok pixel already loaded");
     return;
   }
@@ -54,10 +54,13 @@ function loadTikTokPixel(pixelId) {
     };
 
     ttq.load(pixelId);
-    ttq.page();
 
     ttq.ready(() => {
       console.log("🎯 TikTok Pixel is READY");
+
+      ttq.page();
+
+      window.__TT_READY__ = true;
     });
   })(window, document, "ttq");
 }
@@ -105,6 +108,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import Head from "next/head";
+import CustomPageRenderer from "@/components/custom/renderer/CustomPageRenderer";
 
 /* =========================
    BROWSER + OS DETECTION
@@ -397,7 +401,7 @@ export default function PublicPage() {
         }
 
         setTimeout(() => {
-          if (window.ttq) {
+          if (window.ttq && window.__TT_READY__) {
             window.ttq.track("ViewContent", {
               content_name: pageData.title,
               content_id: pageData.slug,
@@ -508,7 +512,8 @@ export default function PublicPage() {
         setCooldownActive(true);
 
         if (res.data.redirectUrl) {
-          if (window.ttq) window.ttq.track("CompleteRegistration");
+          if (window.ttq && window.__TT_READY__)
+            window.ttq.track("CompleteRegistration");
           if (window.fbq) window.fbq("track", "Lead");
           const redirectUrl = res.data.redirectUrl;
 
@@ -554,7 +559,7 @@ export default function PublicPage() {
         return;
       }
 
-      if (window.ttq) {
+      if (window.ttq && window.__TT_READY__) {
         window.ttq.track("Lead");
         window.ttq.track("CompleteRegistration");
       }
@@ -588,6 +593,22 @@ export default function PublicPage() {
       </div>
     );
   }
+  if (page.builderType === "custom") {
+    return (
+      <>
+        <Head>
+          <title>{page.title}</title>
+        </Head>
+
+        <CustomPageRenderer
+          sections={page.customContent}
+          tiktokPixelId={page.tiktokPixelId}
+          metaPixelId={page.metaPixelId}
+        />
+      </>
+    );
+  }
+
   if (!page?.template?.html) {
     return null;
   }

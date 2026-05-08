@@ -1,0 +1,29 @@
+.toggle {
+  width: 44px;
+  height: 24px;
+  border-radius: 999px;
+  background: #e5e7eb;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.knob {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: white;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  transition: all 0.2s ease;
+}
+
+/* ACTIVE */
+.active {
+  background: #4f46e5;
+}
+
+.active .knob {
+  transform: translateX(20px);
+}

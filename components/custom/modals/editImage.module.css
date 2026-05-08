@@ -1,0 +1,419 @@
+/* CONTAINER */
+.container {
+  display: flex;
+  flex-direction: column;
+  max-height: 88vh;
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding-bottom: 14px;
+  margin-bottom: 4px;
+}
+
+.header span {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.header button {
+  border: none;
+  background: transparent;
+
+  color: #4f46e5;
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: opacity 0.15s ease;
+}
+
+.header button:hover {
+  opacity: 0.75;
+}
+
+/* BODY */
+.body {
+  overflow-y: auto;
+
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  padding-right: 2px;
+
+  scroll-behavior: smooth;
+}
+
+/* GROUP */
+.group {
+  background: #f9fafb;
+
+  border: 1px solid #f1f5f9;
+
+  border-radius: 18px;
+
+  padding: 16px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  transition:
+    border 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+/* HOVER */
+.group:hover {
+  border-color: #e0e7ff;
+}
+
+/* DOUBLE GROUP */
+.doubleGroup {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 640px) {
+  .doubleGroup {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* LABEL */
+.group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+}
+
+/* INPUT */
+.input {
+  width: 100%;
+
+  height: 48px;
+
+  border-radius: 14px;
+
+  border: 1px solid #e5e7eb;
+
+  background: white;
+
+  padding: 0 14px;
+
+  outline: none;
+
+  font-size: 14px;
+  color: #111827;
+
+  box-sizing: border-box;
+
+  transition:
+    border 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease;
+}
+
+/* INPUT FOCUS */
+.input:focus {
+  border-color: #c7d2fe;
+
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.08);
+}
+
+/* GRID */
+.twoGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+/* SOURCE BUTTON */
+.sourceBtn {
+  height: 52px;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+
+  background: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+
+  cursor: pointer;
+
+  transition:
+    border 0.18s ease,
+    background 0.18s ease,
+    transform 0.18s ease;
+}
+
+/* HOVER */
+.sourceBtn:hover {
+  border-color: #c7d2fe;
+  background: #fafaff;
+}
+
+/* ACTIVE */
+.active {
+  background: #eef2ff !important;
+
+  border-color: #6366f1 !important;
+
+  color: #4f46e5 !important;
+}
+
+/* UPLOAD BOX */
+.uploadBox {
+  min-height: 180px;
+
+  border-radius: 18px;
+
+  border: 1.5px dashed #c7d2fe;
+
+  background: linear-gradient(
+    180deg,
+    rgba(99, 102, 241, 0.04),
+    rgba(99, 102, 241, 0.02)
+  );
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+
+  cursor: pointer;
+
+  transition:
+    border 0.18s ease,
+    transform 0.18s ease,
+    background 0.18s ease;
+}
+
+/* HOVER */
+.uploadBox:hover {
+  border-color: #6366f1;
+
+  background: linear-gradient(
+    180deg,
+    rgba(99, 102, 241, 0.08),
+    rgba(99, 102, 241, 0.04)
+  );
+}
+
+/* ICON */
+.uploadBox svg {
+  color: #4f46e5;
+}
+
+/* TEXT */
+.uploadBox span {
+  font-size: 15px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.uploadBox small {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+/* ROW */
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+}
+
+.row span {
+  font-size: 14px;
+  color: #374151;
+  font-weight: 500;
+}
+
+/* SHADOW GRID */
+.shadowGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+/* SHADOW CARD */
+.shadowCard {
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+
+  background: white;
+
+  padding: 12px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+
+  cursor: pointer;
+
+  transition:
+    border 0.18s ease,
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+/* HOVER */
+.shadowCard:hover {
+  border-color: #c7d2fe;
+}
+
+/* ACTIVE */
+.shadowCard.active {
+  border-color: #6366f1;
+
+  background: #fafaff;
+}
+
+/* PREVIEW */
+.shadowPreview {
+  width: 56px;
+  height: 56px;
+
+  border-radius: 14px;
+
+  background: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* SHADOW TYPES */
+.none {
+  border: 1px dashed #d1d5db;
+}
+
+.light {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.medium {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.14);
+}
+
+.large {
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
+}
+
+/* LABEL */
+.shadowCard span {
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+}
+
+/* DELETE */
+.deleteBtn {
+  height: 52px;
+
+  border: none;
+  border-radius: 16px;
+
+  background: #fef2f2;
+  color: #dc2626;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.15s ease,
+    background 0.15s ease;
+}
+
+/* HOVER */
+.deleteBtn:hover {
+  background: #fee2e2;
+}
+
+/* DUPLICATE */
+.duplicateBtn {
+  height: 52px;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+
+  background: white;
+  color: #374151;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    border 0.18s ease,
+    background 0.18s ease,
+    transform 0.18s ease;
+}
+
+/* HOVER */
+.duplicateBtn:hover {
+  border-color: #c7d2fe;
+  background: #fafaff;
+}
+
+/* SCROLLBAR */
+.body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.body::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    rgba(99, 102, 241, 0.45),
+    rgba(139, 92, 246, 0.45)
+  );
+
+  border-radius: 999px;
+}
+
+.body::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    180deg,
+    rgba(99, 102, 241, 0.7),
+    rgba(139, 92, 246, 0.7)
+  );
+}

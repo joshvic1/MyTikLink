@@ -1,64 +1,36 @@
-export default function RenderElement({ el }) {
+import RenderText from "../shared/RenderText";
+import RenderButton from "../shared/RenderButton";
+import RenderImage from "../shared/RenderImage";
+
+import RenderDivider from "../shared/RenderDivider";
+
+import RenderSpacer from "../shared/RenderSpacer";
+
+import RenderVideo from "../shared/RenderVideo";
+export default function RenderElement({ el, tiktokPixelId, metaPixelId }) {
   switch (el.type) {
     case "text":
-      return (
-        <div
-          style={{
-            fontSize: el.fontSize,
-            fontWeight: el.fontWeight,
-            textAlign: el.align,
-            color: el.color,
-            lineHeight: el.lineHeight,
-            letterSpacing: `${el.letterSpacing}px`,
-          }}
-        >
-          {el.content}
-        </div>
-      );
-
+      return <RenderText element={el} />;
     case "image":
-      return (
-        <img
-          src={el.src}
-          style={{
-            width: "100%",
-            borderRadius: el.radius,
-          }}
-        />
-      );
+      return <RenderImage element={el} />;
 
     case "button":
       return (
-        <a href={el.url} style={{ textDecoration: "none" }}>
-          <button
-            style={{
-              background: el.bg,
-              color: el.color,
-              padding: "14px 20px",
-              borderRadius: "10px",
-              border: "none",
-              width: "100%",
-              fontWeight: 600,
-            }}
-          >
-            {el.text}
-          </button>
-        </a>
-      );
-
-    case "divider":
-      return (
-        <div
-          style={{
-            height: "1px",
-            background: "#e5e7eb",
-            margin: "20px 0",
-          }}
+        <RenderButton
+          element={el}
+          tiktokPixelId={tiktokPixelId}
+          metaPixelId={metaPixelId}
         />
       );
 
+    case "divider":
+      return <RenderDivider element={el} />;
+
     case "spacer":
-      return <div style={{ height: el.height }} />;
+      return <RenderSpacer element={el} />;
+
+    case "video":
+      return <RenderVideo element={el} />;
 
     default:
       return null;

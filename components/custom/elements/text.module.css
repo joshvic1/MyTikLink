@@ -1,6 +1,7 @@
 .wrapper {
   position: relative;
-  display: inline-block;
+  width: 100%;
+  display: block;
 }
 
 /* TEXT */
@@ -68,4 +69,7 @@
 
 .delete:hover {
   background: rgba(239, 68, 68, 0.15);
+}
+.inner {
+  max-width: 100%;
 }

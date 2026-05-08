@@ -1,5 +1,7 @@
 import BottomSheet from "../ui/BottomSheet";
 import styles from "./addElement.module.css";
+import { useState } from "react";
+
 import {
   Type,
   Image as ImageIcon,
@@ -8,42 +10,73 @@ import {
   Video,
   Minus,
   ArrowUpDown,
+  LayoutGrid,
+  Timer,
+  Menu,
+  MessageSquare,
 } from "lucide-react";
 
 const elements = [
-  { type: "text", label: "Text", icon: Type },
-  { type: "image", label: "Image", icon: ImageIcon },
-  { type: "button", label: "Button", icon: MousePointerClick },
-  { type: "form", label: "Form", icon: FormInput },
-  { type: "video", label: "Video", icon: Video },
-  { type: "divider", label: "Divider", icon: Minus },
-  { type: "spacer", label: "Spacer", icon: ArrowUpDown },
+  { type: "text", label: "Text", icon: Type, available: true },
+  { type: "image", label: "Image", icon: ImageIcon, available: true },
+  { type: "button", label: "Button", icon: MousePointerClick, available: true },
+  { type: "video", label: "Video", icon: Video, available: true },
+  { type: "divider", label: "Divider", icon: Minus, available: true },
+  { type: "spacer", label: "Spacer", icon: ArrowUpDown, available: true },
+
+  // 🚫 Coming soon
+  { type: "form", label: "Form", icon: FormInput, available: false },
+  { type: "cards", label: "Cards", icon: LayoutGrid, available: false },
+  { type: "countdown", label: "Countdown", icon: Timer, available: false },
+  { type: "menu", label: "Menu", icon: Menu, available: false },
+  {
+    type: "testimonials",
+    label: "Testimonials",
+    icon: MessageSquare,
+    available: false,
+  },
 ];
 
 export default function AddElementModal({ isOpen, onClose, onSelect }) {
+  const [query, setQuery] = useState("");
+  const filteredElements = elements.filter((el) =>
+    el.label.toLowerCase().includes(query.toLowerCase()),
+  );
   return (
     <BottomSheet isOpen={isOpen} onClose={onClose}>
-      <h3 className={styles.title}>Add Element</h3>
+      <div className={styles.container}>
+        <h3 className={styles.title}>Add Element</h3>
 
-      <input className={styles.search} placeholder="Search elements..." />
+        <input
+          className={styles.search}
+          placeholder="Search elements..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
 
-      <div className={styles.grid}>
-        {elements.map((el) => {
-          const Icon = el.icon;
+        <div className={styles.grid}>
+          {filteredElements.map((el) => {
+            const Icon = el.icon;
 
-          return (
-            <div
-              key={el.type}
-              className={styles.card}
-              onClick={() => onSelect(el.type)}
-            >
-              <div className={styles.icon}>
-                <Icon size={20} />
+            return (
+              <div
+                key={el.type}
+                className={`${styles.card} ${!el.available ? styles.disabled : ""}`}
+                onClick={() => el.available && onSelect(el.type)}
+              >
+                {!el.available && (
+                  <span className={styles.badge}>Coming soon</span>
+                )}
+
+                <div className={styles.iconWrap}>
+                  <Icon size={18} />
+                </div>
+
+                <p className={styles.label}>{el.label}</p>
               </div>
-              <p>{el.label}</p>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
     </BottomSheet>
   );

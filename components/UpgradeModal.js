@@ -137,7 +137,7 @@ export default function UpgradeModal({ currentPlan, setShowModal, onUpgrade }) {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
 
       const { email, paymentId } = res.data;
@@ -175,7 +175,7 @@ export default function UpgradeModal({ currentPlan, setShowModal, onUpgrade }) {
       const token = localStorage.getItem("token");
       const res = await axios.get(
         `${process.env.NEXT_PUBLIC_API_URL}/payments/verify/${reference}`,
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       );
 
       if (res.data.success) {
@@ -275,7 +275,7 @@ export default function UpgradeModal({ currentPlan, setShowModal, onUpgrade }) {
             }
 
             // Pro logic — no changes needed
-            if (plan.id === "pro" && currentPlan.startsWith("pro")) {
+            if (plan.id === "pro" && currentPlan?.startsWith("pro")) {
               buttonLabel = "You're already on Pro";
               disabled = true;
             }

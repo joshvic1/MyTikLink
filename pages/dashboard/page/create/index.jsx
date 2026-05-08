@@ -7,6 +7,8 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 
 import DashboardLayout from "@/components/DashboardLayout";
 import styles from "@/styles/pageCreate.module.css";
+import Link from "next/link";
+import FeatureAlert from "@/components/ui/FeatureAlert";
 
 export default function CreatePage() {
   const [templates, setTemplates] = useState([]);
@@ -66,8 +68,19 @@ export default function CreatePage() {
           <p className={styles.sub}>
             Select a template and click on <b>NEXT</b>
           </p>
-
+          <FeatureAlert
+            title="You can now create your own design"
+            text="Try it out and customize your own page exactly the way you want."
+          />
           <div className={styles.grid}>
+            <Link
+              href="/dashboard/page/create/custom"
+              className={styles.customCard}
+            >
+              <div className={styles.plus}>+</div>
+
+              <span>Create your own design</span>
+            </Link>
             {templates.map((tpl) => (
               <div
                 key={tpl._id}
@@ -80,11 +93,6 @@ export default function CreatePage() {
                 <span>{tpl.name}</span>
               </div>
             ))}
-
-            <div className={styles.customCard}>
-              <div className={styles.plus}>+</div>
-              <span>Create your own template</span>
-            </div>
           </div>
         </div>
 

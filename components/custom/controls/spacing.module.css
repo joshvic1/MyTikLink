@@ -1,0 +1,58 @@
+/* WRAPPER */
+.wrapper {
+  display: flex;
+  align-items: center;
+  background: #f3f4f6;
+  border-radius: 12px;
+  padding: 3px;
+  gap: 4px;
+  width: 100%;
+}
+
+/* BUTTON */
+.wrapper button {
+  flex: 1;
+
+  border: 1px solid transparent;
+  background: transparent;
+
+  padding: 10px 0;
+  border-radius: 10px;
+
+  font-size: 13px;
+  font-weight: 600;
+  color: #6b7280;
+
+  cursor: pointer;
+
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 42px;
+}
+
+/* HOVER */
+.wrapper:hover {
+  background: rgba(255, 255, 255, 0.65);
+}
+
+/* ACTIVE */
+.active {
+  background: #eef2ff !important;
+  border: 1px solid;
+  border-color: #6366f1 !important;
+
+  color: #4f46e5 !important;
+}
+
+/* CLICK */
+.wrapper button:active {
+  transform: scale(0.98);
+}

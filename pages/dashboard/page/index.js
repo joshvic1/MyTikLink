@@ -13,6 +13,7 @@ import PagesCardView from "@/components/PagesCardView";
 import DeleteModal from "@/components/DeleteModal";
 
 import styles from "@/styles/pagesDashboard.module.css";
+import FeatureAlert from "@/components/ui/FeatureAlert";
 
 export default function PagesDashboard() {
   const [pages, setPages] = useState([]);
@@ -177,7 +178,12 @@ export default function PagesDashboard() {
           Create Page
         </button>
       </div>
-      {pages.length > 0 && <WhatsAppSupportCard />}
+      {pages.length > 0 && <WhatsAppSupportCard /> && (
+        <FeatureAlert
+          title="You can now create your own design"
+          text="Try it out and customize your own page exactly the way you want. Click on the create page button to get started"
+        />
+      )}
       {pages.length === 0 ? (
         <div className={styles.empty}>
           <p>You do not have any page yet.</p>

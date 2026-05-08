@@ -1,76 +1,274 @@
+/* CONTAINER */
 .container {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  max-height: 88vh;
 }
 
-/* TITLE */
-.title {
-  font-size: 16px;
+/* HEADER */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding-bottom: 14px;
+  margin-bottom: 4px;
+}
+
+.header h2 {
+  font-size: 18px;
   font-weight: 600;
   color: #111827;
 }
 
-/* FIELD */
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+.header button {
+  border: none;
+  background: transparent;
+
+  color: #4f46e5;
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: opacity 0.15s ease;
 }
 
-.field label {
+.header button:hover {
+  opacity: 0.75;
+}
+
+/* BODY */
+.body {
+  overflow-y: auto;
+
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  padding-right: 2px;
+
+  scroll-behavior: smooth;
+}
+
+/* GROUP */
+.group {
+  background: #f9fafb;
+
+  border: 1px solid #f1f5f9;
+
+  border-radius: 18px;
+
+  padding: 16px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  transition:
+    border 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+/* HOVER */
+.group:hover {
+  border-color: #e0e7ff;
+}
+
+/* GROUP TITLES */
+.group h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: #111827;
+
+  margin: 0;
+}
+
+/* LABEL */
+.group label {
   font-size: 12px;
-  color: #6b7280;
+  font-weight: 500;
+  color: #374151;
 }
 
 /* INPUT */
-.field input {
-  padding: 10px 12px;
-  border-radius: 8px;
+.input {
+  width: 100%;
+
+  height: 48px;
+
+  border-radius: 14px;
+
   border: 1px solid #e5e7eb;
-  font-size: 14px;
+
+  background: white;
+
+  padding: 0 14px;
+
   outline: none;
-  transition: border 0.15s ease;
+
+  font-size: 14px;
+  color: #111827;
+
+  box-sizing: border-box;
+
+  transition:
+    border 0.18s ease,
+    box-shadow 0.18s ease;
 }
 
-.field input:focus {
-  border-color: #4f46e5;
+/* FOCUS */
+.input:focus {
+  border-color: #c7d2fe;
+
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.08);
 }
 
-/* COLOR ROW */
-.fieldRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.fieldRow label {
+/* COUNTER */
+.counter {
   font-size: 12px;
-  color: #6b7280;
+  color: #9ca3af;
+
+  margin-top: -4px;
 }
 
-/* COLOR INPUT */
-.fieldRow input[type="color"] {
-  width: 40px;
-  height: 32px;
-  border: none;
-  background: none;
-  cursor: pointer;
+/* 2 COLUMN ROW */
+.row2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
 }
 
-/* DONE BUTTON */
-.done {
-  margin-top: 10px;
-  padding: 12px;
-  border-radius: 10px;
+/* RESPONSIVE */
+@media (max-width: 640px) {
+  .row2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* INLINE BETWEEN */
+.inlineBetween {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  width: 100%;
+}
+
+.inlineBetween > *:last-child {
+  flex-shrink: 0;
+}
+
+/* CHECKBOX ROW */
+.checkboxRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.checkboxRow span {
+  font-size: 14px;
+  color: #374151;
+  font-weight: 500;
+}
+
+/* CHECKBOX */
+.checkboxRow input {
+  width: 18px;
+  height: 18px;
+
+  accent-color: #4f46e5;
+}
+
+/* DELETE BUTTON */
+.deleteBtn {
+  height: 54px;
+
   border: none;
-  background: #4f46e5;
-  color: white;
+  border-radius: 18px;
+
+  background: #fef2f2;
+  color: #dc2626;
+
+  font-size: 14px;
   font-weight: 600;
+
   cursor: pointer;
-  transition: all 0.2s ease;
+
+  transition:
+    background 0.18s ease,
+    transform 0.15s ease;
 }
 
-.done:hover {
-  background: #4338ca;
+/* HOVER */
+.deleteBtn:hover {
+  background: #fee2e2;
+}
+
+/* ACTIVE */
+.deleteBtn:active {
+  transform: scale(0.98);
+}
+
+/* DUPLICATE BUTTON */
+.duplicateBtn {
+  height: 54px;
+
+  border-radius: 18px;
+
+  border: 1px solid #e5e7eb;
+
+  background: white;
+
+  color: #374151;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    border 0.18s ease,
+    background 0.18s ease,
+    transform 0.15s ease;
+}
+
+/* HOVER */
+.duplicateBtn:hover {
+  border-color: #c7d2fe;
+  background: #fafaff;
+}
+
+/* ACTIVE */
+.duplicateBtn:active {
+  transform: scale(0.98);
+}
+
+/* SCROLLBAR */
+.body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.body::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    rgba(99, 102, 241, 0.45),
+    rgba(139, 92, 246, 0.45)
+  );
+
+  border-radius: 999px;
+}
+
+.body::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    180deg,
+    rgba(99, 102, 241, 0.7),
+    rgba(139, 92, 246, 0.7)
+  );
 }

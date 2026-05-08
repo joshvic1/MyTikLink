@@ -42,6 +42,7 @@ html {
 
 /* CARD */
 .card {
+  position: relative;
   background: rgba(255, 255, 255, 0.7);
   border-radius: 16px;
   padding: 18px 14px;
@@ -58,7 +59,9 @@ html {
 .card:hover {
   transform: translateY(-3px);
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
-  border-color: rgba(99, 102, 241, 0.25);
+
+  border: 1px solid;
+  border-color: #6366f1 !important;
 }
 
 /* CLICK FEEDBACK */
@@ -152,4 +155,29 @@ html {
     rgba(99, 102, 241, 0.9),
     rgba(139, 92, 246, 0.9)
   );
+}
+.badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 10px;
+  background: #ef4444;
+  color: white;
+  padding: 3px 6px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+.disabled::after {
+  content: "";
+  position: absolute;
+  inset: 0;
 }

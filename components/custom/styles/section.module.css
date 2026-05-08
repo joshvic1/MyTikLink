@@ -3,6 +3,10 @@
   border-radius: 12px;
   margin-bottom: 12px;
   position: relative;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
   transition:
     border 0.2s ease,
     box-shadow 0.2s ease;
@@ -87,6 +91,10 @@
 /* CONTENT AREA (DO NOT TOUCH USER LAYOUT) */
 .inner {
   min-height: 40px; /* just to keep it clickable when empty */
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 /* ELEMENT WRAPPER (non-intrusive) */

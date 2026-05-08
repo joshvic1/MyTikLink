@@ -174,9 +174,7 @@ export default function PageEditor() {
           }}
         />
       )}
-      {showUpgradeModal && (
-        <UpgradeModal onClose={() => setShowUpgradeModal(false)} />
-      )}
+      {showUpgradeModal && <UpgradeModal setShowModal={setShowUpgradeModal} />}
     </>
   );
 }

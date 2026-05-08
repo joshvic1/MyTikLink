@@ -1,0 +1,144 @@
+.alert {
+  position: relative;
+
+  overflow: hidden;
+
+  background: linear-gradient(
+    180deg,
+    rgba(34, 197, 94, 0.1),
+    rgba(34, 197, 94, 0.04)
+  );
+
+  border: 1px solid rgba(34, 197, 94, 0.16);
+
+  border-radius: 18px;
+
+  padding: 14px;
+
+  margin-bottom: 14px;
+
+  backdrop-filter: blur(10px);
+
+  transition:
+    transform 0.2s ease,
+    border 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+/* HOVER */
+.alert:hover {
+  transform: translateY(-1px);
+
+  border-color: rgba(34, 197, 94, 0.24);
+
+  box-shadow: 0 8px 24px rgba(34, 197, 94, 0.1);
+}
+
+/* GLOW */
+.glow {
+  position: absolute;
+
+  top: -30px;
+  right: -30px;
+
+  width: 100px;
+  height: 100px;
+
+  background: radial-gradient(circle, rgba(34, 197, 94, 0.16), transparent 70%);
+
+  pointer-events: none;
+}
+
+/* TOP */
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 10px;
+}
+
+/* ICON */
+.iconWrap {
+  width: 34px;
+  height: 34px;
+
+  border-radius: 12px;
+
+  background: rgba(34, 197, 94, 0.12);
+
+  border: 1px solid rgba(34, 197, 94, 0.16);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #16a34a;
+}
+
+.iconWrap svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* BADGE */
+.badge {
+  height: 22px;
+
+  padding: 0 10px;
+
+  border-radius: 999px;
+
+  background: #16a34a;
+
+  color: white;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  letter-spacing: 0.3px;
+}
+
+/* CONTENT */
+.content h3 {
+  margin: 0 0 4px;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  color: #166534;
+
+  line-height: 1.4;
+}
+
+.content p {
+  margin: 0;
+
+  font-size: 12.5px;
+  line-height: 1.5;
+
+  color: #15803d;
+}
+
+/* DARK MODE */
+[data-theme="dark"] .alert {
+  background: linear-gradient(
+    180deg,
+    rgba(34, 197, 94, 0.1),
+    rgba(34, 197, 94, 0.03)
+  );
+
+  border-color: rgba(34, 197, 94, 0.16);
+}
+
+[data-theme="dark"] .content h3 {
+  color: #bbf7d0;
+}
+
+[data-theme="dark"] .content p {
+  color: #86efac;
+}

@@ -1,0 +1,60 @@
+/* SEGMENT CONTAINER */
+.segment {
+  display: flex;
+  align-items: center;
+  background: #f3f4f6;
+  border-radius: 12px;
+  padding: 3px;
+  gap: 4px;
+  width: 100%;
+}
+
+/* BUTTON */
+.segment button {
+  flex: 1;
+
+  border: 1px solid transparent;
+  background: transparent;
+
+  padding: 10px 12px;
+  border-radius: 10px;
+
+  font-size: 14px;
+  font-weight: 500;
+  color: #4b5563;
+
+  cursor: pointer;
+
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 42px;
+}
+
+/* HOVER */
+.segment button:hover {
+  background: rgba(255, 255, 255, 0.65);
+}
+
+/* ACTIVE */
+.active {
+  background: #eef2ff !important;
+  border: 1px solid;
+  border-color: #6366f1 !important;
+
+  color: #4f46e5 !important;
+
+  transform: translateY(-0.5px);
+}
+
+/* CLICK FEEDBACK */
+.segment button:active {
+  transform: scale(0.98);
+}

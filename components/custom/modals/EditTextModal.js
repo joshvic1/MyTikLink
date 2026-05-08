@@ -1,114 +1,189 @@
 import BottomSheet from "../ui/BottomSheet";
 import styles from "./editText.module.css";
-import { AlignLeft, AlignCenter, AlignRight, Bold } from "lucide-react";
+
+import SegmentControl from "../controls/SegmentControl";
+import Stepper from "../controls/Stepper";
+import ColorPicker from "../controls/ColorPicker";
+import AlignmentControl from "../controls/AlignmentControl";
+import ToggleSwitch from "../controls/ToggleSwitch";
+import RangeSlider from "../controls/RangeSlider";
+import SpacingControl from "../controls/SpacingControl";
+import TextStyleControl from "../controls/TextStyleControl";
 
 export default function EditTextModal({ isOpen, onClose, element, onSave }) {
   return (
     <BottomSheet isOpen={isOpen} onClose={onClose}>
-      <h3 className={styles.title}>Edit Text</h3>
+      <div className={styles.container}>
+        {/* HEADER */}
+        <div className={styles.header}>
+          <span>Edit Text</span>
+          <button onClick={onClose}>Done</button>
+        </div>
 
-      {/* TEXT */}
-      <textarea
-        className={styles.input}
-        value={element.content}
-        onChange={(e) => onSave({ content: e.target.value })}
-      />
+        <div className={styles.body}>
+          {/* TEXT */}
+          <div className={styles.group}>
+            <label>Text</label>
+            <textarea
+              className={styles.input}
+              value={element.content}
+              onChange={(e) => onSave({ content: e.target.value })}
+            />
+          </div>
 
-      {/* FONT SIZE */}
-      <div className={styles.control}>
-        <label>Font Size</label>
-        <input
-          type="range"
-          min="12"
-          max="60"
-          value={element.fontSize}
-          onChange={(e) => onSave({ fontSize: Number(e.target.value) })}
-        />
-      </div>
+          {/* TYPE */}
+          {/* <div className={styles.group}>
+            <label>Text Type</label>
+            <SegmentControl
+              value={element.type}
+              onChange={(val) => onSave({ type: val })}
+              options={[
+                { label: "P", value: "p" },
+                { label: "H1", value: "h1" },
+                { label: "H2", value: "h2" },
+                { label: "H3", value: "h3" },
+              ]}
+            />
+          </div> */}
 
-      {/* FONT WEIGHT */}
-      <div className={styles.control}>
-        <label>Bold</label>
-        <button
-          className={`${styles.toggle} ${
-            element.fontWeight > 500 ? styles.active : ""
-          }`}
-          onClick={() =>
-            onSave({
-              fontWeight: element.fontWeight > 500 ? 400 : 700,
-            })
-          }
-        >
-          <Bold size={16} />
-        </button>
-      </div>
+          {/* STYLE */}
+          <div className={styles.group}>
+            <label>Text Style</label>
+            <TextStyleControl
+              element={element}
+              onChange={(data) => onSave(data)}
+            />
+          </div>
 
-      {/* ALIGN */}
-      <div className={styles.control}>
-        <label>Alignment</label>
+          {/* FONT SIZE */}
+          <div className={styles.group}>
+            <label>Font Size</label>
+            <Stepper
+              value={element.fontSize}
+              onChange={(val) => onSave({ fontSize: val })}
+            />
+          </div>
 
-        <div className={styles.alignRow}>
-          <button
-            className={element.align === "left" ? styles.active : ""}
-            onClick={() => onSave({ align: "left" })}
-          >
-            <AlignLeft size={16} />
-          </button>
+          {/* ALIGN */}
+          <div className={styles.group}>
+            <label>Alignment</label>
+            <AlignmentControl
+              value={element.align}
+              onChange={(val) => onSave({ align: val })}
+            />
+          </div>
 
-          <button
-            className={element.align === "center" ? styles.active : ""}
-            onClick={() => onSave({ align: "center" })}
-          >
-            <AlignCenter size={16} />
-          </button>
+          {/* COLORS */}
+          <div className={styles.group}>
+            <label>Text Color</label>
+            <ColorPicker
+              value={element.color}
+              onChange={(val) => onSave({ color: val })}
+            />
+          </div>
 
-          <button
-            className={element.align === "right" ? styles.active : ""}
-            onClick={() => onSave({ align: "right" })}
-          >
-            <AlignRight size={16} />
+          <div className={styles.group}>
+            <label>Background</label>
+            <ColorPicker
+              value={element.bg}
+              onChange={(val) => onSave({ bg: val })}
+            />
+          </div>
+
+          {/* LINK */}
+          <div className={styles.group}>
+            <label>Link</label>
+
+            <ToggleSwitch
+              value={element.linkEnabled}
+              onChange={(val) => onSave({ linkEnabled: val })}
+            />
+
+            {element.linkEnabled && (
+              <>
+                <input
+                  className={styles.input}
+                  placeholder="https://..."
+                  value={element.url || ""}
+                  onChange={(e) => onSave({ url: e.target.value })}
+                />
+
+                <div className={styles.row}>
+                  <span>Open in new tab</span>
+                  <ToggleSwitch
+                    value={element.newTab}
+                    onChange={(val) => onSave({ newTab: val })}
+                  />
+                </div>
+              </>
+            )}
+          </div>
+
+          {/* SPACING */}
+          <div className={styles.group}>
+            <label>Padding</label>
+            <SpacingControl
+              value={element.padding}
+              onChange={(val) => onSave({ padding: val })}
+            />
+          </div>
+
+          <div className={styles.group}>
+            <label>Margin</label>
+            <SpacingControl
+              value={element.margin}
+              onChange={(val) => onSave({ margin: val })}
+            />
+          </div>
+
+          {/* BORDER */}
+          <div className={styles.group}>
+            <label>Border</label>
+
+            <ToggleSwitch
+              value={element.borderEnabled}
+              onChange={(val) => onSave({ borderEnabled: val })}
+            />
+
+            {element.borderEnabled && (
+              <>
+                <label>Border Thickness</label>
+                <RangeSlider
+                  value={element.borderWidth}
+                  onChange={(val) => onSave({ borderWidth: val })}
+                  max={10}
+                />
+                <label>Border color</label>
+                <ColorPicker
+                  value={element.borderColor}
+                  onChange={(val) => onSave({ borderColor: val })}
+                />
+                <label>Border style</label>
+                <SegmentControl
+                  value={element.borderStyle}
+                  onChange={(val) => onSave({ borderStyle: val })}
+                  options={[
+                    { label: "Solid", value: "solid" },
+                    { label: "Dashed", value: "dashed" },
+                    { label: "Dotted", value: "dotted" },
+                  ]}
+                />
+                <label>Border Radius</label>
+                <RangeSlider
+                  value={element.radius}
+                  onChange={(val) => onSave({ radius: val })}
+                  max={50}
+                  unit="px"
+                />
+              </>
+            )}
+          </div>
+
+          <button className={styles.done} onClick={onClose}>
+            Done
           </button>
         </div>
       </div>
-
-      {/* COLOR */}
-      <div className={styles.control}>
-        <label>Text Color</label>
-        <input
-          type="color"
-          value={element.color}
-          onChange={(e) => onSave({ color: e.target.value })}
-        />
-      </div>
-
-      {/* LINE HEIGHT */}
-      <div className={styles.control}>
-        <label>Line Height</label>
-        <input
-          type="range"
-          min="1"
-          max="2"
-          step="0.1"
-          value={element.lineHeight}
-          onChange={(e) => onSave({ lineHeight: Number(e.target.value) })}
-        />
-      </div>
-
-      {/* LETTER SPACING */}
-      <div className={styles.control}>
-        <label>Letter Spacing</label>
-        <input
-          type="range"
-          min="0"
-          max="10"
-          value={element.letterSpacing}
-          onChange={(e) => onSave({ letterSpacing: Number(e.target.value) })}
-        />
-      </div>
-
-      <button className={styles.done} onClick={onClose}>
-        Done
-      </button>
     </BottomSheet>
   );
 }

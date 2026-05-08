@@ -1,29 +1,81 @@
-import BottomSheet from "../ui/BottomSheet";
+"use client";
 
-export default function EditButtonModal({ isOpen, onClose, element, onSave }) {
+import { useState } from "react";
+import { Pencil } from "lucide-react";
+
+import EditButtonModal from "../modals/EditButtonModal";
+
+import styles from "./button.module.css";
+import RenderButton from "../shared/RenderButton";
+export default function ButtonElement({
+  element,
+  sectionId,
+  onUpdateElement,
+  onDeleteElement,
+}) {
+  const [open, setOpen] = useState(false);
+
+  const shadowMap = {
+    none: "none",
+    light: "0 4px 10px rgba(0,0,0,0.08)",
+    medium: "0 8px 20px rgba(0,0,0,0.12)",
+    large: "0 12px 30px rgba(0,0,0,0.18)",
+  };
+
+  const radiusMap = {
+    rectangle: 6,
+    rounded: 14,
+    pill: 999,
+  };
+
+  const sizeMap = {
+    small: "10px 18px",
+    medium: "14px 24px",
+    large: "18px 32px",
+  };
+
   return (
-    <BottomSheet isOpen={isOpen} onClose={onClose}>
-      <h3>Edit Button</h3>
+    <div className={styles.wrapper}>
+      <div
+        className={styles.inner}
+        style={{
+          textAlign: element.align || "center",
 
-      <input
-        value={element.text}
-        onChange={(e) => onSave({ text: e.target.value })}
-        placeholder="Button text"
-      />
+          padding: element.padding || 3,
 
-      <input
-        value={element.url}
-        onChange={(e) => onSave({ url: e.target.value })}
-        placeholder="https://..."
-      />
+          margin: element.margin || 0,
+        }}
+      >
+        <a
+          href={element.url || "#"}
+          target={element.newTab ? "_blank" : "_self"}
+          className={styles.link}
+        >
+          <RenderButton element={element} />
+        </a>
 
-      <input
-        type="color"
-        value={element.bg}
-        onChange={(e) => onSave({ bg: e.target.value })}
-      />
+        {/* ACTIONS */}
+        <div className={styles.actions}>
+          <button className={styles.edit} onClick={() => setOpen(true)}>
+            <Pencil size={14} />
+          </button>
 
-      <button onClick={onClose}>Done</button>
-    </BottomSheet>
+          <button
+            className={styles.delete}
+            onClick={() => onDeleteElement(sectionId, element.id)}
+          >
+            ✕
+          </button>
+        </div>
+
+        {/* MODAL */}
+        <EditButtonModal
+          isOpen={open}
+          onClose={() => setOpen(false)}
+          element={element}
+          onSave={(data) => onUpdateElement(sectionId, element.id, data)}
+        />
+      </div>
+    </div>
   );
 }

@@ -1,0 +1,79 @@
+/* WRAPPER */
+.wrapper {
+  width: 100%;
+}
+
+/* PALETTE ROW */
+.palette {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex-wrap: wrap;
+}
+
+/* COLOR SWATCH */
+.swatch {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+/* HOVER */
+.swatch:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* ACTIVE SWATCH */
+.active {
+  border: 2px solid #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+}
+
+/* CUSTOM PICKER BUTTON */
+.custom {
+  width: 38px;
+  height: 38px;
+
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+
+  background: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  position: relative;
+
+  transition: all 0.15s ease;
+
+  color: #6b7280;
+  font-size: 16px;
+
+  overflow: hidden;
+}
+.custom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* HOVER */
+.custom:hover {
+  background: #f9fafb;
+  border-color: #c7d2fe;
+}
+
+/* HIDE REAL INPUT */
+.custom input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}

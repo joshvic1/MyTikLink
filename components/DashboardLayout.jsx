@@ -25,6 +25,7 @@ import TawkChat from "@/components/TawkChat";
 import TelegramChatButton from "./TelegramChatButton";
 import FloatingAI from "@/components/MyTikLinkAI/FloatingAI";
 import AIChat from "@/components/MyTikLinkAI/AIChat";
+import { motion } from "framer-motion";
 
 export default function DashboardLayout({
   user = { name: "User", plan: "free" },
@@ -108,7 +109,15 @@ export default function DashboardLayout({
       {/* ===== Top Bar ===== */}
       <header className={s.topbar}>
         <Link href="/" className={s.brand}>
-          <span className={s.gradient}>Tik</span>Link
+          {/* LOGO */}
+          <motion.div
+            className={s.logo}
+            onClick={() => router.push("/")}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <img src="/logo21.jpg" alt="TikLink" />
+          </motion.div>
         </Link>
 
         <div className={s.topActions}>
