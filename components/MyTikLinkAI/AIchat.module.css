@@ -473,3 +473,56 @@
   transform: translate(2px, -2px); /* subtle move like premium UIs */
   opacity: 1;
 }
+.closeBtn {
+  width: 54px;
+  height: 54px;
+
+  border: none;
+  border-radius: 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  background: rgba(99, 102, 241, 0.12);
+
+  color: #4f46e5;
+
+  transition: all 0.2s ease;
+
+  flex-shrink: 0;
+}
+
+.closeBtn:hover {
+  background: rgba(99, 102, 241, 0.18);
+  transform: scale(1.06);
+}
+
+.closeBtn:active {
+  transform: scale(0.94);
+}
+
+.closeBtn svg {
+  width: 20px;
+  height: 20px;
+
+  stroke: currentColor;
+  stroke-width: 2.8;
+
+  color: #4f46e5;
+}
+.closeBtn:hover {
+  background: rgba(99, 102, 241, 0.15);
+
+  transform: scale(1.05);
+}
+
+.closeBtn:active {
+  transform: scale(0.95);
+}
+
+.closeBtn svg {
+  display: block;
+}

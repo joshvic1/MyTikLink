@@ -131,15 +131,8 @@ export default function AIChat({ onClose }) {
             <span className={styles.title}>MyTikLink AI</span>
           </div>
           <div className={styles.actions}>
-            <button
-              className={styles.iconBtn}
-              onClick={() => setMinimized(!minimized)}
-            >
-              {minimized ? <Maximize2 size={16} /> : <Minimize2 size={16} />}
-            </button>
-
-            <button className={styles.iconBtn} onClick={onClose}>
-              <X size={16} />
+            <button className={styles.closeBtn} onClick={onClose}>
+              <X />
             </button>
           </div>
         </div>

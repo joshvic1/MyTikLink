@@ -6,51 +6,56 @@ import { MessageCircle } from "lucide-react";
 
 export default function FloatingAI({ onOpen }) {
   const [showTooltip, setShowTooltip] = useState(true);
+  const [hasShownOnce, setHasShownOnce] = useState(false);
 
   useEffect(() => {
-    let tooltipTimer;
+    let inactivityTimer;
     let hideTimer;
 
-    const showTooltipAgain = () => {
-      setShowTooltip(true);
+    const showTooltip = () => {
+      if (hasShownOnce) return;
 
-      // hide after 4s
+      setShowTooltip(true);
+      setHasShownOnce(true);
+
       hideTimer = setTimeout(() => {
         setShowTooltip(false);
       }, 4000);
     };
 
-    const startInactivityTimer = () => {
-      clearTimeout(tooltipTimer);
-
-      tooltipTimer = setTimeout(() => {
-        showTooltipAgain();
-      }, 20000); // 20 seconds inactivity
-    };
-
-    // detect activity
-    const handleActivity = () => {
+    const resetInactivityTimer = () => {
+      // hide tooltip immediately during activity
       setShowTooltip(false);
-      startInactivityTimer();
-    };
 
-    // initial run
-    showTooltipAgain();
-    startInactivityTimer();
-
-    window.addEventListener("mousemove", handleActivity);
-    window.addEventListener("keydown", handleActivity);
-    window.addEventListener("scroll", handleActivity);
-    window.addEventListener("click", handleActivity);
-
-    return () => {
-      clearTimeout(tooltipTimer);
+      // clear old timers
+      clearTimeout(inactivityTimer);
       clearTimeout(hideTimer);
 
-      window.removeEventListener("mousemove", handleActivity);
-      window.removeEventListener("keydown", handleActivity);
-      window.removeEventListener("scroll", handleActivity);
-      window.removeEventListener("click", handleActivity);
+      // start new inactivity countdown
+      inactivityTimer = setTimeout(() => {
+        showTooltip();
+      }, 30000); // 30s inactivity
+    };
+
+    // start initial timer
+    resetInactivityTimer();
+
+    // activity listeners
+    window.addEventListener("mousemove", resetInactivityTimer);
+    window.addEventListener("keydown", resetInactivityTimer);
+    window.addEventListener("scroll", resetInactivityTimer);
+    window.addEventListener("click", resetInactivityTimer);
+    window.addEventListener("touchstart", resetInactivityTimer);
+
+    return () => {
+      clearTimeout(inactivityTimer);
+      clearTimeout(hideTimer);
+
+      window.removeEventListener("mousemove", resetInactivityTimer);
+      window.removeEventListener("keydown", resetInactivityTimer);
+      window.removeEventListener("scroll", resetInactivityTimer);
+      window.removeEventListener("click", resetInactivityTimer);
+      window.removeEventListener("touchstart", resetInactivityTimer);
     };
   }, []);
 
