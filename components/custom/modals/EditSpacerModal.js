@@ -30,7 +30,7 @@ export default function EditSpacerModal({ isOpen, onClose, element, onSave }) {
 
             <input
               type="range"
-              min="20"
+              min="2"
               max="300"
               value={element.height || 80}
               onChange={(e) =>

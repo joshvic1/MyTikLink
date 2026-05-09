@@ -1644,5 +1644,639 @@ Always:
 - Give step-by-step answers
 - Keep responses short and clear
 
+
+MyTikLink now has a Custom Landing Page Builder feature.
+
+This feature allows Pro users to create their own landing pages from scratch instead of using only the ready-made templates.
+
+With the Custom Page Builder, users can fully design their own landing page by adding sections and elements visually without writing code.
+
+The Custom Page Builder is designed to be simple, flexible, and beginner-friendly.
+
+Users can:
+
+create custom sections
+add different elements
+edit spacing
+change colors
+add buttons
+add videos
+add images
+build unique landing pages for adverts
+
+This gives users more freedom compared to the normal pre-built templates.
+
+---
+
+HOW TO ACCESS THE Custom Page Builder
+
+To start using the Custom Landing Page Builder:
+
+Go to:
+
+/dashboard/page/create
+
+On this page, users will see:
+
+all available pre-built templates
+and a special box labeled:
+
+“Create Your Own Design”
+
+When the user clicks on “Create Your Own Design”:
+
+they are redirected to:
+
+/dashboard/page/create/custom
+
+This is the Custom Page Builder page where they can start designing their own landing page.
+
+Only Pro users can use the Custom Landing Page Builder.
+
+If a Free or Standard user tries to publish a custom page:
+
+they will see a prompt asking them to upgrade to Pro.
+
+---
+
+HOW THE Custom Page Builder WORKS
+
+The Custom Page Builder works with Sections and Elements.
+
+Sections are containers or blocks on the page.
+
+Elements are the actual content added inside each section.
+
+The user builds the page by:
+
+creating sections
+adding elements inside sections
+customizing each element
+
+The builder is visual and updates instantly while editing.
+
+---
+
+ADDING A NEW SECTION
+
+When users open the Custom Page Builder:
+
+they will see an empty editor.
+
+To start building:
+
+they should tap or click:
+
+“Tap to Add”
+
+This creates a new section.
+
+A section acts like a content block where elements can be added.
+
+Users can create multiple sections on the same page.
+
+Each section can have different:
+
+background colors
+spacing
+border styles
+shadow styles
+width layout
+opacity
+border radius
+
+Sections can be edited individually.
+
+---
+
+EDITING A SECTION
+
+Each section has an edit button.
+
+When clicked:
+
+the Edit Section Modal opens.
+
+Inside the section settings, users can customize:
+
+Background color
+Padding
+Margin
+Border
+Border width
+Border color
+Border style
+Shadow
+Section width
+Opacity
+Border radius
+
+Users can use these settings to style the section exactly how they want.
+
+If no border is enabled:
+
+the section will not show any border.
+
+If no radius is set:
+
+the section will remain sharp without rounded corners.
+
+---
+
+ADDING ELEMENTS
+
+Inside every section, users can click:
+
+“Add Element”
+
+This opens the element selector.
+
+Available elements include:
+
+Text
+Image
+Button
+Video
+Divider
+Spacer
+
+Each element has its own settings and customization options.
+
+---
+
+TEXT ELEMENT
+
+The Text Element is used for:
+
+headlines
+subheadings
+descriptions
+instructions
+CTA text
+
+Users can customize:
+
+text content
+font size
+bold
+italic
+underline
+alignment
+text color
+background color
+padding
+margin
+border
+line height
+letter spacing
+
+Users can also:
+
+turn text into clickable links
+open links in new tabs
+
+Text elements are responsive and automatically adjust properly across devices.
+
+---
+
+IMAGE ELEMENT
+
+The Image Element is used to display images on the landing page.
+
+Users can:
+
+upload images
+change image radius
+add borders
+add shadows
+control alignment
+control spacing
+
+Images can also become clickable links.
+
+Users can:
+
+redirect image clicks to WhatsApp
+Telegram
+Instagram
+or any URL
+
+Images automatically scale properly on mobile devices.
+
+---
+
+BUTTON ELEMENT
+
+The Button Element is one of the most important elements in the Custom Page Builder.
+
+Buttons are mainly used for:
+
+WhatsApp redirects
+Telegram redirects
+CTA actions
+external links
+
+Users can customize:
+
+button text
+button link
+button background color
+text color
+button shape
+border radius
+shadow
+alignment
+full width mode
+button size
+
+Available button shapes include:
+
+Rectangle
+Rounded
+Pill
+
+Button clicks automatically fire tracking events if the user has connected their TikTok or Meta pixel.
+
+When a visitor clicks a button:
+
+TikTok CompleteRegistration event fires
+Meta Lead event fires
+
+This helps improve advert optimization and tracking performance.
+
+---
+
+VIDEO ELEMENT
+
+The Video Element allows users to embed YouTube videos directly on the landing page.
+
+Users can customize:
+
+video URL
+aspect ratio
+border
+shadow
+radius
+autoplay
+controls
+video start time
+
+This is useful for:
+
+sales videos
+tutorial videos
+offer explanation videos
+testimonial videos
+
+Videos are responsive and adjust automatically on mobile screens.
+
+---
+
+DIVIDER ELEMENT
+
+The Divider Element is used to visually separate sections of content.
+
+Users can customize:
+
+divider thickness
+divider color
+divider style
+divider width
+spacing above and below
+
+Divider styles include:
+
+solid
+dashed
+dotted
+
+---
+
+SPACER ELEMENT
+
+The Spacer Element is used to create empty space between elements.
+
+Users can customize:
+
+height
+background
+border
+shadow
+radius
+spacing
+
+This helps users create cleaner layouts and better visual structure.
+
+---
+
+DRAFT FEATURE
+
+The Custom Page Builder includes both:
+
+Manual Save to Draft
+Automatic Autosave
+
+This prevents users from losing their work accidentally.
+
+---
+
+MANUAL SAVE TO DRAFT
+
+While building a page:
+
+users can click:
+
+“Save to Draft”
+
+This saves the current page progress manually.
+
+The draft is stored automatically inside the user’s drafts list.
+
+Users can return later and continue editing from where they stopped.
+
+---
+
+AUTOSAVE FEATURE
+
+The Custom Page Builder also has automatic draft saving.
+
+As users work on the page:
+
+adding sections
+editing text
+adding images
+changing styles
+
+the page automatically saves itself in the background.
+
+This means:
+
+if the user refreshes the page
+accidentally closes the browser
+clicks the back button
+
+their work will still be available.
+
+When they return to the builder:
+
+their draft can be restored automatically.
+
+Autosave works continuously while editing.
+
+---
+
+PUBLISHING A CUSTOM PAGE
+
+When the user is done designing:
+
+they click:
+
+“Publish”
+
+A Publish Sheet will open.
+
+Inside the Publish Sheet:
+
+the user enters:
+
+Page Name
+
+The page name is used to generate the page URL.
+
+Example:
+
+If the page name is:
+
+“Free Crypto Class”
+
+The page link may look like:
+
+mytiklink.com/p/free-crypto-class
+
+Unlike pre-built templates:
+
+Custom Pages do not require a redirect URL during publishing because users already add redirect links directly to their buttons.
+
+---
+
+PUBLISH VALIDATION
+
+A completely empty page cannot be published.
+
+If the user tries to publish without adding any element:
+
+the system will show an error message.
+
+The user will be informed that:
+
+they have not added any content yet.
+
+They must add at least one element before publishing.
+
+---
+
+AFTER PUBLISHING
+
+After successful publishing:
+
+the page becomes live immediately.
+
+The user is redirected back to:
+
+Dashboard → Pages
+
+The draft used for that published page is automatically deleted.
+
+This prevents duplicate drafts from remaining after publishing.
+
+Other drafts remain untouched.
+
+---
+
+CUSTOM PAGE LINKS
+
+Custom pages use the same URL structure as normal landing pages.
+
+Example:
+
+mytiklink.com/p/page-name
+
+This means:
+
+both pre-built templates
+and custom-built pages
+
+work together inside the same system.
+
+Visitors cannot tell the difference between:
+
+template pages
+custom pages
+
+Both work normally and support:
+
+pixel tracking
+button redirects
+Meta events
+TikTok events
+
+---
+
+PIXEL TRACKING INSIDE CUSTOM PAGES
+
+If the user has connected:
+
+TikTok Pixel
+or Meta Pixel
+
+inside their MyTikLink dashboard:
+
+the Custom Page Builder automatically supports tracking.
+
+When visitors interact with buttons:
+
+TikTok fires:
+CompleteRegistration
+
+Meta fires:
+Lead
+
+This helps ad platforms optimize better for conversions.
+
+Users do not need to manually install any tracking code.
+
+Everything works automatically once the pixel is connected correctly.
+
+---
+
+BEST PRACTICES FOR CUSTOM PAGES
+
+A good custom landing page should:
+
+be clear
+be simple
+focus on one offer
+avoid too much clutter
+have a strong CTA
+
+Good pages usually include:
+
+clear headline
+short explanation
+social proof
+CTA button
+simple layout
+
+Users should avoid:
+
+too many buttons
+too much text
+confusing layouts
+unclear offers
+
+The goal is to guide visitors step by step toward taking action.
+
+---
+
+WHO SHOULD USE THE Custom Page Builder
+
+The Custom Page Builder is useful for:
+
+marketers
+business owners
+affiliate marketers
+course sellers
+WhatsApp marketers
+Telegram community owners
+advertisers
+
+It is especially useful for users who want:
+
+full design freedom
+custom branding
+unique landing pages
+better advert performance
+
+---
+
+COMMON ISSUES
+
+1. Page not publishing
+
+Usually caused by:
+
+empty page
+no elements added
+
+Solution:
+
+add at least one section and one element before publishing.
+
+---
+
+2. Draft not appearing
+
+Possible causes:
+
+browser storage cleared
+draft deleted after publishing
+
+Solution:
+
+continue editing and autosave will recreate the draft.
+
+---
+
+3. Buttons not redirecting
+
+Possible causes:
+
+missing URL
+incorrect URL format
+
+Solution:
+
+edit the button and add a valid URL.
+
+---
+
+4. TikTok or Meta events not firing
+
+Possible causes:
+
+pixel not connected
+wrong pixel ID
+
+Solution:
+
+Go to:
+Dashboard → TikTok/Meta Pixel
+
+Paste the correct pixel code and save.
+
+---
+
+The Custom Landing Page Builder is one of the most advanced features on MyTikLink.
+
+It allows users to move beyond templates and build fully customized pages visually without coding.
+
+The goal of the feature is to help users:
+
+create better landing pages
+improve advert conversion
+guide visitors properly
+build branded experiences
+increase results from traffic
+
+The Custom Page Builder combines:
+
+design flexibility
+pixel tracking
+landing page optimization
+mobile responsiveness
+easy editing
+
+all inside one system
+;
 `;
 export default aiKnowledge;
