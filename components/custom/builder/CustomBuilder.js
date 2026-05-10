@@ -45,7 +45,7 @@ export default function CustomBuilder() {
   const [isEditMode, setIsEditMode] = useState(false);
   const [loadingPage, setLoadingPage] = useState(true);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
-
+  const [pageTitle, setPageTitle] = useState("");
   useEffect(() => {
     const stored = localStorage.getItem("token");
 
@@ -98,7 +98,7 @@ export default function CustomBuilder() {
 
         // ✅ load existing sections
         setSections(res.data.customContent || []);
-
+        setPageTitle(res.data.title || "");
         // optional
         setCurrentDraftId(null);
       } catch (err) {
@@ -474,6 +474,7 @@ export default function CustomBuilder() {
         onPublish={publishCustomPage}
         isPro={isPro}
         onUpgrade={() => setShowUpgradeModal(true)}
+        initialTitle={pageTitle}
       />
       {showUpgradeModal && (
         <UpgradeModal

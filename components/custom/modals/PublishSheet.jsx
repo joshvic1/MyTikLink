@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import BottomSheet from "../ui/BottomSheet";
 
@@ -15,9 +15,12 @@ export default function PublishSheet({
   hasContent,
   isPro,
   onUpgrade,
+  initialTitle = "",
 }) {
-  const [title, setTitle] = useState("");
-
+  const [title, setTitle] = useState(initialTitle);
+  useEffect(() => {
+    setTitle(initialTitle || "");
+  }, [initialTitle, isOpen]);
   const [loading, setLoading] = useState(false);
 
   const handlePublish = async () => {

@@ -1,17 +1,12 @@
 import RenderElement from "./RenderElement";
-
+import styles from "./CustomPageRenderer.module.css";
 export default function CustomPageRenderer({
   sections = [],
   tiktokPixelId,
   metaPixelId,
 }) {
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        background: "#f9fafb",
-      }}
-    >
+    <div className={styles.wrapper}>
       {sections.map((section) => (
         <div
           key={section.id}

@@ -13,6 +13,8 @@ export default function Section({
   onDeleteSection,
   onUpdateElement,
   onUpdateSection,
+  onSelectElement,
+  onSelectSection,
 }) {
   const [showEdit, setShowEdit] = useState(false);
   return (
