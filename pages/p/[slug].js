@@ -57,7 +57,9 @@ function loadTikTokPixel(pixelId) {
 
     ttq.load(pixelId);
     window.__loadedTikTokPixel = pixelId;
-    ttq.page();
+    setTimeout(() => {
+      ttq.page();
+    }, 500);
 
     console.log("🎯 TikTok Pixel Initialized");
   })(window, document, "ttq");
@@ -511,26 +513,27 @@ export default function PublicPage() {
 
         if (res.data.redirectUrl) {
           if (window.ttq) {
-            let cleanPhone = whatsapp.replace(/\D/g, "");
+            console.log("🚀 Sending TikTok Lead Event");
 
-            if (cleanPhone.startsWith("0")) {
-              cleanPhone = "234" + cleanPhone.slice(1);
-            }
+            const cleanPhone = whatsapp.replace(/\D/g, "").replace(/^0/, "234");
 
-            window.ttq.identify({
+            window.ttq.track("Lead", {
               phone_number: cleanPhone,
             });
 
-            window.ttq.track("Lead");
-
-            window.ttq.track("CompleteRegistration");
+            window.ttq.track("CompleteRegistration", {
+              phone_number: cleanPhone,
+            });
           }
           if (window.fbq) window.fbq("track", "Lead");
           const redirectUrl = res.data.redirectUrl;
 
           // If NOT TikTok → auto redirect
           if (!isTikTokBrowser()) {
-            smartRedirect(redirectUrl);
+            setTimeout(() => {
+              smartRedirect(redirectUrl);
+            }, 1200);
+
             return;
           }
 
@@ -571,13 +574,17 @@ export default function PublicPage() {
       }
 
       if (window.ttq) {
-        window.ttq.identify({
-          external_id: page.slug,
+        console.log("🚀 Sending TikTok Lead Event");
+
+        const cleanPhone = whatsapp.replace(/\D/g, "").replace(/^0/, "234");
+
+        window.ttq.track("Lead", {
+          phone_number: cleanPhone,
         });
 
-        window.ttq.track("Lead");
-
-        window.ttq.track("CompleteRegistration");
+        window.ttq.track("CompleteRegistration", {
+          phone_number: cleanPhone,
+        });
       }
 
       if (window.fbq) {
@@ -590,7 +597,9 @@ export default function PublicPage() {
         return;
       }
 
-      smartRedirect(page.redirectUrl);
+      setTimeout(() => {
+        smartRedirect(page.redirectUrl);
+      }, 1200);
     };
 
     ctaBtn.addEventListener("click", handleClick);
