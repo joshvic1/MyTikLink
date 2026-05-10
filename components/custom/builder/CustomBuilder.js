@@ -22,6 +22,8 @@ import {
 
 export default function CustomBuilder() {
   const router = useRouter();
+
+  const { pageId } = router.query;
   const [sections, setSections] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [addTarget, setAddTarget] = useState(null);
@@ -40,7 +42,8 @@ export default function CustomBuilder() {
   const [showUpgrade, setShowUpgrade] = useState(false);
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
-
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [loadingPage, setLoadingPage] = useState(true);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
   useEffect(() => {
@@ -74,17 +77,54 @@ export default function CustomBuilder() {
 
     fetchUser();
   }, []);
+  useEffect(() => {
+    const loadPage = async () => {
+      if (!pageId || !token) {
+        setLoadingPage(false);
+        return;
+      }
 
+      try {
+        setIsEditMode(true);
+
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/pages/${pageId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+
+        // ✅ load existing sections
+        setSections(res.data.customContent || []);
+
+        // optional
+        setCurrentDraftId(null);
+      } catch (err) {
+        console.error(err);
+        toast.error("Failed to load page");
+        router.push("/dashboard/page");
+      } finally {
+        setLoadingPage(false);
+      }
+    };
+
+    loadPage();
+  }, [pageId, token]);
   const isPro = user?.plan?.toLowerCase().includes("pro");
   useEffect(() => {
+    // 🚫 don't show drafts during edit
+    if (pageId) return;
+
     const savedDrafts = getDrafts();
 
     if (savedDrafts.length > 0) {
       setDrafts(savedDrafts);
-
       setShowDrafts(true);
     }
-  }, []);
+  }, [pageId]);
+
   useEffect(() => {
     if (sections.length === 0) return;
 
@@ -280,13 +320,40 @@ export default function CustomBuilder() {
   };
   const publishCustomPage = async ({ title }) => {
     try {
+      // =========================
+      // EDIT EXISTING PAGE
+      // =========================
+      if (isEditMode && pageId) {
+        await axios.put(
+          `${process.env.NEXT_PUBLIC_API_URL}/pages/${pageId}`,
+          {
+            title,
+            customContent: sections,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+
+        toast.success("Page updated");
+
+        setTimeout(() => {
+          router.push("/dashboard/page");
+        }, 1200);
+
+        return;
+      }
+
+      // =========================
+      // CREATE NEW PAGE
+      // =========================
       await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/pages`,
         {
           builderType: "custom",
-
           title,
-
           customContent: sections,
         },
         {
@@ -295,9 +362,11 @@ export default function CustomBuilder() {
           },
         },
       );
+
       if (currentDraftId) {
         deleteDraft(currentDraftId);
       }
+
       toast.success("Page created");
 
       setTimeout(() => {
@@ -306,9 +375,14 @@ export default function CustomBuilder() {
     } catch (err) {
       console.error(err);
 
-      toast.error("Failed to publish page");
+      toast.error(
+        isEditMode ? "Failed to update page" : "Failed to publish page",
+      );
     }
   };
+  if (loadingPage) {
+    return <div className={styles.loading}>Loading page...</div>;
+  }
   return (
     <div className={styles.container}>
       {/* MAIN CANVAS */}

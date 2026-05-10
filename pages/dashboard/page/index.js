@@ -196,9 +196,19 @@ export default function PagesDashboard() {
       ) : (
         <PagesCardView
           pages={pages}
-          onEdit={(page) =>
-            router.push(`/dashboard/page/create/edit?pageId=${page._id}`)
-          }
+          onEdit={(page) => {
+            console.log(page);
+
+            // ✅ custom builder page
+            if (!page.templateId) {
+              router.push(`/dashboard/page/create/custom?pageId=${page._id}`);
+
+              return;
+            }
+
+            // ✅ template page
+            router.push(`/dashboard/page/create/edit?pageId=${page._id}`);
+          }}
           onViewLeads={(page) => {
             setActivePage(page);
             setShowLeads(true);
