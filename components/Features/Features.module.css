@@ -604,13 +604,10 @@
   transition: 0.4s;
 }
 .card:hover {
-  transform: rotate(10deg) scale(1.1);
+  transform: translateY(-6px) scale(1.02);
 }
 .card:hover::before {
   opacity: 1;
-}
-.card {
-  animation: floatCard 6s ease-in-out infinite;
 }
 
 @keyframes floatCard {

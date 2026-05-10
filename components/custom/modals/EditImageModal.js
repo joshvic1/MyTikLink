@@ -74,16 +74,45 @@ export default function EditImageModal({ isOpen, onClose, element, onSave }) {
                   type="file"
                   hidden
                   accept="image/*"
-                  onChange={(e) => {
+                  onChange={async (e) => {
                     const file = e.target.files[0];
 
                     if (!file) return;
 
-                    const imageUrl = URL.createObjectURL(file);
+                    try {
+                      const token = localStorage.getItem("token");
 
-                    onSave({
-                      src: imageUrl,
-                    });
+                      const formData = new FormData();
+
+                      formData.append("image", file);
+
+                      const res = await fetch(
+                        `${process.env.NEXT_PUBLIC_API_URL}/upload`,
+                        {
+                          method: "POST",
+
+                          headers: {
+                            Authorization: `Bearer ${token}`,
+                          },
+
+                          body: formData,
+                        },
+                      );
+
+                      const data = await res.json();
+
+                      onSave({
+                        src: data.url,
+
+                        key: data.key || null,
+
+                        publicId: data.publicId || null,
+                      });
+                    } catch (err) {
+                      console.error(err);
+
+                      alert("Upload failed");
+                    }
                   }}
                 />
               </label>

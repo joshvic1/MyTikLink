@@ -211,3 +211,13 @@ body {
 html {
   scroll-behavior: smooth;
 }
+html,
+body {
+  overflow-x: hidden;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}

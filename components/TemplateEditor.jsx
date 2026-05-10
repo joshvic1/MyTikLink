@@ -159,7 +159,10 @@ export default function TemplateEditor({ template, config, onChange }) {
                       const result = await uploadImage(file);
 
                       // delete previous image (optional but good)
-                      if (config[activeField.key]?.publicId) {
+                      const existingImage = config[activeField.key];
+
+                      if (existingImage?.publicId) {
+                        // OLD CLOUDINARY IMAGE
                         await fetch(
                           `${process.env.NEXT_PUBLIC_API_URL}/upload/delete`,
                           {
@@ -169,7 +172,24 @@ export default function TemplateEditor({ template, config, onChange }) {
                               Authorization: `Bearer ${localStorage.getItem("token")}`,
                             },
                             body: JSON.stringify({
-                              publicId: config[activeField.key].publicId,
+                              publicId: existingImage.publicId,
+                            }),
+                          },
+                        );
+                      }
+
+                      if (existingImage?.key) {
+                        // NEW R2 IMAGE
+                        await fetch(
+                          `${process.env.NEXT_PUBLIC_API_URL}/upload/delete`,
+                          {
+                            method: "DELETE",
+                            headers: {
+                              "Content-Type": "application/json",
+                              Authorization: `Bearer ${localStorage.getItem("token")}`,
+                            },
+                            body: JSON.stringify({
+                              key: existingImage.key,
                             }),
                           },
                         );
@@ -177,7 +197,8 @@ export default function TemplateEditor({ template, config, onChange }) {
 
                       setValue({
                         url: result.url,
-                        publicId: result.publicId,
+                        publicId: result.publicId || null,
+                        key: result.key || null,
                       });
                     } catch (err) {
                       alert("Image upload failed");
