@@ -1,5 +1,20 @@
 "use client";
+
 function loadTikTokPixel(pixelId) {
+  if (
+    window.ttq &&
+    window.__loadedTikTokPixel &&
+    window.__loadedTikTokPixel !== pixelId
+  ) {
+    console.log("♻️ Resetting previous TikTok pixel");
+
+    delete window.ttq;
+    delete window.TiktokAnalyticsObject;
+    delete window.__loadedTikTokPixel;
+    document
+      .querySelectorAll('script[src*="analytics.tiktok.com"]')
+      .forEach((s) => s.remove());
+  }
   if (!pixelId) {
     console.log("❌ No TikTok Pixel ID found");
     return;
@@ -57,9 +72,6 @@ function loadTikTokPixel(pixelId) {
 
     ttq.load(pixelId);
     window.__loadedTikTokPixel = pixelId;
-    setTimeout(() => {
-      ttq.page();
-    }, 500);
 
     console.log("🎯 TikTok Pixel Initialized");
   })(window, document, "ttq");
@@ -398,16 +410,20 @@ export default function PublicPage() {
 
         if (pageData.tiktokPixelId) {
           loadTikTokPixel(pageData.tiktokPixelId);
-        }
 
-        setTimeout(() => {
-          if (window.ttq) {
-            window.ttq.track("ViewContent", {
-              content_name: pageData.title,
-              content_id: pageData.slug,
+          if (window.ttq?.ready) {
+            window.ttq.ready(() => {
+              console.log("✅ TikTok SDK Ready");
+
+              window.ttq.page();
+
+              window.ttq.track("ViewContent", {
+                content_name: pageData.title,
+                content_id: pageData.slug,
+              });
             });
           }
-        }, 1000);
+        }
         if (res.data.metaPixelId) {
           loadMetaPixel(res.data.metaPixelId);
         }
@@ -517,10 +533,6 @@ export default function PublicPage() {
 
             const cleanPhone = whatsapp.replace(/\D/g, "").replace(/^0/, "234");
 
-            window.ttq.track("Lead", {
-              phone_number: cleanPhone,
-            });
-
             window.ttq.track("CompleteRegistration", {
               phone_number: cleanPhone,
             });
@@ -529,6 +541,7 @@ export default function PublicPage() {
           const redirectUrl = res.data.redirectUrl;
 
           // If NOT TikTok → auto redirect
+
           if (!isTikTokBrowser()) {
             setTimeout(() => {
               smartRedirect(redirectUrl);
@@ -575,8 +588,6 @@ export default function PublicPage() {
 
       if (window.ttq) {
         console.log("🚀 Sending TikTok Lead Event");
-
-        window.ttq.track("Lead");
 
         window.ttq.track("CompleteRegistration");
       }
