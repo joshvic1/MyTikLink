@@ -576,15 +576,9 @@ export default function PublicPage() {
       if (window.ttq) {
         console.log("🚀 Sending TikTok Lead Event");
 
-        const cleanPhone = whatsapp.replace(/\D/g, "").replace(/^0/, "234");
+        window.ttq.track("Lead");
 
-        window.ttq.track("Lead", {
-          phone_number: cleanPhone,
-        });
-
-        window.ttq.track("CompleteRegistration", {
-          phone_number: cleanPhone,
-        });
+        window.ttq.track("CompleteRegistration");
       }
 
       if (window.fbq) {
