@@ -1,14 +1,16 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "./Modal";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { FcGoogle } from "react-icons/fc";
+import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 import useAuth from "@/hooks/useAuth";
 import VerifyEmailModal from "./VerifyEmailModal";
 import styles from "@/styles/modal.module.css";
-
+import "react-phone-input-2/lib/style.css";
+import PhoneInput from "react-phone-input-2";
 export default function AuthModal({
   isOpen,
   onClose,
@@ -22,13 +24,15 @@ export default function AuthModal({
     name: "",
     email: "",
     password: "",
+    whatsappNumber: "",
+    countryCode: "234",
   });
 
   const [loading, setLoading] = useState(false);
   const [showVerify, setShowVerify] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [termsError, setTermsError] = useState("");
-
+  const [showPassword, setShowPassword] = useState(false);
   const handleClose = () => {
     switchMode(null); // hide modal for components that use authMode
     onClose?.(); // call parent onClose if it was passed
@@ -86,6 +90,7 @@ export default function AuthModal({
         name: form.name,
         email: form.email,
         password: form.password,
+        whatsappNumber: form.whatsappNumber,
       });
 
       toast.success("Verification code sent!");
@@ -104,7 +109,10 @@ export default function AuthModal({
     try {
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/auth/register`,
-        form,
+        {
+          ...form,
+          whatsappNumber: form.whatsappNumber,
+        },
       );
 
       login(res.data.token);
@@ -144,19 +152,28 @@ export default function AuthModal({
   return (
     <>
       {/* MAIN AUTH MODAL */}
-      <Modal
-        isOpen={isOpen}
-        onClose={handleClose}
-        title={
-          mode === "login"
-            ? "Login to TikLink"
-            : mode === "register"
-              ? "Create your TikLink account"
-              : mode === "forgot"
-                ? "Reset Your Password"
-                : ""
-        }
-      >
+      <Modal isOpen={isOpen} onClose={handleClose}>
+        <div className={styles.hero}>
+          <div className={styles.logo}>M</div>
+
+          <div className={styles.heroText}>
+            <h2>
+              {mode === "login"
+                ? "Welcome back"
+                : mode === "register"
+                  ? "Create your account"
+                  : "Reset password"}
+            </h2>
+
+            <p>
+              {mode === "login"
+                ? "Login to continue using TikLink"
+                : mode === "register"
+                  ? "Start building pages that convert"
+                  : "We’ll send you a reset link"}
+            </p>
+          </div>
+        </div>
         <div className={styles.container}>
           {/* GOOGLE LOGIN – ONLY FOR LOGIN SCREEN */}
           {mode === "login" && (
@@ -205,15 +222,46 @@ export default function AuthModal({
                 value={form.email}
                 onChange={handleChange}
               />
+              <div
+                style={{
+                  display: "flex",
+                  gap: "10px",
+                  width: "100%",
+                }}
+              >
+                <PhoneInput
+                  country={"ng"}
+                  value={form.whatsappNumber}
+                  onChange={(phone) =>
+                    setForm({
+                      ...form,
+                      whatsappNumber: phone,
+                    })
+                  }
+                  inputClass={styles.phoneInput}
+                  containerClass={styles.phoneContainer}
+                  buttonClass={styles.phoneButton}
+                  placeholder="Enter WhatsApp Number"
+                />
+              </div>
+              <div className={styles.passwordWrap}>
+                <input
+                  className={styles.input}
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Password"
+                  value={form.password}
+                  onChange={handleChange}
+                />
 
-              <input
-                className={styles.input}
-                name="password"
-                type="password"
-                placeholder="Password"
-                value={form.password}
-                onChange={handleChange}
-              />
+                <button
+                  type="button"
+                  className={styles.eyeBtn}
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
               <div className={styles.termsWrap}>
                 <label className={styles.termsLabel}>
                   <input
@@ -280,14 +328,24 @@ export default function AuthModal({
                 onChange={handleChange}
               />
 
-              <input
-                className={styles.input}
-                name="password"
-                type="password"
-                placeholder="Password"
-                value={form.password}
-                onChange={handleChange}
-              />
+              <div className={styles.passwordWrap}>
+                <input
+                  className={styles.input}
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Password"
+                  value={form.password}
+                  onChange={handleChange}
+                />
+
+                <button
+                  type="button"
+                  className={styles.eyeBtn}
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
 
               <p className={styles.forgot} onClick={() => switchMode("forgot")}>
                 Forgot password?
