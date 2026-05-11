@@ -416,11 +416,26 @@ export default function PublicPage() {
               console.log("✅ TikTok SDK Ready");
 
               window.ttq.page();
+              const viewEventId = crypto.randomUUID();
 
-              window.ttq.track("ViewContent", {
-                content_name: pageData.title,
-                content_id: pageData.slug,
-              });
+              window.ttq.track(
+                "ViewContent",
+                {
+                  content_type: "product",
+                  content_id: pageData.slug,
+                  content_name: pageData.title,
+
+                  contents: [
+                    {
+                      content_id: pageData.slug,
+                      content_name: pageData.title,
+                    },
+                  ],
+                },
+                {
+                  event_id: viewEventId,
+                },
+              );
             });
           }
         }
@@ -533,9 +548,30 @@ export default function PublicPage() {
 
             const cleanPhone = whatsapp.replace(/\D/g, "").replace(/^0/, "234");
 
-            window.ttq.track("CompleteRegistration", {
-              phone_number: cleanPhone,
-            });
+            const leadEventId = crypto.randomUUID();
+
+            window.ttq.track(
+              "Lead",
+              {
+                content_type: "product",
+
+                content_id: page.slug,
+
+                content_name: page.title,
+
+                contents: [
+                  {
+                    content_id: page.slug,
+                    content_name: page.title,
+                  },
+                ],
+
+                phone_number: cleanPhone,
+              },
+              {
+                event_id: leadEventId,
+              },
+            );
           }
           if (window.fbq) window.fbq("track", "Lead");
           const redirectUrl = res.data.redirectUrl;
@@ -589,7 +625,28 @@ export default function PublicPage() {
       if (window.ttq) {
         console.log("🚀 Sending TikTok Lead Event");
 
-        window.ttq.track("CompleteRegistration");
+        const leadEventId = crypto.randomUUID();
+
+        window.ttq.track(
+          "Lead",
+          {
+            content_type: "product",
+
+            content_id: page.slug,
+
+            content_name: page.title,
+
+            contents: [
+              {
+                content_id: page.slug,
+                content_name: page.title,
+              },
+            ],
+          },
+          {
+            event_id: leadEventId,
+          },
+        );
       }
 
       if (window.fbq) {
