@@ -1,20 +1,15 @@
+// New code not working
 "use client";
+
 function loadTikTokPixel(pixelId) {
-  if (!pixelId) {
-    console.log("❌ No TikTok Pixel ID found");
-    return;
-  }
+  if (!pixelId) return;
 
-  if (window.ttq) {
-    console.log("⚠️ TikTok pixel already loaded");
-    return;
-  }
-
-  console.log("🚀 Loading TikTok Pixel:", pixelId);
+  if (window.ttq) return;
 
   !(function (w, d, t) {
     w.TiktokAnalyticsObject = t;
     var ttq = (w[t] = w[t] || []);
+
     ttq.methods = [
       "page",
       "track",
@@ -30,35 +25,34 @@ function loadTikTokPixel(pixelId) {
       "enableCookie",
       "disableCookie",
     ];
+
     ttq.setAndDefer = function (t, e) {
       t[e] = function () {
         t.push([e].concat(Array.prototype.slice.call(arguments, 0)));
       };
     };
+
     for (var i = 0; i < ttq.methods.length; i++) {
       ttq.setAndDefer(ttq, ttq.methods[i]);
     }
+
     ttq.load = function (e) {
-      var i = "https://analytics.tiktok.com/i18n/pixel/events.js";
-      var o = d.createElement("script");
-      o.type = "text/javascript";
-      o.async = true;
-      o.src = i + "?sdkid=" + e + "&lib=" + t;
+      var s = d.createElement("script");
 
-      o.onload = () => {
-        console.log("✅ TikTok Pixel script loaded");
-      };
+      s.async = true;
+      s.src =
+        "https://analytics.tiktok.com/i18n/pixel/events.js?sdkid=" +
+        e +
+        "&lib=" +
+        t;
 
-      var a = d.getElementsByTagName("script")[0];
-      a.parentNode.insertBefore(o, a);
+      var x = d.getElementsByTagName("script")[0];
+      x.parentNode.insertBefore(s, x);
     };
 
     ttq.load(pixelId);
-    ttq.page();
 
-    ttq.ready(() => {
-      console.log("🎯 TikTok Pixel is READY");
-    });
+    ttq.page();
   })(window, document, "ttq");
 }
 function loadMetaPixel(pixelId) {
@@ -105,6 +99,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import Head from "next/head";
+import CustomPageRenderer from "@/components/custom/renderer/CustomPageRenderer";
 
 /* =========================
    BROWSER + OS DETECTION
@@ -394,16 +389,35 @@ export default function PublicPage() {
 
         if (pageData.tiktokPixelId) {
           loadTikTokPixel(pageData.tiktokPixelId);
-        }
 
-        setTimeout(() => {
-          if (window.ttq) {
-            window.ttq.track("ViewContent", {
-              content_name: pageData.title,
-              content_id: pageData.slug,
+          if (window.ttq?.ready) {
+            window.ttq.ready(() => {
+              console.log("✅ TikTok SDK Ready");
+
+              window.ttq.page();
+              const viewEventId = crypto.randomUUID();
+
+              window.ttq.track(
+                "ViewContent",
+                {
+                  content_type: "product",
+                  content_id: pageData.slug,
+                  content_name: pageData.title,
+
+                  contents: [
+                    {
+                      content_id: pageData.slug,
+                      content_name: pageData.title,
+                    },
+                  ],
+                },
+                {
+                  event_id: viewEventId,
+                },
+              );
             });
           }
-        }, 1000);
+        }
         if (res.data.metaPixelId) {
           loadMetaPixel(res.data.metaPixelId);
         }
@@ -508,13 +522,69 @@ export default function PublicPage() {
         setCooldownActive(true);
 
         if (res.data.redirectUrl) {
-          if (window.ttq) window.ttq.track("CompleteRegistration");
+          if (window.ttq) {
+            console.log("🚀 Sending TikTok Lead Event");
+
+            const cleanPhone = whatsapp.replace(/\D/g, "").replace(/^0/, "234");
+
+            const leadEventId = crypto.randomUUID();
+
+            window.ttq.track(
+              "Lead",
+              {
+                content_type: "product",
+
+                content_id: page.slug,
+
+                content_name: page.title,
+
+                contents: [
+                  {
+                    content_id: page.slug,
+                    content_name: page.title,
+                  },
+                ],
+
+                phone_number: cleanPhone,
+              },
+
+              {
+                event_id: leadEventId,
+              },
+            );
+            setTimeout(() => {
+              window.ttq.track(
+                "CompleteRegistration",
+                {
+                  content_type: "product",
+
+                  content_id: page.slug,
+
+                  content_name: page.title,
+
+                  contents: [
+                    {
+                      content_id: page.slug,
+                      content_name: page.title,
+                    },
+                  ],
+                },
+                {
+                  event_id: crypto.randomUUID(),
+                },
+              );
+            }, 400);
+          }
           if (window.fbq) window.fbq("track", "Lead");
           const redirectUrl = res.data.redirectUrl;
 
           // If NOT TikTok → auto redirect
+
           if (!isTikTokBrowser()) {
-            smartRedirect(redirectUrl);
+            setTimeout(() => {
+              smartRedirect(redirectUrl);
+            }, 1200);
+
             return;
           }
 
@@ -555,8 +625,52 @@ export default function PublicPage() {
       }
 
       if (window.ttq) {
-        window.ttq.track("Lead");
-        window.ttq.track("CompleteRegistration");
+        console.log("🚀 Sending TikTok Lead Event");
+
+        const leadEventId = crypto.randomUUID();
+
+        window.ttq.track(
+          "Lead",
+          {
+            content_type: "product",
+
+            content_id: page.slug,
+
+            content_name: page.title,
+
+            contents: [
+              {
+                content_id: page.slug,
+                content_name: page.title,
+              },
+            ],
+          },
+          {
+            event_id: leadEventId,
+          },
+        );
+        setTimeout(() => {
+          window.ttq.track(
+            "CompleteRegistration",
+            {
+              content_type: "product",
+
+              content_id: page.slug,
+
+              content_name: page.title,
+
+              contents: [
+                {
+                  content_id: page.slug,
+                  content_name: page.title,
+                },
+              ],
+            },
+            {
+              event_id: crypto.randomUUID(),
+            },
+          );
+        }, 400);
       }
 
       if (window.fbq) {
@@ -569,7 +683,9 @@ export default function PublicPage() {
         return;
       }
 
-      smartRedirect(page.redirectUrl);
+      setTimeout(() => {
+        smartRedirect(page.redirectUrl);
+      }, 1200);
     };
 
     ctaBtn.addEventListener("click", handleClick);
@@ -588,6 +704,22 @@ export default function PublicPage() {
       </div>
     );
   }
+  if (page.builderType === "custom") {
+    return (
+      <>
+        <Head>
+          <title>{page.title}</title>
+        </Head>
+
+        <CustomPageRenderer
+          sections={page.customContent}
+          tiktokPixelId={page.tiktokPixelId}
+          metaPixelId={page.metaPixelId}
+        />
+      </>
+    );
+  }
+
   if (!page?.template?.html) {
     return null;
   }
