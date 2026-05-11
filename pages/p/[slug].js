@@ -726,12 +726,6 @@ export default function PublicPage() {
         <Head>
           <title>{page.title}</title>
         </Head>
-
-        <CustomPageRenderer
-          sections={page.customContent}
-          tiktokPixelId={page.tiktokPixelId}
-          metaPixelId={page.metaPixelId}
-        />
       </>
     );
   }
