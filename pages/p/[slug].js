@@ -711,6 +711,7 @@ export default function PublicPage() {
           sections={page.customContent}
           tiktokPixelId={page.tiktokPixelId}
           metaPixelId={page.metaPixelId}
+          page={page}
         />
       </>
     );

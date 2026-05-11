@@ -4,6 +4,7 @@ export default function CustomPageRenderer({
   sections = [],
   tiktokPixelId,
   metaPixelId,
+  page,
 }) {
   return (
     <div className={styles.wrapper}>
@@ -65,6 +66,7 @@ export default function CustomPageRenderer({
                 el={el}
                 tiktokPixelId={tiktokPixelId}
                 metaPixelId={metaPixelId}
+                page={page}
               />
             ))}
           </div>

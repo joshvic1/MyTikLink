@@ -7,7 +7,12 @@ import RenderDivider from "../shared/RenderDivider";
 import RenderSpacer from "../shared/RenderSpacer";
 
 import RenderVideo from "../shared/RenderVideo";
-export default function RenderElement({ el, tiktokPixelId, metaPixelId }) {
+export default function RenderElement({
+  el,
+  tiktokPixelId,
+  metaPixelId,
+  page,
+}) {
   switch (el.type) {
     case "text":
       return <RenderText element={el} />;
@@ -20,6 +25,7 @@ export default function RenderElement({ el, tiktokPixelId, metaPixelId }) {
           element={el}
           tiktokPixelId={tiktokPixelId}
           metaPixelId={metaPixelId}
+          page={page}
         />
       );
 

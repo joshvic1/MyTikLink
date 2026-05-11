@@ -1,4 +1,4 @@
-export default function RenderButton({ element }) {
+export default function RenderButton({ element, page, phoneNumber }) {
   const shadowMap = {
     none: "none",
     light: "0 4px 10px rgba(0,0,0,0.08)",
@@ -27,10 +27,54 @@ export default function RenderButton({ element }) {
     if (typeof window !== "undefined" && window.ttq) {
       console.log("🚀 Sending TikTok Events");
 
-      window.ttq.track("Lead");
+      const leadEventId = Date.now().toString();
+
+      window.ttq.track(
+        "Lead",
+        {
+          content_type: "product",
+
+          content_id: page?.slug,
+
+          content_name: page?.title,
+
+          contents: [
+            {
+              content_id: page?.slug,
+              content_name: page?.title,
+            },
+          ],
+
+          ...(phoneNumber && {
+            phone_number: phoneNumber,
+          }),
+        },
+        {
+          event_id: leadEventId,
+        },
+      );
 
       setTimeout(() => {
-        window.ttq.track("CompleteRegistration");
+        window.ttq.track(
+          "CompleteRegistration",
+          {
+            content_type: "product",
+
+            content_id: page?.slug,
+
+            content_name: page?.title,
+
+            contents: [
+              {
+                content_id: page?.slug,
+                content_name: page?.title,
+              },
+            ],
+          },
+          {
+            event_id: Date.now().toString(),
+          },
+        );
       }, 400);
     }
 
