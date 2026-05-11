@@ -27,13 +27,7 @@ export default function TextElement({
 
           {/* ACTIONS */}
           <div className={styles.actions}>
-            <button
-              className={styles.edit}
-              onClick={() => {
-                onSelectSection(section);
-                setShowEdit(true);
-              }}
-            >
+            <button className={styles.edit} onClick={() => setShowEdit(true)}>
               <Pencil size={14} />
             </button>
 
