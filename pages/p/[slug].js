@@ -568,10 +568,33 @@ export default function PublicPage() {
 
                 phone_number: cleanPhone,
               },
+
               {
                 event_id: leadEventId,
               },
             );
+            setTimeout(() => {
+              window.ttq.track(
+                "CompleteRegistration",
+                {
+                  content_type: "product",
+
+                  content_id: page.slug,
+
+                  content_name: page.title,
+
+                  contents: [
+                    {
+                      content_id: page.slug,
+                      content_name: page.title,
+                    },
+                  ],
+                },
+                {
+                  event_id: crypto.randomUUID(),
+                },
+              );
+            }, 400);
           }
           if (window.fbq) window.fbq("track", "Lead");
           const redirectUrl = res.data.redirectUrl;
@@ -647,6 +670,28 @@ export default function PublicPage() {
             event_id: leadEventId,
           },
         );
+        setTimeout(() => {
+          window.ttq.track(
+            "CompleteRegistration",
+            {
+              content_type: "product",
+
+              content_id: page.slug,
+
+              content_name: page.title,
+
+              contents: [
+                {
+                  content_id: page.slug,
+                  content_name: page.title,
+                },
+              ],
+            },
+            {
+              event_id: crypto.randomUUID(),
+            },
+          );
+        }, 400);
       }
 
       if (window.fbq) {
