@@ -1,24 +1,12 @@
 "use client";
 
 function loadTikTokPixel(pixelId) {
-  if (
-    window.ttq &&
-    window.__loadedTikTokPixel &&
-    window.__loadedTikTokPixel !== pixelId
-  ) {
-    console.log("♻️ Resetting previous TikTok pixel");
-
-    delete window.ttq;
-    delete window.TiktokAnalyticsObject;
-    delete window.__loadedTikTokPixel;
-    document
-      .querySelectorAll('script[src*="analytics.tiktok.com"]')
-      .forEach((s) => s.remove());
-  }
   if (!pixelId) {
     console.log("❌ No TikTok Pixel ID found");
     return;
   }
+
+  // already loaded
   if (window.ttq && window.__loadedTikTokPixel === pixelId) {
     console.log("⚠️ TikTok pixel already loaded");
     return;
@@ -28,7 +16,9 @@ function loadTikTokPixel(pixelId) {
 
   !(function (w, d, t) {
     w.TiktokAnalyticsObject = t;
-    var ttq = (w[t] = w[t] || []);
+
+    const ttq = (w[t] = w[t] || []);
+
     ttq.methods = [
       "page",
       "track",
@@ -43,37 +33,42 @@ function loadTikTokPixel(pixelId) {
       "group",
       "enableCookie",
       "disableCookie",
-      "holdConsent",
-      "revokeConsent",
-      "grantConsent",
     ];
+
     ttq.setAndDefer = function (t, e) {
       t[e] = function () {
         t.push([e].concat(Array.prototype.slice.call(arguments, 0)));
       };
     };
-    for (var i = 0; i < ttq.methods.length; i++) {
+
+    for (let i = 0; i < ttq.methods.length; i++) {
       ttq.setAndDefer(ttq, ttq.methods[i]);
     }
+
     ttq.load = function (e) {
-      var i = "https://analytics.tiktok.com/i18n/pixel/events.js";
-      var o = d.createElement("script");
-      o.type = "text/javascript";
-      o.async = true;
-      o.src = i + "?sdkid=" + e + "&lib=" + t;
+      const script = d.createElement("script");
 
-      o.onload = () => {
-        console.log("✅ TikTok Pixel script loaded");
-      };
+      script.async = true;
+      script.src =
+        "https://analytics.tiktok.com/i18n/pixel/events.js?sdkid=" +
+        e +
+        "&lib=" +
+        t;
 
-      var a = d.getElementsByTagName("script")[0];
-      a.parentNode.insertBefore(o, a);
+      const firstScript = d.getElementsByTagName("script")[0];
+
+      firstScript.parentNode.insertBefore(script, firstScript);
     };
 
     ttq.load(pixelId);
-    window.__loadedTikTokPixel = pixelId;
 
-    console.log("🎯 TikTok Pixel Initialized");
+    ttq.ready(() => {
+      console.log("✅ TikTok Pixel READY");
+
+      ttq.page();
+    });
+
+    window.__loadedTikTokPixel = pixelId;
   })(window, document, "ttq");
 }
 function loadMetaPixel(pixelId) {
