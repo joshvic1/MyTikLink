@@ -1,14 +1,20 @@
-// New code not working
 "use client";
 
 function loadTikTokPixel(pixelId) {
-  if (!pixelId) return;
-
-  if (window.ttq) return;
+  if (!pixelId) {
+    console.log("❌ No TikTok Pixel ID found");
+    return;
+  }
+  if (window.ttq) {
+    console.log("⚠️ TikTok pixel already loaded");
+    return;
+  }
+  console.log("🚀 Loading TikTok Pixel:", pixelId);
 
   !(function (w, d, t) {
     w.TiktokAnalyticsObject = t;
-    var ttq = (w[t] = w[t] || []);
+
+    const ttq = (w[t] = w[t] || []);
 
     ttq.methods = [
       "page",
@@ -32,27 +38,33 @@ function loadTikTokPixel(pixelId) {
       };
     };
 
-    for (var i = 0; i < ttq.methods.length; i++) {
+    for (let i = 0; i < ttq.methods.length; i++) {
       ttq.setAndDefer(ttq, ttq.methods[i]);
     }
 
     ttq.load = function (e) {
-      var s = d.createElement("script");
+      const script = d.createElement("script");
 
-      s.async = true;
-      s.src =
+      script.async = true;
+
+      script.src =
         "https://analytics.tiktok.com/i18n/pixel/events.js?sdkid=" +
         e +
         "&lib=" +
         t;
 
-      var x = d.getElementsByTagName("script")[0];
-      x.parentNode.insertBefore(s, x);
+      const firstScript = d.getElementsByTagName("script")[0];
+
+      firstScript.parentNode.insertBefore(script, firstScript);
     };
 
     ttq.load(pixelId);
 
     ttq.page();
+
+    ttq.ready(() => {
+      console.log("✅ TikTok READY:", pixelId);
+    });
   })(window, document, "ttq");
 }
 function loadMetaPixel(pixelId) {
@@ -390,34 +402,18 @@ export default function PublicPage() {
         if (pageData.tiktokPixelId) {
           loadTikTokPixel(pageData.tiktokPixelId);
 
-          if (window.ttq?.ready) {
-            window.ttq.ready(() => {
-              console.log("✅ TikTok SDK Ready");
+          setTimeout(() => {
+            if (window.ttq) {
+              console.log("🚀 Sending ViewContent");
 
-              window.ttq.page();
-              const viewEventId = crypto.randomUUID();
-
-              window.ttq.track(
-                "ViewContent",
-                {
-                  content_type: "product",
-                  content_id: pageData.slug,
-                  content_name: pageData.title,
-
-                  contents: [
-                    {
-                      content_id: pageData.slug,
-                      content_name: pageData.title,
-                    },
-                  ],
-                },
-                {
-                  event_id: viewEventId,
-                },
-              );
-            });
-          }
+              window.ttq.track("ViewContent", {
+                content_id: pageData.slug,
+                content_name: pageData.title,
+              });
+            }
+          }, 1000);
         }
+
         if (res.data.metaPixelId) {
           loadMetaPixel(res.data.metaPixelId);
         }
@@ -527,7 +523,7 @@ export default function PublicPage() {
 
             const cleanPhone = whatsapp.replace(/\D/g, "").replace(/^0/, "234");
 
-            const leadEventId = crypto.randomUUID();
+            const leadEventId = Date.now().toString();
 
             window.ttq.track(
               "Lead",
@@ -570,7 +566,7 @@ export default function PublicPage() {
                   ],
                 },
                 {
-                  event_id: crypto.randomUUID(),
+                  event_id: Date.now().toString(),
                 },
               );
             }, 400);
@@ -627,7 +623,7 @@ export default function PublicPage() {
       if (window.ttq) {
         console.log("🚀 Sending TikTok Lead Event");
 
-        const leadEventId = crypto.randomUUID();
+        const leadEventId = Date.now().toString();
 
         window.ttq.track(
           "Lead",
@@ -667,7 +663,7 @@ export default function PublicPage() {
               ],
             },
             {
-              event_id: crypto.randomUUID(),
+              event_id: Date.now().toString(),
             },
           );
         }, 400);
