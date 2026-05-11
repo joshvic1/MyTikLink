@@ -552,3 +552,152 @@
 
   color: #4f46e5;
 }
+
+/* =========================
+   PHONE DROPDOWN
+========================= */
+
+.phoneContainer {
+  width: 100%;
+}
+
+/* DROPDOWN */
+
+.phoneContainer :global(.country-list) {
+  position: absolute !important;
+
+  top: 58px !important;
+
+  left: 0 !important;
+
+  right: 0 !important;
+
+  width: auto !important;
+
+  min-width: 260px !important;
+
+  max-height: 260px !important;
+
+  overflow-y: auto !important;
+
+  border-radius: 18px !important;
+
+  padding: 8px !important;
+
+  margin-top: 0 !important;
+
+  background: rgba(255, 255, 255, 0.98) !important;
+
+  border: 1px solid #e5e7eb !important;
+
+  box-shadow:
+    0 20px 50px rgba(15, 23, 42, 0.14),
+    0 8px 24px rgba(99, 102, 241, 0.08) !important;
+
+  backdrop-filter: blur(14px) !important;
+
+  overflow-x: hidden !important;
+
+  box-sizing: border-box !important;
+
+  z-index: 99999 !important;
+}
+
+/* EACH COUNTRY */
+
+.phoneContainer :global(.country) {
+  height: 52px !important;
+
+  display: flex !important;
+  align-items: center !important;
+
+  gap: 14px !important;
+
+  padding: 0 14px !important;
+
+  border-radius: 14px !important;
+
+  transition:
+    background 0.18s ease,
+    transform 0.18s ease !important;
+}
+
+/* HOVER */
+
+.phoneContainer :global(.country:hover) {
+  background: rgba(99, 102, 241, 0.08) !important;
+}
+
+/* ACTIVE */
+
+.phoneContainer :global(.country.highlight) {
+  background: rgba(99, 102, 241, 0.12) !important;
+}
+
+/* COUNTRY NAME */
+
+.phoneContainer :global(.country-name) {
+  font-size: 14px !important;
+
+  color: #111827 !important;
+
+  margin-right: auto !important;
+}
+
+/* DIAL CODE */
+
+.phoneContainer :global(.dial-code) {
+  font-size: 14px !important;
+
+  color: #6b7280 !important;
+
+  font-weight: 500 !important;
+}
+
+/* FLAGS */
+
+.phoneContainer :global(.flag) {
+  transform: scale(1.1);
+}
+
+/* SEARCH */
+
+.phoneContainer :global(.search-box) {
+  width: 100% !important;
+
+  height: 46px !important;
+
+  border-radius: 14px !important;
+
+  border: 1px solid #e5e7eb !important;
+
+  margin: 0 0 10px !important;
+
+  padding: 0 14px !important;
+
+  font-size: 14px !important;
+
+  outline: none !important;
+
+  box-sizing: border-box !important;
+}
+
+/* SEARCH FOCUS */
+
+.phoneContainer :global(.search-box:focus) {
+  border-color: #6366f1 !important;
+
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.08) !important;
+}
+
+/* SCROLLBAR */
+
+.phoneContainer :global(.country-list::-webkit-scrollbar) {
+  width: 5px;
+}
+
+.phoneContainer :global(.country-list::-webkit-scrollbar-thumb) {
+  background: rgba(99, 102, 241, 0.3);
+
+  border-radius: 999px;
+}

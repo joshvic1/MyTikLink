@@ -167,7 +167,7 @@ export default function AuthModal({
 
             <p>
               {mode === "login"
-                ? "Login to continue using TikLink"
+                ? "Login to continue using MyTikLink"
                 : mode === "register"
                   ? "Start building pages that convert"
                   : "We’ll send you a reset link"}
