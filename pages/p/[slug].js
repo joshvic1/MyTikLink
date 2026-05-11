@@ -6,13 +6,14 @@ function loadTikTokPixel(pixelId) {
     return;
   }
 
-  // already loaded
-  if (window.ttq && window.__loadedTikTokPixel === pixelId) {
-    console.log("⚠️ TikTok pixel already loaded");
-    return;
-  }
-
   console.log("🚀 Loading TikTok Pixel:", pixelId);
+
+  // 🔥 FULL RESET
+  window.ttq = undefined;
+
+  document
+    .querySelectorAll('script[src*="analytics.tiktok.com"]')
+    .forEach((s) => s.remove());
 
   !(function (w, d, t) {
     w.TiktokAnalyticsObject = t;
@@ -49,6 +50,7 @@ function loadTikTokPixel(pixelId) {
       const script = d.createElement("script");
 
       script.async = true;
+
       script.src =
         "https://analytics.tiktok.com/i18n/pixel/events.js?sdkid=" +
         e +
@@ -63,12 +65,10 @@ function loadTikTokPixel(pixelId) {
     ttq.load(pixelId);
 
     ttq.ready(() => {
-      console.log("✅ TikTok Pixel READY");
+      console.log("✅ TikTok READY:", pixelId);
 
       ttq.page();
     });
-
-    window.__loadedTikTokPixel = pixelId;
   })(window, document, "ttq");
 }
 function loadMetaPixel(pixelId) {
@@ -726,6 +726,12 @@ export default function PublicPage() {
         <Head>
           <title>{page.title}</title>
         </Head>
+
+        <CustomPageRenderer
+          sections={page.customContent}
+          tiktokPixelId={page.tiktokPixelId}
+          metaPixelId={page.metaPixelId}
+        />
       </>
     );
   }
