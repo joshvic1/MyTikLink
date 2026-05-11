@@ -92,7 +92,7 @@ export default function VerifyEmailModal({
     try {
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/auth/verify-code`,
-        { email, code }
+        { email, code },
       );
 
       login(res.data.token);
@@ -142,11 +142,18 @@ export default function VerifyEmailModal({
   }, [isOpen]);
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Verify Email">
+    <Modal isOpen={isOpen} onClose={onClose}>
       <div className={styles.verifyContainer}>
-        <p className={styles.verifyMsg}>
-          Enter the 4-digit code sent to <b>{email}</b>
-        </p>
+        <div className={styles.verifyHero}>
+          <div className={styles.verifyIcon}>✉️</div>
+
+          <h2>Verify Email</h2>
+
+          <p>
+            Enter the 4-digit code sent to
+            <span>{email}</span>
+          </p>
+        </div>
 
         <div className={styles.otpRow}>
           {inputs.map((val, i) => (
@@ -156,6 +163,8 @@ export default function VerifyEmailModal({
               className={styles.otpInput}
               maxLength={1}
               value={val}
+              inputMode="numeric"
+              autoComplete="one-time-code"
               onChange={(e) => handleChange(e.target.value, i)}
               onKeyDown={(e) => handleKeyDown(e, i)}
             />
