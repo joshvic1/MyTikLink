@@ -86,6 +86,7 @@ export default function AuthModal({
     setLoading(true);
 
     try {
+      console.log("SEND CODE PHONE:", form.whatsappNumber);
       await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/send-code`, {
         name: form.name,
         email: form.email,
@@ -105,13 +106,16 @@ export default function AuthModal({
   /**
    * AFTER VERIFYING CODE → CREATE ACCOUNT
    */
-  const completeRegistration = async () => {
+  const completeRegistration = async (verifiedData) => {
     try {
+      console.log("FINAL WHATSAPP:", form.whatsappNumber);
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/auth/register`,
         {
           ...form,
-          whatsappNumber: form.whatsappNumber,
+          whatsappNumber: verifiedData.whatsappNumber
+            ?.replace(/\D/g, "")
+            ?.replace(/^0/, "234"),
         },
       );
 
@@ -233,10 +237,10 @@ export default function AuthModal({
                   country={"ng"}
                   value={form.whatsappNumber}
                   onChange={(phone) =>
-                    setForm({
-                      ...form,
+                    setForm((prev) => ({
+                      ...prev,
                       whatsappNumber: phone,
-                    })
+                    }))
                   }
                   inputClass={styles.phoneInput}
                   containerClass={styles.phoneContainer}
@@ -408,6 +412,7 @@ export default function AuthModal({
           onClose={() => setShowVerify(false)}
           email={form.email}
           name={form.name}
+          whatsappNumber={form.whatsappNumber}
           password={form.password}
           onVerified={completeRegistration}
         />

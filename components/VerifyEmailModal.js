@@ -13,6 +13,7 @@ export default function VerifyEmailModal({
   email,
   name,
   password,
+  whatsappNumber,
   onVerified,
 }) {
   const router = useRouter();
@@ -123,6 +124,7 @@ export default function VerifyEmailModal({
         email,
         name,
         password,
+        whatsappNumber,
       });
 
       toast.success("Verification code resent!");
