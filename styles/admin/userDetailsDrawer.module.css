@@ -20,7 +20,12 @@
   overflow-y: auto;
   animation: slideIn 0.25s ease;
 }
-
+.phone {
+  color: #25d366;
+  font-size: 13px;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
 @keyframes slideIn {
   from {
     transform: translateX(130px);

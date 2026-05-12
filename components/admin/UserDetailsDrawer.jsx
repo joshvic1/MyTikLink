@@ -28,7 +28,7 @@ export default function UserDetailsDrawer({ user, onClose }) {
     // Fetch links
     const linkRes = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/admin/user-links/${user._id}`,
-      { headers: { Authorization: `Bearer ${token}` } }
+      { headers: { Authorization: `Bearer ${token}` } },
     );
     const linkData = await linkRes.json();
     setLinks(linkData.links || []);
@@ -36,7 +36,7 @@ export default function UserDetailsDrawer({ user, onClose }) {
     // Fetch payments
     const payRes = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/admin/payments/${user._id}`,
-      { headers: { Authorization: `Bearer ${token}` } }
+      { headers: { Authorization: `Bearer ${token}` } },
     );
     const payData = await payRes.json();
     setPayments(payData.payments || []);
@@ -60,6 +60,9 @@ export default function UserDetailsDrawer({ user, onClose }) {
           <div>
             <h2 className={styles.name}>{user.name || "Unnamed User"}</h2>
             <p className={styles.email}>{user.email}</p>
+            {user.whatsappNumber && (
+              <p className={styles.phone}>+{user.whatsappNumber}</p>
+            )}
             <span className={`${styles.planBadge} ${styles[user.plan]}`}>
               {user.plan}
             </span>
@@ -256,7 +259,7 @@ function EditUserForm({ user, onClose }) {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(form),
-      }
+      },
     );
 
     onClose();
@@ -307,7 +310,7 @@ function ChangePlanForm({ user, onClose }) {
 
   const [plan, setPlan] = useState(user.plan);
   const [expiry, setExpiry] = useState(
-    user.planExpiry ? user.planExpiry.split("T")[0] : ""
+    user.planExpiry ? user.planExpiry.split("T")[0] : "",
   );
 
   const token = localStorage.getItem("admin_token");
@@ -325,7 +328,7 @@ function ChangePlanForm({ user, onClose }) {
           plan,
           planExpiry: expiry || null,
         }),
-      }
+      },
     );
 
     onClose();
@@ -374,7 +377,7 @@ function BanUserForm({ user, onClose }) {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ reason }),
-      }
+      },
     );
 
     onClose();
@@ -409,7 +412,7 @@ function DeleteUserForm({ user, onClose }) {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
+      },
     );
 
     onClose();

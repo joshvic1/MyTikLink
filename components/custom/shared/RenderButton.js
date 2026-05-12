@@ -1,4 +1,161 @@
+import { useState } from "react";
 export default function RenderButton({ element, page, phoneNumber }) {
+  const [loading, setLoading] = useState(false);
+
+  function getOS() {
+    const ua = navigator.userAgent;
+
+    if (/android/i.test(ua)) return "android";
+    if (/iphone|ipad|ipod/i.test(ua)) return "ios";
+
+    return "other";
+  }
+
+  /* =========================
+   SMART REDIRECT
+========================= */
+  function smartRedirect(url) {
+    if (!url) return;
+
+    const clean = url.trim();
+    const lower = clean.toLowerCase();
+
+    // ===== WHATSAPP (ALL TYPES) =====
+    if (lower.includes("wa.me")) {
+      const urlObj = new URL(
+        clean.startsWith("http") ? clean : `https://${clean}`,
+      );
+
+      const path = urlObj.pathname;
+
+      const os = getOS();
+
+      // =========================
+      // TYPE 1: wa.me/message/XXXXX
+      // =========================
+      if (path.includes("/message/")) {
+        const fullUrl = urlObj.toString();
+
+        if (os === "android") {
+          window.open(
+            `intent://${fullUrl.replace("https://", "")}#Intent;scheme=https;package=com.whatsapp;end`,
+            "_self",
+          );
+        } else {
+          window.location.href = fullUrl;
+        }
+        setTimeout(() => {
+          try {
+            if (redirectUrl) {
+              smartRedirect(redirectUrl);
+            }
+          } catch (err) {
+            console.error("Redirect failed:", err);
+            setLoading(false);
+          }
+        }, 1200);
+
+        return;
+      }
+
+      // =========================
+      // TYPE 2: wa.me/PHONE
+      // =========================
+      const phone = path.replace("/", "").match(/\d+/)?.[0];
+
+      if (phone) {
+        if (os === "android") {
+          window.open(
+            `intent://send?phone=${phone}#Intent;scheme=whatsapp;end`,
+            "_self",
+          );
+        } else {
+          window.open(`whatsapp://send?phone=${phone}`, "_self");
+        }
+
+        setTimeout(() => {
+          window.location.href = `https://wa.me/${phone}`;
+        }, 1200);
+
+        return;
+      }
+
+      // =========================
+      // FALLBACK
+      // =========================
+      window.location.href = urlObj.toString();
+      return;
+    }
+
+    // ===== TELEGRAM =====
+    if (lower.includes("t.me")) {
+      try {
+        const urlObj = new URL(
+          clean.startsWith("http") ? clean : `https://${clean}`,
+        );
+        const path = urlObj.pathname.replace("/", "");
+
+        // Invite links (new format)
+        if (path.startsWith("+")) {
+          const invite = path.replace("+", "");
+
+          window.location.href = `tg://join?invite=${invite}`;
+
+          setTimeout(() => {
+            window.location.href = urlObj.toString();
+          }, 1200);
+
+          return;
+        }
+
+        // Invite links (old format)
+        if (path.startsWith("joinchat/")) {
+          const invite = path.split("joinchat/")[1];
+
+          window.location.href = `tg://join?invite=${invite}`;
+
+          setTimeout(() => {
+            window.location.href = urlObj.toString();
+          }, 1200);
+
+          return;
+        }
+
+        // Username / public channel
+        const username = path.split("/")[0];
+
+        window.location.href = `tg://resolve?domain=${username}`;
+
+        setTimeout(() => {
+          window.location.href = urlObj.toString();
+        }, 1200);
+      } catch {
+        window.location.href = clean;
+      }
+
+      return;
+    }
+
+    // ===== INSTAGRAM =====
+    if (lower.includes("instagram.com")) {
+      const username = clean.split("/").filter(Boolean)[1];
+      window.location.href = `instagram://user?username=${username}`;
+
+      setTimeout(() => {
+        window.location.href = clean.startsWith("http")
+          ? clean
+          : `https://${clean}`;
+      }, 800);
+
+      return;
+    }
+
+    // ===== DEFAULT =====
+    window.location.href = clean.startsWith("http")
+      ? clean
+      : `https://${clean}`;
+  }
+
   const shadowMap = {
     none: "none",
     light: "0 4px 10px rgba(0,0,0,0.08)",
@@ -19,6 +176,9 @@ export default function RenderButton({ element, page, phoneNumber }) {
   };
 
   const handleClick = () => {
+    if (loading) return;
+
+    setLoading(true);
     const redirectUrl = element.url;
 
     // =========================
@@ -90,7 +250,7 @@ export default function RenderButton({ element, page, phoneNumber }) {
     // =========================
     setTimeout(() => {
       if (redirectUrl) {
-        window.location.href = redirectUrl;
+        smartRedirect(redirectUrl);
       }
     }, 1200);
   };
@@ -105,6 +265,7 @@ export default function RenderButton({ element, page, phoneNumber }) {
     >
       <button
         onClick={handleClick}
+        disabled={loading}
         style={{
           background: element.bg,
           color: element.color,
@@ -113,17 +274,18 @@ export default function RenderButton({ element, page, phoneNumber }) {
           padding: sizeMap[element.size],
           width: element.fullWidth ? "100%" : "auto",
           boxShadow: shadowMap[element.shadow],
+          opacity: loading ? 0.7 : 1,
 
+          cursor: loading ? "not-allowed" : "pointer",
           border: element.borderEnabled
             ? `${element.borderWidth}px solid ${element.borderColor}`
             : "none",
 
-          cursor: "pointer",
           fontSize: "15px",
           transition: "all 0.2s ease",
         }}
       >
-        {element.text}
+        {loading ? "Redirecting..." : element.text}
       </button>
     </div>
   );
