@@ -1,0 +1,176 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(8px);
+  z-index: 400;
+
+  display: flex;
+  justify-content: flex-end;
+}
+
+.drawer {
+  width: 480px;
+  max-width: 100%;
+  height: 100%;
+
+  background: rgba(18, 18, 28, 0.96);
+
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+
+  padding: 24px;
+
+  overflow-y: auto;
+}
+
+.closeBtn {
+  width: 38px;
+  height: 38px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background: rgba(255, 255, 255, 0.06);
+
+  color: white;
+
+  float: right;
+}
+
+.email {
+  opacity: 0.7;
+  margin-bottom: 24px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.04);
+
+  border: 1px solid rgba(255, 255, 255, 0.06);
+
+  border-radius: 16px;
+
+  padding: 16px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 8px;
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  font-size: 12px;
+
+  background: rgba(34, 197, 94, 0.18);
+
+  color: #22c55e;
+
+  padding: 4px 8px;
+
+  border-radius: 999px;
+}
+
+.proofBtn {
+  display: inline-block;
+
+  margin-top: 12px;
+
+  padding: 8px 12px;
+
+  border-radius: 10px;
+
+  background: rgba(var(--accent1-rgb), 0.2);
+
+  color: white;
+
+  font-size: 13px;
+}
+.meta {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 14px;
+
+  margin-top: 18px;
+}
+
+.meta small {
+  opacity: 0.6;
+  font-size: 11px;
+}
+
+.meta p {
+  margin-top: 4px;
+  font-size: 14px;
+}
+
+.contacted,
+.notContacted {
+  padding: 6px 10px;
+
+  border-radius: 999px;
+
+  font-size: 12px;
+
+  font-weight: 600;
+}
+
+.contacted {
+  background: rgba(34, 197, 94, 0.18);
+
+  color: #22c55e;
+}
+
+.notContacted {
+  background: rgba(239, 68, 68, 0.18);
+
+  color: #ef4444;
+}
+
+.screenshotBox {
+  margin-top: 18px;
+
+  background: rgba(255, 255, 255, 0.04);
+
+  border-radius: 12px;
+
+  padding: 12px;
+}
+
+.screenshotLink {
+  display: inline-block;
+
+  margin-top: 6px;
+
+  color: #60a5fa;
+
+  word-break: break-all;
+}
+
+.noProof {
+  margin-top: 18px;
+
+  opacity: 0.55;
+
+  font-size: 13px;
+}
+
+.email {
+  opacity: 0.7;
+  font-size: 13px;
+  margin-top: 3px;
+}

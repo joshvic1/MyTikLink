@@ -35,6 +35,11 @@ export default function AdminSidebar({ closeDrawer }) {
       icon: <Mail size={18} />,
     },
     { name: "Analytics", href: "/admin/analytics", icon: <Grid size={18} /> },
+    {
+      name: "Agents",
+      href: "/admin/agents",
+      icon: <Users size={18} />,
+    },
     { name: "Settings", href: "/admin/settings", icon: <Settings size={18} /> },
   ];
 

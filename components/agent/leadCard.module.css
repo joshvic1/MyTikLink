@@ -1,0 +1,64 @@
+.card {
+  background: #111827;
+  border-radius: 20px;
+  padding: 20px;
+  color: white;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.timer {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 6px 10px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.blurBox {
+  filter: blur(6px);
+  user-select: none;
+  font-size: 22px;
+  margin-bottom: 16px;
+}
+
+.whatsappBtn {
+  width: 100%;
+  height: 48px;
+  border: none;
+  border-radius: 14px;
+  background: #25d366;
+  color: white;
+  font-weight: 600;
+  margin-top: 14px;
+  cursor: pointer;
+}
+
+.contactBtn {
+  width: 100%;
+  height: 46px;
+  border: none;
+  border-radius: 14px;
+  margin-top: 14px;
+  background: #2563eb;
+  color: white;
+  cursor: pointer;
+}
+
+.contactBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.contacted {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #22c55e;
+  margin-top: 16px;
+}

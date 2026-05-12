@@ -120,6 +120,7 @@ export default function Dashboard({ userPlan }) {
           name: res.data.name || "User",
           email: res.data.email || null,
           plan: res.data.plan || "free",
+          whatsappNumber: res.data.whatsappNumber || null,
           planExpiry: res.data.planExpiry || null,
         });
 

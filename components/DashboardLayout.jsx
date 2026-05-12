@@ -26,6 +26,7 @@ import TelegramChatButton from "./TelegramChatButton";
 import FloatingAI from "@/components/MyTikLinkAI/FloatingAI";
 import AIChat from "@/components/MyTikLinkAI/AIChat";
 import { motion } from "framer-motion";
+import AddPhoneModal from "@/components/AddPhoneModal";
 
 export default function DashboardLayout({
   user = { name: "User", plan: "free" },
@@ -45,6 +46,8 @@ export default function DashboardLayout({
 
   const { login } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showPhoneModal, setShowPhoneModal] = useState(false);
+  const [phoneModalDismissed, setPhoneModalDismissed] = useState(false);
   const nav = useMemo(
     () => [
       { href: "/", label: "Home", icon: HomeIcon },
@@ -66,6 +69,11 @@ export default function DashboardLayout({
     ],
     [],
   );
+  useEffect(() => {
+    if (user && user.email && !user?.whatsappNumber && !phoneModalDismissed) {
+      setShowPhoneModal(true);
+    }
+  }, [user, phoneModalDismissed]);
   useEffect(() => {
     // Read saved theme or system preference
     const saved =
@@ -100,6 +108,7 @@ export default function DashboardLayout({
       setShowAuthModal(true);
     }
   }, []);
+
   return (
     <div
       className={`${s.layout} ${
@@ -258,6 +267,14 @@ export default function DashboardLayout({
 
       <FloatingAI onOpen={() => setOpenAI(true)} />
       {openAI && <AIChat onClose={() => setOpenAI(false)} />}
+      <AddPhoneModal
+        isOpen={showPhoneModal}
+        onClose={() => {
+          setShowPhoneModal(false);
+          setPhoneModalDismissed(true);
+        }}
+        user={user}
+      />
     </div>
   );
 }
