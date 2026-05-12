@@ -61,7 +61,7 @@ export default function LeadCard({ lead, refresh }) {
       console.error(err);
     }
   };
-
+  // hey
   return (
     <>
       <div className={styles.card}>
