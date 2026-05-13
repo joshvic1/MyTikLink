@@ -10,7 +10,7 @@ import styles from "@/styles/admin/agents.module.css";
 import AgentLeadsDrawer from "@/components/admin/AgentLeadsDrawer";
 import CreateAgentModal from "@/components/admin/CreateAgentModal";
 import TransferLeadsModal from "@/components/admin/TransferLeadsModal";
-
+import PaymentDrawer from "@/components/admin/PaymentDrawer";
 export default function AgentsPage() {
   const [agents, setAgents] = useState([]);
 
@@ -25,6 +25,7 @@ export default function AgentsPage() {
 
   const [transferAgent, setTransferAgent] = useState(null);
 
+  const [showPayments, setShowPayments] = useState(false);
   useEffect(() => {
     fetchAgents();
   }, []);
@@ -118,6 +119,11 @@ export default function AgentsPage() {
 
     setShowTransfer(true);
   };
+  const openPayments = (agent) => {
+    setSelectedAgent(agent);
+
+    setShowPayments(true);
+  };
   return (
     <AdminLayout>
       <div className={styles.page}>
@@ -182,6 +188,12 @@ export default function AgentsPage() {
                     Transfer Leads
                   </button>
                   <button
+                    className={styles.payBtn}
+                    onClick={() => openPayments(agent)}
+                  >
+                    Payments
+                  </button>
+                  <button
                     className={styles.deleteBtn}
                     onClick={() => deleteAgent(agent._id)}
                   >
@@ -210,6 +222,13 @@ export default function AgentsPage() {
             agents={agents}
             currentAgent={transferAgent}
             onClose={() => setShowTransfer(false)}
+            refresh={fetchAgents}
+          />
+        )}
+        {showPayments && (
+          <PaymentDrawer
+            agent={selectedAgent}
+            onClose={() => setShowPayments(false)}
             refresh={fetchAgents}
           />
         )}

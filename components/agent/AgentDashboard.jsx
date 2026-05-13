@@ -9,6 +9,12 @@ import styles from "./agentDashboard.module.css";
 
 export default function AgentDashboard({ agent }) {
   const [leads, setLeads] = useState([]);
+  const [visibleCount, setVisibleCount] = useState(10);
+  const [stats, setStats] = useState({
+    totalEarnings: 0,
+    paidEarnings: 0,
+    unpaidEarnings: 0,
+  });
 
   useEffect(() => {
     fetchLeads();
@@ -27,7 +33,15 @@ export default function AgentDashboard({ agent }) {
         },
       );
 
-      setLeads(res.data);
+      setLeads(res.data.leads || []);
+
+      setStats(
+        res.data.stats || {
+          totalEarnings: 0,
+          paidEarnings: 0,
+          unpaidEarnings: 0,
+        },
+      );
     } catch (err) {
       console.error(err);
     }
@@ -40,11 +54,49 @@ export default function AgentDashboard({ agent }) {
 
         <p>Assigned leads appear below</p>
       </div>
+      <div className={styles.statsRow}>
+        <div className={`${styles.statCard} ${styles.blueCard}`}>
+          <div className={styles.statTop}>
+            <span>Total Earned</span>
 
+            <div className={styles.statIcon}>₦</div>
+          </div>
+
+          <strong>₦{stats.totalEarnings}</strong>
+        </div>
+
+        <div className={`${styles.statCard} ${styles.greenCard}`}>
+          <div className={styles.statTop}>
+            <span>Paid</span>
+
+            <div className={styles.statIcon}>✓</div>
+          </div>
+
+          <strong>₦{stats.paidEarnings}</strong>
+        </div>
+
+        <div className={`${styles.statCard} ${styles.orangeCard}`}>
+          <div className={styles.statTop}>
+            <span>Pending</span>
+
+            <div className={styles.statIcon}>⏳</div>
+          </div>
+
+          <strong>₦{stats.unpaidEarnings}</strong>
+        </div>
+      </div>
       <div className={styles.grid}>
-        {leads.map((lead) => (
+        {leads.slice(0, visibleCount).map((lead) => (
           <LeadCard key={lead._id} lead={lead} refresh={fetchLeads} />
         ))}
+        {visibleCount < leads.length && (
+          <button
+            className={styles.loadMoreBtn}
+            onClick={() => setVisibleCount((prev) => prev + 10)}
+          >
+            Load More
+          </button>
+        )}
       </div>
     </div>
   );
