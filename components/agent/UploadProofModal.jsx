@@ -22,7 +22,7 @@ export default function UploadProofModal({ lead, onClose, refresh }) {
       formData.append("image", image);
 
       const uploadRes = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/upload`,
+        `${process.env.NEXT_PUBLIC_API_URL}/agent-upload`,
         {
           method: "POST",
 

@@ -54,21 +54,33 @@ export default function LeadCard({ lead, refresh }) {
         },
       );
 
-      window.open(`https://wa.me/${lead.user.whatsappNumber}`, "_blank");
-
+      window.open(`https://wa.me/${lead.user?.whatsappNumber || ""}`, "_blank");
       refresh();
     } catch (err) {
       console.error(err);
     }
   };
-  // hey g hj
+  if (!lead.user) return null;
   return (
     <>
       <div className={styles.card}>
         <div className={styles.top}>
           <div>
             <h3>{lead.user?.name || "Unknown User"}</h3>
+            {lead.userUpgradedBeforeContact && (
+              <div className={styles.upgradedBadge}>User upgraded already</div>
+            )}
 
+            {lead.totalEarned > 0 && (
+              <div className={styles.earnedBadge}>
+                +₦{lead.totalEarned} Earned
+              </div>
+            )}
+            {lead.upgradeCount > 0 && (
+              <div className={styles.countBadge}>
+                {lead.upgradeCount}/3 Upgrades
+              </div>
+            )}
             <small>
               Registered {new Date(lead.createdAt).toLocaleString()}
             </small>
@@ -90,6 +102,7 @@ export default function LeadCard({ lead, refresh }) {
               <button
                 className={styles.whatsappBtn}
                 onClick={handleWhatsappClick}
+                disabled={!revealed || lead.userUpgradedBeforeContact}
               >
                 <MessageCircle size={18} />
                 Message User
@@ -108,7 +121,7 @@ export default function LeadCard({ lead, refresh }) {
             </div>
           ) : (
             <button
-              disabled={!lead.whatsappClicked}
+              disabled={!lead.whatsappClicked || lead.userUpgradedBeforeContact}
               className={styles.contactBtn}
               onClick={() => setShowUpload(true)}
             >
