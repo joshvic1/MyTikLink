@@ -14,7 +14,18 @@ export default function AddPhoneModal({ isOpen, onClose, user }) {
   const [loading, setLoading] = useState(false);
 
   if (!isOpen) return null;
+  const normalizePhone = (value) => {
+    if (!value) return "";
 
+    let cleaned = value.replace(/\D/g, "");
+
+    // Nigeria special handling
+    if (cleaned.startsWith("2340")) {
+      cleaned = "234" + cleaned.slice(4);
+    }
+
+    return `${cleaned}`;
+  };
   const handleSave = async () => {
     if (!phone) {
       toast.error("Enter WhatsApp number");
@@ -29,7 +40,7 @@ export default function AddPhoneModal({ isOpen, onClose, user }) {
       await axios.put(
         `${process.env.NEXT_PUBLIC_API_URL}/auth/update-whatsapp`,
         {
-          whatsappNumber: phone,
+          whatsappNumber: normalizePhone(phone),
         },
         {
           headers: {
