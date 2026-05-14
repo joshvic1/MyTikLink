@@ -61,7 +61,7 @@ export default function Testimonials() {
     });
   };
   return (
-    <section className={styles.section}>
+    <section className={styles.section} id="testimonials">
       <div className={styles.container}>
         {/* TOP */}
         <div className={styles.top}>

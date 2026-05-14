@@ -10,6 +10,7 @@ import styles from "./agentDashboard.module.css";
 export default function AgentDashboard({ agent }) {
   const [leads, setLeads] = useState([]);
   const [visibleCount, setVisibleCount] = useState(10);
+  const [filter, setFilter] = useState("all");
   const [stats, setStats] = useState({
     totalEarnings: 0,
     paidEarnings: 0,
@@ -46,7 +47,40 @@ export default function AgentDashboard({ agent }) {
       console.error(err);
     }
   };
+  const filteredLeads = leads.filter((lead) => {
+    const revealed = new Date(lead.revealAt) <= new Date();
 
+    switch (filter) {
+      case "contacted":
+        return lead.contacted;
+
+      case "not_contacted":
+        return !lead.contacted && !lead.userUpgradedBeforeContact;
+
+      case "countdown":
+        return !revealed && !lead.userUpgradedBeforeContact;
+
+      case "ready":
+        return (
+          revealed &&
+          !lead.userUpgradedBeforeContact &&
+          !!lead.user?.whatsappNumber &&
+          !lead.contacted
+        );
+
+      case "upgraded":
+        return lead.userUpgradedBeforeContact;
+
+      case "earned":
+        return lead.totalEarned > 0;
+
+      case "no_number":
+        return !lead.user?.whatsappNumber && !lead.userUpgradedBeforeContact;
+
+      default:
+        return true;
+    }
+  });
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -85,11 +119,66 @@ export default function AgentDashboard({ agent }) {
           <strong>₦{stats.unpaidEarnings}</strong>
         </div>
       </div>
+      <div className={styles.filters}>
+        <button
+          onClick={() => setFilter("all")}
+          className={filter === "all" ? styles.activeFilter : ""}
+        >
+          All
+        </button>
+
+        <button
+          onClick={() => setFilter("contacted")}
+          className={filter === "contacted" ? styles.activeFilter : ""}
+        >
+          Contacted
+        </button>
+        <button
+          onClick={() => setFilter("ready")}
+          className={filter === "ready" ? styles.activeFilter : ""}
+        >
+          Ready to contact
+        </button>
+        <button
+          onClick={() => setFilter("not_contacted")}
+          className={filter === "not_contacted" ? styles.activeFilter : ""}
+        >
+          Not Contacted
+        </button>
+
+        <button
+          onClick={() => setFilter("countdown")}
+          className={filter === "countdown" ? styles.activeFilter : ""}
+        >
+          Countdown
+        </button>
+
+        <button
+          onClick={() => setFilter("upgraded")}
+          className={filter === "upgraded" ? styles.activeFilter : ""}
+        >
+          Upgraded
+        </button>
+
+        <button
+          onClick={() => setFilter("earned")}
+          className={filter === "earned" ? styles.activeFilter : ""}
+        >
+          Earned
+        </button>
+
+        <button
+          onClick={() => setFilter("no_number")}
+          className={filter === "no_number" ? styles.activeFilter : ""}
+        >
+          No Number
+        </button>
+      </div>
       <div className={styles.grid}>
-        {leads.slice(0, visibleCount).map((lead) => (
+        {filteredLeads.slice(0, visibleCount).map((lead) => (
           <LeadCard key={lead._id} lead={lead} refresh={fetchLeads} />
         ))}
-        {visibleCount < leads.length && (
+        {visibleCount < filteredLeads.length && (
           <button
             className={styles.loadMoreBtn}
             onClick={() => setVisibleCount((prev) => prev + 10)}

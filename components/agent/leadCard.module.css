@@ -108,3 +108,37 @@
 
   font-weight: 600;
 }
+.upgradedCard {
+  border: 1px solid rgba(239, 68, 68, 0.35);
+
+  background: linear-gradient(
+    180deg,
+    rgba(127, 29, 29, 0.94),
+    rgba(69, 10, 10, 0.96)
+  );
+
+  box-shadow: 0 10px 30px rgba(239, 68, 68, 0.18);
+}
+.upgradedBadge {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  margin-top: 10px;
+
+  padding: 8px 14px;
+
+  border-radius: 999px;
+
+  background: rgba(239, 68, 68, 0.16);
+
+  border: 1px solid rgba(239, 68, 68, 0.25);
+
+  color: #fca5a5;
+
+  font-size: 13px;
+
+  font-weight: 700;
+}

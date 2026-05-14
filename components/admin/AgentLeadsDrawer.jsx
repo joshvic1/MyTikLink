@@ -27,6 +27,23 @@ export default function AgentLeadsDrawer({ agent, leads, onClose }) {
                     <strong>{lead.user?.name}</strong>
 
                     <p className={styles.email}>{lead.user?.email}</p>
+                    {lead.userUpgradedBeforeContact && (
+                      <div className={styles.upgradedBadge}>
+                        User upgraded already
+                      </div>
+                    )}
+
+                    {lead.totalEarned > 0 && (
+                      <div className={styles.earnedBadge}>
+                        +₦{lead.totalEarned} Earned
+                      </div>
+                    )}
+
+                    {lead.rewardCount > 0 && (
+                      <div className={styles.countBadge}>
+                        {lead.rewardCount}/3 Upgrades
+                      </div>
+                    )}
                   </div>
 
                   <span

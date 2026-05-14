@@ -16,6 +16,7 @@ export default function LeadCard({ lead, refresh }) {
   const [revealed, setRevealed] = useState(false);
 
   const [showUpload, setShowUpload] = useState(false);
+  const hasWhatsapp = !!lead.user?.whatsappNumber;
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -41,6 +42,7 @@ export default function LeadCard({ lead, refresh }) {
   }, [lead.revealAt]);
 
   const handleWhatsappClick = async () => {
+    if (!hasWhatsapp) return;
     try {
       const token = localStorage.getItem("agentToken");
 
@@ -63,7 +65,11 @@ export default function LeadCard({ lead, refresh }) {
   if (!lead.user) return null;
   return (
     <>
-      <div className={styles.card}>
+      <div
+        className={`${styles.card} ${
+          lead.userUpgradedBeforeContact ? styles.upgradedCard : ""
+        }`}
+      >
         <div className={styles.top}>
           <div>
             <h3>{lead.user?.name || "Unknown User"}</h3>
@@ -86,7 +92,7 @@ export default function LeadCard({ lead, refresh }) {
             </small>
           </div>
 
-          {!revealed && (
+          {!revealed && !lead.userUpgradedBeforeContact && (
             <div className={styles.timer}>
               <Clock3 size={14} />
               {timeLeft}
@@ -95,21 +101,30 @@ export default function LeadCard({ lead, refresh }) {
         </div>
 
         <div className={styles.info}>
-          {revealed ? (
+          {revealed && !lead.userUpgradedBeforeContact ? (
             <>
-              <div className={styles.number}>+{lead.user?.whatsappNumber}</div>
+              <div className={styles.number}>
+                {hasWhatsapp
+                  ? `+${lead.user?.whatsappNumber}`
+                  : "No WhatsApp number"}
+              </div>
 
               <button
                 className={styles.whatsappBtn}
                 onClick={handleWhatsappClick}
-                disabled={!revealed || lead.userUpgradedBeforeContact}
+                disabled={
+                  !revealed || !hasWhatsapp || lead.userUpgradedBeforeContact
+                }
               >
                 <MessageCircle size={18} />
-                Message User
+
+                {hasWhatsapp ? "Message User" : "No WhatsApp Number"}
               </button>
             </>
           ) : (
-            <div className={styles.blurBox}>***********</div>
+            <div className={styles.blurBox}>
+              {lead.userUpgradedBeforeContact ? "Hidden" : "***********"}
+            </div>
           )}
         </div>
 
@@ -121,7 +136,11 @@ export default function LeadCard({ lead, refresh }) {
             </div>
           ) : (
             <button
-              disabled={!lead.whatsappClicked || lead.userUpgradedBeforeContact}
+              disabled={
+                !lead.whatsappClicked ||
+                !hasWhatsapp ||
+                lead.userUpgradedBeforeContact
+              }
               className={styles.contactBtn}
               onClick={() => setShowUpload(true)}
             >
