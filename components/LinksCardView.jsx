@@ -22,7 +22,8 @@ const LinksCardView = forwardRef(function LinksCardView(
     onDelete,
     onEdit,
     onUpgrade,
-    horizontal = false, // ✅ NEW
+    horizontal = false,
+    limit,
   },
   ref,
 ) {
@@ -38,7 +39,7 @@ const LinksCardView = forwardRef(function LinksCardView(
   ];
 
   const canUseProActions = paidPlans.includes(userPlan);
-  const initialCount = 10;
+  const initialCount = limit || redirects.length;
 
   const visible = useMemo(() => {
     if (!Array.isArray(redirects)) return [];

@@ -24,7 +24,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [authorized, setAuthorized] = useState(false);
   const [editing, setEditing] = useState(null);
-
+  const [visibleCount, setVisibleCount] = useState(10);
   const paidProPlans = ["pro_monthly", "pro_yearly"];
   const isPro = paidProPlans.includes(user.plan);
 
@@ -176,12 +176,16 @@ export default function Dashboard() {
       </div>
 
       <LinksCardView
-        redirects={redirects}
+        redirects={redirects.slice(0, visibleCount)}
         userPlan={user.plan}
         onDelete={handleDelete}
         onEdit={(link) => setEditing(link)}
       />
-
+      {visibleCount < redirects.length && (
+        <button onClick={() => setVisibleCount((prev) => prev + 10)}>
+          Load More
+        </button>
+      )}
       {editing && (
         <EditRedirectModal
           link={editing}

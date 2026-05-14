@@ -384,6 +384,7 @@ export default function Dashboard({ userPlan }) {
               ref={linksRef}
               redirects={redirects}
               userPlan={user.plan}
+              limit={10}
               onDelete={(link) => {
                 setDeleteTarget(link);
                 setShowDelete(true);
