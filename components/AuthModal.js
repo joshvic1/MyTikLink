@@ -33,6 +33,7 @@ export default function AuthModal({
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [termsError, setTermsError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [country, setCountry] = useState("ng");
   const handleClose = () => {
     switchMode(null); // hide modal for components that use authMode
     onClose?.(); // call parent onClose if it was passed
@@ -152,7 +153,26 @@ export default function AuthModal({
   const handleGoogleLogin = () => {
     window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
   };
+  useEffect(() => {
+    const detectCountry = async () => {
+      try {
+        const res = await fetch("https://ipapi.co/json/");
 
+        const data = await res.json();
+
+        if (data?.country_code) {
+          setCountry(data.country_code.toLowerCase());
+        }
+      } catch (err) {
+        console.error("Country detection failed", err);
+
+        // fallback remains NG
+        setCountry("ng");
+      }
+    };
+
+    detectCountry();
+  }, []);
   return (
     <>
       {/* MAIN AUTH MODAL */}
@@ -234,7 +254,7 @@ export default function AuthModal({
                 }}
               >
                 <PhoneInput
-                  country={"ng"}
+                  country={country}
                   value={form.whatsappNumber}
                   onChange={(phone) =>
                     setForm((prev) => ({
@@ -245,6 +265,10 @@ export default function AuthModal({
                   inputClass={styles.phoneInput}
                   containerClass={styles.phoneContainer}
                   buttonClass={styles.phoneButton}
+                  enableSearch
+                  enableAreaCodes
+                  disableCountryCode={false}
+                  countryCodeEditable={true}
                   placeholder="Enter WhatsApp Number"
                 />
               </div>
