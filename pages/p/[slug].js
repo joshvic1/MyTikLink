@@ -137,8 +137,8 @@ function getCTAFromUrl(url) {
     return "Click here to join the WhatsApp group";
   }
 
-  if (lower.includes("wa.me") || lower.includes("api.whatsapp.com")) {
-    return "Open WhatsApp";
+  if (lower.includes("wa.me")) {
+    return "Click here to message on WhatsApp";
   }
 
   if (lower.includes("instagram.com")) {
@@ -155,167 +155,140 @@ function getCTAFromUrl(url) {
 /* =========================
    SMART REDIRECT
 ========================= */
-function normalizeRedirectUrl(url) {
-  if (!url) return url;
-
-  // Don't touch WhatsApp message links
-  if (url.includes("wa.me/message/")) {
-    return url;
-  }
-
-  // Convert phone-number wa.me links
-  if (url.includes("wa.me")) {
-    const phone = url.match(/\d+/)?.[0];
-
-    if (phone) {
-      return `https://api.whatsapp.com/send?phone=${phone}`;
-    }
-  }
-
-  return url;
-}
-// function smartRedirect(url) {
-//   if (!url) return;
-
-//   const clean = url.trim();
-//   const lower = clean.toLowerCase();
-
-//   // ===== WHATSAPP (ALL TYPES) =====
-//   if (lower.includes("wa.me")) {
-//     const urlObj = new URL(
-//       clean.startsWith("http") ? clean : `https://${clean}`,
-//     );
-
-//     const path = urlObj.pathname;
-
-//     const os = getOS();
-
-//     // =========================
-//     // TYPE 1: wa.me/message/XXXXX
-//     // =========================
-//     if (path.includes("/message/")) {
-//       const fullUrl = urlObj.toString();
-
-//       if (os === "android") {
-//         window.open(
-//           `intent://${fullUrl.replace("https://", "")}#Intent;scheme=https;package=com.whatsapp;end`,
-//           "_self",
-//         );
-//       } else {
-//         window.location.href = fullUrl;
-//       }
-
-//       setTimeout(() => {
-//         window.location.href = fullUrl;
-//       }, 1500);
-
-//       return;
-//     }
-
-//     // =========================
-//     // TYPE 2: wa.me/PHONE
-//     // =========================
-//     const phone = path.replace("/", "").match(/\d+/)?.[0];
-
-//     if (phone) {
-//       if (os === "android") {
-//         window.open(
-//           `intent://send?phone=${phone}#Intent;scheme=whatsapp;end`,
-//           "_self",
-//         );
-//       } else {
-//         window.open(`whatsapp://send?phone=${phone}`, "_self");
-//       }
-
-//       setTimeout(() => {
-//         window.location.href = `https://wa.me/${phone}`;
-//       }, 1200);
-
-//       return;
-//     }
-
-//     // =========================
-//     // FALLBACK
-//     // =========================
-//     window.location.href = urlObj.toString();
-//     return;
-//   }
-
-//   // ===== TELEGRAM =====
-//   if (lower.includes("t.me")) {
-//     try {
-//       const urlObj = new URL(
-//         clean.startsWith("http") ? clean : `https://${clean}`,
-//       );
-//       const path = urlObj.pathname.replace("/", "");
-
-//       // Invite links (new format)
-//       if (path.startsWith("+")) {
-//         const invite = path.replace("+", "");
-
-//         window.location.href = `tg://join?invite=${invite}`;
-
-//         setTimeout(() => {
-//           window.location.href = urlObj.toString();
-//         }, 1200);
-
-//         return;
-//       }
-
-//       // Invite links (old format)
-//       if (path.startsWith("joinchat/")) {
-//         const invite = path.split("joinchat/")[1];
-
-//         window.location.href = `tg://join?invite=${invite}`;
-
-//         setTimeout(() => {
-//           window.location.href = urlObj.toString();
-//         }, 1200);
-
-//         return;
-//       }
-
-//       // Username / public channel
-//       const username = path.split("/")[0];
-
-//       window.location.href = `tg://resolve?domain=${username}`;
-
-//       setTimeout(() => {
-//         window.location.href = urlObj.toString();
-//       }, 1200);
-//     } catch {
-//       window.location.href = clean;
-//     }
-
-//     return;
-//   }
-
-//   // ===== INSTAGRAM =====
-//   if (lower.includes("instagram.com")) {
-//     const username = clean.split("/").filter(Boolean)[1];
-//     window.location.href = `instagram://user?username=${username}`;
-
-//     setTimeout(() => {
-//       window.location.href = clean.startsWith("http")
-//         ? clean
-//         : `https://${clean}`;
-//     }, 800);
-
-//     return;
-//   }
-
-//   // ===== DEFAULT =====
-//   window.location.href = clean.startsWith("http") ? clean : `https://${clean}`;
-// }
 function smartRedirect(url) {
   if (!url) return;
 
-  const normalized = normalizeRedirectUrl(url);
+  const clean = url.trim();
+  const lower = clean.toLowerCase();
 
-  const clean = normalized.trim();
+  // ===== WHATSAPP (ALL TYPES) =====
+  if (lower.includes("wa.me")) {
+    const urlObj = new URL(
+      clean.startsWith("http") ? clean : `https://${clean}`,
+    );
 
+    const path = urlObj.pathname;
+
+    const os = getOS();
+
+    // =========================
+    // TYPE 1: wa.me/message/XXXXX
+    // =========================
+    if (path.includes("/message/")) {
+      const fullUrl = urlObj.toString();
+
+      if (os === "android") {
+        window.open(
+          `intent://${fullUrl.replace("https://", "")}#Intent;scheme=https;package=com.whatsapp;end`,
+          "_self",
+        );
+      } else {
+        window.location.href = fullUrl;
+      }
+
+      setTimeout(() => {
+        window.location.href = fullUrl;
+      }, 1500);
+
+      return;
+    }
+
+    // =========================
+    // TYPE 2: wa.me/PHONE
+    // =========================
+    const phone = path.replace("/", "").match(/\d+/)?.[0];
+
+    if (phone) {
+      if (os === "android") {
+        window.open(
+          `intent://send?phone=${phone}#Intent;scheme=whatsapp;end`,
+          "_self",
+        );
+      } else {
+        window.open(`whatsapp://send?phone=${phone}`, "_self");
+      }
+
+      setTimeout(() => {
+        window.location.href = `https://wa.me/${phone}`;
+      }, 1200);
+
+      return;
+    }
+
+    // =========================
+    // FALLBACK
+    // =========================
+    window.location.href = urlObj.toString();
+    return;
+  }
+
+  // ===== TELEGRAM =====
+  if (lower.includes("t.me")) {
+    try {
+      const urlObj = new URL(
+        clean.startsWith("http") ? clean : `https://${clean}`,
+      );
+      const path = urlObj.pathname.replace("/", "");
+
+      // Invite links (new format)
+      if (path.startsWith("+")) {
+        const invite = path.replace("+", "");
+
+        window.location.href = `tg://join?invite=${invite}`;
+
+        setTimeout(() => {
+          window.location.href = urlObj.toString();
+        }, 1200);
+
+        return;
+      }
+
+      // Invite links (old format)
+      if (path.startsWith("joinchat/")) {
+        const invite = path.split("joinchat/")[1];
+
+        window.location.href = `tg://join?invite=${invite}`;
+
+        setTimeout(() => {
+          window.location.href = urlObj.toString();
+        }, 1200);
+
+        return;
+      }
+
+      // Username / public channel
+      const username = path.split("/")[0];
+
+      window.location.href = `tg://resolve?domain=${username}`;
+
+      setTimeout(() => {
+        window.location.href = urlObj.toString();
+      }, 1200);
+    } catch {
+      window.location.href = clean;
+    }
+
+    return;
+  }
+
+  // ===== INSTAGRAM =====
+  if (lower.includes("instagram.com")) {
+    const username = clean.split("/").filter(Boolean)[1];
+    window.location.href = `instagram://user?username=${username}`;
+
+    setTimeout(() => {
+      window.location.href = clean.startsWith("http")
+        ? clean
+        : `https://${clean}`;
+    }, 800);
+
+    return;
+  }
+
+  // ===== DEFAULT =====
   window.location.href = clean.startsWith("http") ? clean : `https://${clean}`;
 }
+
 function showRedirectButton(form, redirectUrl) {
   const btn = document.createElement("button");
 
@@ -335,21 +308,8 @@ function showRedirectButton(form, redirectUrl) {
   btn.addEventListener("click", () => {
     smartRedirect(redirectUrl);
   });
-  const note = document.createElement("p");
 
-  note.innerHTML =
-    "If the app doesn't open, tap the TikTok menu (⋮) and choose Open In Browser.";
-
-  note.style.fontSize = "13px";
-  note.style.color = "#666";
-  note.style.marginTop = "10px";
-  note.style.textAlign = "center";
-  const wrapper = document.createElement("div");
-
-  wrapper.appendChild(btn);
-  wrapper.appendChild(note);
-
-  form.replaceWith(wrapper);
+  form.replaceWith(btn);
 }
 
 function LoadingScreen() {
@@ -617,7 +577,10 @@ export default function PublicPage() {
           // If NOT TikTok → auto redirect
 
           if (!isTikTokBrowser()) {
-            smartRedirect(redirectUrl);
+            setTimeout(() => {
+              smartRedirect(redirectUrl);
+            }, 1200);
+
             return;
           }
 
@@ -716,7 +679,9 @@ export default function PublicPage() {
         return;
       }
 
-      smartRedirect(page.redirectUrl);
+      setTimeout(() => {
+        smartRedirect(page.redirectUrl);
+      }, 1200);
     };
 
     ctaBtn.addEventListener("click", handleClick);
