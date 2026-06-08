@@ -1,0 +1,729 @@
+/* =========================
+   PAGE
+========================= */
+
+.page {
+  min-height: 100vh;
+
+  background: #f8fafc;
+
+  padding-bottom: 120px;
+}
+
+/* =========================
+   LOADING
+========================= */
+
+.loading {
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  color: #64748b;
+}
+
+/* =========================
+   TOPBAR
+========================= */
+
+.topbar {
+  position: sticky;
+
+  top: 0;
+
+  z-index: 40;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 14px 18px;
+
+  background: rgba(255, 255, 255, 0.92);
+
+  backdrop-filter: blur(16px);
+
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+/* BACK */
+
+.backBtn {
+  width: 50px;
+  height: 50px;
+
+  border-radius: 14px;
+
+  border: 1px solid rgba(226, 232, 240, 0.75);
+
+  background: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #0f172a;
+
+  cursor: pointer;
+
+  flex-shrink: 0;
+}
+
+/* BREADCRUMB */
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  min-width: 0;
+}
+
+.breadcrumb a,
+.breadcrumb p,
+.breadcrumb span {
+  margin: 0;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  color: #64748b;
+}
+
+.breadcrumb p {
+  color: #0f172a;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* =========================
+   IMAGE
+========================= */
+
+.imageWrap {
+  width: 100%;
+
+  aspect-ratio: 1/1;
+
+  background: white;
+  padding: 20px;
+  overflow: hidden;
+
+  border-bottom: 1px solid rgba(226, 232, 240, 0.7);
+}
+
+.imageWrap img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+/* =========================
+   CONTENT
+========================= */
+
+.content {
+  padding: 22px 18px;
+}
+
+/* CATEGORY */
+
+.category {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 30px;
+
+  padding: 0 12px;
+
+  border-radius: 999px;
+
+  background: rgba(99, 102, 241, 0.08);
+
+  color: #6366f1;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  margin-bottom: 14px;
+}
+
+/* TITLE */
+
+.content h1 {
+  margin: 0 0 14px;
+
+  font-size: 30px;
+  font-weight: 900;
+
+  line-height: 1.1;
+
+  letter-spacing: -0.06em;
+
+  color: #0f172a;
+}
+
+/* PRICE */
+
+.priceWrap {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  margin-bottom: 18px;
+}
+
+.price {
+  font-size: 30px;
+  font-weight: 900;
+
+  letter-spacing: -0.06em;
+
+  color: #0f172a;
+}
+
+.compare {
+  font-size: 16px;
+  font-weight: 600;
+
+  text-decoration: line-through;
+
+  color: #94a3b8;
+}
+
+/* =========================
+   QUANTITY
+========================= */
+
+.qtyWrap {
+  width: fit-content;
+
+  display: flex;
+  align-items: center;
+
+  gap: 16px;
+
+  padding: 6px;
+
+  border-radius: 18px;
+
+  background: white;
+
+  border: 1px solid rgba(226, 232, 240, 0.75);
+
+  margin-bottom: 24px;
+}
+
+.qtyWrap button {
+  width: 42px;
+  height: 42px;
+
+  border: none;
+
+  border-radius: 14px;
+
+  background: #f8fafc;
+
+  font-size: 22px;
+  font-weight: 500;
+
+  color: #0f172a;
+
+  cursor: pointer;
+}
+
+.qtyWrap span {
+  min-width: 24px;
+
+  text-align: center;
+
+  font-size: 16px;
+  font-weight: 800;
+
+  color: #0f172a;
+}
+
+/* =========================
+   ACTIONS
+========================= */
+
+.actions {
+  display: flex;
+  flex-direction: column;
+
+  gap: 12px;
+
+  margin-bottom: 28px;
+}
+
+/* BUTTONS */
+
+.cartBtn,
+.whatsappBtn {
+  width: 100%;
+  height: 56px;
+
+  border: none;
+
+  border-radius: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+/* CART */
+
+.cartBtn {
+  background: #111827;
+
+  color: white;
+}
+
+/* WHATSAPP */
+
+.whatsappBtn {
+  background: #25d366;
+
+  color: white;
+}
+
+/* =========================
+   DESCRIPTION
+========================= */
+
+.descriptionBox {
+  padding: 20px;
+
+  border-radius: 24px;
+
+  background: white;
+
+  border: 1px solid rgba(226, 232, 240, 0.75);
+}
+
+.descriptionBox h3 {
+  margin: 0 0 14px;
+
+  font-size: 18px;
+  font-weight: 800;
+
+  color: #0f172a;
+}
+
+.descriptionBox p {
+  margin: 0;
+
+  font-size: 14px;
+
+  line-height: 1.8;
+
+  color: #475569;
+}
+
+/* =========================
+   RELATED
+========================= */
+
+.related {
+  padding: 0 18px 24px;
+}
+
+/* TOP */
+
+.relatedTop {
+  margin-bottom: 16px;
+}
+
+.relatedTop h2 {
+  margin: 0;
+
+  font-size: 22px;
+  font-weight: 900;
+
+  letter-spacing: -0.04em;
+
+  color: #0f172a;
+}
+
+/* GRID */
+
+.relatedGrid {
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 14px;
+}
+
+/* CARD */
+
+.relatedCard {
+  text-decoration: none;
+
+  padding: 10px;
+
+  border-radius: 22px;
+
+  background: white;
+
+  border: 1px solid rgba(226, 232, 240, 0.7);
+
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.relatedCard:hover {
+  transform: translateY(-2px);
+
+  box-shadow: 0 10px 20px rgba(15, 23, 42, 0.05);
+}
+
+/* IMAGE */
+
+.relatedCard img {
+  width: 100%;
+  aspect-ratio: 1/1;
+
+  object-fit: cover;
+
+  border-radius: 16px;
+
+  margin-bottom: 12px;
+}
+
+/* TEXT */
+
+.relatedCard h3 {
+  margin: 0 0 6px;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  line-height: 1.4;
+
+  color: #0f172a;
+}
+
+.relatedCard p {
+  margin: 0;
+
+  font-size: 15px;
+  font-weight: 800;
+
+  color: #111827;
+}
+
+/* =========================
+   DESKTOP
+========================= */
+
+@media (min-width: 900px) {
+  .page {
+    max-width: 1200px;
+
+    margin: 0 auto;
+
+    padding: 24px;
+  }
+
+  .topbar {
+    border-radius: 24px;
+
+    margin-bottom: 20px;
+
+    border: 1px solid rgba(226, 232, 240, 0.7);
+  }
+
+  .imageWrap {
+    border-radius: 32px;
+
+    overflow: hidden;
+
+    border: 1px solid rgba(226, 232, 240, 0.7);
+  }
+
+  .content {
+    padding: 28px 0;
+  }
+
+  .actions {
+    flex-direction: row;
+  }
+
+  .related {
+    padding: 0;
+  }
+
+  .relatedGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 520px) {
+  .content {
+    padding: 18px 16px;
+  }
+
+  .content h1 {
+    font-size: 26px;
+  }
+
+  .price {
+    font-size: 26px;
+  }
+
+  .descriptionBox {
+    padding: 18px;
+
+    border-radius: 20px;
+  }
+
+  .related {
+    padding: 0 16px 24px;
+  }
+
+  .relatedTop h2 {
+    font-size: 20px;
+  }
+
+  .relatedGrid {
+    gap: 10px;
+  }
+
+  .relatedCard {
+    border-radius: 18px;
+  }
+}
+/* =========================
+   LOADING SCREEN
+========================= */
+
+.loadingScreen {
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: #fff;
+}
+
+/* =========================
+   LOADER
+========================= */
+
+.loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 14px;
+}
+
+/* =========================
+   TEXT
+========================= */
+
+.loader p {
+  margin: 0;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  letter-spacing: -0.02em;
+
+  color: #64748b;
+}
+
+/* =========================
+   DOTS
+========================= */
+
+.dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+}
+
+.dots span {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 999px;
+
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+
+  animation: bounce 1s infinite ease-in-out;
+}
+
+.dots span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.dots span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+/* =========================
+   ANIMATION
+========================= */
+
+@keyframes bounce {
+  0%,
+  80%,
+  100% {
+    transform: translateY(0);
+
+    opacity: 0.45;
+  }
+
+  40% {
+    transform: translateY(-4px);
+
+    opacity: 1;
+  }
+}
+.purchaseBar {
+  position: fixed;
+
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  z-index: 60;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 14px 16px;
+
+  background: rgba(255, 255, 255, 0.96);
+
+  backdrop-filter: blur(16px);
+
+  border-top: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+/* WHATSAPP */
+
+.whatsappMini {
+  width: 54px;
+  height: 54px;
+
+  border-radius: 16px;
+
+  border: none;
+
+  background: #25d366;
+
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ADD */
+
+.addCartLarge {
+  flex: 1;
+
+  height: 54px;
+
+  border: none;
+
+  border-radius: 16px;
+
+  background: #0f172a;
+
+  color: white;
+
+  font-size: 15px;
+
+  font-weight: 700;
+}
+
+/* QTY */
+
+.qtyBar {
+  flex: 1;
+
+  height: 54px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  padding: 0 25px;
+
+  border-radius: 16px;
+  gap: 10px;
+  color: #0f172a;
+  border: none;
+}
+
+.qtyBar button {
+  border: 2px solid rgba(15, 23, 42, 0.08);
+
+  background: none;
+
+  font-size: 24px;
+  color: #0f172a;
+  font-weight: 500;
+}
+
+/* CHECKOUT */
+
+.checkoutBtn {
+  flex: 1;
+
+  height: 54px;
+
+  border: none;
+
+  border-radius: 16px;
+
+  background: #0f172a;
+
+  color: white;
+
+  font-size: 15px;
+
+  font-weight: 700;
+}

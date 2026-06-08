@@ -15,23 +15,27 @@ export default function App({ Component, pageProps }) {
 
   const isRedirectPage = router.pathname.startsWith("/r/");
   const isPageRoute = router.pathname.startsWith("/p/");
+  const isPublicStoreRoute = router.pathname.startsWith("/s/");
   const isCourseRoute = router.pathname.startsWith("/course");
   const isDashboardPage = router.pathname.startsWith("/dashboard");
   const isTermsPage = router.pathname === "/terms";
   const isPrivacyPage = router.pathname === "/privacy";
   const isAdminRoute = router.pathname.startsWith("/admin");
   const isHomePage = router.pathname === "/home";
+  const isStorePage = router.pathname.startsWith("/store");
 
   // ✅ Pages without layout
   if (
     isRedirectPage ||
     isPageRoute ||
+    isPublicStoreRoute ||
     isCourseRoute ||
     isDashboardPage ||
     isTermsPage ||
     isPrivacyPage ||
     isAdminRoute ||
-    isHomePage
+    isHomePage ||
+    isStorePage
   ) {
     return (
       <main className={plusJakarta.className}>

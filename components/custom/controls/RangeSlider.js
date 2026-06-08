@@ -1,3 +1,4 @@
+// controls/RangeSlider.js
 import styles from "./range.module.css";
 
 export default function RangeSlider({

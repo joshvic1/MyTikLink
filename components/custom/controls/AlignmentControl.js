@@ -1,3 +1,4 @@
+// controls/AlignmentControls.js
 import styles from "./alignment.module.css";
 import { AlignLeft, AlignCenter, AlignRight } from "lucide-react";
 

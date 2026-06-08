@@ -60,12 +60,12 @@ export default function DashboardLayout({
         label: "TikTok/Meta Pixel",
         icon: ArrowUpCircle,
       },
-      { href: "/dashboard/settings", label: "Settings", icon: Settings },
       {
-        href: "/get-a-landing-page",
-        label: "Get a Landing Page",
+        href: "/store",
+        label: "My Store",
         icon: LayoutTemplate,
       },
+      { href: "/dashboard/settings", label: "Settings", icon: Settings },
     ],
     [],
   );

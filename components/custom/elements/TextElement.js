@@ -1,3 +1,4 @@
+// elements/TextElement.js
 "use client";
 
 import styles from "./text.module.css";

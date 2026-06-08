@@ -1,0 +1,716 @@
+/* =========================
+   HEADER
+========================= */
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+
+  padding: 0px 0 12px;
+
+  margin-bottom: 14px;
+
+  border-bottom: 1px solid rgba(226, 232, 240, 0.65);
+}
+
+/* =========================
+   LEFT
+========================= */
+
+.left {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  min-width: 0;
+}
+
+/* =========================
+   MENU BUTTON
+========================= */
+
+.menuBtn {
+  width: 42px;
+  height: 42px;
+
+  padding: 0;
+
+  border: 1px solid rgba(226, 232, 240, 0.9);
+
+  border-radius: 12px;
+
+  background: linear-gradient(180deg, #ffffff, #f8fafc);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #334155;
+
+  cursor: pointer;
+
+  line-height: 1;
+
+  transition:
+    transform 0.18s ease,
+    border 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.menuBtn:hover {
+  transform: translateY(-1px);
+
+  border-color: rgba(148, 163, 184, 0.45);
+
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+}
+
+/* =========================
+   ICON SIZE
+========================= */
+
+.menuBtn svg,
+.iconBtn svg {
+  width: 19px;
+  height: 19px;
+
+  stroke-width: 2.2;
+}
+
+/* =========================
+   STORE INFO
+========================= */
+
+.storeInfo {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  min-width: 0;
+
+  padding: 5px 10px 5px 5px;
+
+  border: 1px solid rgba(226, 232, 240, 0.75);
+
+  border-radius: 14px;
+
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.95),
+    rgba(248, 250, 252, 0.9)
+  );
+
+  transition:
+    border 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.storeInfo:hover {
+  border-color: rgba(148, 163, 184, 0.35);
+
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+}
+
+/* =========================
+   LOGO
+========================= */
+
+.logoWrap {
+  width: 34px;
+  height: 34px;
+
+  border-radius: 10px;
+
+  border: 1px solid rgba(226, 232, 240, 0.8);
+
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.08),
+    rgba(124, 58, 237, 0.04)
+  );
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+}
+
+.logoInner {
+  width: 17px;
+  height: 17px;
+
+  border-radius: 6px;
+
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+}
+
+/* =========================
+   STORE TITLE
+========================= */
+
+.storeInfo h2 {
+  margin: 0;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  letter-spacing: -0.03em;
+
+  color: #0f172a;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.storeInfo svg {
+  width: 14px;
+  height: 14px;
+
+  color: #64748b;
+
+  flex-shrink: 0;
+}
+
+/* =========================
+   RIGHT
+========================= */
+
+.right {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+}
+
+/* =========================
+   ICON BUTTON
+========================= */
+
+.iconBtn {
+  position: relative;
+
+  width: 40px;
+  height: 40px;
+
+  padding: 0;
+
+  border: 1px solid rgba(226, 232, 240, 0.9);
+
+  border-radius: 12px;
+
+  background: linear-gradient(180deg, #ffffff, #f8fafc);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #334155;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.18s ease,
+    border 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.iconBtn:hover {
+  transform: translateY(-1px);
+
+  border-color: rgba(148, 163, 184, 0.4);
+
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+}
+
+/* =========================
+   NOTIFICATION DOT
+========================= */
+
+.dot {
+  position: absolute;
+
+  top: 8px;
+  right: 8px;
+
+  width: 6px;
+  height: 6px;
+
+  border-radius: 999px;
+
+  background: #6366f1;
+
+  border: 1.5px solid white;
+}
+
+/* =========================
+   AVATAR
+========================= */
+
+.avatar {
+  width: 40px;
+  height: 40px;
+
+  border-radius: 12px;
+
+  object-fit: cover;
+
+  border: 1px solid rgba(226, 232, 240, 0.9);
+
+  background: #f8fafc;
+
+  box-shadow: 0 3px 10px rgba(15, 23, 42, 0.03);
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 640px) {
+  .header {
+    gap: 8px;
+
+    padding-bottom: 10px;
+
+    margin-bottom: 12px;
+  }
+
+  .left {
+    gap: 7px;
+  }
+
+  .storeInfo {
+    gap: 7px;
+
+    padding: 4px 9px 4px 4px;
+  }
+
+  .storeInfo h2 {
+    font-size: 13px;
+  }
+
+  .menuBtn,
+  .iconBtn,
+  .avatar {
+    width: 36px;
+    height: 36px;
+
+    border-radius: 11px;
+  }
+
+  .menuBtn svg,
+  .iconBtn svg {
+    width: 17px;
+    height: 17px;
+  }
+
+  .logoWrap {
+    width: 30px;
+    height: 30px;
+
+    border-radius: 9px;
+  }
+
+  .logoInner {
+    width: 15px;
+    height: 15px;
+
+    border-radius: 5px;
+  }
+
+  .dot {
+    top: 7px;
+    right: 7px;
+  }
+}
+.storeDropdownWrap {
+  position: relative;
+}
+.storeDropdownWrap {
+  position: relative;
+}
+.avatarBtn {
+  width: 40px;
+  height: 40px;
+
+  border: 1px solid rgba(226, 232, 240, 0.9);
+
+  border-radius: 12px;
+
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+
+  color: white;
+
+  font-size: 14px;
+  font-weight: 800;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+}
+.dropdown {
+  position: absolute;
+
+  top: calc(100% + 10px);
+
+  left: 0;
+
+  width: 240px;
+
+  max-width: calc(100vw - 32px);
+
+  background: white;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 18px;
+
+  padding: 10px;
+
+  box-shadow: 0 10px 40px rgba(15, 23, 42, 0.08);
+
+  z-index: 999;
+}
+.dropdownSection {
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+
+  margin-bottom: 10px;
+}
+.dropdownLabel {
+  margin: 0 0 6px;
+
+  padding: 0 8px;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  color: #64748b;
+
+  text-transform: uppercase;
+}
+.dropdownItem {
+  width: 100%;
+
+  height: 42px;
+
+  padding: 0 10px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  background: transparent;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  color: #0f172a;
+
+  cursor: pointer;
+
+  transition: 0.18s ease;
+}
+
+.dropdownItem:hover {
+  background: #f8fafc;
+}
+.activeDot {
+  margin-left: auto;
+
+  width: 8px;
+  height: 8px;
+
+  border-radius: 999px;
+
+  background: #8b5cf6;
+}
+.createStoreBtn {
+  width: 100%;
+
+  height: 44px;
+
+  border: none;
+
+  border-radius: 14px;
+
+  background: linear-gradient(135deg, #7c3aed, #8b5cf6);
+
+  color: white;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  cursor: pointer;
+}
+.createStoreBtnDisabled {
+  width: 100%;
+
+  height: 44px;
+
+  border: none;
+
+  border-radius: 14px;
+
+  background: #e2e8f0;
+
+  color: #64748b;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  cursor: not-allowed;
+}
+.dropdown {
+  position: absolute;
+
+  top: calc(100% + 10px);
+
+  left: 0;
+
+  width: 220px;
+
+  max-width: calc(100vw - 32px);
+
+  background: white;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 18px;
+
+  padding: 10px;
+
+  box-shadow: 0 10px 40px rgba(15, 23, 42, 0.08);
+
+  z-index: 999;
+}
+
+/* CURRENT STORE */
+
+.currentStore {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 6px;
+}
+
+.storeMiniLogo {
+  width: 38px;
+  height: 38px;
+
+  border-radius: 12px;
+
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+
+  flex-shrink: 0;
+}
+
+.storeTexts {
+  min-width: 0;
+}
+
+.storeLabel {
+  display: block;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  color: #94a3b8;
+
+  margin-bottom: 2px;
+}
+
+.storeTexts h4 {
+  margin: 0;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  color: #0f172a;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* DIVIDER */
+
+.dropdownDivider {
+  height: 1px;
+
+  background: #f1f5f9;
+
+  margin: 10px 0;
+}
+
+/* CREATE */
+
+.simpleCreate {
+  width: 100%;
+
+  height: 42px;
+
+  border: 1px dashed #dbeafe;
+
+  border-radius: 12px;
+
+  background: #fff;
+
+  color: #64748b;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  text-align: center;
+
+  padding: 0 14px;
+
+  cursor: not-allowed;
+
+  transition: 0.18s ease;
+}
+
+.simpleCreate:hover {
+  background: #f8fafc;
+}
+.storeSwitcher {
+  position: relative;
+}
+/* PROFILE WRAP */
+
+.profileWrap {
+  position: relative;
+}
+
+/* AVATAR */
+
+.avatarBtn {
+  width: 40px;
+  height: 40px;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 12px;
+
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+
+  color: #fff;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: 0.18s ease;
+}
+
+.avatarBtn:hover {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+}
+
+/* DROPDOWN */
+
+.profileDropdown {
+  position: absolute;
+
+  top: calc(100% + 10px);
+
+  right: 0;
+
+  width: 200px;
+
+  background: white;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 18px;
+
+  padding: 8px;
+
+  box-shadow: 0 10px 40px rgba(15, 23, 42, 0.08);
+
+  z-index: 999;
+}
+
+/* ITEM */
+
+.profileItem {
+  width: 100%;
+
+  height: 42px;
+
+  border: none;
+
+  background: transparent;
+
+  border-radius: 12px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 0 12px;
+
+  color: #334155;
+
+  font-size: 13px;
+  font-weight: 500;
+
+  cursor: pointer;
+
+  transition: 0.18s ease;
+}
+
+.profileItem:hover {
+  background: #f8fafc;
+}
+
+/* LOGOUT */
+
+.logoutItem {
+  color: #dc2626;
+}
+
+/* DIVIDER */
+
+.dropdownDivider {
+  height: 1px;
+
+  background: #f1f5f9;
+
+  margin: 6px 0;
+}

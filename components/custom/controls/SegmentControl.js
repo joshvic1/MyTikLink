@@ -1,3 +1,4 @@
+// controls/SegmentControls.js
 import styles from "./segmentControl.module.css";
 
 export default function SegmentControl({ options, value, onChange }) {

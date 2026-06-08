@@ -1,0 +1,485 @@
+/* =========================
+   SECTION
+========================= */
+
+.section {
+  display: flex;
+  flex-direction: column;
+
+  gap: 14px;
+}
+
+/* =========================
+   REVENUE CARD
+========================= */
+
+.revenueCard {
+  position: relative;
+
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 14px;
+
+  padding: 18px;
+
+  border-radius: 22px;
+
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.96),
+    rgba(248, 250, 252, 0.94)
+  );
+
+  border: 1px solid rgba(226, 232, 240, 0.78);
+
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+}
+
+/* GLOW */
+
+.revenueCard::before {
+  content: "";
+
+  position: absolute;
+
+  top: -70px;
+  right: -70px;
+
+  width: 170px;
+  height: 170px;
+
+  background: radial-gradient(
+    circle,
+    rgba(99, 102, 241, 0.06),
+    transparent 70%
+  );
+
+  pointer-events: none;
+}
+
+/* =========================
+   SMALL TEXT
+========================= */
+
+.small {
+  margin: 0 0 8px;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  color: #64748b;
+}
+
+/* =========================
+   REVENUE
+========================= */
+
+.revenueCard h2 {
+  margin: 0 0 10px;
+
+  font-size: 34px;
+  font-weight: 900;
+
+  line-height: 1;
+
+  letter-spacing: -0.06em;
+
+  color: #0f172a;
+}
+
+/* CHANGE */
+
+.revenueCard span {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 5px;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  color: #16a34a;
+}
+
+/* =========================
+   GRAPH
+========================= */
+
+.graph {
+  width: 180px;
+  height: 90px;
+
+  border-radius: 16px;
+
+  position: relative;
+
+  background: linear-gradient(180deg, rgba(99, 102, 241, 0.03), transparent);
+}
+
+/* DOT */
+
+/* =========================
+   GRID
+========================= */
+
+.grid {
+  display: grid;
+
+  grid-template-columns: repeat(4, 1fr);
+
+  gap: 12px;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.card {
+  padding: 16px 14px;
+
+  border-radius: 20px;
+
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.96),
+    rgba(248, 250, 252, 0.94)
+  );
+
+  border: 1px solid rgba(226, 232, 240, 0.72);
+
+  transition:
+    transform 0.18s ease,
+    border 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.card:hover {
+  transform: translateY(-1px);
+
+  border-color: rgba(148, 163, 184, 0.26);
+
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.04);
+}
+
+/* =========================
+   ICON WRAP
+========================= */
+
+.iconWrap {
+  width: 42px;
+  height: 42px;
+
+  border-radius: 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 14px;
+
+  border: 1px solid transparent;
+}
+
+/* ICON SIZE */
+
+.iconWrap svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* PURPLE */
+
+.purple {
+  background: rgba(99, 102, 241, 0.08);
+
+  color: #6366f1;
+
+  border-color: rgba(99, 102, 241, 0.08);
+}
+
+/* BLUE */
+
+.blue {
+  background: rgba(59, 130, 246, 0.08);
+
+  color: #3b82f6;
+
+  border-color: rgba(59, 130, 246, 0.08);
+}
+
+/* ORANGE */
+
+.orange {
+  background: rgba(249, 115, 22, 0.08);
+
+  color: #f97316;
+
+  border-color: rgba(249, 115, 22, 0.08);
+}
+
+/* GREEN */
+
+.green {
+  background: rgba(34, 197, 94, 0.08);
+
+  color: #22c55e;
+
+  border-color: rgba(34, 197, 94, 0.08);
+}
+
+/* =========================
+   TITLE
+========================= */
+
+.card p {
+  margin: 0 0 6px;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  color: #64748b;
+}
+
+/* VALUE */
+
+.card h3 {
+  margin: 0 0 10px;
+
+  font-size: 28px;
+  font-weight: 900;
+
+  line-height: 1;
+
+  letter-spacing: -0.06em;
+
+  color: #0f172a;
+}
+
+/* CHANGE */
+
+.card span {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* COLORS */
+
+.card:nth-child(1) span {
+  color: #6366f1;
+}
+
+.card:nth-child(2) span {
+  color: #3b82f6;
+}
+
+.card:nth-child(3) span {
+  color: #f97316;
+}
+
+.card:nth-child(4) span {
+  color: #22c55e;
+}
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .revenueCard {
+    padding: 16px;
+  }
+
+  .revenueCard h2 {
+    font-size: 28px;
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 640px) {
+  .revenueCard {
+    flex-direction: column;
+    align-items: flex-start;
+
+    gap: 10px;
+
+    padding: 16px;
+
+    border-radius: 18px;
+  }
+
+  .revenueCard h2 {
+    font-size: 26px;
+  }
+
+  .graph {
+    width: 100%;
+    height: 74px;
+  }
+
+  .grid {
+    gap: 10px;
+  }
+
+  .card {
+    padding: 14px 12px;
+
+    border-radius: 18px;
+  }
+
+  .card h3 {
+    font-size: 22px;
+  }
+
+  .iconWrap {
+    width: 38px;
+    height: 38px;
+
+    border-radius: 12px;
+
+    margin-bottom: 12px;
+  }
+
+  .iconWrap svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* =========================
+   EXTRA SMALL
+========================= */
+
+@media (max-width: 420px) {
+  .section {
+    gap: 12px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 8px;
+  }
+
+  .revenueCard {
+    padding: 14px;
+
+    border-radius: 16px;
+  }
+
+  .revenueCard h2 {
+    font-size: 22px;
+  }
+
+  .small,
+  .card p,
+  .card span,
+  .revenueCard span {
+    font-size: 11px;
+  }
+
+  .card {
+    padding: 12px 10px;
+
+    border-radius: 16px;
+  }
+
+  .card h3 {
+    font-size: 20px;
+  }
+
+  .iconWrap {
+    width: 34px;
+    height: 34px;
+
+    border-radius: 10px;
+  }
+
+  .iconWrap svg {
+    width: 15px;
+    height: 15px;
+  }
+}
+.up {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  color: #16a34a;
+
+  font-weight: 600;
+}
+
+.down {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  color: #dc2626;
+
+  font-weight: 600;
+}
+.linkBtn {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 4px;
+
+  border: none;
+
+  background: transparent;
+
+  color: #4f46e5;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  padding: 0;
+}
+.revenueTop {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: flex-start;
+
+  width: 100%;
+}
+
+.rangeBadge {
+  padding: 6px 10px;
+
+  border-radius: 999px;
+
+  background: #f8fafc;
+
+  border: 1px solid #e2e8f0;
+
+  font-size: 11px;
+
+  font-weight: 600;
+
+  color: #64748b;
+}
+
+.graphWrap {
+  margin-top: 18px;
+
+  width: 100%;
+
+  height: 140px;
+}

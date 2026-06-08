@@ -1,3 +1,4 @@
+// modals/AddElementModal.js
 import BottomSheet from "../ui/BottomSheet";
 import styles from "./addElement.module.css";
 import { useState } from "react";
@@ -14,6 +15,8 @@ import {
   Timer,
   Menu,
   MessageSquare,
+  LayoutPanelTop,
+  ShoppingBag,
 } from "lucide-react";
 
 const elements = [
@@ -23,12 +26,24 @@ const elements = [
   { type: "video", label: "Video", icon: Video, available: true },
   { type: "divider", label: "Divider", icon: Minus, available: true },
   { type: "spacer", label: "Spacer", icon: ArrowUpDown, available: true },
-
+  { type: "menu", label: "Menu", icon: Menu, available: true },
+  {
+    type: "hero",
+    label: "Hero",
+    icon: LayoutPanelTop,
+    available: true,
+  },
+  {
+    type: "store-products",
+    label: "Products",
+    icon: ShoppingBag,
+    available: true,
+  },
   // 🚫 Coming soon
   { type: "form", label: "Form", icon: FormInput, available: false },
   { type: "cards", label: "Cards", icon: LayoutGrid, available: false },
   { type: "countdown", label: "Countdown", icon: Timer, available: false },
-  { type: "menu", label: "Menu", icon: Menu, available: false },
+
   {
     type: "testimonials",
     label: "Testimonials",

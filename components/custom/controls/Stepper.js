@@ -1,3 +1,4 @@
+// controls/Stepper.js
 import styles from "./stepper.module.css";
 import { Minus, Plus } from "lucide-react";
 

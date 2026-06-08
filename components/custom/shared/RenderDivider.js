@@ -1,3 +1,4 @@
+// /shared/RenderDivider.js
 export default function RenderDivider({ element }) {
   return (
     <div

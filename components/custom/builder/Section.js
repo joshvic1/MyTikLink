@@ -1,3 +1,4 @@
+// builder/section.js
 import styles from "../styles/section.module.css";
 import ElementRenderer from "./ElementRenderer";
 import { useState } from "react";

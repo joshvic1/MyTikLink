@@ -1,0 +1,88 @@
+.navbar {
+  height: 72px;
+
+  background: white;
+
+  border-bottom: 1px solid #ececf2;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  padding: 0 16px;
+
+  position: sticky;
+
+  top: 0;
+
+  z-index: 40;
+}
+
+.left {
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+}
+
+.menuBtn {
+  width: 42px;
+  height: 42px;
+
+  border: none;
+
+  background: #f5f5fa;
+
+  border-radius: 12px;
+
+  cursor: pointer;
+}
+
+.logo {
+  font-size: 22px;
+
+  font-weight: 700;
+
+  color: #5b3df5;
+}
+
+.right {
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+}
+
+.iconBtn {
+  width: 42px;
+  height: 42px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  background: #f5f5fa;
+
+  cursor: pointer;
+}
+
+.profile {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+}
+
+.profile img {
+  width: 42px;
+  height: 42px;
+
+  border-radius: 50%;
+
+  object-fit: cover;
+}

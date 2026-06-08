@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import PhoneInput from "react-phone-input-2";
@@ -12,8 +12,27 @@ import styles from "@/styles/AddPhoneModal.module.css";
 export default function AddPhoneModal({ isOpen, onClose, user }) {
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const [country, setCountry] = useState("ng");
   if (!isOpen) return null;
+  useEffect(() => {
+    const detectCountry = async () => {
+      try {
+        const res = await fetch("https://ipapi.co/json/");
+
+        const data = await res.json();
+
+        if (data?.country_code) {
+          setCountry(data.country_code.toLowerCase());
+        }
+      } catch (err) {
+        console.error("Country detect failed", err);
+
+        setCountry("ng");
+      }
+    };
+
+    detectCountry();
+  }, []);
   const normalizePhone = (value) => {
     if (!value) return "";
 
@@ -107,13 +126,16 @@ export default function AddPhoneModal({ isOpen, onClose, user }) {
           <label className={styles.label}>WhatsApp Number</label>
 
           <PhoneInput
-            country={"ng"}
+            country={country}
             value={phone}
             onChange={(value) => setPhone(value)}
             inputClass={styles.phoneInput}
             containerClass={styles.phoneContainer}
             buttonClass={styles.phoneButton}
             enableSearch
+            enableAreaCodes
+            disableCountryCode={false}
+            countryCodeEditable={true}
             placeholder="813 456 7890"
           />
         </div>

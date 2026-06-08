@@ -1,0 +1,330 @@
+/* ======================================
+   OVERLAY
+====================================== */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+
+  border: none;
+
+  background: rgba(15, 23, 42, 0.55);
+
+  backdrop-filter: blur(8px);
+
+  cursor: pointer;
+}
+
+/* ======================================
+   MODAL
+====================================== */
+
+.modal {
+  position: relative;
+
+  width: 100%;
+  max-width: 420px;
+
+  background: rgba(255, 255, 255, 0.96);
+
+  backdrop-filter: blur(20px);
+
+  border: 1px solid rgba(226, 232, 240, 0.8);
+
+  border-radius: 28px;
+
+  padding: 28px 24px;
+
+  z-index: 2;
+
+  box-shadow:
+    0 30px 60px rgba(15, 23, 42, 0.12),
+    0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+/* ======================================
+   CLOSE
+====================================== */
+
+.close {
+  position: absolute;
+
+  top: 14px;
+  right: 14px;
+
+  width: 45px;
+  height: 45px;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 12px;
+
+  background: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  color: #64748b;
+
+  transition: all 0.2s ease;
+}
+
+.close:hover {
+  background: #f8fafc;
+
+  color: #0f172a;
+}
+
+/* ======================================
+   ICON
+====================================== */
+
+.icon {
+  width: 64px;
+  height: 64px;
+
+  margin: 0 auto 20px;
+
+  border-radius: 20px;
+
+  background: linear-gradient(180deg, #ffffff, #f8fafc);
+
+  border: 1px solid #e2e8f0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #0f172a;
+}
+
+/* ======================================
+   TITLE
+====================================== */
+
+.modal h2 {
+  margin: 0;
+
+  text-align: center;
+
+  font-size: 24px;
+  font-weight: 800;
+
+  letter-spacing: -0.03em;
+
+  color: #0f172a;
+}
+
+/* ======================================
+   SUBTITLE
+====================================== */
+
+.subtitle {
+  margin: 10px 0 24px;
+
+  text-align: center;
+
+  font-size: 14px;
+  line-height: 1.6;
+
+  color: #64748b;
+}
+
+/* ======================================
+   INPUT
+====================================== */
+
+.input {
+  width: 100%;
+
+  height: 56px;
+
+  padding: 0 16px;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 16px;
+
+  background: white;
+
+  font-size: 15px;
+
+  color: #0f172a;
+
+  outline: none;
+
+  transition: all 0.2s ease;
+}
+
+.input:focus {
+  border-color: #cbd5e1;
+
+  box-shadow: 0 0 0 4px rgba(241, 245, 249, 0.9);
+}
+
+/* ======================================
+   PRIMARY BUTTON
+====================================== */
+
+.primary {
+  width: 100%;
+
+  height: 56px;
+
+  margin-top: 14px;
+
+  border: none;
+
+  border-radius: 16px;
+
+  background: #0f172a;
+
+  color: white;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.primary:hover {
+  opacity: 0.94;
+
+  transform: translateY(-1px);
+}
+
+.primary:disabled {
+  opacity: 0.5;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+/* ======================================
+   GHOST BUTTON
+====================================== */
+
+.ghost {
+  width: 100%;
+
+  height: 50px;
+
+  margin-top: 10px;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 14px;
+
+  background: white;
+
+  color: #475569;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.ghost:hover {
+  background: #f8fafc;
+}
+
+/* ======================================
+   OTP ROW
+====================================== */
+
+.otpRow {
+  display: flex;
+  justify-content: center;
+
+  gap: 12px;
+
+  margin-bottom: 6px;
+}
+
+/* ======================================
+   OTP INPUTS
+====================================== */
+
+.otpRow input {
+  width: 64px;
+  height: 70px;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 18px;
+
+  background: white;
+
+  text-align: center;
+
+  font-size: 28px;
+  font-weight: 800;
+
+  color: #0f172a;
+
+  outline: none;
+
+  transition: all 0.2s ease;
+}
+
+.otpRow input:focus {
+  border-color: #94a3b8;
+
+  box-shadow: 0 0 0 4px rgba(241, 245, 249, 0.9);
+
+  transform: translateY(-1px);
+}
+
+/* ======================================
+   MOBILE
+====================================== */
+
+@media (max-width: 480px) {
+  .modal {
+    max-width: 100%;
+
+    padding: 24px 18px;
+  }
+
+  .modal h2 {
+    font-size: 22px;
+  }
+
+  .otpRow {
+    gap: 8px;
+  }
+
+  .otpRow input {
+    width: 58px;
+    height: 64px;
+
+    font-size: 24px;
+  }
+
+  .icon {
+    width: 58px;
+    height: 58px;
+
+    border-radius: 18px;
+  }
+}

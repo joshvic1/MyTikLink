@@ -1,3 +1,4 @@
+// controls/SpacingControl.css
 import styles from "./spacing.module.css";
 
 const options = [

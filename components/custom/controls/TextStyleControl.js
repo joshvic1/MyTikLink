@@ -1,3 +1,4 @@
+// controls/TextStyleControl.js
 import styles from "./textstyle.module.css";
 import { Bold, Italic, Underline } from "lucide-react";
 

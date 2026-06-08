@@ -1,0 +1,102 @@
+.wrap {
+  display: flex;
+
+  width: 100%;
+}
+
+.menuBtn {
+  width: 52px;
+  height: 52px;
+
+  border: none;
+
+  border-radius: 14px;
+
+  background: #111827;
+
+  color: white;
+
+  font-size: 22px;
+
+  cursor: pointer;
+}
+
+.overlay {
+  position: fixed;
+
+  inset: 0;
+
+  background: rgba(0, 0, 0, 0.45);
+
+  z-index: 999;
+}
+
+.drawer {
+  position: fixed;
+
+  top: 0;
+
+  left: -320px;
+
+  width: 300px;
+
+  height: 100vh;
+
+  background: white;
+
+  z-index: 1000;
+
+  transition: 0.3s ease;
+
+  padding: 20px;
+}
+
+.open {
+  left: 0;
+}
+
+.top {
+  display: flex;
+
+  justify-content: flex-end;
+
+  margin-bottom: 20px;
+}
+
+.closeBtn {
+  border: none;
+
+  background: none;
+
+  font-size: 24px;
+
+  cursor: pointer;
+}
+
+.menuList {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 14px;
+}
+
+.item {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 14px;
+
+  border-radius: 12px;
+
+  background: #f3f4f6;
+
+  text-decoration: none;
+
+  color: #111827;
+
+  font-weight: 600;
+}

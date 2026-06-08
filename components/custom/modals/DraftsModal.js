@@ -1,3 +1,4 @@
+// DraftsModal.js
 import BottomSheet from "../ui/BottomSheet";
 import styles from "./draftsModal.module.css";
 

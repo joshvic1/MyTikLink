@@ -1,3 +1,4 @@
+// controls/ToggleSwitch.js
 import styles from "./toggle.module.css";
 
 export default function ToggleSwitch({ value, onChange }) {

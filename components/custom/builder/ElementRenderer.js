@@ -1,10 +1,13 @@
+// builder/ElementRenderer.js
 import TextElement from "../elements/TextElement";
 import ImageElement from "../elements/ImageElement";
 import ButtonElement from "../elements/ButtonElement";
 import DividerElement from "../elements/DividerElement";
 import SpacerElement from "../elements/SpacerElement";
 import VideoElement from "../elements/VideoElement";
-
+import MenuElement from "../elements/MenuElement";
+import HeroElement from "../elements/HeroElement";
+import ProductsElement from "../elements/ProductsElement";
 export default function ElementRenderer({
   element,
   sectionId,
@@ -71,6 +74,35 @@ export default function ElementRenderer({
         />
       );
 
+    case "menu":
+      return (
+        <MenuElement
+          element={element}
+          sectionId={sectionId}
+          onUpdateElement={onUpdateElement}
+          onDeleteElement={onDeleteElement}
+        />
+      );
+
+    case "hero":
+      return (
+        <HeroElement
+          element={element}
+          sectionId={sectionId}
+          onUpdateElement={onUpdateElement}
+          onDeleteElement={onDeleteElement}
+        />
+      );
+
+    case "store-products":
+      return (
+        <ProductsElement
+          element={element}
+          sectionId={sectionId}
+          onUpdateElement={onUpdateElement}
+          onDeleteElement={onDeleteElement}
+        />
+      );
     default:
       return null;
   }

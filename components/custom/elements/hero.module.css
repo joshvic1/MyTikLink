@@ -1,0 +1,47 @@
+.wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.actions {
+  position: absolute;
+
+  top: 12px;
+  right: 12px;
+
+  display: flex;
+  gap: 6px;
+
+  opacity: 0;
+
+  transition: 0.2s ease;
+
+  z-index: 999;
+}
+
+.wrapper:hover .actions {
+  opacity: 1;
+}
+
+.actions button {
+  border: none;
+
+  width: 36px;
+  height: 36px;
+
+  border-radius: 10px;
+
+  background: rgba(255, 255, 255, 0.8);
+
+  backdrop-filter: blur(10px);
+
+  cursor: pointer;
+}
+
+.edit {
+  color: #4f46e5;
+}
+
+.delete {
+  color: #ef4444;
+}

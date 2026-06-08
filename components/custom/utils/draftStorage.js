@@ -1,3 +1,4 @@
+// /utils/draftStorage.js
 const DRAFTS_KEY = "builder-drafts";
 const AUTOSAVE_KEY = "builder-autosave";
 

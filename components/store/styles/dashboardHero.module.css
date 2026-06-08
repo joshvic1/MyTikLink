@@ -1,0 +1,252 @@
+/* =========================
+   HERO
+========================= */
+
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  padding: 6px 0 18px;
+
+  border-bottom: 1px solid rgba(226, 232, 240, 0.65);
+
+  margin-bottom: 18px;
+}
+
+/* =========================
+   TEXTS
+========================= */
+
+.texts {
+  flex: 1;
+
+  min-width: 0;
+}
+
+/* =========================
+   TITLE
+========================= */
+
+.texts h1 {
+  margin: 0 0 6px;
+
+  font-size: 30px;
+  font-weight: 900;
+
+  line-height: 1;
+
+  letter-spacing: -0.04em;
+
+  color: #0f172a;
+}
+
+/* =========================
+   SUBTEXT
+========================= */
+
+.texts p {
+  margin: 0;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  line-height: 1.5;
+
+  color: #64748b;
+}
+
+/* =========================
+   ANALYTICS BUTTON
+========================= */
+
+.analyticsBtn {
+  width: 50px;
+  height: 50px;
+
+  flex-shrink: 0;
+
+  border: 1px solid rgba(99, 102, 241, 0.08);
+
+  border-radius: 16px;
+
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+
+  color: white;
+
+  font-size: 20px;
+  font-weight: 700;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.14);
+
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    opacity 0.18s ease;
+}
+
+.analyticsBtn:hover {
+  transform: translateY(-1px);
+
+  box-shadow: 0 12px 24px rgba(99, 102, 241, 0.18);
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 768px) {
+  .hero {
+    gap: 10px;
+
+    padding-bottom: 16px;
+
+    margin-bottom: 16px;
+  }
+
+  .texts h1 {
+    font-size: 24px;
+
+    line-height: 1.05;
+  }
+
+  .texts p {
+    font-size: 12px;
+
+    line-height: 1.45;
+  }
+
+  .analyticsBtn {
+    width: 44px;
+    height: 44px;
+
+    border-radius: 14px;
+
+    font-size: 18px;
+  }
+}
+
+/* =========================
+   EXTRA SMALL
+========================= */
+
+@media (max-width: 420px) {
+  .hero {
+    gap: 8px;
+
+    padding-bottom: 14px;
+
+    margin-bottom: 14px;
+  }
+
+  .texts h1 {
+    font-size: 21px;
+  }
+
+  .texts p {
+    font-size: 11px;
+  }
+
+  .analyticsBtn {
+    width: 40px;
+    height: 40px;
+
+    border-radius: 12px;
+
+    font-size: 16px;
+  }
+}
+.sparkle {
+  color: #64748b;
+
+  margin-left: 4px;
+
+  vertical-align: middle;
+}
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.filter {
+  height: 36px;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 10px;
+
+  padding: 0 12px;
+
+  font-size: 13px;
+
+  background: white;
+
+  cursor: pointer;
+}
+.right {
+  flex-shrink: 0;
+}
+.filter {
+  height: 40px;
+
+  min-width: 120px;
+
+  padding: 0 14px;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 12px;
+
+  background: #fff;
+
+  color: #0f172a;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  outline: none;
+
+  transition: all 0.2s ease;
+
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.filter:hover {
+  border-color: #cbd5e1;
+}
+
+.filter:focus {
+  border-color: #7c6df5;
+
+  box-shadow: 0 0 0 4px rgba(124, 109, 245, 0.12);
+}
+.row {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: flex-start;
+
+  gap: 16px;
+}
+@media (max-width: 768px) {
+  .filter {
+    min-width: 105px;
+
+    height: 36px;
+
+    font-size: 12px;
+  }
+}

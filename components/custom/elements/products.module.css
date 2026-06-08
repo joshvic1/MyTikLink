@@ -1,0 +1,91 @@
+/* elements/storeProducts.module.css */
+
+.wrapper {
+  position: relative;
+
+  width: 100%;
+}
+
+/* =========================
+   HOVER
+========================= */
+
+.wrapper:hover {
+  outline: 1px solid #c7d2fe;
+
+  outline-offset: 3px;
+
+  border-radius: 10px;
+}
+
+/* =========================
+   ACTIONS
+========================= */
+
+.actions {
+  position: absolute;
+
+  top: -10px;
+  right: -10px;
+
+  display: flex;
+
+  gap: 4px;
+
+  opacity: 0;
+
+  transform: scale(0.9);
+
+  transition: all 0.15s ease;
+
+  z-index: 20;
+}
+
+.wrapper:hover .actions {
+  opacity: 1;
+
+  transform: scale(1);
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.actions button {
+  border: 1px solid rgba(255, 255, 255, 0.4);
+
+  background: rgba(255, 255, 255, 0.4);
+
+  backdrop-filter: blur(8px);
+
+  border-radius: 6px;
+
+  padding: 5px;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.actions button svg {
+  width: 13px;
+  height: 13px;
+}
+
+.edit {
+  color: #4f46e5;
+}
+
+.edit:hover {
+  background: rgba(79, 70, 229, 0.15);
+}
+
+.delete {
+  color: #ef4444;
+}
+
+.delete:hover {
+  background: rgba(239, 68, 68, 0.15);
+}

@@ -1,3 +1,4 @@
+// /shared/RenderButton
 import { useState } from "react";
 export default function RenderButton({ element, page, phoneNumber }) {
   const [loading, setLoading] = useState(false);
@@ -6,6 +7,7 @@ export default function RenderButton({ element, page, phoneNumber }) {
     const ua = navigator.userAgent;
 
     if (/android/i.test(ua)) return "android";
+    s;
     if (/iphone|ipad|ipod/i.test(ua)) return "ios";
 
     return "other";

@@ -1,3 +1,4 @@
+// renderer/CustomPageRenderer.js
 import RenderElement from "./RenderElement";
 import styles from "./CustomPageRenderer.module.css";
 export default function CustomPageRenderer({
@@ -7,7 +8,7 @@ export default function CustomPageRenderer({
   page,
 }) {
   return (
-    <div className={styles.wrapper}>
+    <div id="builder-scroll-container" className={styles.wrapper}>
       {sections.map((section) => (
         <div
           key={section.id}

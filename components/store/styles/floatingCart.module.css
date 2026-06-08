@@ -1,0 +1,44 @@
+.fab {
+  position: fixed;
+
+  right: 16px;
+  bottom: 95px;
+
+  height: 52px;
+
+  padding: 0 16px;
+
+  border: none;
+
+  border-radius: 999px;
+
+  background: #111827;
+
+  color: white;
+
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  z-index: 200;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.16);
+
+  cursor: pointer;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.left span {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.fab strong {
+  font-size: 14px;
+  font-weight: 700;
+}

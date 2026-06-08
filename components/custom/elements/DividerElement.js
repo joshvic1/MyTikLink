@@ -1,3 +1,4 @@
+// elements/DividerElement.js
 import { useState } from "react";
 import { Pencil } from "lucide-react";
 import styles from "./divider.module.css";

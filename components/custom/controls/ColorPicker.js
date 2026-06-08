@@ -1,3 +1,4 @@
+// controls/ColorPicker.js
 import { Pipette } from "lucide-react";
 import styles from "./colorpicker.module.css";
 
