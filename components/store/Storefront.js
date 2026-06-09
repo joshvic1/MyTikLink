@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
+import axios from "axios";
 import StoreSetupModal from "./onboarding/StoreSetupModal";
 import StoreDashboard from "./dashboard/StoreDashboard";
 
@@ -18,9 +18,11 @@ export default function Storefront() {
   const [store, setStore] = useState(null);
 
   const [showSetup, setShowSetup] = useState(false);
-
+  const [showUpgrade, setShowUpgrade] = useState(false);
   const [token, setToken] = useState(null);
   const [openProduct, setOpenProduct] = useState(false);
+  const [user, setUser] = useState(null);
+
   useEffect(() => {
     const savedToken = localStorage.getItem("token");
 
@@ -34,6 +36,7 @@ export default function Storefront() {
     setToken(savedToken);
 
     loadStore(savedToken);
+    loadUser(savedToken);
   }, []);
 
   const loadStore = async (token) => {
@@ -80,6 +83,23 @@ export default function Storefront() {
     }
   };
 
+  const loadUser = async (token) => {
+    try {
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/users/plan`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      setUser(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const handleCompleteSetup = (store) => {
     setStore(store);
 
@@ -100,7 +120,11 @@ export default function Storefront() {
   return (
     <>
       {showSetup && (
-        <StoreSetupModal token={token} onComplete={handleCompleteSetup} />
+        <StoreSetupModal
+          token={token}
+          user={user}
+          onComplete={handleCompleteSetup}
+        />
       )}
 
       {store && <StoreDashboard store={store} />}

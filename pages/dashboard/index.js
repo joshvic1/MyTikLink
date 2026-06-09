@@ -11,6 +11,7 @@ import UpgradeModal from "@/components/UpgradeModal";
 import LinksCardView from "@/components/LinksCardView";
 import PagesCardView from "@/components/PagesCardView";
 
+import StoreAnnouncementModal from "@/components/StoreAnnouncementModal";
 import { Plus } from "lucide-react";
 import styles from "@/styles/dashboard.module.css";
 import s from "@/styles/LinksCardView.module.css";
@@ -26,7 +27,7 @@ export default function Dashboard({ userPlan }) {
   const pagesRef = useRef(null);
   const [redirects, setRedirects] = useState([]);
   const [pages, setPages] = useState([]);
-
+  const [showStoreAnnouncement, setShowStoreAnnouncement] = useState(false);
   const [showCreate, setShowCreate] = useState(false);
   const [showUpgrade, setShowUpgrade] = useState(false);
   const [user, setUser] = useState({ name: "User", plan: "free" });
@@ -98,7 +99,13 @@ export default function Dashboard({ userPlan }) {
       toast.error("Failed to load pages");
     }
   };
+  useEffect(() => {
+    const hidden = localStorage.getItem("hideStoreAnnouncement");
 
+    if (hidden !== "true") {
+      setShowStoreAnnouncement(true);
+    }
+  }, []);
   useEffect(() => {
     const init = async () => {
       const token = localStorage.getItem("token");
@@ -514,6 +521,10 @@ export default function Dashboard({ userPlan }) {
       {selectedPage && (
         <LeadsModal page={selectedPage} onClose={() => setSelectedPage(null)} />
       )}
+      <StoreAnnouncementModal
+        open={showStoreAnnouncement}
+        onClose={() => setShowStoreAnnouncement(false)}
+      />
     </DashboardLayout>
   );
 }

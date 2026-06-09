@@ -13,7 +13,15 @@ import styles from "../../styles/designStep.module.css";
 
 import storefrontTemplates from "@/constants/storeTemplates";
 
-export default function DesignStep({ form, update, back, finish, loading }) {
+export default function DesignStep({
+  form,
+  update,
+  back,
+  finish,
+  loading,
+  isPro,
+  onUpgrade,
+}) {
   return (
     <div className={styles.wrapper}>
       {/* HEADER */}
@@ -88,20 +96,31 @@ export default function DesignStep({ form, update, back, finish, loading }) {
           Back
         </button>
 
-        <button
-          className={styles.finishBtn}
-          onClick={finish}
-          disabled={loading}
-        >
-          {loading ? (
-            "Creating Store..."
-          ) : (
-            <>
-              <Rocket size={14} />
-              Launch Store
-            </>
-          )}
-        </button>
+        {isPro ? (
+          <button
+            className={styles.finishBtn}
+            onClick={finish}
+            disabled={loading}
+          >
+            {loading ? (
+              "Creating Store..."
+            ) : (
+              <>
+                <Rocket size={14} />
+                Launch Store
+              </>
+            )}
+          </button>
+        ) : (
+          <button
+            type="button"
+            className={styles.finishBtn}
+            onClick={onUpgrade}
+          >
+            <Rocket size={14} />
+            Upgrade to Pro to Launch Store
+          </button>
+        )}
       </div>
     </div>
   );

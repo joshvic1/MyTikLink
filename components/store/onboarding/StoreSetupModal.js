@@ -11,16 +11,20 @@ import StoreStepIndicator from "./StoreStepIndicator";
 import BusinessStep from "./steps/BusinessStep";
 import PaymentStep from "./steps/PaymentStep";
 import DesignStep from "./steps/DesignStep";
+import UpgradeModal from "@/components/UpgradeModal";
 
 import { createStore, updateStore } from "@/services/storeService";
 
-export default function StoreSetupModal({ token, onComplete }) {
+export default function StoreSetupModal({ token, onComplete, user }) {
   const [started, setStarted] = useState(false);
 
   const [step, setStep] = useState(1);
 
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
+  const [showUpgrade, setShowUpgrade] = useState(false);
+
+  const isPro = user?.plan?.toLowerCase().includes("pro");
   const [form, setForm] = useState({
     name: "",
 
@@ -124,6 +128,10 @@ export default function StoreSetupModal({ token, onComplete }) {
     return Object.keys(newErrors).length === 0;
   };
   const handleFinish = async () => {
+    if (!isPro) {
+      setShowUpgrade(true);
+      return;
+    }
     try {
       setLoading(true);
 
@@ -201,10 +209,18 @@ export default function StoreSetupModal({ token, onComplete }) {
                 back={back}
                 finish={handleFinish}
                 loading={loading}
+                isPro={isPro}
+                onUpgrade={() => setShowUpgrade(true)}
               />
             )}
           </div>
         </div>
+      )}
+      {showUpgrade && (
+        <UpgradeModal
+          currentPlan={user?.plan || "free"}
+          setShowModal={setShowUpgrade}
+        />
       )}
     </div>
   );
