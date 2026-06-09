@@ -11,7 +11,7 @@ export default function UpgradeModal({ currentPlan, setShowModal, onUpgrade }) {
   const [billingCycle, setBillingCycle] = useState("monthly");
   const [loadingPlan, setLoadingPlan] = useState(null);
   const [expandedCard, setExpandedCard] = useState("null");
-
+  const [paystackReady, setPaystackReady] = useState(false);
   const sheetRef = useRef(null);
   const dragZoneRef = useRef(null);
 
@@ -120,7 +120,29 @@ export default function UpgradeModal({ currentPlan, setShowModal, onUpgrade }) {
       window.removeEventListener("touchend", onEnd);
     };
   }, [setShowModal]);
+  useEffect(() => {
+    if (window.PaystackPop) {
+      setPaystackReady(true);
+      return;
+    }
 
+    const existingScript = document.querySelector(
+      'script[src="https://js.paystack.co/v1/inline.js"]',
+    );
+
+    if (existingScript) {
+      existingScript.addEventListener("load", () => setPaystackReady(true));
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.src = "https://js.paystack.co/v1/inline.js";
+    script.async = true;
+    script.onload = () => setPaystackReady(true);
+    script.onerror = () => toast.error("Payment script failed to load");
+
+    document.body.appendChild(script);
+  }, []);
   // PAYMENT (unchanged)
   const handleUpgrade = async ({ id, name, price, cycle }) => {
     try {
@@ -144,12 +166,9 @@ export default function UpgradeModal({ currentPlan, setShowModal, onUpgrade }) {
 
       // Load Paystack script if missing
       if (!window.PaystackPop) {
-        await new Promise((resolve) => {
-          const script = document.createElement("script");
-          script.src = "https://js.paystack.co/v1/inline.js";
-          script.onload = resolve;
-          document.body.appendChild(script);
-        });
+        toast.error("Payment is still loading. Please try again in a second.");
+        setLoadingPlan(null);
+        return;
       }
 
       // 🚨 DO NOT add amount for subscription plans
@@ -326,7 +345,9 @@ export default function UpgradeModal({ currentPlan, setShowModal, onUpgrade }) {
 
                     <button
                       className={styles.upgradeBtn}
-                      disabled={disabled || loadingPlan === plan.id}
+                      disabled={
+                        disabled || loadingPlan === plan.id || !paystackReady
+                      }
                       onClick={(e) => {
                         e.stopPropagation();
                         if (disabled) return;
@@ -342,6 +363,8 @@ export default function UpgradeModal({ currentPlan, setShowModal, onUpgrade }) {
                         <>
                           <Loader2 className={styles.spin} /> Processing...
                         </>
+                      ) : !paystackReady ? (
+                        "Preparing payment..."
                       ) : (
                         <>{buttonLabel}</>
                       )}

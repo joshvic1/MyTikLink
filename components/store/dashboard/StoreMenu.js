@@ -60,7 +60,7 @@ export default function StoreMenu({ open, onClose, store }) {
     },
     {
       icon: Activity,
-      label: "Tiktok/Meta Pixel",
+      label: "Pixel/Events",
       action: () => router.push("/dashboard/tiktok-pixel"),
     },
   ];

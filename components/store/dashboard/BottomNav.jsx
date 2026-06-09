@@ -29,7 +29,7 @@ export default function BottomNav({ onAddProduct }) {
       {/* ORDERS */}
       <button
         className={pathname === "/store/orders" ? styles.active : ""}
-        onClick={() => router.push("/store/order")}
+        onClick={() => router.push("/store/orders")}
       >
         <ShoppingBag size={20} />
         <span>Orders</span>
