@@ -21,16 +21,15 @@
 /* =========================
    DRAWER
 ========================= */
-
 .drawer {
   width: 68%;
   max-width: 470px;
   min-width: 340px;
 
-  height: 100vh;
+  height: 100dvh;
+  max-height: 100dvh;
 
   background: #ffffff;
-
   border-left: 1px solid rgba(226, 232, 240, 0.9);
 
   display: flex;
@@ -39,7 +38,6 @@
   overflow: hidden;
 
   animation: slideIn 0.25s ease;
-
   box-shadow: -10px 0 40px rgba(15, 23, 42, 0.08);
 }
 
@@ -118,6 +116,7 @@
 
 .body {
   flex: 1;
+  min-height: 0;
 
   overflow-y: auto;
 
@@ -127,6 +126,8 @@
   flex-direction: column;
 
   gap: 14px;
+
+  -webkit-overflow-scrolling: touch;
 }
 
 .body::-webkit-scrollbar {
@@ -494,13 +495,13 @@
 ========================= */
 
 .footer {
-  padding: 18px 20px 22px;
+  flex-shrink: 0;
+
+  padding: 14px 16px calc(14px + env(safe-area-inset-bottom));
 
   border-top: 1px solid rgba(226, 232, 240, 0.8);
 
   background: #fff;
-
-  flex-shrink: 0;
 }
 
 /* TOTAL */
@@ -676,6 +677,8 @@
 @media (max-width: 520px) {
   .drawer {
     width: 88%;
+    height: 100dvh;
+    max-height: 100dvh;
   }
 
   /* HEADER */
@@ -879,6 +882,20 @@
 
   .secondary {
     min-width: 90px;
+  }
+  .action,
+  .secondary {
+    height: 42px;
+    border-radius: 13px;
+    font-size: 12.5px;
+  }
+
+  .total {
+    margin-bottom: 10px;
+  }
+
+  .footerActions {
+    gap: 8px;
   }
 }
 .items {
