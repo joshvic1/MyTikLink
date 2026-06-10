@@ -154,25 +154,37 @@ export default function AuthModal({
     window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
   };
   useEffect(() => {
+    if (!isOpen || mode !== "register") return;
+
     const detectCountry = async () => {
       try {
-        const res = await fetch("https://ipapi.co/json/");
+        const controller = new AbortController();
+
+        const timeout = setTimeout(() => {
+          controller.abort();
+        }, 2500);
+
+        const res = await fetch("https://ipapi.co/json/", {
+          signal: controller.signal,
+        });
+
+        clearTimeout(timeout);
+
+        if (!res.ok) {
+          setCountry("ng");
+          return;
+        }
 
         const data = await res.json();
 
-        if (data?.country_code) {
-          setCountry(data.country_code.toLowerCase());
-        }
-      } catch (err) {
-        console.error("Country detection failed", err);
-
-        // fallback remains NG
+        setCountry(data?.country_code?.toLowerCase() || "ng");
+      } catch {
         setCountry("ng");
       }
     };
 
     detectCountry();
-  }, []);
+  }, [isOpen, mode]);
   return (
     <>
       {/* MAIN AUTH MODAL */}
