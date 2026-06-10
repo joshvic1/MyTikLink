@@ -172,7 +172,30 @@ export default function CartDrawer({ open, onClose }) {
       setSubmitting(false);
     }
   };
+  const getAvailableStock = (item) => {
+    if (item.productType !== "physical") {
+      return Infinity;
+    }
 
+    const hasSelectedVariants =
+      item.selectedVariants && Object.keys(item.selectedVariants).length > 0;
+
+    if (
+      hasSelectedVariants &&
+      Array.isArray(item.inventory) &&
+      item.inventory.length > 0
+    ) {
+      const inventoryRow = item.inventory.find((row) =>
+        Object.entries(item.selectedVariants).every(
+          ([key, value]) => row.values?.[key] === value,
+        ),
+      );
+
+      return Number(inventoryRow?.stock || 0);
+    }
+
+    return Number(item.stock || 0);
+  };
   if (!open) return null;
 
   return (
@@ -249,7 +272,10 @@ export default function CartDrawer({ open, onClose }) {
                         <button
                           className={styles.remove}
                           onClick={() => {
-                            removeFromCart(item._id);
+                            removeFromCart(
+                              item._id,
+                              item.selectedVariants || {},
+                            );
                             showToast(
                               `${item.name} removed from cart`,
                               "error",
@@ -269,24 +295,35 @@ export default function CartDrawer({ open, onClose }) {
 
                         <div className={styles.qty}>
                           <button
-                            onClick={() =>
+                            onClick={() => {
+                              const variants = item.selectedVariants || {};
+
                               updateQty(
                                 item._id,
                                 Math.max(1, item.quantity - 1),
-                              )
-                            }
+                                variants,
+                              );
+                            }}
                             type="button"
                           >
                             <Minus size={14} />
                           </button>
 
                           <span>{item.quantity}</span>
-
                           <button
-                            onClick={() =>
-                              updateQty(item._id, item.quantity + 1)
-                            }
+                            onClick={() => {
+                              const availableStock = getAvailableStock(item);
+                              const variants = item.selectedVariants || {};
+
+                              if (item.quantity >= availableStock) {
+                                showToast("No more stock available", "error");
+                                return;
+                              }
+
+                              updateQty(item._id, item.quantity + 1, variants);
+                            }}
                             type="button"
+                            disabled={item.quantity >= getAvailableStock(item)}
                           >
                             <Plus size={14} />
                           </button>
