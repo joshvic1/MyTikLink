@@ -34,7 +34,7 @@ export default function PublicProductPage() {
     hydrated,
   } = useCart();
   const [qty, setQty] = useState(1);
-
+  const [selectedVariants, setSelectedVariants] = useState({});
   const [cartOpen, setCartOpen] = useState(false);
   const [toast, setToast] = useState({
     show: false,
@@ -42,7 +42,7 @@ export default function PublicProductPage() {
     type: "success",
   });
 
-  const cartQty = data ? getItemQty(data._id) : 0;
+  const cartQty = data ? getItemQty(data._id, selectedVariants) : 0;
   const showToast = (text, type = "success") => {
     setToast({
       show: true,
@@ -57,11 +57,51 @@ export default function PublicProductPage() {
       }));
     }, 2200);
   };
+  const hasVariants =
+    data?.productType === "physical" &&
+    Array.isArray(data?.variantGroups) &&
+    data.variantGroups.length > 0;
+
+  const selectedInventoryRow =
+    hasVariants && Array.isArray(data?.inventory)
+      ? data.inventory.find((row) =>
+          Object.entries(selectedVariants).every(
+            ([key, value]) => row.values?.[key] === value,
+          ),
+        )
+      : null;
+
+  const selectedVariantStock = selectedInventoryRow
+    ? Number(selectedInventoryRow.stock || 0)
+    : 0;
+
+  const allVariantsSelected =
+    !hasVariants ||
+    data.variantGroups.every((group) => selectedVariants[group.name]);
   const handleAdd = () => {
     const isPhysicalProduct = data.productType === "physical";
 
-    if (isPhysicalProduct && cartQty >= Number(data.stock || 0)) {
+    if (hasVariants && !allVariantsSelected) {
+      showToast("Please select product options", "error");
+      return;
+    }
+
+    if (hasVariants && selectedVariantStock <= 0) {
+      showToast("Selected option is out of stock", "error");
+      return;
+    }
+
+    if (
+      !hasVariants &&
+      isPhysicalProduct &&
+      cartQty >= Number(data.stock || 0)
+    ) {
       showToast("No more stock available", "error");
+      return;
+    }
+
+    if (hasVariants && cartQty >= selectedVariantStock) {
+      showToast("No more stock available for this option", "error");
       return;
     }
 
@@ -79,32 +119,52 @@ export default function PublicProductPage() {
       },
     );
 
-    addToCart(data, 1);
+    addToCart(
+      {
+        ...data,
+        selectedVariants: hasVariants ? selectedVariants : {},
+      },
+      1,
+    );
 
     showToast(`${data.name} added to cart`);
   };
   const handleIncrease = () => {
     const isPhysicalProduct = data.productType === "physical";
 
-    if (isPhysicalProduct && cartQty >= Number(data.stock || 0)) {
+    if (hasVariants && !allVariantsSelected) {
+      showToast("Please select product options", "error");
+      return;
+    }
+
+    if (hasVariants && cartQty >= selectedVariantStock) {
+      showToast("No more stock available for this option", "error");
+      return;
+    }
+
+    if (
+      !hasVariants &&
+      isPhysicalProduct &&
+      cartQty >= Number(data.stock || 0)
+    ) {
       showToast("No more stock available", "error");
       return;
     }
 
-    updateQty(data._id, cartQty + 1);
+    updateQty(data._id, cartQty + 1, selectedVariants);
 
     showToast(`${data.name} added to cart`);
   };
   const handleDecrease = () => {
     if (cartQty <= 1) {
-      removeFromCart(data._id);
+      removeFromCart(data._id, selectedVariants);
 
       showToast(`${data.name} removed from cart`, "error");
 
       return;
     }
 
-    updateQty(data._id, cartQty - 1);
+    updateQty(data._id, cartQty - 1, selectedVariants);
 
     showToast(`${data.name} removed from cart`, "error");
   };
@@ -235,7 +295,47 @@ Price: ₦${data.price}
             <p>{data.description}</p>
           </div>
         </div>
+        {hasVariants && (
+          <div className={styles.variantBox}>
+            <h3>Choose options</h3>
 
+            {data.variantGroups.map((group) => (
+              <div key={group.name} className={styles.variantGroup}>
+                <label>{group.name}</label>
+
+                <div className={styles.variantOptions}>
+                  {group.options.map((option) => {
+                    const active = selectedVariants[group.name] === option;
+
+                    return (
+                      <button
+                        key={option}
+                        type="button"
+                        className={active ? styles.activeVariant : ""}
+                        onClick={() =>
+                          setSelectedVariants((prev) => ({
+                            ...prev,
+                            [group.name]: option,
+                          }))
+                        }
+                      >
+                        {option}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
+
+            {allVariantsSelected && (
+              <p className={styles.variantStock}>
+                {selectedVariantStock > 0
+                  ? `${selectedVariantStock} available`
+                  : "Selected option is out of stock"}
+              </p>
+            )}
+          </div>
+        )}
         {/* RELATED */}
         {data.store?.showRelatedProducts && relatedProducts.length > 0 && (
           <section className={styles.related}>
