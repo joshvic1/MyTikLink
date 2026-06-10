@@ -52,8 +52,6 @@ export default function StoreStats({ range }) {
 
       const data = await getLowStockProducts(token);
 
-      console.log("LOW STOCK:", data);
-
       setLowStockProducts(data);
     } catch (err) {
       console.log(err);
@@ -88,7 +86,7 @@ export default function StoreStats({ range }) {
     },
 
     {
-      title: "Low Stock",
+      title: "Out of Stock",
       value: stats?.lowStock || 0,
       icon: AlertTriangle,
       color: "green",
