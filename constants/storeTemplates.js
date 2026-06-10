@@ -1,10 +1,11 @@
 const storefrontTemplates = [
-  // {
-  //   id: "6a26e9551abb2afc0308179b",
-  //   title: "Products Only",
-  //   image: "https://pub-e0ff826b0e9843069a4df3548bc6fa39.r2.dev/tiklink-pages/1781024565507-eea8a221-eea6-4f4a-8201-67910624cc7d",
-  //   previewUrl: "/p/dvrx"
-  // }
+  {
+    id: "6a2857611abb2afc03095453",
+    title: "Products Only",
+    image:
+      "https://pub-e0ff826b0e9843069a4df3548bc6fa39.r2.dev/tiklink-pages/1781024565507-eea8a221-eea6-4f4a-8201-67910624cc7d",
+    previewUrl: "/p/dvrx-store",
+  },
   {
     id: "6a10d4f334628f09dde3a5b1",
 

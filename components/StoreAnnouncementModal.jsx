@@ -44,7 +44,7 @@ export default function StoreAnnouncementModal({ open, onClose }) {
           </p>
 
           <h2>
-            You can now create an <span>online store</span>
+            You can now create an <span>online store</span> on MyTikLink
           </h2>
 
           <p>

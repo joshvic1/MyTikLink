@@ -13,12 +13,13 @@ export default function AddPhoneModal({ isOpen, onClose, user }) {
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const [country, setCountry] = useState("ng");
-  if (!isOpen) return null;
+
   useEffect(() => {
+    if (!isOpen) return;
+
     const detectCountry = async () => {
       try {
         const res = await fetch("https://ipapi.co/json/");
-
         const data = await res.json();
 
         if (data?.country_code) {
@@ -26,13 +27,14 @@ export default function AddPhoneModal({ isOpen, onClose, user }) {
         }
       } catch (err) {
         console.error("Country detect failed", err);
-
         setCountry("ng");
       }
     };
 
     detectCountry();
-  }, []);
+  }, [isOpen]);
+
+  if (!isOpen) return null;
   const normalizePhone = (value) => {
     if (!value) return "";
 
