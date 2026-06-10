@@ -48,6 +48,7 @@ export default function AddProductModal({ open, onClose }) {
   const [errors, setErrors] = useState({});
   const [hasVariants, setHasVariants] = useState(false);
   const [variantGroups, setVariantGroups] = useState([]);
+  const [variantRows, setVariantRows] = useState([]);
   const [loading, setLoading] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [uploadingFile, setUploadingFile] = useState(false);
@@ -81,6 +82,7 @@ export default function AddProductModal({ open, onClose }) {
     setErrors({});
     setHasVariants(false);
     setVariantGroups([]);
+    setVariantRows([]);
     onClose();
   };
 
@@ -93,8 +95,30 @@ export default function AddProductModal({ open, onClose }) {
     if (!form.productType) newErrors.productType = "Select a product type";
     if (!form.category.trim()) newErrors.category = "Category is required";
 
-    if (form.productType === "physical" && !form.stock) {
+    if (form.productType === "physical" && !hasVariants && !form.stock) {
       newErrors.stock = "Stock is required";
+    }
+
+    if (form.productType === "physical" && hasVariants) {
+      if (variantRows.length === 0) {
+        newErrors.variants = "Add at least one variant";
+      }
+
+      const hasInvalidVariant = variantRows.some(
+        (row) =>
+          !row.name.trim() ||
+          !row.value.trim() ||
+          row.stock === "" ||
+          Number(row.stock) < 0,
+      );
+
+      if (hasInvalidVariant) {
+        newErrors.variants = "Fill variant name, value, and stock for each row";
+      }
+
+      if (variantStockTotal <= 0) {
+        newErrors.variants = "Total variant stock must be greater than 0";
+      }
     }
 
     if (form.productType === "digital" && !form.deliveryMethod) {
@@ -241,7 +265,76 @@ export default function AddProductModal({ open, onClose }) {
       prev.filter((group) => group.name !== groupName),
     );
   };
+  const variantStockTotal = variantRows.reduce(
+    (sum, row) => sum + Number(row.stock || 0),
+    0,
+  );
 
+  const addVariantRow = (name = "") => {
+    setVariantRows((prev) => [
+      ...prev,
+      {
+        id: Date.now().toString(),
+        name,
+        value: "",
+        stock: "",
+      },
+    ]);
+  };
+
+  const updateVariantRow = (id, data) => {
+    setVariantRows((prev) =>
+      prev.map((row) => (row.id === id ? { ...row, ...data } : row)),
+    );
+  };
+
+  const removeVariantRow = (id) => {
+    setVariantRows((prev) => prev.filter((row) => row.id !== id));
+  };
+
+  const buildVariantGroups = () => {
+    const groups = {};
+
+    variantRows.forEach((row) => {
+      const name = row.name.trim();
+      const value = row.value.trim();
+
+      if (!name || !value) return;
+
+      if (!groups[name]) {
+        groups[name] = [];
+      }
+
+      if (!groups[name].includes(value)) {
+        groups[name].push(value);
+      }
+    });
+
+    return Object.entries(groups).map(([name, options]) => ({
+      name,
+      options,
+    }));
+  };
+  const variantsReady =
+    !hasVariants ||
+    (variantRows.length > 0 &&
+      variantRows.every(
+        (row) =>
+          row.name.trim() &&
+          row.value.trim() &&
+          row.stock !== "" &&
+          Number(row.stock) >= 0,
+      ) &&
+      variantStockTotal > 0);
+
+  const canCreate =
+    form.image &&
+    form.name.trim() &&
+    form.price &&
+    form.productType &&
+    form.category.trim() &&
+    (form.productType !== "physical" || hasVariants || form.stock) &&
+    (form.productType !== "physical" || variantsReady);
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -262,10 +355,28 @@ export default function AddProductModal({ open, onClose }) {
         productType: form.productType,
         category: form.category,
         price: Number(form.price),
-        stock: form.productType === "physical" ? Number(form.stock || 0) : 0,
+        stock:
+          form.productType === "physical"
+            ? hasVariants
+              ? variantStockTotal
+              : Number(form.stock || 0)
+            : 0,
+
         variantGroups:
-          form.productType === "physical" && hasVariants ? variantGroups : [],
-        inventory: [],
+          form.productType === "physical" && hasVariants
+            ? buildVariantGroups()
+            : [],
+
+        inventory:
+          form.productType === "physical" && hasVariants
+            ? variantRows.map((row) => ({
+                values: {
+                  [row.name.trim()]: row.value.trim(),
+                },
+                stock: Number(row.stock || 0),
+                sku: "",
+              }))
+            : [],
       };
 
       if (form.productType === "digital") {
@@ -286,6 +397,7 @@ export default function AddProductModal({ open, onClose }) {
       setErrors({});
       setHasVariants(false);
       setVariantGroups([]);
+      setVariantRows([]);
       onClose();
     } catch (err) {
       console.log(err?.response?.data || err);
@@ -449,6 +561,7 @@ export default function AddProductModal({ open, onClose }) {
                       if (productType === "digital") {
                         setHasVariants(false);
                         setVariantGroups([]);
+                        setVariantRows([]);
                       }
                     }}
                   >
@@ -471,9 +584,15 @@ export default function AddProductModal({ open, onClose }) {
                       type="number"
                       min="0"
                       placeholder="0"
-                      value={form.stock}
+                      value={hasVariants ? variantStockTotal : form.stock}
+                      disabled={hasVariants}
                       onChange={(e) => update({ stock: e.target.value })}
                     />
+                    {hasVariants && (
+                      <p className={styles.helpText}>
+                        Stock is calculated from your variant stock.
+                      </p>
+                    )}
                   </div>
                   {errors.stock && (
                     <p className={styles.error}>{errors.stock}</p>
@@ -581,14 +700,100 @@ export default function AddProductModal({ open, onClose }) {
                 <input
                   type="checkbox"
                   checked={hasVariants}
-                  onChange={(e) => setHasVariants(e.target.checked)}
+                  onChange={(e) => {
+                    const checked = e.target.checked;
+
+                    setHasVariants(checked);
+
+                    if (!checked) {
+                      setVariantRows([]);
+                    }
+
+                    if (checked) {
+                      update({ stock: "" });
+                    }
+                  }}
                 />
                 <span>This product has variants</span>
               </label>
 
               {hasVariants && (
                 <div className={styles.variantArea}>
-                  {/* keep your existing variant content here */}
+                  <div className={styles.presetGrid}>
+                    {PRESET_VARIANTS.map((name) => (
+                      <button
+                        key={name}
+                        type="button"
+                        className={styles.presetBtn}
+                        onClick={() => {
+                          if (name === "Custom") {
+                            addVariantRow("");
+                            return;
+                          }
+
+                          addVariantRow(name);
+                        }}
+                      >
+                        <Plus size={13} />
+                        {name}
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className={styles.variantRows}>
+                    {variantRows.map((row) => (
+                      <div key={row.id} className={styles.variantRow}>
+                        <input
+                          placeholder="Variant name e.g. Size"
+                          value={row.name}
+                          onChange={(e) =>
+                            updateVariantRow(row.id, {
+                              name: e.target.value,
+                            })
+                          }
+                        />
+
+                        <input
+                          placeholder="Value e.g. Large"
+                          value={row.value}
+                          onChange={(e) =>
+                            updateVariantRow(row.id, {
+                              value: e.target.value,
+                            })
+                          }
+                        />
+
+                        <input
+                          type="number"
+                          min="0"
+                          placeholder="Stock"
+                          value={row.stock}
+                          onChange={(e) =>
+                            updateVariantRow(row.id, {
+                              stock: e.target.value,
+                            })
+                          }
+                        />
+
+                        <button
+                          type="button"
+                          className={styles.removeVariant}
+                          onClick={() => removeVariantRow(row.id)}
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className={styles.variantTotal}>
+                    <span>Total variant stock</span>
+                    <strong>{variantStockTotal}</strong>
+                  </div>
+
+                  {errors.variants && (
+                    <p className={styles.error}>{errors.variants}</p>
+                  )}
                 </div>
               )}
             </section>
@@ -621,7 +826,11 @@ export default function AddProductModal({ open, onClose }) {
             Cancel
           </button>
 
-          <button type="submit" className={styles.saveBtn} disabled={loading}>
+          <button
+            type="submit"
+            className={styles.saveBtn}
+            disabled={loading || !canCreate}
+          >
             {loading ? (
               <>
                 <Loader2 size={18} className={styles.spin} />

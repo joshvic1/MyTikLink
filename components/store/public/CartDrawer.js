@@ -139,6 +139,7 @@ export default function CartDrawer({ open, onClose }) {
           price: item.price,
 
           productType: item.productType,
+          selectedVariants: item.selectedVariants || {},
         })),
       });
       trackBoth("AddPaymentInfo", {
@@ -210,7 +211,10 @@ export default function CartDrawer({ open, onClose }) {
                   Number(item.price || 0) * Number(item.quantity || 1);
 
                 return (
-                  <div key={item._id} className={styles.item}>
+                  <div
+                    key={`${item._id}-${JSON.stringify(item.selectedVariants || {})}`}
+                    className={styles.item}
+                  >
                     <div className={styles.itemImage}>
                       <img
                         src={item.images?.[0] || "/placeholder.png"}
@@ -227,6 +231,19 @@ export default function CartDrawer({ open, onClose }) {
                               ? "Digital product"
                               : "Physical product"}
                           </span>
+
+                          {Object.keys(item.selectedVariants || {}).length >
+                            0 && (
+                            <div className={styles.variantSummary}>
+                              {Object.entries(item.selectedVariants).map(
+                                ([name, value]) => (
+                                  <span key={name}>
+                                    {name}: {value}
+                                  </span>
+                                ),
+                              )}
+                            </div>
+                          )}
                         </div>
 
                         <button
