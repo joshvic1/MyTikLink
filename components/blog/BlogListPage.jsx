@@ -20,7 +20,7 @@ import BlogLayout from "./BlogLayout";
 import BlogSearch from "./BlogSearch";
 import { getBlogPosts } from "@/utils/blogApi";
 import styles from "./Blog.module.css";
-import Footer from "../Footer";
+import Footer from "../Footer/Footer";
 
 const categories = [
   { label: "All", icon: Sparkles },
