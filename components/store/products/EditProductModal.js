@@ -125,20 +125,34 @@ export default function EditProductModal({ open, onClose, product, onSave }) {
     try {
       setSaving(true);
 
-      await onSave({
-        ...form,
-        stock: form.productType === "digital" ? 0 : form.stock,
-        deliveryMethod:
-          form.productType === "digital" ? form.deliveryMethod : "",
-        externalUrl:
-          form.productType === "digital" && form.deliveryMethod === "external"
-            ? form.externalUrl
-            : "",
-        downloadFile:
-          form.productType === "digital" && form.deliveryMethod === "download"
-            ? form.downloadFile
-            : "",
-      });
+      const payload = {
+        _id: form._id,
+        name: form.name,
+        description: form.description || "",
+        category: form.category || "General",
+        price: Number(form.price || 0),
+        comparePrice: form.comparePrice ? Number(form.comparePrice) : null,
+        stock: form.productType === "digital" ? 0 : Number(form.stock || 0),
+        sku: form.sku || "",
+        productType: form.productType || "physical",
+        status: form.status || "published",
+        featured: Boolean(form.featured),
+        images: Array.isArray(form.images) ? form.images : [],
+      };
+
+      if (payload.productType === "digital") {
+        payload.deliveryMethod = form.deliveryMethod || null;
+
+        if (form.deliveryMethod === "external") {
+          payload.externalUrl = form.externalUrl || "";
+        }
+
+        if (form.deliveryMethod === "download") {
+          payload.downloadFile = form.downloadFile || "";
+        }
+      }
+
+      await onSave(payload);
     } finally {
       setSaving(false);
     }

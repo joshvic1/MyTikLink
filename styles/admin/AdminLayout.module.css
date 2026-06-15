@@ -7,54 +7,52 @@
   overflow: hidden;
 }
 
-/* ============================= */
 /* DESKTOP SIDEBAR */
-/* ============================= */
 .sidebar {
   width: 250px;
+  flex: 0 0 250px;
+  height: 100vh;
   background: rgba(20, 20, 30, 0.65);
   backdrop-filter: blur(22px);
   border-right: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 28px 20px;
-  display: none; /* hidden by default (mobile-first) */
+  padding: 0;
+  display: none;
+  overflow: hidden;
 }
 
 @media (min-width: 900px) {
   .sidebar {
-    display: block; /* visible only on desktop */
+    display: block;
   }
 }
 
-/* ============================= */
-/* MOBILE SIDEBAR (SLIDE-IN) */
-/* ============================= */
+/* MOBILE SIDEBAR */
 .mobileSidebar {
   position: fixed;
   top: 0;
   left: 0;
   width: 250px;
-  height: 100%;
+  height: 100dvh;
   background: rgba(20, 20, 30, 0.92);
   backdrop-filter: blur(25px);
-  padding: 28px 20px;
+  padding: 0;
   z-index: 60;
-  transform: translateX(-110%); /* hidden on load */
+  transform: translateX(-110%);
   transition: transform 0.35s ease;
-  display: block; /* mobile only */
+  display: block;
+  overflow: hidden;
 }
 
 .mobileSidebar.open {
   transform: translateX(0);
 }
 
-/* Hide mobile sidebar entirely on desktop */
 @media (min-width: 900px) {
   .mobileSidebar {
     display: none !important;
   }
 }
 
-/* OVERLAY (mobile only) */
 .overlay {
   position: fixed;
   inset: 0;
@@ -68,35 +66,55 @@
   }
 }
 
-/* ============================= */
-/* SIDEBAR INNER STRUCTURE */
-/* ============================= */
+/* SIDEBAR INNER */
 .sidebarInner {
+  height: 100%;
+  min-height: 0;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  padding: 28px 20px;
 }
 
 .logo {
+  flex: 0 0 auto;
   font-size: 22px;
   font-weight: 800;
-  margin-bottom: 40px;
+  margin: 0 0 34px;
   letter-spacing: -1px;
   background: linear-gradient(90deg, var(--accent1), var(--accent2));
   -webkit-background-clip: text;
   color: transparent;
 }
 
-/* ============================= */
-/* MENU LIST */
-/* ============================= */
+/* SCROLLING MENU */
 .menuList {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   list-style: none;
-  padding: 0;
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0 -6px 0 0;
+  padding: 0 6px 16px 0;
+}
+
+.menuList::-webkit-scrollbar {
+  width: 5px;
+}
+
+.menuList::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.menuList::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 .menuItem {
+  min-height: 46px;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -104,7 +122,18 @@
   font-size: 15px;
   border-radius: 10px;
   color: var(--muted);
+  text-decoration: none;
   transition: 0.25s;
+}
+
+.menuItem svg {
+  flex: 0 0 auto;
+}
+
+.menuItem span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .menuItem:hover {
@@ -127,8 +156,10 @@
 
 /* LOGOUT BUTTON */
 .logoutBtn {
-  margin-top: auto;
+  flex: 0 0 auto;
+  margin-top: 16px;
   padding: 12px 15px;
+  border: 0;
   border-radius: 10px;
   background: var(--danger);
   color: #fff;
@@ -137,23 +168,22 @@
   align-items: center;
   gap: 10px;
   justify-content: center;
+  cursor: pointer;
 }
 
-/* ============================= */
 /* MAIN SECTION */
-/* ============================= */
 .main {
   flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   height: 100%;
 }
 
-/* ============================= */
 /* TOPBAR */
-/* ============================= */
 .topbar {
   height: 70px;
+  flex: 0 0 70px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -163,7 +193,7 @@
   backdrop-filter: blur(12px);
 }
 
-/* BURGER MENU (mobile only) */
+/* BURGER MENU */
 .menuBtn {
   display: inline-flex;
   align-items: center;
@@ -177,7 +207,7 @@
 
 @media (min-width: 900px) {
   .menuBtn {
-    display: none !important; /* hide burger on desktop */
+    display: none !important;
   }
 }
 
@@ -197,10 +227,10 @@
   font-weight: 700;
 }
 
-/* ============================= */
 /* CONTENT AREA */
-/* ============================= */
 .content {
+  flex: 1;
+  min-height: 0;
   padding: 25px;
   overflow-y: auto;
 }

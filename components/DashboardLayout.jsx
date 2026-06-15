@@ -27,6 +27,7 @@ import FloatingAI from "@/components/MyTikLinkAI/FloatingAI";
 import AIChat from "@/components/MyTikLinkAI/AIChat";
 import { motion } from "framer-motion";
 import AddPhoneModal from "@/components/AddPhoneModal";
+import BlogHelpTopbar from "./BlogHelpTopBar";
 
 export default function DashboardLayout({
   user = { name: "User", plan: "free" },
@@ -110,171 +111,174 @@ export default function DashboardLayout({
   }, []);
 
   return (
-    <div
-      className={`${s.layout} ${
-        expanded ? s.sidebarExpanded : s.sidebarCollapsed
-      }`}
-    >
-      {/* ===== Top Bar ===== */}
-      <header className={s.topbar}>
-        <Link href="/" className={s.brand}>
-          {/* LOGO */}
-          <motion.div
-            className={s.logo}
-            onClick={() => router.push("/")}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <img src="/logo21.jpg" alt="TikLink" />
-          </motion.div>
-        </Link>
-
-        <div className={s.topActions}>
-          {/* Create button */}
-          <button className={s.primaryBtn} onClick={onCreate}>
-            <Plus size={18} className={s.createIcon} />
-            <span className={s.createText}>Create Link</span>
-          </button>
-          {/* Theme toggle */}
-          <button
-            className={s.themeToggle}
-            aria-label="Toggle theme"
-            onClick={toggleTheme}
-          >
-            {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
-          </button>
-          {/* Mobile menu toggle */}
-          <button
-            className={s.menuToggle}
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
-          </button>
-
-          {/* User info (hidden on mobile) */}
-          <div className={s.userBox}>
-            <div className={s.avatar}>{user?.name?.[0]?.toUpperCase()}</div>
-            <div className={s.userInfo}>
-              <span className={s.userName}>{user.name}</span>
-              <span className={s.userPlan}>{user.plan} plan</span>
-            </div>
-          </div>
-        </div>
-
-        {/* ===== Mobile dropdown menu ===== */}
-        {mobileMenuOpen && (
-          <div className={s.mobileMenu}>
-            <nav>
-              {nav.map((item) => {
-                const Icon = item.icon;
-                const active =
-                  pathname === item.href ||
-                  pathname?.startsWith(item.href + "/");
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={`${s.mobileItem} ${active ? s.active : ""}`}
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    <Icon size={18} />
-                    <span>{item.label}</span>
-                  </Link>
-                );
-              })}
-            </nav>
-            <div className={s.mobileBottom}>
-              <button
-                onClick={!isPro ? onUpgrade : undefined}
-                disabled={isPro}
-                className={`${s.mobileUpgrade} ${isPro ? s.disabledBtn : ""}`}
-              >
-                <ArrowUpCircle size={18} />
-                <span>{isPro ? "PRO ACTIVE" : "Upgrade"}</span>
-              </button>
-
-              <button onClick={handleLogout} className={s.mobileLogout}>
-                <LogOut size={16} />
-                <span>Logout</span>
-              </button>
-            </div>
-          </div>
-        )}
-      </header>
-
-      {/* ===== Sidebar (desktop only) ===== */}
-      <aside
-        className={`${s.sidebar} ${expanded ? s.expanded : s.collapsed}`}
-        onMouseEnter={() => setExpanded(true)}
-        onMouseLeave={() => setExpanded(false)}
+    <>
+      <BlogHelpTopbar onMessageSupport={() => setOpenAI(true)} />
+      <div
+        className={`${s.layout} ${
+          expanded ? s.sidebarExpanded : s.sidebarCollapsed
+        }`}
       >
-        <nav className={s.nav}>
-          {nav.map((item) => {
-            const Icon = item.icon;
-            const active =
-              pathname === item.href || pathname?.startsWith(item.href + "/");
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`${s.navItem} ${active ? s.active : ""}`}
-              >
-                <Icon size={18} className={s.icon} />
-                {expanded && <span>{item.label}</span>}
-              </Link>
-            );
-          })}
-        </nav>
+        {/* ===== Top Bar ===== */}
+        <header className={s.topbar}>
+          <Link href="/" className={s.brand}>
+            {/* LOGO */}
+            <motion.div
+              className={s.logo}
+              onClick={() => router.push("/")}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <img src="/logo21.jpg" alt="TikLink" />
+            </motion.div>
+          </Link>
 
-        <div className={s.bottom}>
-          <button
-            onClick={!isPro ? onUpgrade : undefined}
-            disabled={isPro}
-            className={`${s.upgradeBtn} ${expanded ? "" : s.iconOnly} ${
-              isPro ? s.disabledBtn : ""
-            }`}
-          >
-            <ArrowUpCircle size={18} />
-            {expanded && <span>{isPro ? "PRO ACTIVE" : "Upgrade"}</span>}
-          </button>
+          <div className={s.topActions}>
+            {/* Create button */}
+            <button className={s.primaryBtn} onClick={onCreate}>
+              <Plus size={18} className={s.createIcon} />
+              <span className={s.createText}>Create Link</span>
+            </button>
+            {/* Theme toggle */}
+            <button
+              className={s.themeToggle}
+              aria-label="Toggle theme"
+              onClick={toggleTheme}
+            >
+              {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
+            {/* Mobile menu toggle */}
+            <button
+              className={s.menuToggle}
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+            </button>
 
-          <button onClick={handleLogout} className={s.mobileLogout}>
-            <LogOut size={16} />
-            {expanded && <span>Logout</span>}
-          </button>
-        </div>
-      </aside>
+            {/* User info (hidden on mobile) */}
+            <div className={s.userBox}>
+              <div className={s.avatar}>{user?.name?.[0]?.toUpperCase()}</div>
+              <div className={s.userInfo}>
+                <span className={s.userName}>{user.name}</span>
+                <span className={s.userPlan}>{user.plan} plan</span>
+              </div>
+            </div>
+          </div>
 
-      {/* ===== Main ===== */}
-      <main className={s.main}>
-        <div className={s.content}>{children}</div>
-      </main>
+          {/* ===== Mobile dropdown menu ===== */}
+          {mobileMenuOpen && (
+            <div className={s.mobileMenu}>
+              <nav>
+                {nav.map((item) => {
+                  const Icon = item.icon;
+                  const active =
+                    pathname === item.href ||
+                    pathname?.startsWith(item.href + "/");
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className={`${s.mobileItem} ${active ? s.active : ""}`}
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      <Icon size={18} />
+                      <span>{item.label}</span>
+                    </Link>
+                  );
+                })}
+              </nav>
+              <div className={s.mobileBottom}>
+                <button
+                  onClick={!isPro ? onUpgrade : undefined}
+                  disabled={isPro}
+                  className={`${s.mobileUpgrade} ${isPro ? s.disabledBtn : ""}`}
+                >
+                  <ArrowUpCircle size={18} />
+                  <span>{isPro ? "PRO ACTIVE" : "Upgrade"}</span>
+                </button>
 
-      {showAuthModal && (
-        <AuthModal
-          isOpen={true}
-          mode="login"
-          onClose={() => setShowAuthModal(false)}
-          switchMode={() => {}}
-          onAuthSuccess={(token) => {
-            login(token);
-            setShowAuthModal(false);
-            window.location.reload(); // reload entire dashboard with user data
+                <button onClick={handleLogout} className={s.mobileLogout}>
+                  <LogOut size={16} />
+                  <span>Logout</span>
+                </button>
+              </div>
+            </div>
+          )}
+        </header>
+
+        {/* ===== Sidebar (desktop only) ===== */}
+        <aside
+          className={`${s.sidebar} ${expanded ? s.expanded : s.collapsed}`}
+          onMouseEnter={() => setExpanded(true)}
+          onMouseLeave={() => setExpanded(false)}
+        >
+          <nav className={s.nav}>
+            {nav.map((item) => {
+              const Icon = item.icon;
+              const active =
+                pathname === item.href || pathname?.startsWith(item.href + "/");
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`${s.navItem} ${active ? s.active : ""}`}
+                >
+                  <Icon size={18} className={s.icon} />
+                  {expanded && <span>{item.label}</span>}
+                </Link>
+              );
+            })}
+          </nav>
+
+          <div className={s.bottom}>
+            <button
+              onClick={!isPro ? onUpgrade : undefined}
+              disabled={isPro}
+              className={`${s.upgradeBtn} ${expanded ? "" : s.iconOnly} ${
+                isPro ? s.disabledBtn : ""
+              }`}
+            >
+              <ArrowUpCircle size={18} />
+              {expanded && <span>{isPro ? "PRO ACTIVE" : "Upgrade"}</span>}
+            </button>
+
+            <button onClick={handleLogout} className={s.mobileLogout}>
+              <LogOut size={16} />
+              {expanded && <span>Logout</span>}
+            </button>
+          </div>
+        </aside>
+
+        {/* ===== Main ===== */}
+        <main className={s.main}>
+          <div className={s.content}>{children}</div>
+        </main>
+
+        {showAuthModal && (
+          <AuthModal
+            isOpen={true}
+            mode="login"
+            onClose={() => setShowAuthModal(false)}
+            switchMode={() => {}}
+            onAuthSuccess={(token) => {
+              login(token);
+              setShowAuthModal(false);
+              window.location.reload(); // reload entire dashboard with user data
+            }}
+          />
+        )}
+        {/* Dashboard support chat */}
+
+        <FloatingAI onOpen={() => setOpenAI(true)} />
+        {openAI && <AIChat onClose={() => setOpenAI(false)} />}
+        <AddPhoneModal
+          isOpen={showPhoneModal}
+          onClose={() => {
+            setShowPhoneModal(false);
+            setPhoneModalDismissed(true);
           }}
+          user={user}
         />
-      )}
-      {/* Dashboard support chat */}
-
-      <FloatingAI onOpen={() => setOpenAI(true)} />
-      {openAI && <AIChat onClose={() => setOpenAI(false)} />}
-      <AddPhoneModal
-        isOpen={showPhoneModal}
-        onClose={() => {
-          setShowPhoneModal(false);
-          setPhoneModalDismissed(true);
-        }}
-        user={user}
-      />
-    </div>
+      </div>
+    </>
   );
 }

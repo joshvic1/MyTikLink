@@ -287,7 +287,47 @@ Price: ₦${data.price}
               </div>
             )}
           </div>
+          {hasVariants && (
+            <div className={styles.variantBox}>
+              <h3>Choose options</h3>
 
+              {data.variantGroups.map((group) => (
+                <div key={group.name} className={styles.variantGroup}>
+                  <label>{group.name}</label>
+
+                  <div className={styles.variantOptions}>
+                    {group.options.map((option) => {
+                      const active = selectedVariants[group.name] === option;
+
+                      return (
+                        <button
+                          key={option}
+                          type="button"
+                          className={active ? styles.activeVariant : ""}
+                          onClick={() =>
+                            setSelectedVariants((prev) => ({
+                              ...prev,
+                              [group.name]: option,
+                            }))
+                          }
+                        >
+                          {option}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+
+              {allVariantsSelected && (
+                <p className={styles.variantStock}>
+                  {selectedVariantStock > 0
+                    ? `${selectedVariantStock} available`
+                    : "Selected option is out of stock"}
+                </p>
+              )}
+            </div>
+          )}
           {/* DESCRIPTION */}
           <div className={styles.descriptionBox}>
             <h3>Description</h3>
@@ -295,47 +335,7 @@ Price: ₦${data.price}
             <p>{data.description}</p>
           </div>
         </div>
-        {hasVariants && (
-          <div className={styles.variantBox}>
-            <h3>Choose options</h3>
 
-            {data.variantGroups.map((group) => (
-              <div key={group.name} className={styles.variantGroup}>
-                <label>{group.name}</label>
-
-                <div className={styles.variantOptions}>
-                  {group.options.map((option) => {
-                    const active = selectedVariants[group.name] === option;
-
-                    return (
-                      <button
-                        key={option}
-                        type="button"
-                        className={active ? styles.activeVariant : ""}
-                        onClick={() =>
-                          setSelectedVariants((prev) => ({
-                            ...prev,
-                            [group.name]: option,
-                          }))
-                        }
-                      >
-                        {option}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            ))}
-
-            {allVariantsSelected && (
-              <p className={styles.variantStock}>
-                {selectedVariantStock > 0
-                  ? `${selectedVariantStock} available`
-                  : "Selected option is out of stock"}
-              </p>
-            )}
-          </div>
-        )}
         {/* RELATED */}
         {data.store?.showRelatedProducts && relatedProducts.length > 0 && (
           <section className={styles.related}>

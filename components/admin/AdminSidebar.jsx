@@ -10,6 +10,7 @@ import {
   Settings,
   LogOut,
   Mail,
+  Newspaper,
 } from "lucide-react";
 import styles from "@/styles/admin/AdminLayout.module.css";
 import useAdminAuth from "@/hooks/useAdminAuth";
@@ -23,6 +24,7 @@ export default function AdminSidebar({ closeDrawer }) {
     { name: "Users", href: "/admin/users", icon: <Users size={18} /> },
     { name: "Links", href: "/admin/links", icon: <LinkIcon size={18} /> },
     { name: "Pages", href: "/admin/pages", icon: <Grid size={18} /> },
+    { name: "Blog", href: "/admin/blog", icon: <Newspaper size={18} /> },
     {
       name: "Payments",
       href: "/admin/payment",

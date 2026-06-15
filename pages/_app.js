@@ -23,6 +23,7 @@ export default function App({ Component, pageProps }) {
   const isAdminRoute = router.pathname.startsWith("/admin");
   const isHomePage = router.pathname === "/home";
   const isStorePage = router.pathname.startsWith("/store");
+  const isBlogPage = router.pathname.startsWith("/blog");
 
   // ✅ Pages without layout
   if (
@@ -35,7 +36,8 @@ export default function App({ Component, pageProps }) {
     isPrivacyPage ||
     isAdminRoute ||
     isHomePage ||
-    isStorePage
+    isStorePage ||
+    isBlogPage
   ) {
     return (
       <main className={plusJakarta.className}>
