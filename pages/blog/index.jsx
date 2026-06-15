@@ -1,5 +1,5 @@
 import Head from "next/head";
-import BlogListPage from "@/components/Blog/BlogListPage";
+import BlogListPage from "@/components/blog/BlogListPage";
 import { getBlogPosts } from "@/utils/blogApi";
 
 export default function BlogIndexPage(props) {
