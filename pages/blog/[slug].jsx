@@ -1,5 +1,5 @@
 import Head from "next/head";
-import BlogPostPage from "@/components/Blog/BlogPostPage";
+import BlogPostPage from "@/components/blog/BlogPostPage";
 import { getBlogPost, getBlogPosts } from "@/utils/blogApi";
 
 export default function BlogSlugPage({ post, relatedPosts = [] }) {
