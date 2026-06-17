@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { ChevronDown, Pencil, Trash2 } from "lucide-react";
+import { ChevronDown, Copy, ExternalLink, Pencil, Trash2 } from "lucide-react";
 
 import {
   getMyProducts,
@@ -153,6 +153,40 @@ export default function ProductsPage() {
       console.log(err);
     }
   };
+
+  const getProductLink = (product) => {
+    if (!store?.slug || !product?.slug) return "";
+
+    return `${window.location.origin}/s/${store.slug}/${product.slug}`;
+  };
+
+  const copyProductLink = async (product) => {
+    const link = getProductLink(product);
+
+    if (!link) {
+      toast.error("Product link is not ready yet");
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(link);
+      toast.success("Product link copied");
+    } catch (err) {
+      console.log(err);
+      toast.error("Failed to copy link");
+    }
+  };
+
+  const visitProductPage = (product) => {
+    const link = getProductLink(product);
+
+    if (!link) {
+      toast.error("Product link is not ready yet");
+      return;
+    }
+
+    window.open(link, "_blank");
+  };
   return (
     <>
       <StoreMenu
@@ -272,6 +306,24 @@ export default function ProductsPage() {
                             Delete
                           </>
                         )}
+                      </button>
+
+                      <button
+                        type="button"
+                        className={styles.copyBtn}
+                        onClick={() => copyProductLink(product)}
+                      >
+                        <Copy size={16} />
+                        Copy Link
+                      </button>
+
+                      <button
+                        type="button"
+                        className={styles.visitBtn}
+                        onClick={() => visitProductPage(product)}
+                      >
+                        <ExternalLink size={16} />
+                        Visit Page
                       </button>
                     </div>
                   </div>

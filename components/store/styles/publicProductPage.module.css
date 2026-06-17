@@ -789,3 +789,6 @@
   font-size: 12px;
   font-weight: 750;
 }
+.descriptionBox p {
+  white-space: pre-line;
+}

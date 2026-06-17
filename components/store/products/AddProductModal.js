@@ -168,6 +168,8 @@ export default function AddProductModal({ open, onClose }) {
       update({ image: res.data.url });
     } catch (err) {
       console.log(err);
+      toast.error("Image upload failed. Please try again.");
+      update({ image: "" });
     } finally {
       setUploadingImage(false);
     }
@@ -446,7 +448,13 @@ export default function AddProductModal({ open, onClose }) {
               <input
                 type="file"
                 accept="image/png,image/jpeg,image/webp"
-                onChange={(e) => uploadImage(e.target.files?.[0])}
+                onChange={async (e) => {
+                  const file = e.target.files?.[0];
+
+                  await uploadImage(file);
+
+                  e.target.value = "";
+                }}
                 disabled={uploadingImage || loading}
               />
 

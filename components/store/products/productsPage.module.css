@@ -524,3 +524,19 @@
     transform: rotate(360deg);
   }
 }
+.copyBtn {
+  border: 1px solid #ddd6fe !important;
+  background: #f5f3ff !important;
+  color: #6d28d9 !important;
+}
+
+.visitBtn {
+  border: 1px solid #dbeafe !important;
+  background: #eff6ff !important;
+  color: #2563eb !important;
+}
+.actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
