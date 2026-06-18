@@ -80,6 +80,12 @@ export default function PublicProductPage() {
     data.variantGroups.every((group) => selectedVariants[group.name]);
   const handleAdd = () => {
     const isPhysicalProduct = data.productType === "physical";
+    const isDigitalProduct = data.productType === "digital";
+
+    if (isDigitalProduct && cartQty >= 1) {
+      setCartOpen(true);
+      return;
+    }
 
     if (hasVariants && !allVariantsSelected) {
       showToast("Please select product options", "error");
@@ -128,6 +134,10 @@ export default function PublicProductPage() {
     );
 
     showToast(`${data.name} added to cart`);
+
+    if (isDigitalProduct) {
+      setCartOpen(true);
+    }
   };
   const handleIncrease = () => {
     const isPhysicalProduct = data.productType === "physical";
@@ -249,6 +259,13 @@ Price: ₦${data.price}
 
   const isPhysicalProduct = data.productType === "physical";
   const isOutOfStock = isPhysicalProduct && Number(data.stock || 0) <= 0;
+  const isDigitalProduct = data.productType === "digital";
+  const customButtonText = data.store?.addToCartButtonText?.trim();
+
+  const defaultButtonText =
+    data.productType === "digital" ? "BUY NOW" : "ADD TO CART";
+
+  const addToCartButtonText = customButtonText || defaultButtonText;
   return (
     <div className={styles.page}>
       <>
@@ -389,12 +406,17 @@ Price: ₦${data.price}
               disabled={isOutOfStock}
               onClick={handleAdd}
             >
-              {isOutOfStock ? "Out Of Stock" : "Add To Cart"}
+              {isOutOfStock ? "Out Of Stock" : addToCartButtonText}
+            </button>
+          ) : isDigitalProduct ? (
+            <button
+              className={styles.checkoutBtn}
+              onClick={() => setCartOpen(true)}
+            >
+              Pay Now ₦{subtotal.toLocaleString()}
             </button>
           ) : (
             <>
-              {/* QTY */}
-
               <div className={styles.qtyBar}>
                 <button onClick={handleDecrease}>−</button>
 
@@ -402,8 +424,6 @@ Price: ₦${data.price}
 
                 <button onClick={handleIncrease}>+</button>
               </div>
-
-              {/* CHECKOUT */}
 
               <button
                 className={styles.checkoutBtn}

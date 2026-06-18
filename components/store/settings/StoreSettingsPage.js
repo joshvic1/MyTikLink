@@ -145,6 +145,22 @@ export default function StoreSettingsPage() {
       setDeleting(false);
     }
   };
+
+  const buttonTextWords = (form.addToCartButtonText || "")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean);
+
+  const handleButtonTextChange = (value) => {
+    const words = value.trim().split(/\s+/).filter(Boolean);
+
+    if (words.length > 5) {
+      toast.error("Button text cannot be more than 5 words");
+      return;
+    }
+
+    update("addToCartButtonText", value);
+  };
   if (!store) return <Loader />;
 
   return (
@@ -403,7 +419,20 @@ export default function StoreSettingsPage() {
                       onChange={(e) => update("enableCart", e.target.checked)}
                     />
                   </label>
+                  <label className={styles.field}>
+                    <span>Add to cart button text</span>
 
+                    <input
+                      value={form.addToCartButtonText || ""}
+                      placeholder="Leave empty for default"
+                      onChange={(e) => handleButtonTextChange(e.target.value)}
+                    />
+
+                    <small>
+                      {buttonTextWords.length}/5 words. Default is BUY NOW for
+                      digital products and ADD TO CART for physical products.
+                    </small>
+                  </label>
                   <label className={styles.switchRow}>
                     <div>
                       <strong>Show related products</strong>

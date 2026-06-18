@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ArrowLeft,
   ChevronDown,
@@ -32,12 +32,27 @@ const categories = [
   { label: "Business ideas", icon: Lightbulb },
   { label: "Make money", icon: DollarSign },
 ];
+function categoryToSlug(category = "") {
+  return category
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
 
+function slugToCategory(slug = "") {
+  const match = categories.find(
+    (category) => categoryToSlug(category.label) === slug,
+  );
+
+  return match?.label || "All";
+}
 export default function BlogListPage({
   initialPosts = [],
   initialHasMore = false,
 }) {
   const router = useRouter();
+  const chipRefs = useRef({});
   const [posts, setPosts] = useState(initialPosts);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(initialHasMore);
@@ -46,10 +61,31 @@ export default function BlogListPage({
   const [activeCategory, setActiveCategory] = useState("All");
 
   useEffect(() => {
-    if (initialPosts.length) return;
+    if (!router.isReady) return;
 
-    loadPosts(1, false, activeCategory);
-  }, []);
+    const querySlug = router.query.categoryslug || router.query.category || "";
+    const nextCategory = slugToCategory(
+      Array.isArray(querySlug) ? querySlug[0] : querySlug,
+    );
+
+    setActiveCategory(nextCategory);
+    setPage(1);
+    setLoading(true);
+    loadPosts(1, false, nextCategory);
+  }, [router.isReady, router.query.categoryslug, router.query.category]);
+
+  useEffect(() => {
+    const activeChip = chipRefs.current[activeCategory];
+
+    if (!activeChip) return;
+
+    activeChip.focus({ preventScroll: true });
+    activeChip.scrollIntoView({
+      behavior: "smooth",
+      inline: "center",
+      block: "nearest",
+    });
+  }, [activeCategory]);
 
   const loadPosts = async (
     pageNumber,
@@ -82,10 +118,26 @@ export default function BlogListPage({
   };
 
   const selectCategory = async (category) => {
-    setActiveCategory(category);
-    setPage(1);
-    setLoading(true);
-    await loadPosts(1, false, category);
+    if (category === activeCategory) return;
+
+    const nextQuery = { ...router.query };
+
+    delete nextQuery.category;
+
+    if (category === "All") {
+      delete nextQuery.categoryslug;
+    } else {
+      nextQuery.categoryslug = categoryToSlug(category);
+    }
+
+    router.push(
+      {
+        pathname: "/blog",
+        query: nextQuery,
+      },
+      undefined,
+      { shallow: true },
+    );
   };
 
   const featuredPost = posts[0];
@@ -134,9 +186,18 @@ export default function BlogListPage({
                 <button
                   type="button"
                   key={category.label}
-                  className={
+                  ref={(node) => {
+                    chipRefs.current[category.label] = node;
+                  }}
+                  aria-pressed={activeCategory === category.label}
+                  className={`${styles.topicChip} ${
                     activeCategory === category.label ? styles.activeChip : ""
-                  }
+                  } ${
+                    activeCategory !== "All" &&
+                    activeCategory !== category.label
+                      ? styles.inactiveChip
+                      : ""
+                  }`}
                   onClick={() => selectCategory(category.label)}
                 >
                   <Icon size={13} />

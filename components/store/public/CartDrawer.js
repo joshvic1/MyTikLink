@@ -134,7 +134,7 @@ export default function CartDrawer({ open, onClose }) {
 
           image: item.images?.[0],
 
-          quantity: item.quantity,
+          quantity: item.productType === "digital" ? 1 : item.quantity,
 
           price: item.price,
 
@@ -230,9 +230,10 @@ export default function CartDrawer({ open, onClose }) {
           {step === "cart" && (
             <div className={styles.items}>
               {cart.map((item) => {
+                const isDigitalProduct = item.productType === "digital";
+                const displayQuantity = isDigitalProduct ? 1 : item.quantity;
                 const itemTotal =
-                  Number(item.price || 0) * Number(item.quantity || 1);
-
+                  Number(item.price || 0) * Number(displayQuantity || 1);
                 return (
                   <div
                     key={`${item._id}-${JSON.stringify(item.selectedVariants || {})}`}
@@ -293,41 +294,50 @@ export default function CartDrawer({ open, onClose }) {
                           <p>₦{itemTotal.toLocaleString()}</p>
                         </div>
 
-                        <div className={styles.qty}>
-                          <button
-                            onClick={() => {
-                              const variants = item.selectedVariants || {};
+                        {!isDigitalProduct && (
+                          <div className={styles.qty}>
+                            <button
+                              onClick={() => {
+                                const variants = item.selectedVariants || {};
 
-                              updateQty(
-                                item._id,
-                                Math.max(1, item.quantity - 1),
-                                variants,
-                              );
-                            }}
-                            type="button"
-                          >
-                            <Minus size={14} />
-                          </button>
+                                updateQty(
+                                  item._id,
+                                  Math.max(1, item.quantity - 1),
+                                  variants,
+                                );
+                              }}
+                              type="button"
+                            >
+                              <Minus size={14} />
+                            </button>
 
-                          <span>{item.quantity}</span>
-                          <button
-                            onClick={() => {
-                              const availableStock = getAvailableStock(item);
-                              const variants = item.selectedVariants || {};
+                            <span>{item.quantity}</span>
 
-                              if (item.quantity >= availableStock) {
-                                showToast("No more stock available", "error");
-                                return;
+                            <button
+                              onClick={() => {
+                                const availableStock = getAvailableStock(item);
+                                const variants = item.selectedVariants || {};
+
+                                if (item.quantity >= availableStock) {
+                                  showToast("No more stock available", "error");
+                                  return;
+                                }
+
+                                updateQty(
+                                  item._id,
+                                  item.quantity + 1,
+                                  variants,
+                                );
+                              }}
+                              type="button"
+                              disabled={
+                                item.quantity >= getAvailableStock(item)
                               }
-
-                              updateQty(item._id, item.quantity + 1, variants);
-                            }}
-                            type="button"
-                            disabled={item.quantity >= getAvailableStock(item)}
-                          >
-                            <Plus size={14} />
-                          </button>
-                        </div>
+                            >
+                              <Plus size={14} />
+                            </button>
+                          </div>
+                        )}
                       </div>
 
                       <div className={styles.unitPrice}>

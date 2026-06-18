@@ -2,6 +2,7 @@
   min-height: 100vh;
   padding: 12px 16px 46px;
   color: #0f172a;
+  overflow-x: hidden;
   background:
     radial-gradient(
       circle at 78% -8%,
@@ -246,7 +247,7 @@
 .blogHero {
   position: relative;
   max-width: 980px;
-  overflow: visible;
+  overflow: hidden;
   margin: 0 auto 38px;
   padding: 14px 18px 28px;
   border: 1px solid #222222;
@@ -360,6 +361,8 @@
 
 .articleToolbar {
   max-width: 980px;
+  min-width: 0;
+  overflow: hidden;
   display: grid;
   gap: 12px;
   margin: 0 auto 18px;
@@ -469,10 +472,6 @@
   border-color: #fecdd3;
   background: #fff1f2;
   color: #be123c;
-}
-
-.activeChip {
-  box-shadow: 0 0 0 2px currentColor inset;
 }
 
 .topicChips svg {
@@ -839,7 +838,6 @@
     height: 44px;
   }
 
-  .articleToolbar,
   .featuredSection,
   .latestSection {
     max-width: 100%;
@@ -1186,4 +1184,69 @@
   .relatedGrid .postImage img {
     height: 210px;
   }
+}
+
+.topicChips {
+  width: auto;
+  max-width: 100%;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 6px 8px 10px;
+  scroll-behavior: smooth;
+  scroll-padding-inline: 12px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.topicChips::-webkit-scrollbar {
+  display: none;
+}
+
+.topicChips button {
+  width: 88px;
+  min-width: 88px;
+  height: 64px;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 5px;
+  padding: 8px 9px;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  background: #ffffff;
+  color: #475569;
+  font: inherit;
+  font-size: 10px;
+  font-weight: 850;
+  cursor: pointer;
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.04);
+  transition:
+    opacity 0.2s ease,
+    filter 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.topicChip:focus-visible {
+  outline: none;
+}
+
+.activeChip {
+  opacity: 1;
+  filter: none;
+  border-width: 2px !important;
+  box-shadow:
+    0 0 0 1px currentColor,
+    0 16px 32px rgba(15, 23, 42, 0.12) !important;
+}
+
+.inactiveChip {
+  opacity: 0.38;
+  filter: grayscale(0.75);
 }

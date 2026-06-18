@@ -66,7 +66,8 @@ export function CartProvider({ children }) {
           p.cartKey === cartKey
             ? {
                 ...p,
-                quantity: p.quantity + quantity,
+                quantity:
+                  product.productType === "digital" ? 1 : p.quantity + quantity,
               }
             : p,
         );

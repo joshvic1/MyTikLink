@@ -14,6 +14,7 @@ import {
   ChevronRight,
   Paintbrush,
   Activity,
+  BookOpenText,
 } from "lucide-react";
 
 import styles from "../styles/storeMenu.module.css";
@@ -62,6 +63,12 @@ export default function StoreMenu({ open, onClose, store }) {
       icon: Activity,
       label: "Pixel/Events",
       action: () => router.push("/dashboard/tiktok-pixel"),
+    },
+
+    {
+      icon: BookOpenText,
+      label: "Knowledge Base",
+      action: () => router.push("/blog?categoryslug=online-store"),
     },
   ];
 

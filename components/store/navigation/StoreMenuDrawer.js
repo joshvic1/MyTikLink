@@ -7,6 +7,7 @@ import {
   CreditCard,
   Settings,
   ExternalLink,
+  BookOpenText,
   X,
 } from "lucide-react";
 
@@ -36,6 +37,11 @@ const items = [
   {
     label: "Settings",
     icon: Settings,
+  },
+
+  {
+    label: "Knowledge base",
+    icon: BookOpenText,
   },
 ];
 
