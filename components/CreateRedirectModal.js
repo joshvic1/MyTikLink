@@ -45,7 +45,7 @@ export default function CreateRedirectModal({
 
   // form
   const [title, setTitle] = useState("");
-  const [linkType, setLinkType] = useState(""); // dm | group
+  const [linkType, setLinkType] = useState(""); // dm | group | channel
   const [whatsInput, setWhatsInput] = useState("");
   const [prefill, setPrefill] = useState("");
 
@@ -137,12 +137,17 @@ export default function CreateRedirectModal({
   // helpers
   const onlyDigits = (v) => (v || "").replace(/\D/g, "");
 
-  const parseWhatsAppCode = (input) => {
-    let type = "dm";
+  const parseWhatsAppCode = (input, preferredType = linkType) => {
+    let type = preferredType || "dm";
     let code = String(input || "").trim();
+
     const base = code.split("?")[0];
 
-    if (base.includes("chat.whatsapp.com")) {
+    if (base.includes("whatsapp.com/channel/")) {
+      const parts = base.split("/");
+      code = parts[parts.length - 1];
+      type = "channel";
+    } else if (base.includes("chat.whatsapp.com")) {
       const parts = base.split("/");
       code = parts[parts.length - 1];
       type = "group";
@@ -154,11 +159,11 @@ export default function CreateRedirectModal({
       const m = code.match(/phone=(\d+)/);
       if (m) code = m[1];
       type = "dm";
-    } else if (/^[A-Za-z0-9]{20,25}$/.test(code)) {
-      type = "group";
     } else if (/^\+?\d+$/.test(code)) {
       code = onlyDigits(code);
       type = "dm";
+    } else if (/^[A-Za-z0-9_-]{10,80}$/.test(code)) {
+      type = preferredType === "channel" ? "channel" : "group";
     }
 
     return { code, type };
@@ -175,19 +180,34 @@ export default function CreateRedirectModal({
     if (type === "dm" && linkType !== "dm") setLinkType("dm");
     setWhatsInput(val);
   };
+  const handleChannelInput = (val) => {
+    const { type } = parseWhatsAppCode(val, "channel");
 
+    if (type === "channel" && linkType !== "channel") {
+      setLinkType("channel");
+    }
+
+    setWhatsInput(val);
+  };
   // target fallback url display
   const cleaned = useMemo(
     () => parseWhatsAppCode(whatsInput),
-    [whatsInput, linkType]
+    [whatsInput, linkType],
   );
   const targetUrl = useMemo(() => {
     if (linkType === "group") {
       const code = cleaned.type === "group" ? cleaned.code : "";
       return code ? `https://chat.whatsapp.com/${code}` : "";
     }
+
+    if (linkType === "channel") {
+      const code = cleaned.type === "channel" ? cleaned.code : "";
+      return code ? `https://whatsapp.com/channel/${code}` : "";
+    }
+
     const phone = cleaned.type === "dm" ? cleaned.code : "";
     if (!phone) return "";
+
     const q = prefill ? `?text=${encodeURIComponent(prefill)}` : "";
     return `https://wa.me/${phone}${q}`;
   }, [linkType, cleaned, prefill]);
@@ -262,7 +282,11 @@ export default function CreateRedirectModal({
         return toast.error("Paste a valid group invite link or code.");
       }
     }
-
+    if (linkType === "channel") {
+      if (detectedType !== "channel" || !finalCode) {
+        return toast.error("Paste a valid WhatsApp channel link or code.");
+      }
+    }
     const token = localStorage.getItem("token");
     if (!token) {
       toast.error("Please log in again.");
@@ -387,9 +411,17 @@ export default function CreateRedirectModal({
                   >
                     Whatsapp Group
                   </button>
+                  <button
+                    className={`${s.segmentBtn} ${
+                      linkType === "channel" ? s.segmentActive : ""
+                    }`}
+                    onClick={() => setLinkType("channel")}
+                  >
+                    WhatsApp Channel
+                  </button>
                 </div>
 
-                {linkType === "dm" ? (
+                {linkType === "dm" && (
                   <>
                     <label className={s.label}>WhatsApp Number</label>
                     <input
@@ -398,6 +430,7 @@ export default function CreateRedirectModal({
                       value={whatsInput}
                       onChange={(e) => handleDirectInput(e.target.value)}
                     />
+
                     <label className={s.label}>
                       Prefill message (optional)
                     </label>
@@ -408,7 +441,9 @@ export default function CreateRedirectModal({
                       onChange={(e) => setPrefill(e.target.value)}
                     />
                   </>
-                ) : (
+                )}
+
+                {linkType === "group" && (
                   <>
                     <label className={s.label}>WhatsApp Group link</label>
                     <input
@@ -416,6 +451,18 @@ export default function CreateRedirectModal({
                       placeholder="https://chat.whatsapp.com/XXXXX or CODE"
                       value={whatsInput}
                       onChange={(e) => handleGroupInput(e.target.value)}
+                    />
+                  </>
+                )}
+
+                {linkType === "channel" && (
+                  <>
+                    <label className={s.label}>WhatsApp Channel link</label>
+                    <input
+                      className={s.input}
+                      placeholder="https://whatsapp.com/channel/XXXXX or CODE"
+                      value={whatsInput}
+                      onChange={(e) => handleChannelInput(e.target.value)}
                     />
                   </>
                 )}
@@ -555,7 +602,7 @@ export default function CreateRedirectModal({
                   if (step === 1) {
                     if (!linkType) {
                       return toast.error(
-                        "Please select where you want your link to send people to."
+                        "Please select where you want your link to send people to.",
                       );
                     }
 
@@ -573,6 +620,12 @@ export default function CreateRedirectModal({
                       (parsed.type !== "group" || !parsed.code)
                     ) {
                       return toast.error("Enter a valid group link");
+                    }
+                    if (
+                      linkType === "channel" &&
+                      (parsed.type !== "channel" || !parsed.code)
+                    ) {
+                      return toast.error("Enter a valid WhatsApp channel link");
                     }
                   }
 
