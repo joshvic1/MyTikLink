@@ -144,8 +144,8 @@ export default function CreateRedirectModal({
     const base = code.split("?")[0];
 
     if (base.includes("whatsapp.com/channel/")) {
-      const parts = base.split("/");
-      code = parts[parts.length - 1];
+      code = base.split("whatsapp.com/channel/")[1] || "";
+      code = code.replace(/^\/+|\/+$/g, "");
       type = "channel";
     } else if (base.includes("chat.whatsapp.com")) {
       const parts = base.split("/");
@@ -162,7 +162,8 @@ export default function CreateRedirectModal({
     } else if (/^\+?\d+$/.test(code)) {
       code = onlyDigits(code);
       type = "dm";
-    } else if (/^[A-Za-z0-9_-]{10,80}$/.test(code)) {
+    } else if (/^[A-Za-z0-9_/-]{10,120}$/.test(code)) {
+      code = code.replace(/^\/+|\/+$/g, "");
       type = preferredType === "channel" ? "channel" : "group";
     }
 
