@@ -192,7 +192,7 @@ export default function CreateRedirectModal({
   };
   // target fallback url display
   const cleaned = useMemo(
-    () => parseWhatsAppCode(whatsInput),
+    () => parseWhatsAppCode(whatsInput, linkType),
     [whatsInput, linkType],
   );
   const targetUrl = useMemo(() => {
@@ -278,11 +278,14 @@ export default function CreateRedirectModal({
       if (detectedType !== "dm" || !finalCode) {
         return toast.error("Enter a valid WhatsApp number.");
       }
-    } else {
+    }
+
+    if (linkType === "group") {
       if (detectedType !== "group" || !finalCode) {
         return toast.error("Paste a valid group invite link or code.");
       }
     }
+
     if (linkType === "channel") {
       if (detectedType !== "channel" || !finalCode) {
         return toast.error("Paste a valid WhatsApp channel link or code.");
