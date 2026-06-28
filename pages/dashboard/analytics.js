@@ -30,7 +30,7 @@ export default function AnalyticsDashboard() {
           `${process.env.NEXT_PUBLIC_API_URL}/links`,
           {
             headers: { Authorization: `Bearer ${token}` },
-          }
+          },
         );
         setLinks(res.data);
       } catch (err) {
@@ -50,12 +50,12 @@ export default function AnalyticsDashboard() {
       <div className="p-6 space-y-6">
         {links.map((link) => {
           const daysSinceReset = Math.floor(
-            (new Date() - new Date(link.lastResetDate)) / (1000 * 60 * 60 * 24)
+            (new Date() - new Date(link.lastResetDate)) / (1000 * 60 * 60 * 24),
           );
           const daysLeft = Math.max(30 - daysSinceReset, 0);
           const progressPercent = Math.min(
             (link.redirectCount / link.maxRedirects) * 100,
-            100
+            100,
           );
 
           // Dummy data for charts (replace with backend aggregation)
