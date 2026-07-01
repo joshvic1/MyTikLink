@@ -46,21 +46,83 @@ export default function Home() {
   }, [subscribe]);
 
   useEffect(() => {
-    const lastClosed = localStorage.getItem("ai_last_closed");
+    if (openAI || authMode) return;
 
-    const now = Date.now();
+    let inactivityTimer;
+
     const THREE_HOURS = 3 * 60 * 60 * 1000;
+    const INACTIVITY_TIME = 30 * 1000;
 
-    if (lastClosed && now - Number(lastClosed) < THREE_HOURS) {
-      return;
-    }
+    const recentlyClosed = () => {
+      const lastClosed = localStorage.getItem("ai_last_closed");
 
-    const timer = setTimeout(() => {
-      setOpenAI(true);
-    }, 20000);
+      if (!lastClosed) return false;
 
-    return () => clearTimeout(timer);
-  }, []);
+      return Date.now() - Number(lastClosed) < THREE_HOURS;
+    };
+
+    const isUserTyping = () => {
+      const activeElement = document.activeElement;
+
+      if (!activeElement) return false;
+
+      const tag = activeElement.tagName?.toLowerCase();
+
+      return (
+        tag === "input" ||
+        tag === "textarea" ||
+        tag === "select" ||
+        activeElement.isContentEditable
+      );
+    };
+
+    const startInactivityTimer = () => {
+      clearTimeout(inactivityTimer);
+
+      if (recentlyClosed()) return;
+
+      inactivityTimer = setTimeout(() => {
+        if (document.visibilityState !== "visible") return;
+
+        if (isUserTyping()) {
+          startInactivityTimer();
+          return;
+        }
+
+        setOpenAI(true);
+      }, INACTIVITY_TIME);
+    };
+
+    const resetInactivityTimer = () => {
+      startInactivityTimer();
+    };
+
+    const events = [
+      "mousemove",
+      "mousedown",
+      "keydown",
+      "scroll",
+      "wheel",
+      "touchstart",
+      "touchmove",
+      "input",
+      "focusin",
+    ];
+
+    events.forEach((event) => {
+      window.addEventListener(event, resetInactivityTimer, { passive: true });
+    });
+
+    startInactivityTimer();
+
+    return () => {
+      clearTimeout(inactivityTimer);
+
+      events.forEach((event) => {
+        window.removeEventListener(event, resetInactivityTimer);
+      });
+    };
+  }, [openAI, authMode]);
 
   const handleCloseAI = () => {
     localStorage.setItem("ai_last_closed", Date.now());

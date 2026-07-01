@@ -5,7 +5,7 @@ import styles from "./FloatingAI.module.css";
 import { MessageCircle } from "lucide-react";
 
 export default function FloatingAI({ onOpen }) {
-  const [showTooltip, setShowTooltip] = useState(true);
+  const [showTooltip, setShowTooltip] = useState(false);
   const [hasShownOnce, setHasShownOnce] = useState(false);
 
   useEffect(() => {
