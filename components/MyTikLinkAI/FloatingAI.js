@@ -1,22 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import styles from "./FloatingAI.module.css";
+import { useEffect, useRef, useState } from "react";
 import { MessageCircle } from "lucide-react";
+import styles from "./FloatingAI.module.css";
 
 export default function FloatingAI({ onOpen }) {
   const [showTooltip, setShowTooltip] = useState(false);
-  const [hasShownOnce, setHasShownOnce] = useState(false);
+  const hasShownOnce = useRef(false);
 
   useEffect(() => {
     let inactivityTimer;
     let hideTimer;
 
-    const showTooltip = () => {
-      if (hasShownOnce) return;
+    const showTooltipAfterIdle = () => {
+      if (hasShownOnce.current) return;
 
       setShowTooltip(true);
-      setHasShownOnce(true);
+      hasShownOnce.current = true;
 
       hideTimer = setTimeout(() => {
         setShowTooltip(false);
@@ -24,38 +24,37 @@ export default function FloatingAI({ onOpen }) {
     };
 
     const resetInactivityTimer = () => {
-      // hide tooltip immediately during activity
       setShowTooltip(false);
 
-      // clear old timers
       clearTimeout(inactivityTimer);
       clearTimeout(hideTimer);
 
-      // start new inactivity countdown
-      inactivityTimer = setTimeout(() => {
-        showTooltip();
-      }, 30000); // 30s inactivity
+      inactivityTimer = setTimeout(showTooltipAfterIdle, 30000);
     };
 
-    // start initial timer
-    resetInactivityTimer();
+    const events = [
+      "mousemove",
+      "keydown",
+      "scroll",
+      "click",
+      "touchstart",
+      "input",
+      "wheel",
+    ];
 
-    // activity listeners
-    window.addEventListener("mousemove", resetInactivityTimer);
-    window.addEventListener("keydown", resetInactivityTimer);
-    window.addEventListener("scroll", resetInactivityTimer);
-    window.addEventListener("click", resetInactivityTimer);
-    window.addEventListener("touchstart", resetInactivityTimer);
+    events.forEach((event) => {
+      window.addEventListener(event, resetInactivityTimer, { passive: true });
+    });
+
+    resetInactivityTimer();
 
     return () => {
       clearTimeout(inactivityTimer);
       clearTimeout(hideTimer);
 
-      window.removeEventListener("mousemove", resetInactivityTimer);
-      window.removeEventListener("keydown", resetInactivityTimer);
-      window.removeEventListener("scroll", resetInactivityTimer);
-      window.removeEventListener("click", resetInactivityTimer);
-      window.removeEventListener("touchstart", resetInactivityTimer);
+      events.forEach((event) => {
+        window.removeEventListener(event, resetInactivityTimer);
+      });
     };
   }, []);
 
@@ -68,7 +67,7 @@ export default function FloatingAI({ onOpen }) {
         </div>
       )}
 
-      <button className={styles.button} onClick={onOpen}>
+      <button type="button" className={styles.button} onClick={onOpen}>
         <MessageCircle size={22} />
       </button>
     </div>

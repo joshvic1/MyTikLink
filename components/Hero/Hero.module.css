@@ -498,3 +498,97 @@
 .hero {
   overflow: hidden;
 }
+.left {
+  text-align: left;
+  animation: heroFadeUp 0.55s ease both;
+}
+
+.heading span {
+  display: block;
+  animation: heroFadeUp 0.6s ease both;
+}
+
+.heading span:nth-child(2) {
+  animation-delay: 0.08s;
+}
+
+.sub {
+  margin-top: 5px;
+  font-size: 15px;
+  line-height: 1.4;
+  font-weight: 500;
+  color: #fff;
+  max-width: 520px;
+  animation: heroFadeUp 0.6s ease both;
+  animation-delay: 0.16s;
+}
+
+.cta {
+  margin-top: 30px;
+  display: flex;
+  gap: 14px;
+  animation: heroFadeUp 0.6s ease both;
+  animation-delay: 0.24s;
+}
+
+.cards {
+  margin-top: 30px;
+  display: flex;
+  gap: 12px;
+  overflow: hidden;
+  white-space: nowrap;
+  animation: heroFadeUp 0.6s ease both;
+  animation-delay: 0.32s;
+}
+
+.right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: heroZoomIn 0.65s ease both;
+  animation-delay: 0.12s;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+@keyframes heroFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes heroZoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .left,
+  .heading span,
+  .sub,
+  .cta,
+  .cards,
+  .right,
+  .mock,
+  .cards span {
+    animation: none !important;
+    transition: none !important;
+  }
+}

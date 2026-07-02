@@ -1,23 +1,57 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
 
 import useAuth from "@/hooks/useAuth";
-import AuthModal from "@/components/AuthModal";
 import Toast from "@/components/Toast";
 
-/* ===== NEW UI COMPONENTS ===== */
 import Navbar from "@/components/Navbar/Navbar";
 import Hero from "@/components/Hero/Hero";
-import Features from "@/components/Features/Features";
-import Pricing from "@/components/Pricing/Pricing";
-import Testimonials from "@/components/Testimonials/Testimonials";
-import FinalCTA from "@/components/FinalCta/FinalCta";
-import FAQ from "@/components/FAQS/FAQS";
-import Footer from "@/components/Footer/Footer";
-import FloatingAI from "@/components/MyTikLinkAI/FloatingAI";
-import AIChat from "@/components/MyTikLinkAI/AIChat";
+
+/* Lazy loaded heavy components */
+const Features = dynamic(() => import("@/components/Features/Features"), {
+  loading: () => <SectionSkeleton />,
+});
+
+const Pricing = dynamic(() => import("@/components/Pricing/Pricing"), {
+  loading: () => <SectionSkeleton dark />,
+});
+
+const Testimonials = dynamic(
+  () => import("@/components/Testimonials/Testimonials"),
+  {
+    loading: () => <SectionSkeleton />,
+  },
+);
+
+const FinalCTA = dynamic(() => import("@/components/FinalCta/FinalCta"), {
+  loading: () => <SectionSkeleton dark />,
+});
+
+const FAQ = dynamic(() => import("@/components/FAQS/FAQS"), {
+  loading: () => <SectionSkeleton />,
+});
+
+const Footer = dynamic(() => import("@/components/Footer/Footer"), {
+  loading: () => <FooterSkeleton />,
+});
+
+const AuthModal = dynamic(() => import("@/components/AuthModal"), {
+  ssr: false,
+});
+
+const FloatingAI = dynamic(
+  () => import("@/components/MyTikLinkAI/FloatingAI"),
+  {
+    ssr: false,
+  },
+);
+
+const AIChat = dynamic(() => import("@/components/MyTikLinkAI/AIChat"), {
+  ssr: false,
+});
 
 export default function Home() {
   const { login, subscribe } = useAuth();
@@ -26,9 +60,10 @@ export default function Home() {
   const [authMode, setAuthMode] = useState(null);
   const [toast, setToast] = useState(null);
   const [openAI, setOpenAI] = useState(false);
+  const [loadRest, setLoadRest] = useState(false);
+
   const searchParams = useSearchParams();
 
-  /* ===== HANDLE URL AUTH (?auth=login) ===== */
   useEffect(() => {
     const auth = searchParams.get("auth");
 
@@ -39,12 +74,27 @@ export default function Home() {
     }
   }, [searchParams]);
 
-  /* ===== LISTEN TO AUTH STATE ===== */
   useEffect(() => {
     const unsub = subscribe(setIsLoggedIn);
     return unsub;
   }, [subscribe]);
 
+  /* Load below-the-fold sections after first paint */
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const load = () => setLoadRest(true);
+
+    if ("requestIdleCallback" in window) {
+      const id = window.requestIdleCallback(load, { timeout: 1200 });
+      return () => window.cancelIdleCallback(id);
+    }
+
+    const timer = setTimeout(load, 600);
+    return () => clearTimeout(timer);
+  }, []);
+
+  /* Open AI only after real inactivity */
   useEffect(() => {
     if (openAI || authMode) return;
 
@@ -55,7 +105,6 @@ export default function Home() {
 
     const recentlyClosed = () => {
       const lastClosed = localStorage.getItem("ai_last_closed");
-
       if (!lastClosed) return false;
 
       return Date.now() - Number(lastClosed) < THREE_HOURS;
@@ -63,7 +112,6 @@ export default function Home() {
 
     const isUserTyping = () => {
       const activeElement = document.activeElement;
-
       if (!activeElement) return false;
 
       const tag = activeElement.tagName?.toLowerCase();
@@ -76,7 +124,7 @@ export default function Home() {
       );
     };
 
-    const startInactivityTimer = () => {
+    const startTimer = () => {
       clearTimeout(inactivityTimer);
 
       if (recentlyClosed()) return;
@@ -85,7 +133,7 @@ export default function Home() {
         if (document.visibilityState !== "visible") return;
 
         if (isUserTyping()) {
-          startInactivityTimer();
+          startTimer();
           return;
         }
 
@@ -93,8 +141,8 @@ export default function Home() {
       }, INACTIVITY_TIME);
     };
 
-    const resetInactivityTimer = () => {
-      startInactivityTimer();
+    const resetTimer = () => {
+      startTimer();
     };
 
     const events = [
@@ -110,16 +158,16 @@ export default function Home() {
     ];
 
     events.forEach((event) => {
-      window.addEventListener(event, resetInactivityTimer, { passive: true });
+      window.addEventListener(event, resetTimer, { passive: true });
     });
 
-    startInactivityTimer();
+    startTimer();
 
     return () => {
       clearTimeout(inactivityTimer);
 
       events.forEach((event) => {
-        window.removeEventListener(event, resetInactivityTimer);
+        window.removeEventListener(event, resetTimer);
       });
     };
   }, [openAI, authMode]);
@@ -128,38 +176,34 @@ export default function Home() {
     localStorage.setItem("ai_last_closed", Date.now());
     setOpenAI(false);
   };
-  /* ===== HELPERS ===== */
+
   const openAuth = (mode) => setAuthMode(mode);
   const closeAuth = () => setAuthMode(null);
   const showToast = (message, type = "success") => setToast({ message, type });
 
   return (
     <main style={{ background: "#f9f9f9" }}>
-      {/* ===== NAVBAR ===== */}
       <Navbar openAuth={openAuth} isLoggedIn={isLoggedIn} />
 
-      {/* ===== HERO ===== */}
-      <Hero openAuth={openAuth} />
+      <Hero openAuth={openAuth} isLoggedIn={isLoggedIn} />
 
-      {/* ===== FEATURES ===== */}
-      <Features />
+      {loadRest ? (
+        <>
+          <Features />
+          <Pricing openAuth={openAuth} />
+          <Testimonials />
+          <FinalCTA openAuth={openAuth} onOpenAI={() => setOpenAI(true)} />
+          <FAQ />
+          <Footer />
+        </>
+      ) : (
+        <>
+          <SectionSkeleton />
+          <SectionSkeleton dark />
+          <SectionSkeleton />
+        </>
+      )}
 
-      {/* ===== PRICING ===== */}
-      <Pricing openAuth={openAuth} />
-
-      {/* ===== TESTIMONIALS ===== */}
-      <Testimonials />
-
-      {/* ===== FINAL CTA ===== */}
-      <FinalCTA openAuth={openAuth} onOpenAI={() => setOpenAI(true)} />
-
-      {/* ===== FAQ ===== */}
-      <FAQ />
-
-      {/* ===== FOOTER ===== */}
-      <Footer />
-
-      {/* ===== AUTH MODAL ===== */}
       {authMode && (
         <AuthModal
           isOpen={!!authMode}
@@ -175,9 +219,9 @@ export default function Home() {
       )}
 
       <FloatingAI onOpen={() => setOpenAI(true)} />
+
       {openAI && <AIChat onClose={handleCloseAI} />}
 
-      {/* ===== TOAST ===== */}
       {toast && (
         <Toast
           message={toast.message}
@@ -186,5 +230,75 @@ export default function Home() {
         />
       )}
     </main>
+  );
+}
+
+function SectionSkeleton({ dark = false }) {
+  return (
+    <section
+      style={{
+        padding: "70px 20px",
+        background: dark ? "#050505" : "#f8fafc",
+      }}
+    >
+      <div
+        style={{
+          maxWidth: 1120,
+          margin: "0 auto",
+          display: "grid",
+          gap: 16,
+        }}
+      >
+        <div
+          style={{
+            width: "42%",
+            height: 26,
+            borderRadius: 999,
+            background: dark ? "#111827" : "#e2e8f0",
+          }}
+        />
+
+        <div
+          style={{
+            width: "70%",
+            height: 14,
+            borderRadius: 999,
+            background: dark ? "#1f2937" : "#e5e7eb",
+          }}
+        />
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+            gap: 14,
+            marginTop: 20,
+          }}
+        >
+          {[1, 2, 3].map((item) => (
+            <div
+              key={item}
+              style={{
+                height: 150,
+                borderRadius: 18,
+                background: dark ? "#111827" : "#ffffff",
+                border: `1px solid ${dark ? "#1f2937" : "#e2e8f0"}`,
+              }}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FooterSkeleton() {
+  return (
+    <footer
+      style={{
+        height: 220,
+        background: "#050505",
+      }}
+    />
   );
 }
