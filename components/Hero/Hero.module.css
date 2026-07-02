@@ -592,3 +592,246 @@
     transition: none !important;
   }
 }
+@media (max-width: 425px) {
+  .cta {
+    width: 100%;
+    display: flex;
+    gap: 8px;
+    justify-content: stretch;
+  }
+
+  .primaryBtn,
+  .primaryBtn2 {
+    flex: 1 1 0;
+    width: auto;
+    min-width: 0;
+    max-width: none;
+    padding: 12px 8px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+}
+@media (max-width: 360px) {
+  .cta {
+    flex-direction: column;
+  }
+
+  .primaryBtn,
+  .primaryBtn2 {
+    width: 100%;
+    font-size: 13px;
+  }
+}
+@media (max-width: 425px) {
+  .cta {
+    width: 100%;
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+    justify-content: flex-start;
+  }
+
+  .primaryBtn,
+  .primaryBtn2 {
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    height: 46px;
+    padding: 0 14px;
+    font-size: 13px;
+    border-radius: 10px;
+    white-space: nowrap;
+  }
+}
+@media (max-width: 425px) {
+  .cards {
+    width: 100%;
+    overflow-x: auto;
+    justify-content: flex-start;
+    gap: 8px;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+
+  .cards::-webkit-scrollbar {
+    display: none;
+  }
+
+  .cards span {
+    flex: 0 0 auto;
+    animation: none;
+    font-size: 10px;
+    padding: 6px 9px;
+  }
+}
+/* =========================
+   FINAL MOBILE HERO FIX
+   Put this at the VERY bottom
+========================= */
+
+@media (max-width: 700px) {
+  .hero {
+    width: 100%;
+    padding: 86px 16px 52px;
+    overflow-x: hidden;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .left,
+  .right {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .right {
+    order: 1;
+  }
+
+  .left {
+    order: 2;
+    text-align: left;
+  }
+
+  .mock {
+    width: 100%;
+    max-width: 100%;
+    height: 405px;
+    border-radius: 0;
+  }
+
+  .heading {
+    width: 100%;
+    max-width: 100%;
+    font-size: clamp(29px, 7vw, 38px);
+    line-height: 1.08;
+    letter-spacing: -0.5px;
+    overflow-wrap: break-word;
+  }
+
+  .heading span {
+    display: block;
+    max-width: 100%;
+    white-space: normal;
+  }
+
+  .sub {
+    width: 100%;
+    max-width: 100%;
+    margin: 14px 0 0;
+    font-size: 14px;
+    line-height: 1.5;
+    overflow-wrap: break-word;
+  }
+
+  .cta {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 24px;
+  }
+
+  .primaryBtn,
+  .primaryBtn2 {
+    display: flex;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    height: 46px;
+    padding: 0 14px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .primaryBtn2 {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    color: #ffffff;
+  }
+
+  .cards {
+    width: 100%;
+    max-width: 100%;
+    margin-top: 16px;
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    justify-content: flex-start;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+
+  .cards::-webkit-scrollbar {
+    display: none;
+  }
+
+  .cards span {
+    flex: 0 0 auto;
+    animation: none;
+    padding: 7px 10px;
+    font-size: 10px;
+  }
+
+  .videoOverlay {
+    left: 14px;
+    right: 14px;
+    bottom: 14px;
+    max-width: calc(100% - 28px);
+  }
+}
+
+@media (max-width: 430px) {
+  .hero {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .mock {
+    height: 405px;
+  }
+
+  .heading {
+    font-size: 30px;
+    line-height: 1.1;
+  }
+
+  .sub {
+    font-size: 13.5px;
+  }
+}
+
+@media (max-width: 360px) {
+  .hero {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .heading {
+    font-size: 27px;
+  }
+
+  .mock {
+    height: 220px;
+  }
+
+  .primaryBtn,
+  .primaryBtn2 {
+    height: 44px;
+    font-size: 12.5px;
+  }
+}
