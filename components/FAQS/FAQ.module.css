@@ -1,19 +1,17 @@
 .section {
   position: relative;
+  width: min(1200px, calc(100% - 48px));
+  margin: 10px auto 80px;
   background: #2a1b1b;
   color: white;
-
   border-radius: 40px;
-
-  max-width: 1200px;
-  margin: 10px 120px 80px; /* 👈 CENTERED PROPERLY */
 }
 
 .container {
-  padding: 10px;
+  width: 100%;
   max-width: 1000px;
-  margin: 30px;
-  padding-bottom: 50px;
+  margin: 0 auto;
+  padding: 50px 30px;
 }
 
 .title {
@@ -147,7 +145,12 @@
 }
 @media (max-width: 1000px) and (min-width: 700px) {
   .section {
-    margin: 10px 40px 80px; /* 👈 more side spacing */
+    width: calc(100% - 48px);
+    margin: 10px auto 80px;
+  }
+
+  .container {
+    padding: 44px 24px;
   }
 
   .grid {
@@ -168,14 +171,16 @@
 }
 @media (max-width: 699px) {
   .section {
-    padding: 10px 16px;
+    width: calc(100% - 24px);
+    margin: 0 auto 60px;
+    padding: 0;
     border-radius: 24px;
-    margin: 0 12px 60px; /* 👈 small side spacing */
   }
 
   .container {
-    margin: 0;
-    padding: 0;
+    width: 100%;
+    margin: 0 auto;
+    padding: 36px 14px;
   }
 
   .title {

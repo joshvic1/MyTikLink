@@ -38,7 +38,19 @@ export default function AdminPaymentsPage() {
       setLoading(false);
     }
   }
+  const formatCompactMoney = (amount) => {
+    const value = Number(amount || 0);
 
+    if (value >= 1000000) {
+      return `₦${(value / 1000000).toFixed(value >= 10000000 ? 0 : 1)}M`;
+    }
+
+    if (value >= 1000) {
+      return `₦${(value / 1000).toFixed(value >= 10000 ? 0 : 1)}K`;
+    }
+
+    return `₦${value.toLocaleString()}`;
+  };
   return (
     <AdminDashboardLayout>
       <div className={styles.pageWrap}>
@@ -64,6 +76,16 @@ export default function AdminPaymentsPage() {
             </div>
 
             <div className={styles.statCard}>
+              <span className={styles.statLabel}>New Subscribers</span>
+              <span className={styles.statValue}>{stats.newSubscribers}</span>
+            </div>
+
+            <div className={styles.statCard}>
+              <span className={styles.statLabel}>Churned Users</span>
+              <span className={styles.statValue}>{stats.churnedUsers}</span>
+            </div>
+
+            <div className={styles.statCard}>
               <span className={styles.statLabel}>Retention Rate</span>
               <span className={styles.statValue}>{stats.retentionRate}%</span>
             </div>
@@ -71,6 +93,20 @@ export default function AdminPaymentsPage() {
             <div className={styles.statCard}>
               <span className={styles.statLabel}>Churn Rate</span>
               <span className={styles.statValue}>{stats.churnRate}%</span>
+            </div>
+
+            <div className={styles.statCard}>
+              <span className={styles.statLabel}>MRR</span>
+              <span className={styles.statValue}>
+                {formatCompactMoney(stats.mrr)}
+              </span>
+            </div>
+
+            <div className={styles.statCard}>
+              <span className={styles.statLabel}>ARR</span>
+              <span className={styles.statValue}>
+                {formatCompactMoney(stats.arr || stats.mrr * 12)}
+              </span>
             </div>
           </div>
         )}
