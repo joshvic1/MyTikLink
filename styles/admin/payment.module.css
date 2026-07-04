@@ -275,3 +275,7 @@
   opacity: 0.55;
   cursor: not-allowed;
 }
+.processingBadge {
+  background: rgba(245, 158, 11, 0.16);
+  color: #f59e0b;
+}
