@@ -11,10 +11,12 @@ export default function AdminPaymentsPage() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState("successful");
+  const [remindingId, setRemindingId] = useState(null);
 
   useEffect(() => {
     fetchPayments();
-  }, [page]);
+  }, [page, activeTab]);
 
   async function fetchPayments() {
     try {
@@ -23,7 +25,7 @@ export default function AdminPaymentsPage() {
       const token = localStorage.getItem("admin_token");
 
       const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/admin/payments?page=${page}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/admin/payments?page=${page}&tab=${activeTab}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         },
@@ -36,6 +38,27 @@ export default function AdminPaymentsPage() {
       console.error("Failed to fetch payments", err);
     } finally {
       setLoading(false);
+    }
+  }
+  async function sendReminder(paymentId) {
+    try {
+      setRemindingId(paymentId);
+
+      const token = localStorage.getItem("admin_token");
+
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/admin/payments/${paymentId}/reminder`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+
+      alert("Reminder email sent");
+    } catch (err) {
+      alert(err?.response?.data?.message || "Failed to send reminder");
+    } finally {
+      setRemindingId(null);
     }
   }
   const formatCompactMoney = (amount) => {
@@ -130,7 +153,37 @@ export default function AdminPaymentsPage() {
             </div>
           </div>
         )} */}
+        <div className={styles.tabs}>
+          <button
+            className={activeTab === "successful" ? styles.activeTab : ""}
+            onClick={() => {
+              setActiveTab("successful");
+              setPage(1);
+            }}
+          >
+            Successful
+          </button>
 
+          <button
+            className={activeTab === "processing" ? styles.activeTab : ""}
+            onClick={() => {
+              setActiveTab("processing");
+              setPage(1);
+            }}
+          >
+            Processing
+          </button>
+
+          <button
+            className={activeTab === "all" ? styles.activeTab : ""}
+            onClick={() => {
+              setActiveTab("all");
+              setPage(1);
+            }}
+          >
+            All
+          </button>
+        </div>
         {/* ============================= */}
         {/* PAYMENTS TABLE */}
         {/* ============================= */}
@@ -142,17 +195,22 @@ export default function AdminPaymentsPage() {
                 <th>Plan</th>
                 <th>Status</th>
                 <th>Date</th>
+                {activeTab === "processing" && <th>Action</th>}
               </tr>
             </thead>
 
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan="4">Loading...</td>
+                  <td colSpan={activeTab === "processing" ? 5 : 4}>
+                    Loading...
+                  </td>
                 </tr>
               ) : payments.length === 0 ? (
                 <tr>
-                  <td colSpan="4">No payments found</td>
+                  <td colSpan={activeTab === "processing" ? "5" : "4"}>
+                    No payments found
+                  </td>
                 </tr>
               ) : (
                 payments.map((p) => (
@@ -171,7 +229,9 @@ export default function AdminPaymentsPage() {
                         className={
                           p.status === "successful"
                             ? styles.successBadge
-                            : styles.failedBadge
+                            : p.status === "processing"
+                              ? styles.processingBadge
+                              : styles.failedBadge
                         }
                       >
                         {p.status}
@@ -181,6 +241,19 @@ export default function AdminPaymentsPage() {
                     <td className={styles.date}>
                       {new Date(p.createdAt).toDateString()}
                     </td>
+                    {activeTab === "processing" && (
+                      <td>
+                        <button
+                          className={styles.reminderBtn}
+                          onClick={() => sendReminder(p._id)}
+                          disabled={remindingId === p._id}
+                        >
+                          {remindingId === p._id
+                            ? "Sending..."
+                            : "Send reminder"}
+                        </button>
+                      </td>
+                    )}
                   </tr>
                 ))
               )}

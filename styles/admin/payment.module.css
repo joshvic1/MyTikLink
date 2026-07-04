@@ -222,3 +222,56 @@
 .filterBtn:hover {
   opacity: 0.9;
 }
+.tabs {
+  display: inline-flex;
+  gap: 6px;
+  padding: 6px;
+  margin: 20px 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.tabs button {
+  height: 36px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: #9ca3af;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.tabs button:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+}
+
+.activeTab {
+  background: linear-gradient(135deg, #7c3aed, #06b6d4) !important;
+  color: #ffffff !important;
+}
+
+.reminderBtn {
+  height: 34px;
+  padding: 0 13px;
+  border: 1px solid rgba(124, 58, 237, 0.32);
+  border-radius: 999px;
+  background: rgba(124, 58, 237, 0.12);
+  color: #c4b5fd;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.reminderBtn:hover {
+  background: rgba(124, 58, 237, 0.2);
+  color: #ffffff;
+}
+
+.reminderBtn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
