@@ -63,10 +63,15 @@ export default function AuthModal({
       handleClose();
       router.push("/dashboard");
     } catch (err) {
-      toast.error(
-        err.response?.data?.message ||
-          "Incorrect Login Details or Account Not Found",
-      );
+      const status = err.response?.status;
+      const message = err.response?.data?.message;
+
+      if (status === 401 || status === 400) {
+        toast.error(message || "Invalid email or password");
+        return;
+      }
+
+      toast.error("Unable to login right now. Please try again.");
     } finally {
       setLoading(false);
     }
