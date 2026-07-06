@@ -749,8 +749,8 @@ export default function StoreSettingsPage() {
                         <strong>How to connect your domain</strong>
                         <p>
                           Open your domain provider, go to DNS settings, add the
-                          TXT and CNAME records below, then come back and click
-                          Verify DNS.
+                          TXT, CNAME, and A records below records below, then
+                          come back and click Verify DNS.
                         </p>
                       </div>
                     </div>
@@ -818,6 +818,39 @@ export default function StoreSettingsPage() {
                         <button
                           type="button"
                           onClick={() => copyText("custom.mytiklink.com")}
+                          className={styles.copyBtn}
+                        >
+                          <Copy size={14} />
+                        </button>
+                      </div>
+                    </div>
+                    <div className={styles.recordCard}>
+                      <span className={styles.recordType}>A RECORD</span>
+
+                      <div className={styles.recordRow}>
+                        <div>
+                          <small>Host</small>
+                          <strong>@</strong>
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={() => copyText("@")}
+                          className={styles.copyBtn}
+                        >
+                          <Copy size={14} />
+                        </button>
+                      </div>
+
+                      <div className={styles.recordRow}>
+                        <div>
+                          <small>Value</small>
+                          <strong>76.76.21.21</strong>
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={() => copyText("76.76.21.21")}
                           className={styles.copyBtn}
                         >
                           <Copy size={14} />
