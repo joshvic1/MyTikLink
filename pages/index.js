@@ -6,9 +6,17 @@ import { useSearchParams } from "next/navigation";
 
 import useAuth from "@/hooks/useAuth";
 import Toast from "@/components/Toast";
-
+import PublicStorefront from "@/components/store/public/PublicStorefront";
 import Navbar from "@/components/Navbar/Navbar";
 import Hero from "@/components/Hero/Hero";
+const isPlatformDomain = (hostname) => {
+  return (
+    hostname === "localhost" ||
+    hostname === "127.0.0.1" ||
+    hostname === "mytik.link" ||
+    hostname === "www.mytik.link"
+  );
+};
 
 /* Lazy loaded heavy components */
 const Features = dynamic(() => import("@/components/Features/Features"), {
@@ -61,9 +69,17 @@ export default function Home() {
   const [toast, setToast] = useState(null);
   const [openAI, setOpenAI] = useState(false);
   const [loadRest, setLoadRest] = useState(false);
-
+  const [customDomain, setCustomDomain] = useState(null);
   const searchParams = useSearchParams();
+  useEffect(() => {
+    if (typeof window === "undefined") return;
 
+    const hostname = window.location.hostname;
+
+    if (!isPlatformDomain(hostname)) {
+      setCustomDomain(hostname.replace(/^www\./, ""));
+    }
+  }, []);
   useEffect(() => {
     const auth = searchParams.get("auth");
 
@@ -180,7 +196,9 @@ export default function Home() {
   const openAuth = (mode) => setAuthMode(mode);
   const closeAuth = () => setAuthMode(null);
   const showToast = (message, type = "success") => setToast({ message, type });
-
+  if (customDomain) {
+    return <PublicStorefront customDomain={customDomain} />;
+  }
   return (
     <main style={{ background: "#f9f9f9" }}>
       <Navbar openAuth={openAuth} isLoggedIn={isLoggedIn} />

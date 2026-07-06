@@ -13,7 +13,7 @@ import StoreTopBar from "./StoreTopBar";
 import CustomerLoginModal from "./customer/CustomerLoginModal";
 import styles from "../styles/publicStorefront.module.css";
 
-export default function PublicStorefront() {
+export default function PublicStorefront({ customDomain }) {
   const router = useRouter();
 
   const { slug } = router.query;
@@ -25,16 +25,20 @@ export default function PublicStorefront() {
   const [loading, setLoading] = useState(true);
   const [cartOpen, setCartOpen] = useState(false);
   useEffect(() => {
-    if (!slug) return;
+    if (!customDomain && !slug) return;
 
     const fetchStore = async () => {
       try {
-        const storeRes = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/store/public/${slug}`,
-        );
+        const storeUrl = customDomain
+          ? `${process.env.NEXT_PUBLIC_API_URL}/store/domain/${customDomain}`
+          : `${process.env.NEXT_PUBLIC_API_URL}/store/public/${slug}`;
+
+        const storeRes = await axios.get(storeUrl);
+
+        const storeSlug = storeRes.data.slug;
 
         const productRes = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/products/public/${slug}`,
+          `${process.env.NEXT_PUBLIC_API_URL}/products/public/${storeSlug}`,
         );
 
         setStore(storeRes.data);
@@ -48,7 +52,7 @@ export default function PublicStorefront() {
     };
 
     fetchStore();
-  }, [slug]);
+  }, [slug, customDomain]);
 
   if (loading) {
     return (
@@ -83,11 +87,11 @@ export default function PublicStorefront() {
         whatsappNumber={store?.phone}
         email={store?.user?.email || store?.email}
         isLoggedIn={Boolean(localStorage.getItem("customerToken"))}
-        accountUrl={`/s/${slug}/account`}
+        accountUrl={`/s/${store?.slug || slug}/account`}
       />
 
       <CustomerLoginModal
-        slug={slug}
+        slug={store?.slug || slug}
         open={loginOpen}
         onClose={() => setLoginOpen(false)}
       />

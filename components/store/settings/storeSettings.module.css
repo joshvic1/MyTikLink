@@ -604,3 +604,280 @@
     opacity: 1;
   }
 }
+.domainActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.domainActions button {
+  height: 40px;
+  padding: 0 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #111827;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.domainActions button:nth-child(2) {
+  background: #f5f3ff;
+  color: #7c3aed;
+}
+
+.domainActions button:nth-child(3) {
+  background: #ffffff;
+  color: #ef4444;
+}
+
+.domainActions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.dnsBox {
+  margin-top: 18px;
+  padding: 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  background: #f8fafc;
+}
+
+.domainStatus {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.domainStatus strong {
+  color: #0f172a;
+  font-size: 13px;
+}
+
+.domainStatus span {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #fff7ed;
+  color: #ea580c;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: capitalize;
+}
+
+.dnsBox h3 {
+  margin: 0 0 12px;
+  color: #0f172a;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.dnsRecord {
+  display: grid;
+  grid-template-columns: 80px 1fr 1fr;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  background: #ffffff;
+  margin-bottom: 10px;
+}
+
+.dnsRecord > span {
+  width: fit-content;
+  height: 28px;
+  padding: 0 9px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: #ede9fe;
+  color: #7c3aed;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.dnsRecord strong {
+  display: block;
+  color: #64748b;
+  font-size: 11px;
+  margin-bottom: 4px;
+}
+
+.dnsRecord p {
+  margin: 0;
+  color: #0f172a;
+  font-size: 12px;
+  font-weight: 800;
+  word-break: break-all;
+}
+
+.dnsBox small {
+  display: block;
+  margin-top: 10px;
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+@media (max-width: 640px) {
+  .dnsRecord {
+    grid-template-columns: 1fr;
+  }
+
+  .domainActions {
+    flex-direction: column;
+  }
+
+  .domainActions button {
+    width: 100%;
+  }
+}
+.dnsBox {
+  margin-top: 18px;
+  padding: 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  background: #ffffff;
+}
+
+.dnsHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.dnsHeader h3 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 16px;
+  font-weight: 850;
+}
+
+.dnsHeader p {
+  margin: 4px 0 0;
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.statusBadge {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #fff7ed;
+  color: #f97316;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.instructionBox {
+  display: flex;
+  gap: 10px;
+  padding: 12px;
+  margin-bottom: 12px;
+  border: 1px solid #ede9fe;
+  border-radius: 16px;
+  background: #f5f3ff;
+  color: #6d28d9;
+}
+
+.instructionBox strong {
+  display: block;
+  margin-bottom: 3px;
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.instructionBox p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.recordCard {
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  background: #fbfdff;
+}
+
+.recordCard + .recordCard {
+  margin-top: 12px;
+}
+
+.recordType {
+  display: inline-flex;
+  width: fit-content;
+  margin-bottom: 10px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #ede9fe;
+  color: #7c3aed;
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.recordRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 0;
+}
+
+.recordRow + .recordRow {
+  border-top: 1px solid #eef2f7;
+}
+
+.recordRow small {
+  display: block;
+  margin-bottom: 3px;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.recordRow strong {
+  display: block;
+  color: #0f172a;
+  font-size: 12px;
+  font-weight: 850;
+  word-break: break-all;
+}
+
+.copyBtn {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #7c3aed;
+  cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.copyBtn:hover {
+  transform: translateY(-1px);
+  border-color: #c4b5fd;
+  background: #f5f3ff;
+}
+
+.dnsNote {
+  margin: 13px 0 0;
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.55;
+}

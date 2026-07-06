@@ -22,6 +22,8 @@ import {
   Trash2,
 } from "lucide-react";
 import toast from "react-hot-toast";
+import { useRef } from "react";
+import { CheckCircle2, Info } from "lucide-react";
 
 import DashboardHeader from "../dashboard/DashboardHeader";
 import StoreMenu from "../dashboard/StoreMenu";
@@ -35,9 +37,11 @@ const sections = [
   { id: "experience", label: "Experience", icon: ShoppingCart },
   { id: "appearance", label: "Appearance", icon: Palette },
   { id: "analytics", label: "Analytics", icon: Eye },
+  { id: "domain", label: "Domain", icon: Globe },
 ];
 
 export default function StoreSettingsPage() {
+  const dnsRef = useRef(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("general");
   const [store, setStore] = useState(null);
@@ -46,6 +50,8 @@ export default function StoreSettingsPage() {
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [deleteText, setDeleteText] = useState("");
   const [deleting, setDeleting] = useState(false);
+  const [domainInput, setDomainInput] = useState("");
+  const [domainLoading, setDomainLoading] = useState(false);
   useEffect(() => {
     loadStore();
   }, []);
@@ -70,12 +76,102 @@ export default function StoreSettingsPage() {
 
       setStore(res.data);
       setForm(res.data);
+      setDomainInput(res.data.customDomain || "");
     } catch (err) {
       console.log(err);
       toast.error("Failed to load settings");
     }
   };
+  const connectDomain = async () => {
+    try {
+      setDomainLoading(true);
 
+      const token = localStorage.getItem("token");
+
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/store/custom-domain`,
+        { domain: domainInput },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      setStore((prev) => ({ ...prev, ...res.data }));
+      setTimeout(() => {
+        dnsRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 150);
+      setForm((prev) => ({ ...prev, ...res.data }));
+
+      toast.success("Domain added. Add the DNS records below.");
+    } catch (err) {
+      toast.error(err?.response?.data?.message || "Failed to connect domain");
+    } finally {
+      setDomainLoading(false);
+    }
+  };
+
+  const verifyDomain = async () => {
+    try {
+      setDomainLoading(true);
+
+      const token = localStorage.getItem("token");
+
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/store/custom-domain/verify`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      setStore((prev) => ({ ...prev, ...res.data }));
+      setForm((prev) => ({ ...prev, ...res.data }));
+
+      toast.success("Domain verified");
+    } catch (err) {
+      toast.error(err?.response?.data?.message || "Domain not verified yet");
+    } finally {
+      setDomainLoading(false);
+    }
+  };
+
+  const removeDomain = async () => {
+    try {
+      setDomainLoading(true);
+
+      const token = localStorage.getItem("token");
+
+      await axios.delete(
+        `${process.env.NEXT_PUBLIC_API_URL}/store/custom-domain`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      setDomainInput("");
+      setStore((prev) => ({
+        ...prev,
+        customDomain: "",
+        customDomainStatus: "none",
+        customDomainToken: "",
+      }));
+
+      toast.success("Domain removed");
+    } catch (err) {
+      toast.error("Failed to remove domain");
+    } finally {
+      setDomainLoading(false);
+    }
+  };
   const update = (field, value) => {
     setForm((prev) => ({
       ...prev,
@@ -162,7 +258,14 @@ export default function StoreSettingsPage() {
     update("addToCartButtonText", value);
   };
   if (!store) return <Loader />;
-
+  const copyText = async (text) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      toast.success("Copied to clipboard");
+    } catch (err) {
+      toast.error("Could not copy");
+    }
+  };
   return (
     <>
       <StoreMenu
@@ -543,6 +646,160 @@ export default function StoreSettingsPage() {
                     <span>Revenue</span>
                   </div>
                 </div>
+              </section>
+            )}
+            {activeSection === "domain" && (
+              <section className={styles.card}>
+                <div className={styles.cardTop}>
+                  <div>
+                    <h2>Custom domain</h2>
+                    <p>Connect a domain you already own to your storefront.</p>
+                  </div>
+                  <Globe size={18} />
+                </div>
+
+                <label className={styles.field}>
+                  <span>Your domain</span>
+                  <input
+                    value={domainInput}
+                    placeholder="example.com"
+                    onChange={(e) => setDomainInput(e.target.value)}
+                  />
+                </label>
+
+                <div className={styles.domainActions}>
+                  <button
+                    type="button"
+                    onClick={connectDomain}
+                    disabled={domainLoading}
+                  >
+                    {domainLoading ? "Connecting..." : "Connect domain"}
+                  </button>
+
+                  {store.customDomain && (
+                    <button
+                      type="button"
+                      onClick={verifyDomain}
+                      disabled={domainLoading}
+                    >
+                      Verify DNS
+                    </button>
+                  )}
+
+                  {store.customDomain && (
+                    <button
+                      type="button"
+                      onClick={removeDomain}
+                      disabled={domainLoading}
+                    >
+                      Remove
+                    </button>
+                  )}
+                </div>
+
+                {store.customDomain && (
+                  <div ref={dnsRef} className={styles.dnsBox}>
+                    <div className={styles.dnsHeader}>
+                      <div>
+                        <h3>DNS records to add</h3>
+                        <p>
+                          Add these records inside your domain registrar DNS
+                          settings.
+                        </p>
+                      </div>
+
+                      <span className={styles.statusBadge}>Pending</span>
+                    </div>
+
+                    <div className={styles.instructionBox}>
+                      <Info size={16} />
+
+                      <div>
+                        <strong>How to connect your domain</strong>
+                        <p>
+                          Open your domain provider, go to DNS settings, add the
+                          TXT and CNAME records below, then come back and click
+                          Verify DNS.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className={styles.recordCard}>
+                      <span className={styles.recordType}>TXT</span>
+
+                      <div className={styles.recordRow}>
+                        <div>
+                          <small>Host</small>
+                          <strong>_mytiklink.{store?.customDomain}</strong>
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={() =>
+                            copyText(`_mytiklink.${store?.customDomain}`)
+                          }
+                          className={styles.copyBtn}
+                        >
+                          <Copy size={14} />
+                        </button>
+                      </div>
+
+                      <div className={styles.recordRow}>
+                        <div>
+                          <small>Value</small>
+                          <strong>{store?.customDomainToken}</strong>
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={() => copyText(store?.customDomainToken)}
+                          className={styles.copyBtn}
+                        >
+                          <Copy size={14} />
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className={styles.recordCard}>
+                      <span className={styles.recordType}>CNAME</span>
+
+                      <div className={styles.recordRow}>
+                        <div>
+                          <small>Host</small>
+                          <strong>www</strong>
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={() => copyText("www")}
+                          className={styles.copyBtn}
+                        >
+                          <Copy size={14} />
+                        </button>
+                      </div>
+
+                      <div className={styles.recordRow}>
+                        <div>
+                          <small>Value</small>
+                          <strong>custom.mytiklink.com</strong>
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={() => copyText("custom.mytiklink.com")}
+                          className={styles.copyBtn}
+                        >
+                          <Copy size={14} />
+                        </button>
+                      </div>
+                    </div>
+
+                    <p className={styles.dnsNote}>
+                      DNS changes can take a few minutes to a few hours. After
+                      adding the records, click Verify DNS.
+                    </p>
+                  </div>
+                )}
               </section>
             )}
             <button className={styles.saveTop} onClick={save} disabled={saving}>
