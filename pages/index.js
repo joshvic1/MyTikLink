@@ -9,13 +9,23 @@ import Toast from "@/components/Toast";
 import PublicStorefront from "@/components/store/public/PublicStorefront";
 import Navbar from "@/components/Navbar/Navbar";
 import Hero from "@/components/Hero/Hero";
+const APP_DOMAINS = [
+  "mytiklink.com",
+  "www.mytiklink.com",
+  "mytik.link",
+  "www.mytik.link",
+  "localhost",
+  "127.0.0.1",
+];
+
+const normalizeHost = (host = "") => {
+  return host.split(":")[0].toLowerCase();
+};
+
 const isPlatformDomain = (hostname) => {
-  return (
-    hostname === "localhost" ||
-    hostname === "127.0.0.1" ||
-    hostname === "mytik.link" ||
-    hostname === "www.mytik.link"
-  );
+  const host = normalizeHost(hostname);
+
+  return APP_DOMAINS.includes(host) || host.endsWith(".vercel.app");
 };
 
 /* Lazy loaded heavy components */
@@ -74,7 +84,7 @@ export default function Home() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const hostname = window.location.hostname;
+    const hostname = normalizeHost(window.location.hostname);
 
     if (!isPlatformDomain(hostname)) {
       setCustomDomain(hostname.replace(/^www\./, ""));
