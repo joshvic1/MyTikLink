@@ -881,3 +881,7 @@
   font-size: 12px;
   line-height: 1.55;
 }
+.statusVerified {
+  background: #ecfdf5;
+  color: #16a34a;
+}

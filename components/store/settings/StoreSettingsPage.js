@@ -135,6 +135,12 @@ export default function StoreSettingsPage() {
       setForm((prev) => ({ ...prev, ...res.data }));
 
       toast.success("Domain verified");
+
+      setStore((prev) => ({
+        ...prev,
+        customDomainStatus: "verified",
+        customDomainVerifiedAt: new Date(),
+      }));
     } catch (err) {
       toast.error(err?.response?.data?.message || "Domain not verified yet");
     } finally {
@@ -266,6 +272,17 @@ export default function StoreSettingsPage() {
       toast.error("Could not copy");
     }
   };
+  const normalizeDomainInput = (value) =>
+    String(value || "")
+      .replace(/^https?:\/\//, "")
+      .replace(/^www\./, "")
+      .split("/")[0]
+      .trim()
+      .toLowerCase();
+
+  const domainAlreadyConnected =
+    store?.customDomain &&
+    normalizeDomainInput(domainInput) === store.customDomain;
   return (
     <>
       <StoreMenu
@@ -671,9 +688,13 @@ export default function StoreSettingsPage() {
                   <button
                     type="button"
                     onClick={connectDomain}
-                    disabled={domainLoading}
+                    disabled={domainLoading || domainAlreadyConnected}
                   >
-                    {domainLoading ? "Connecting..." : "Connect domain"}
+                    {domainAlreadyConnected
+                      ? "Domain connected"
+                      : domainLoading
+                        ? "Connecting..."
+                        : "Connect domain"}
                   </button>
 
                   {store.customDomain && (
@@ -708,7 +729,17 @@ export default function StoreSettingsPage() {
                         </p>
                       </div>
 
-                      <span className={styles.statusBadge}>Pending</span>
+                      <span
+                        className={`${styles.statusBadge} ${
+                          store?.customDomainStatus === "verified"
+                            ? styles.statusVerified
+                            : ""
+                        }`}
+                      >
+                        {store?.customDomainStatus === "verified"
+                          ? "Verified"
+                          : "Pending"}
+                      </span>
                     </div>
 
                     <div className={styles.instructionBox}>
