@@ -38,6 +38,14 @@ const storefrontTemplates = [
 
     previewUrl: "/p/digimax",
   },
+
+  {
+    id: "6a4cc45e6c29ba32965d40c7",
+    title: "AnkaraMart",
+    image:
+      "https://pub-e0ff826b0e9843069a4df3548bc6fa39.r2.dev/tiklink-pages/1781024565507-eea8a221-eea6-4f4a-8201-67910624cc7d",
+    previewUrl: "/p/ankaramart",
+  },
 ];
 
 export default storefrontTemplates;
