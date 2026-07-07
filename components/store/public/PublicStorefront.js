@@ -29,6 +29,8 @@ export default function PublicStorefront({ customDomain }) {
 
     const fetchStore = async () => {
       try {
+        console.log("CUSTOM DOMAIN:", customDomain);
+        console.log("SLUG:", slug);
         const storeUrl = customDomain
           ? `${process.env.NEXT_PUBLIC_API_URL}/store/domain/${customDomain}`
           : `${process.env.NEXT_PUBLIC_API_URL}/store/public/${slug}`;

@@ -749,7 +749,7 @@ export default function StoreSettingsPage() {
                         <strong>How to connect your domain</strong>
                         <p>
                           Open your domain provider, go to DNS settings, add the
-                          TXT, CNAME, and A records below records below, then
+                          TXT, CNAME and A records below records below, then
                           come back and click Verify DNS.
                         </p>
                       </div>

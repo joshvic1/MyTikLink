@@ -9,6 +9,7 @@ import Toast from "@/components/Toast";
 import PublicStorefront from "@/components/store/public/PublicStorefront";
 import Navbar from "@/components/Navbar/Navbar";
 import Hero from "@/components/Hero/Hero";
+import { CartProvider } from "@/components/store/context/CartContext";
 const APP_DOMAINS = [
   "mytiklink.com",
   "www.mytiklink.com",
@@ -207,7 +208,11 @@ export default function Home() {
   const closeAuth = () => setAuthMode(null);
   const showToast = (message, type = "success") => setToast({ message, type });
   if (customDomain) {
-    return <PublicStorefront customDomain={customDomain} />;
+    return (
+      <CartProvider>
+        <PublicStorefront customDomain={customDomain} />
+      </CartProvider>
+    );
   }
   return (
     <main style={{ background: "#f9f9f9" }}>
