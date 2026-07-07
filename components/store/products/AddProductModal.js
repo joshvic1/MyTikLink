@@ -85,16 +85,20 @@ export default function AddProductModal({ open, onClose }) {
     setVariantRows([]);
     onClose();
   };
+  const getDigitsOnly = (value) => {
+    return String(value || "").replace(/[^\d]/g, "");
+  };
+
   const normalizeMoneyInput = (value) => {
-    const digitsOnly = String(value || "").replace(/\D/g, "");
+    const digitsOnly = getDigitsOnly(value);
 
     if (!digitsOnly) return "";
 
-    return Number(digitsOnly).toLocaleString("en-NG");
+    return digitsOnly.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
   const moneyToNumber = (value) => {
-    return Number(String(value || "").replace(/,/g, ""));
+    return Number(getDigitsOnly(value));
   };
   const validate = () => {
     const newErrors = {};
@@ -537,8 +541,35 @@ export default function AddProductModal({ open, onClose }) {
                   <input
                     type="text"
                     inputMode="numeric"
+                    pattern="[0-9,]*"
                     placeholder="0"
                     value={form.price}
+                    onKeyDown={(e) => {
+                      const allowedKeys = [
+                        "Backspace",
+                        "Delete",
+                        "ArrowLeft",
+                        "ArrowRight",
+                        "Tab",
+                        "Home",
+                        "End",
+                      ];
+
+                      if (allowedKeys.includes(e.key)) return;
+
+                      if (!/^\d$/.test(e.key)) {
+                        e.preventDefault();
+                      }
+                    }}
+                    onPaste={(e) => {
+                      e.preventDefault();
+
+                      const pasted = e.clipboardData.getData("text");
+
+                      update({
+                        price: normalizeMoneyInput(pasted),
+                      });
+                    }}
                     onChange={(e) =>
                       update({
                         price: normalizeMoneyInput(e.target.value),
