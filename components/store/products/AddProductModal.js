@@ -369,7 +369,7 @@ export default function AddProductModal({ open, onClose }) {
         images: [form.image],
         productType: form.productType,
         category: form.category,
-        price: Number(form.price),
+        price: moneyToNumber(form.price),
         stock:
           form.productType === "physical"
             ? hasVariants
