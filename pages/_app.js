@@ -4,7 +4,8 @@ import Layout from "@/components/Layout";
 import { useRouter } from "next/router";
 import { Plus_Jakarta_Sans } from "next/font/google";
 
-// ✅ MUST be at module level (outside component)
+// Load the app font once at module level.
+// Next.js font loaders must stay outside the component.
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800"],
@@ -13,6 +14,30 @@ const plusJakarta = Plus_Jakarta_Sans({
 export default function App({ Component, pageProps }) {
   const router = useRouter();
 
+  // These are Mytiklink-owned domains.
+  // Any other hostname is treated as a customer's custom storefront domain.
+  const platformDomains = [
+    "mytiklink.com",
+    "www.mytiklink.com",
+    "mytik.link",
+    "www.mytik.link",
+    "localhost",
+    "127.0.0.1",
+  ];
+
+  // window is only available in the browser, so guard it for Next.js rendering.
+  const currentHost =
+    typeof window !== "undefined" ? window.location.hostname.toLowerCase() : "";
+
+  // Custom domains load through the homepage route,
+  // but they should behave like public storefront pages.
+  const isCustomDomain =
+    currentHost &&
+    !platformDomains.includes(currentHost) &&
+    !currentHost.endsWith(".vercel.app");
+
+  // Route groups that should not use the main app Layout.
+  // These pages either have their own design or are public/customer-facing pages.
   const isRedirectPage = router.pathname.startsWith("/r/");
   const isPageRoute = router.pathname.startsWith("/p/");
   const isPublicStoreRoute = router.pathname.startsWith("/s/");
@@ -25,12 +50,14 @@ export default function App({ Component, pageProps }) {
   const isStorePage = router.pathname.startsWith("/store");
   const isBlogPage = router.pathname.startsWith("/blog");
 
-  // ✅ Pages without layout
+  // Public pages, dashboards, admin pages, stores, and custom domains
+  // should render without the global marketing Layout/menu.
   if (
     isRedirectPage ||
     isPageRoute ||
     isPublicStoreRoute ||
     isCourseRoute ||
+    isCustomDomain ||
     isDashboardPage ||
     isTermsPage ||
     isPrivacyPage ||
@@ -48,7 +75,7 @@ export default function App({ Component, pageProps }) {
     );
   }
 
-  // ✅ Normal pages with layout
+  // Default site pages use the shared Layout.
   return (
     <main className={plusJakarta.className}>
       <Layout>
