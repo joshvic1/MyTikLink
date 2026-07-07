@@ -15,6 +15,9 @@ import {
   Expand,
   Square,
   Trash2,
+  Upload,
+  Link2,
+  Loader2,
 } from "lucide-react";
 
 import styles from "./editSection.module.css";
@@ -23,13 +26,56 @@ export default function EditSectionModal({ isOpen, onClose, section, onSave }) {
   const [backgroundTab, setBackgroundTab] = useState(
     section.backgroundType || "color",
   );
+
+  const [imageSourceType, setImageSourceType] = useState("upload");
+  const [uploadingBg, setUploadingBg] = useState(false);
+
   const update = (key, value) => {
     onSave({
       ...section,
       [key]: value,
     });
   };
+  const uploadSectionBackground = async (file) => {
+    if (!file) return;
 
+    try {
+      setUploadingBg(true);
+
+      const token = localStorage.getItem("token");
+
+      const formData = new FormData();
+
+      formData.append("image", file);
+
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/upload`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data?.message || "Upload failed");
+      }
+
+      onSave({
+        ...section,
+        backgroundType: "image",
+        backgroundImage: data.url,
+        backgroundImageKey: data.key || null,
+        backgroundImagePublicId: data.publicId || null,
+      });
+    } catch (err) {
+      console.error(err);
+      alert(err.message || "Upload failed");
+    } finally {
+      setUploadingBg(false);
+    }
+  };
   return (
     <BottomSheet isOpen={isOpen} onClose={onClose}>
       <div className={styles.container}>
@@ -80,13 +126,66 @@ export default function EditSectionModal({ isOpen, onClose, section, onSave }) {
 
           {backgroundTab === "image" && (
             <div className={styles.imageBgBox}>
-              <label>Image URL</label>
+              <div className={styles.twoGrid}>
+                <button
+                  type="button"
+                  className={`${styles.sourceBtn} ${
+                    imageSourceType === "upload" ? styles.activeSource : ""
+                  }`}
+                  onClick={() => setImageSourceType("upload")}
+                >
+                  <Upload size={16} />
+                  Upload
+                </button>
 
-              <input
-                value={section.backgroundImage || ""}
-                placeholder="Paste image URL"
-                onChange={(e) => update("backgroundImage", e.target.value)}
-              />
+                <button
+                  type="button"
+                  className={`${styles.sourceBtn} ${
+                    imageSourceType === "url" ? styles.activeSource : ""
+                  }`}
+                  onClick={() => setImageSourceType("url")}
+                >
+                  <Link2 size={16} />
+                  Paste URL
+                </button>
+              </div>
+
+              {imageSourceType === "upload" ? (
+                <label className={styles.uploadBox}>
+                  {uploadingBg ? <Loader2 size={28} /> : <Upload size={28} />}
+
+                  <span>
+                    {uploadingBg ? "Uploading..." : "Tap to upload background"}
+                  </span>
+
+                  <small>PNG, JPG, WEBP up to 10MB</small>
+
+                  <input
+                    type="file"
+                    hidden
+                    accept="image/*"
+                    disabled={uploadingBg}
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      uploadSectionBackground(file);
+                      e.target.value = "";
+                    }}
+                  />
+                </label>
+              ) : (
+                <>
+                  <label>Image URL</label>
+
+                  <input
+                    value={section.backgroundImage || ""}
+                    placeholder="https://..."
+                    onChange={(e) => {
+                      update("backgroundType", "image");
+                      update("backgroundImage", e.target.value);
+                    }}
+                  />
+                </>
+              )}
 
               {section.backgroundImage && (
                 <div
@@ -136,8 +235,14 @@ export default function EditSectionModal({ isOpen, onClose, section, onSave }) {
                 type="button"
                 className={styles.removeImageBtn}
                 onClick={() => {
-                  update("backgroundImage", "");
-                  update("backgroundType", "color");
+                  onSave({
+                    ...section,
+                    backgroundType: "color",
+                    backgroundImage: "",
+                    backgroundImageKey: null,
+                    backgroundImagePublicId: null,
+                  });
+
                   setBackgroundTab("color");
                 }}
               >
@@ -146,7 +251,6 @@ export default function EditSectionModal({ isOpen, onClose, section, onSave }) {
             </div>
           )}
         </div>
-
         {/* SPACING */}
         <div className={styles.card}>
           <h3>Spacing</h3>
