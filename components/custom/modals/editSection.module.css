@@ -418,3 +418,45 @@
     rgba(139, 92, 246, 0.7)
   );
 }
+.imageBgBox {
+  display: grid;
+  gap: 12px;
+}
+
+.imageBgBox input {
+  width: 100%;
+  height: 44px;
+  padding: 0 13px;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  background: #ffffff;
+  color: #111827;
+  font-size: 13px;
+  outline: none;
+}
+
+.imageBgBox input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+.imagePreview {
+  width: 100%;
+  height: 130px;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.removeImageBtn {
+  height: 42px;
+  border: 1px solid #fee2e2;
+  border-radius: 14px;
+  background: #fff7f7;
+  color: #ef4444;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}

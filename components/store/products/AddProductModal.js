@@ -85,13 +85,26 @@ export default function AddProductModal({ open, onClose }) {
     setVariantRows([]);
     onClose();
   };
+  const normalizeMoneyInput = (value) => {
+    const digitsOnly = String(value || "").replace(/\D/g, "");
 
+    if (!digitsOnly) return "";
+
+    return Number(digitsOnly).toLocaleString("en-NG");
+  };
+
+  const moneyToNumber = (value) => {
+    return Number(String(value || "").replace(/,/g, ""));
+  };
   const validate = () => {
     const newErrors = {};
 
     if (!form.image) newErrors.image = "Product image is required";
     if (!form.name.trim()) newErrors.name = "Product name is required";
-    if (!form.price) newErrors.price = "Price is required";
+
+    if (!moneyToNumber(form.price)) {
+      newErrors.price = "Price is required";
+    }
     if (!form.productType) newErrors.productType = "Select a product type";
     if (!form.category.trim()) newErrors.category = "Category is required";
 
@@ -332,7 +345,7 @@ export default function AddProductModal({ open, onClose }) {
   const canCreate =
     form.image &&
     form.name.trim() &&
-    form.price &&
+    moneyToNumber(form.price) > 0 &&
     form.productType &&
     form.category.trim() &&
     (form.productType !== "physical" || hasVariants || form.stock) &&
@@ -522,11 +535,15 @@ export default function AddProductModal({ open, onClose }) {
                 <div className={styles.inputWrap}>
                   <Tag size={16} />
                   <input
-                    type="number"
-                    min="0"
-                    placeholder="0.00"
+                    type="text"
+                    inputMode="numeric"
+                    placeholder="0"
                     value={form.price}
-                    onChange={(e) => update({ price: e.target.value })}
+                    onChange={(e) =>
+                      update({
+                        price: normalizeMoneyInput(e.target.value),
+                      })
+                    }
                   />
                 </div>
                 {errors.price && <p className={styles.error}>{errors.price}</p>}

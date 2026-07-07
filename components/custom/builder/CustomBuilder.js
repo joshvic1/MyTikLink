@@ -256,6 +256,13 @@ export default function CustomBuilder() {
 
         bg: "#ffffff",
 
+        backgroundType: "color",
+        backgroundImage: "",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        backgroundOverlay: "linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0))",
+
         padding: 16,
         margin: 0,
 

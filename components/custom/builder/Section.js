@@ -22,7 +22,25 @@ export default function Section({
     <div
       className={styles.section}
       style={{
-        background: section.bg || "#fff",
+        background:
+          section.backgroundType === "image" && section.backgroundImage
+            ? `${section.backgroundOverlay || "rgba(0,0,0,0)"}, url(${section.backgroundImage})`
+            : section.bg || "#fff",
+
+        backgroundSize:
+          section.backgroundType === "image"
+            ? section.backgroundSize || "cover"
+            : undefined,
+
+        backgroundPosition:
+          section.backgroundType === "image"
+            ? section.backgroundPosition || "center"
+            : undefined,
+
+        backgroundRepeat:
+          section.backgroundType === "image"
+            ? section.backgroundRepeat || "no-repeat"
+            : undefined,
 
         padding: section.padding || 16,
 

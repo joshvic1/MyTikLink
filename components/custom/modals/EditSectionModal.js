@@ -1,6 +1,6 @@
 // EditSectionModal.js
 "use client";
-
+import { useState } from "react";
 import BottomSheet from "../ui/BottomSheet";
 
 import SegmentControl from "../controls/SegmentControl";
@@ -20,6 +20,9 @@ import {
 import styles from "./editSection.module.css";
 
 export default function EditSectionModal({ isOpen, onClose, section, onSave }) {
+  const [backgroundTab, setBackgroundTab] = useState(
+    section.backgroundType || "color",
+  );
   const update = (key, value) => {
     onSave({
       ...section,
@@ -42,33 +45,106 @@ export default function EditSectionModal({ isOpen, onClose, section, onSave }) {
           <h3>Background</h3>
 
           <div className={styles.tabs}>
-            <button className={`${styles.tab} ${styles.activeTab}`}>
+            <button
+              type="button"
+              className={`${styles.tab} ${
+                backgroundTab === "color" ? styles.activeTab : ""
+              }`}
+              onClick={() => {
+                setBackgroundTab("color");
+                update("backgroundType", "color");
+              }}
+            >
               <Paintbrush size={16} />
               Color
             </button>
 
-            <button className={styles.tab}>
+            <button
+              type="button"
+              className={`${styles.tab} ${
+                backgroundTab === "image" ? styles.activeTab : ""
+              }`}
+              onClick={() => {
+                setBackgroundTab("image");
+                update("backgroundType", "image");
+              }}
+            >
               <ImageIcon size={16} />
-              Image <span className={styles.badge}>Coming Soon</span>
+              Image
             </button>
           </div>
 
-          <ColorPicker value={section.bg} onChange={(v) => update("bg", v)} />
+          {backgroundTab === "color" && (
+            <ColorPicker value={section.bg} onChange={(v) => update("bg", v)} />
+          )}
 
-          <div className={styles.divider} />
-          {/* 
-          <div className={styles.sliderRow}>
-            <label>Background Opacity</label>
+          {backgroundTab === "image" && (
+            <div className={styles.imageBgBox}>
+              <label>Image URL</label>
 
-            <span>{section.opacity || 100}%</span>
-          </div>
+              <input
+                value={section.backgroundImage || ""}
+                placeholder="Paste image URL"
+                onChange={(e) => update("backgroundImage", e.target.value)}
+              />
 
-          <RangeSlider
-            min={0}
-            max={100}
-            value={section.opacity || 100}
-            onChange={(v) => update("opacity", v)}
-          /> */}
+              {section.backgroundImage && (
+                <div
+                  className={styles.imagePreview}
+                  style={{
+                    backgroundImage: `url(${section.backgroundImage})`,
+                  }}
+                />
+              )}
+
+              <label>Image Size</label>
+
+              <SegmentControl
+                options={[
+                  { label: "Cover", value: "cover" },
+                  { label: "Contain", value: "contain" },
+                  { label: "Auto", value: "auto" },
+                ]}
+                value={section.backgroundSize || "cover"}
+                onChange={(v) => update("backgroundSize", v)}
+              />
+
+              <label>Position</label>
+
+              <SegmentControl
+                options={[
+                  { label: "Center", value: "center" },
+                  { label: "Top", value: "top" },
+                  { label: "Bottom", value: "bottom" },
+                ]}
+                value={section.backgroundPosition || "center"}
+                onChange={(v) => update("backgroundPosition", v)}
+              />
+
+              <label>Repeat</label>
+
+              <SegmentControl
+                options={[
+                  { label: "No", value: "no-repeat" },
+                  { label: "Repeat", value: "repeat" },
+                ]}
+                value={section.backgroundRepeat || "no-repeat"}
+                onChange={(v) => update("backgroundRepeat", v)}
+              />
+
+              <button
+                type="button"
+                className={styles.removeImageBtn}
+                onClick={() => {
+                  update("backgroundImage", "");
+                  update("backgroundType", "color");
+                  setBackgroundTab("color");
+                }}
+              >
+                Remove image
+              </button>
+            </div>
+          )}
         </div>
 
         {/* SPACING */}
