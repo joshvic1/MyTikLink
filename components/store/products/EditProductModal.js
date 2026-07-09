@@ -20,7 +20,9 @@ export default function EditProductModal({ open, onClose, product, onSave }) {
   const [form, setForm] = useState({});
   const [saving, setSaving] = useState(false);
   const [uploadingFile, setUploadingFile] = useState(false);
-
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [hasVariants, setHasVariants] = useState(false);
+  const [variantRows, setVariantRows] = useState([]);
   useEffect(() => {
     if (product) {
       setForm({
@@ -31,8 +33,36 @@ export default function EditProductModal({ open, onClose, product, onSave }) {
         status: "draft",
         featured: false,
         images: [],
+        variantGroups: [],
+        inventory: [],
         ...product,
       });
+
+      const productHasVariants =
+        product.productType === "physical" &&
+        Array.isArray(product.inventory) &&
+        product.inventory.length > 0;
+
+      setHasVariants(productHasVariants);
+
+      if (productHasVariants) {
+        setVariantRows(
+          product.inventory.map((item, index) => {
+            const values = item.values || {};
+            const firstEntry = Object.entries(values)[0] || ["", ""];
+
+            return {
+              id: item._id || `${Date.now()}-${index}`,
+              name: firstEntry[0],
+              value: firstEntry[1],
+              stock: item.stock ?? "",
+              sku: item.sku || "",
+            };
+          }),
+        );
+      } else {
+        setVariantRows([]);
+      }
     }
   }, [product]);
 
@@ -49,6 +79,11 @@ export default function EditProductModal({ open, onClose, product, onSave }) {
   };
 
   const handleProductTypeChange = (value) => {
+    if (value === "digital") {
+      setHasVariants(false);
+      setVariantRows([]);
+    }
+
     setForm((prev) => ({
       ...prev,
       productType: value,
@@ -75,17 +110,39 @@ export default function EditProductModal({ open, onClose, product, onSave }) {
     }));
   };
 
-  const handleImageUpload = (e) => {
+  const handleImageUpload = async (e) => {
     const file = e.target.files?.[0];
 
     if (!file) return;
 
-    const previewUrl = URL.createObjectURL(file);
+    try {
+      setUploadingImage(true);
 
-    setForm((prev) => ({
-      ...prev,
-      images: [...(prev.images || []), previewUrl],
-    }));
+      const formData = new FormData();
+      formData.append("image", file);
+
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/upload`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      setForm((prev) => ({
+        ...prev,
+        images: [...(prev.images || []), res.data.url],
+      }));
+
+      e.target.value = "";
+    } catch (err) {
+      console.log(err);
+      alert("Image upload failed");
+    } finally {
+      setUploadingImage(false);
+    }
   };
 
   const handleFileUpload = async (e) => {
@@ -116,7 +173,55 @@ export default function EditProductModal({ open, onClose, product, onSave }) {
       setUploadingFile(false);
     }
   };
+  const variantStockTotal = variantRows.reduce(
+    (sum, row) => sum + Number(row.stock || 0),
+    0,
+  );
 
+  const updateVariantRow = (id, data) => {
+    setVariantRows((prev) =>
+      prev.map((row) => (row.id === id ? { ...row, ...data } : row)),
+    );
+  };
+
+  const addVariantRow = () => {
+    setVariantRows((prev) => [
+      ...prev,
+      {
+        id: Date.now().toString(),
+        name: "",
+        value: "",
+        stock: "",
+        sku: "",
+      },
+    ]);
+  };
+
+  const removeVariantRow = (id) => {
+    setVariantRows((prev) => prev.filter((row) => row.id !== id));
+  };
+
+  const buildVariantGroups = () => {
+    const groups = {};
+
+    variantRows.forEach((row) => {
+      const name = row.name.trim();
+      const value = row.value.trim();
+
+      if (!name || !value) return;
+
+      if (!groups[name]) groups[name] = [];
+
+      if (!groups[name].includes(value)) {
+        groups[name].push(value);
+      }
+    });
+
+    return Object.entries(groups).map(([name, options]) => ({
+      name,
+      options,
+    }));
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -132,12 +237,32 @@ export default function EditProductModal({ open, onClose, product, onSave }) {
         category: form.category || "General",
         price: Number(form.price || 0),
         comparePrice: form.comparePrice ? Number(form.comparePrice) : null,
-        stock: form.productType === "digital" ? 0 : Number(form.stock || 0),
+        stock:
+          form.productType === "digital"
+            ? 0
+            : hasVariants
+              ? variantStockTotal
+              : Number(form.stock || 0),
         sku: form.sku || "",
         productType: form.productType || "physical",
         status: form.status || "published",
         featured: Boolean(form.featured),
         images: Array.isArray(form.images) ? form.images : [],
+        variantGroups:
+          form.productType === "physical" && hasVariants
+            ? buildVariantGroups()
+            : [],
+
+        inventory:
+          form.productType === "physical" && hasVariants
+            ? variantRows.map((row) => ({
+                values: {
+                  [row.name.trim()]: row.value.trim(),
+                },
+                stock: Number(row.stock || 0),
+                sku: row.sku || "",
+              }))
+            : [],
       };
 
       if (payload.productType === "digital") {
@@ -188,7 +313,7 @@ export default function EditProductModal({ open, onClose, product, onSave }) {
           <div className={styles.imageSection}>
             <label>Product Images</label>
 
-            {!!form.images?.length ? (
+            {!!form.images?.length && (
               <div className={styles.images}>
                 {form.images.map((img, index) => (
                   <div key={`${img}-${index}`} className={styles.imageBox}>
@@ -206,23 +331,29 @@ export default function EditProductModal({ open, onClose, product, onSave }) {
                   </div>
                 ))}
               </div>
-            ) : (
-              <label className={styles.uploadBox}>
-                <input
-                  type="file"
-                  accept="image/png,image/jpeg,image/webp"
-                  onChange={handleImageUpload}
-                  disabled={saving}
-                />
-
-                <span>
-                  <ImagePlus size={22} />
-                </span>
-
-                <strong>Upload Product Image</strong>
-                <small>PNG, JPG or WEBP</small>
-              </label>
             )}
+
+            <label className={styles.uploadBox}>
+              <input
+                type="file"
+                accept="image/png,image/jpeg,image/webp"
+                onChange={handleImageUpload}
+                disabled={saving || uploadingImage}
+              />
+
+              <span>
+                {uploadingImage ? (
+                  <Loader2 size={22} className={styles.spin} />
+                ) : (
+                  <ImagePlus size={22} />
+                )}
+              </span>
+
+              <strong>
+                {uploadingImage ? "Uploading..." : "Upload Product Image"}
+              </strong>
+              <small>PNG, JPG or WEBP</small>
+            </label>
           </div>
 
           <section className={styles.card}>
@@ -289,7 +420,106 @@ export default function EditProductModal({ open, onClose, product, onSave }) {
                   </select>
                 </div>
               </div>
+              {form.productType === "physical" && (
+                <section className={styles.card}>
+                  <div className={styles.sectionTitle}>
+                    <h3>Variants</h3>
+                    <p>Edit options like size, color, type, and their stock.</p>
+                  </div>
 
+                  <label className={styles.toggleRow}>
+                    <input
+                      type="checkbox"
+                      checked={hasVariants}
+                      onChange={(e) => {
+                        const checked = e.target.checked;
+
+                        setHasVariants(checked);
+
+                        if (checked && variantRows.length === 0) {
+                          setVariantRows([
+                            {
+                              id: Date.now().toString(),
+                              name: "Size",
+                              value: "",
+                              stock: "",
+                              sku: "",
+                            },
+                          ]);
+                        }
+
+                        if (!checked) {
+                          setVariantRows([]);
+                        }
+                      }}
+                    />
+
+                    <span>This product has variants</span>
+                  </label>
+
+                  {hasVariants && (
+                    <>
+                      <div className={styles.variantList}>
+                        {variantRows.map((row) => (
+                          <div key={row.id} className={styles.variantRow}>
+                            <input
+                              placeholder="Variant name e.g. Size"
+                              value={row.name}
+                              onChange={(e) =>
+                                updateVariantRow(row.id, {
+                                  name: e.target.value,
+                                })
+                              }
+                            />
+
+                            <input
+                              placeholder="Value e.g. Large"
+                              value={row.value}
+                              onChange={(e) =>
+                                updateVariantRow(row.id, {
+                                  value: e.target.value,
+                                })
+                              }
+                            />
+
+                            <input
+                              type="number"
+                              min="0"
+                              placeholder="Stock"
+                              value={row.stock}
+                              onChange={(e) =>
+                                updateVariantRow(row.id, {
+                                  stock: e.target.value,
+                                })
+                              }
+                            />
+
+                            <button
+                              type="button"
+                              className={styles.removeVariantBtn}
+                              onClick={() => removeVariantRow(row.id)}
+                            >
+                              <Trash2 size={14} />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+
+                      <button
+                        type="button"
+                        className={styles.addVariantBtn}
+                        onClick={addVariantRow}
+                      >
+                        Add variant
+                      </button>
+
+                      <p className={styles.helpText}>
+                        Total stock: <strong>{variantStockTotal}</strong>
+                      </p>
+                    </>
+                  )}
+                </section>
+              )}
               {form.productType === "physical" && (
                 <div className={styles.field}>
                   <label htmlFor="stock">Stock</label>

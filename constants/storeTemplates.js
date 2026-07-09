@@ -46,6 +46,14 @@ const storefrontTemplates = [
       "https://pub-e0ff826b0e9843069a4df3548bc6fa39.r2.dev/tiklink-pages/1781024565507-eea8a221-eea6-4f4a-8201-67910624cc7d",
     previewUrl: "/p/ankaramart",
   },
+
+  {
+    id: "6a4e79b76c29ba3296600db0",
+    title: "Luxe Wigs",
+    image:
+      "https://pub-e0ff826b0e9843069a4df3548bc6fa39.r2.dev/tiklink-pages/1781024565507-eea8a221-eea6-4f4a-8201-67910624cc7d",
+    previewUrl: "/p/luxewigs",
+  },
 ];
 
 export default storefrontTemplates;
