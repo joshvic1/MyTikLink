@@ -5,13 +5,21 @@ import { Check, Copy, Link2 } from "lucide-react";
 
 import styles from "./storeLinkPrompt.module.css";
 
-export default function StoreLinkPrompt({ slug }) {
+export default function StoreLinkPrompt({
+  slug,
+  customDomain,
+  customDomainStatus,
+}) {
   const [copied, setCopied] = useState(false);
 
   if (!slug) return null;
 
-  const storeUrl =
-    typeof window !== "undefined"
+  const isCustomDomainActive =
+    customDomain && ["verified", "active"].includes(customDomainStatus);
+
+  const storeUrl = isCustomDomainActive
+    ? `https://${customDomain}`
+    : typeof window !== "undefined"
       ? `${window.location.origin}/s/${slug}`
       : `/s/${slug}`;
 

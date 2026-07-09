@@ -91,7 +91,11 @@ export default function StoreDashboard({ store }) {
           productCount={productCount}
           onCreate={() => setOpenProduct(true)}
         />
-        <StoreLinkPrompt slug={store?.slug} />
+        <StoreLinkPrompt
+          slug={store.slug}
+          customDomain={store.customDomain}
+          customDomainStatus={store.customDomainStatus}
+        />
         <StoreStats range={range} />
         <RecentProducts />
         <DashboardQuickActions onAddProduct={() => setOpenProduct(true)} />{" "}

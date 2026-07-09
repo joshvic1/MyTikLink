@@ -71,7 +71,19 @@ export default function StoreMenu({ open, onClose, store }) {
       action: () => router.push("/blog?categoryslug=online-store"),
     },
   ];
+  const isCustomDomainActive =
+    store?.customDomain &&
+    ["verified", "active"].includes(store?.customDomainStatus);
 
+  const storeUrl = isCustomDomainActive
+    ? `https://${store.customDomain}`
+    : `/s/${store?.slug}`;
+
+  const visitStore = () => {
+    if (!store?.slug && !store?.customDomain) return;
+
+    window.open(storeUrl, "_blank", "noopener,noreferrer");
+  };
   const handleLogout = () => {
     localStorage.removeItem("token");
 
@@ -115,10 +127,7 @@ export default function StoreMenu({ open, onClose, store }) {
 
         {/* FOOTER */}
         <div className={styles.footer}>
-          <button
-            className={styles.secondaryBtn}
-            onClick={() => window.open(`/s/${store?.slug}`, "_blank")}
-          >
+          <button className={styles.secondaryBtn} onClick={visitStore}>
             <ExternalLink size={17} />
 
             <span>Visit Store</span>
