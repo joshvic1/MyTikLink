@@ -155,7 +155,17 @@ export default function ProductsPage() {
   };
 
   const getProductLink = (product) => {
-    if (!store?.slug || !product?.slug) return "";
+    if (!product?.slug) return "";
+
+    const customDomainActive =
+      store?.customDomain &&
+      ["verified", "active"].includes(store?.customDomainStatus);
+
+    if (customDomainActive) {
+      return `https://${store.customDomain}/${product.slug}`;
+    }
+
+    if (!store?.slug || typeof window === "undefined") return "";
 
     return `${window.location.origin}/s/${store.slug}/${product.slug}`;
   };
