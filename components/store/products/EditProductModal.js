@@ -138,8 +138,8 @@ export default function EditProductModal({ open, onClose, product, onSave }) {
 
       e.target.value = "";
     } catch (err) {
-      console.log(err);
-      alert("Image upload failed");
+      console.log(err?.response?.data || err);
+      alert(err?.response?.data?.message || "Image upload failed");
     } finally {
       setUploadingImage(false);
     }
@@ -226,7 +226,22 @@ export default function EditProductModal({ open, onClose, product, onSave }) {
     e.preventDefault();
 
     if (saving) return;
+    if (form.productType === "physical" && hasVariants) {
+      const invalidVariants =
+        variantRows.length === 0 ||
+        variantRows.some(
+          (row) =>
+            !row.name.trim() ||
+            !row.value.trim() ||
+            row.stock === "" ||
+            Number(row.stock) < 0,
+        );
 
+      if (invalidVariants) {
+        alert("Please fill all variant name, value, and stock fields.");
+        return;
+      }
+    }
     try {
       setSaving(true);
 
@@ -408,8 +423,10 @@ export default function EditProductModal({ open, onClose, product, onSave }) {
             <div className={styles.grid}>
               <div className={styles.field}>
                 <label htmlFor="productType">Product Type</label>
+
                 <div className={styles.inputWrap}>
                   <Package2 size={16} />
+
                   <select
                     id="productType"
                     value={form.productType || "physical"}
@@ -420,122 +437,129 @@ export default function EditProductModal({ open, onClose, product, onSave }) {
                   </select>
                 </div>
               </div>
-              {form.productType === "physical" && (
-                <section className={styles.card}>
-                  <div className={styles.sectionTitle}>
-                    <h3>Variants</h3>
-                    <p>Edit options like size, color, type, and their stock.</p>
-                  </div>
 
-                  <label className={styles.toggleRow}>
-                    <input
-                      type="checkbox"
-                      checked={hasVariants}
-                      onChange={(e) => {
-                        const checked = e.target.checked;
-
-                        setHasVariants(checked);
-
-                        if (checked && variantRows.length === 0) {
-                          setVariantRows([
-                            {
-                              id: Date.now().toString(),
-                              name: "Size",
-                              value: "",
-                              stock: "",
-                              sku: "",
-                            },
-                          ]);
-                        }
-
-                        if (!checked) {
-                          setVariantRows([]);
-                        }
-                      }}
-                    />
-
-                    <span>This product has variants</span>
-                  </label>
-
-                  {hasVariants && (
-                    <>
-                      <div className={styles.variantList}>
-                        {variantRows.map((row) => (
-                          <div key={row.id} className={styles.variantRow}>
-                            <input
-                              placeholder="Variant name e.g. Size"
-                              value={row.name}
-                              onChange={(e) =>
-                                updateVariantRow(row.id, {
-                                  name: e.target.value,
-                                })
-                              }
-                            />
-
-                            <input
-                              placeholder="Value e.g. Large"
-                              value={row.value}
-                              onChange={(e) =>
-                                updateVariantRow(row.id, {
-                                  value: e.target.value,
-                                })
-                              }
-                            />
-
-                            <input
-                              type="number"
-                              min="0"
-                              placeholder="Stock"
-                              value={row.stock}
-                              onChange={(e) =>
-                                updateVariantRow(row.id, {
-                                  stock: e.target.value,
-                                })
-                              }
-                            />
-
-                            <button
-                              type="button"
-                              className={styles.removeVariantBtn}
-                              onClick={() => removeVariantRow(row.id)}
-                            >
-                              <Trash2 size={14} />
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-
-                      <button
-                        type="button"
-                        className={styles.addVariantBtn}
-                        onClick={addVariantRow}
-                      >
-                        Add variant
-                      </button>
-
-                      <p className={styles.helpText}>
-                        Total stock: <strong>{variantStockTotal}</strong>
-                      </p>
-                    </>
-                  )}
-                </section>
-              )}
               {form.productType === "physical" && (
                 <div className={styles.field}>
                   <label htmlFor="stock">Stock</label>
+
                   <div className={styles.inputWrap}>
                     <Boxes size={16} />
+
                     <input
                       id="stock"
                       type="number"
                       min="0"
-                      value={form.stock ?? 0}
+                      value={
+                        hasVariants ? variantStockTotal : (form.stock ?? 0)
+                      }
+                      disabled={hasVariants}
                       onChange={(e) => handleChange("stock", e.target.value)}
                     />
                   </div>
                 </div>
               )}
             </div>
+
+            {form.productType === "physical" && (
+              <section className={styles.card}>
+                <div className={styles.sectionTitle}>
+                  <h3>Variants</h3>
+                  <p>Edit options like size, color, type, and their stock.</p>
+                </div>
+
+                <label className={styles.toggleRow}>
+                  <input
+                    type="checkbox"
+                    checked={hasVariants}
+                    onChange={(e) => {
+                      const checked = e.target.checked;
+
+                      setHasVariants(checked);
+
+                      if (checked && variantRows.length === 0) {
+                        setVariantRows([
+                          {
+                            id: Date.now().toString(),
+                            name: "Size",
+                            value: "",
+                            stock: "",
+                            sku: "",
+                          },
+                        ]);
+                      }
+
+                      if (!checked) {
+                        setVariantRows([]);
+                      }
+                    }}
+                  />
+
+                  <span>This product has variants</span>
+                </label>
+
+                {hasVariants && (
+                  <>
+                    <div className={styles.variantList}>
+                      {variantRows.map((row) => (
+                        <div key={row.id} className={styles.variantRow}>
+                          <input
+                            placeholder="Variant name e.g. Size"
+                            value={row.name}
+                            onChange={(e) =>
+                              updateVariantRow(row.id, {
+                                name: e.target.value,
+                              })
+                            }
+                          />
+
+                          <input
+                            placeholder="Value e.g. Large"
+                            value={row.value}
+                            onChange={(e) =>
+                              updateVariantRow(row.id, {
+                                value: e.target.value,
+                              })
+                            }
+                          />
+
+                          <input
+                            type="number"
+                            min="0"
+                            placeholder="Stock"
+                            value={row.stock}
+                            onChange={(e) =>
+                              updateVariantRow(row.id, {
+                                stock: e.target.value,
+                              })
+                            }
+                          />
+
+                          <button
+                            type="button"
+                            className={styles.removeVariantBtn}
+                            onClick={() => removeVariantRow(row.id)}
+                          >
+                            <Trash2 size={14} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+
+                    <button
+                      type="button"
+                      className={styles.addVariantBtn}
+                      onClick={addVariantRow}
+                    >
+                      Add variant
+                    </button>
+
+                    <p className={styles.helpText}>
+                      Total stock: <strong>{variantStockTotal}</strong>
+                    </p>
+                  </>
+                )}
+              </section>
+            )}
           </section>
 
           {form.productType === "digital" && (
@@ -690,7 +714,11 @@ export default function EditProductModal({ open, onClose, product, onSave }) {
             Cancel
           </button>
 
-          <button type="submit" className={styles.save} disabled={saving}>
+          <button
+            type="submit"
+            className={styles.save}
+            disabled={saving || uploadingImage || uploadingFile}
+          >
             {saving ? "Saving..." : "Save Changes"}
           </button>
         </footer>

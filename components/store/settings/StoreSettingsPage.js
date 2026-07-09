@@ -761,7 +761,7 @@ export default function StoreSettingsPage() {
                       <div className={styles.recordRow}>
                         <div>
                           <small>Host</small>
-                          <strong>_mytiklink.{store?.customDomain}</strong>
+                          <strong>_mytiklink</strong>
                         </div>
 
                         <button

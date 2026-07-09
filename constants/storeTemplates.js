@@ -3,7 +3,7 @@ const storefrontTemplates = [
     id: "6a2857611abb2afc03095453",
     title: "Products Only",
     image:
-      "https://pub-e0ff826b0e9843069a4df3548bc6fa39.r2.dev/tiklink-pages/1781024565507-eea8a221-eea6-4f4a-8201-67910624cc7d",
+      "https://pub-e0ff826b0e9843069a4df3548bc6fa39.r2.dev/tiklink-pages/1783591080885-cd2f8adb-8f2b-4f8f-a97b-8ca517e6d28d",
     previewUrl: "/p/dvrx-store",
   },
   {
