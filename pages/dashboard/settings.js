@@ -218,7 +218,7 @@ export default function Settings() {
 
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/payments/initiate`,
-        { plan, cycle },
+        { plan, cycle, keepExpiry: true },
         {
           headers: {
             Authorization: `Bearer ${token}`,
