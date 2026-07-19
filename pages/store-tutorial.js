@@ -28,18 +28,6 @@ export default function TutorialOfferPage() {
   };
 
   useEffect(() => {
-    if (viewContentTracked.current) return;
-
-    viewContentTracked.current = true;
-
-    trackTikTokEvent("ViewContent", {
-      content_name: "5K website tutorial offer",
-      page_name: "website_tutorial_offer",
-      page_url: window.location.href,
-    });
-  }, []);
-
-  useEffect(() => {
     const storageKey = "websiteTutorialOfferEndTime";
     const savedEndTime = Number(localStorage.getItem(storageKey));
 
@@ -74,7 +62,8 @@ export default function TutorialOfferPage() {
     const hours = Math.floor(totalSeconds / 3600);
     const minutes = Math.floor((totalSeconds % 3600) / 60);
     const seconds = totalSeconds % 60;
-
+    const TUTORIAL_CONTENT_ID = "website-tutorial-5k";
+    const TUTORIAL_CONTENT_NAME = "5K Website Tutorial Offer";
     return {
       hours: String(hours).padStart(2, "0"),
       minutes: String(minutes).padStart(2, "0"),
@@ -121,13 +110,18 @@ export default function TutorialOfferPage() {
       if (!response.ok) {
         throw new Error(data?.message || "Submission failed");
       }
-
       trackTikTokEvent("SubmitForm", {
+        content_id: TUTORIAL_CONTENT_ID,
+        content_type: "product",
+        content_name: TUTORIAL_CONTENT_NAME,
         form_name: "website_tutorial_email_form",
         page_name: "website_tutorial_offer",
       });
 
       trackTikTokEvent("CompleteRegistration", {
+        content_id: TUTORIAL_CONTENT_ID,
+        content_type: "product",
+        content_name: TUTORIAL_CONTENT_NAME,
         registration_method: "email",
         page_name: "website_tutorial_offer",
       });
@@ -252,8 +246,26 @@ export default function TutorialOfferPage() {
             e.parentNode.insertBefore(n,e)
           };
 
-          ttq.load("${TIKTOK_PIXEL_ID}");
-          ttq.page();
+       ttq.load("${TIKTOK_PIXEL_ID}");
+ttq.page();
+
+ttq.track("ViewContent", {
+  content_id: "${TUTORIAL_CONTENT_ID}",
+  content_type: "product",
+  content_name: "${TUTORIAL_CONTENT_NAME}",
+  description: "Store page creation tutorial offer",
+  currency: "NGN",
+  value: 0,
+  contents: [
+    {
+      content_id: "${TUTORIAL_CONTENT_ID}",
+      content_type: "product",
+      content_name: "${TUTORIAL_CONTENT_NAME}",
+      quantity: 1,
+      price: 0
+    }
+  ]
+});
         }(window, document, "ttq");
       `}
       </Script>
