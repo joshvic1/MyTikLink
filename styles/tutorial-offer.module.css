@@ -1,0 +1,383 @@
+.tutorialPage,
+.tutorialPage * {
+  box-sizing: border-box;
+}
+
+.tutorialPage {
+  align-items: center;
+  background:
+    radial-gradient(
+      circle at 10% 15%,
+      rgba(255, 205, 75, 0.38),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 90% 10%,
+      rgba(63, 198, 255, 0.3),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 80% 85%,
+      rgba(41, 210, 130, 0.2),
+      transparent 30%
+    ),
+    linear-gradient(135deg, #fffaf0 0%, #f1fff7 48%, #f3f6ff 100%);
+  color: #14241c;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 30px 20px;
+}
+
+.tutorialPanel {
+  background: rgba(255, 255, 255, 0.91);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: 18px;
+  box-shadow: 0 28px 90px rgba(31, 96, 76, 0.16);
+  max-width: 680px;
+  overflow: hidden;
+  padding: 38px;
+  text-align: center;
+  width: 100%;
+}
+
+.tutorialBadge {
+  background: rgba(22, 168, 102, 0.12);
+  border: 1px solid rgba(22, 168, 102, 0.2);
+  border-radius: 999px;
+  color: #0d8951;
+  display: inline-flex;
+  font-size: 0.8rem;
+  font-weight: 900;
+  letter-spacing: 0.07em;
+  margin-bottom: 18px;
+  padding: 9px 15px;
+  text-transform: uppercase;
+}
+
+.tutorialPanel > h1 {
+  font-size: clamp(2rem, 7vw, 3.25rem);
+  letter-spacing: -0.045em;
+  line-height: 1.04;
+  margin: 0 auto 16px;
+  max-width: 590px;
+}
+
+.tutorialPanel > h1 span {
+  color: #16a866;
+}
+
+.tutorialIntro {
+  color: #60716a;
+  font-size: 1rem;
+  line-height: 1.7;
+  margin: 0 auto 25px;
+  max-width: 500px;
+}
+
+.offerCountdown {
+  background: #14241c;
+  border-radius: 14px;
+  color: #ffffff;
+  margin-bottom: 28px;
+  padding: 20px;
+}
+
+.offerCountdown > p {
+  color: #bcefd4;
+  font-size: 0.85rem;
+  font-weight: 900;
+  letter-spacing: 0.09em;
+  margin: 0 0 13px;
+  text-transform: uppercase;
+}
+
+.countdownBoxes {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.countdownItem {
+  background: rgba(255, 255, 255, 0.09);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 10px;
+  min-width: 82px;
+  padding: 11px 9px;
+}
+
+.countdownItem strong {
+  display: block;
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.countdownItem span {
+  color: #bed0c8;
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 800;
+  margin-top: 7px;
+  text-transform: uppercase;
+}
+
+.countdownDivider {
+  color: #65e7a3;
+  font-size: 1.7rem;
+  font-weight: 900;
+  padding: 0 9px;
+}
+
+.tutorialVideoWrapper {
+  background: #07100c;
+  border: 7px solid #14241c;
+  border-radius: 18px;
+  box-shadow: 0 20px 45px rgba(16, 50, 37, 0.19);
+  margin: 0 auto 32px;
+  max-width: 360px;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.tutorialVideoWrapper::before {
+  content: "";
+  display: block;
+  padding-top: 177.777%;
+}
+
+.tutorialVideoWrapper iframe {
+  border: 0;
+  height: 100%;
+  inset: 0;
+  position: absolute;
+  width: 100%;
+}
+
+.tutorialFormSection {
+  background: #f4fff8;
+  border: 1px solid rgba(22, 168, 102, 0.17);
+  border-radius: 16px;
+  padding: 27px;
+}
+
+.tutorialFormSection h2,
+.tutorialShareSection h2 {
+  font-size: clamp(1.4rem, 5vw, 1.85rem);
+  margin: 0 0 9px;
+}
+
+.tutorialFormSection > p,
+.tutorialShareSection > p {
+  color: #65756f;
+  line-height: 1.6;
+  margin: 0 auto 20px;
+  max-width: 480px;
+}
+
+.tutorialForm {
+  display: grid;
+  gap: 10px;
+  text-align: left;
+}
+
+.tutorialForm label {
+  color: #234338;
+  font-size: 0.88rem;
+  font-weight: 900;
+}
+
+.tutorialForm input {
+  background: #ffffff;
+  border: 2px solid rgba(22, 168, 102, 0.2);
+  border-radius: 10px;
+  box-shadow: 0 10px 28px rgba(31, 96, 76, 0.08);
+  color: #13241c;
+  font: inherit;
+  min-height: 58px;
+  outline: none;
+  padding: 0 17px;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+  width: 100%;
+}
+
+.tutorialForm input:focus {
+  border-color: #16a866;
+  box-shadow: 0 0 0 4px rgba(22, 168, 102, 0.13);
+}
+
+.tutorialForm button {
+  background: #16a866;
+  border: 0;
+  border-radius: 10px;
+  box-shadow: 0 13px 28px rgba(22, 168, 102, 0.23);
+  color: #ffffff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 900;
+  min-height: 57px;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+.tutorialForm button:hover:not(:disabled) {
+  background: #108c55;
+  transform: translateY(-2px);
+}
+
+.tutorialForm button:disabled,
+.tutorialForm input:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+
+.tutorialFormMessage {
+  background: #ffffff;
+  border-radius: 8px;
+  color: #0c7a43;
+  font-size: 0.9rem;
+  font-weight: 800;
+  margin: 14px 0 0;
+  padding: 12px;
+}
+
+.tutorialFormSection small {
+  color: #7b8983;
+  display: block;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  margin-top: 13px;
+}
+
+.tutorialShareSection {
+  border-top: 1px solid rgba(19, 36, 28, 0.09);
+  margin-top: 34px;
+  padding-top: 32px;
+}
+
+.tutorialShareButtons {
+  display: grid;
+  gap: 11px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.tutorialShareButtons button {
+  align-items: center;
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 900;
+  gap: 10px;
+  justify-content: center;
+  min-height: 51px;
+  padding: 8px 12px;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.tutorialShareButtons button:hover {
+  box-shadow: 0 10px 24px rgba(20, 36, 28, 0.14);
+  transform: translateY(-2px);
+}
+
+.tutorialShareButtons button span {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  display: inline-flex;
+  font-size: 0.67rem;
+  height: 29px;
+  justify-content: center;
+  width: 29px;
+}
+
+.shareWhatsapp {
+  background: #20bd63;
+  color: #ffffff;
+}
+
+.shareInstagram {
+  background: linear-gradient(135deg, #833ab4, #e1306c, #f77737);
+  color: #ffffff;
+}
+
+.shareTiktok {
+  background: #111111;
+  color: #ffffff;
+}
+
+.shareSnapchat {
+  background: #ffeb00;
+  color: #141414;
+}
+
+.shareTelegram {
+  background: #229ed9;
+  color: #ffffff;
+  grid-column: 1 / -1;
+}
+
+.tutorialPanel footer {
+  color: #73817b;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  margin-top: 30px;
+}
+
+.tutorialPanel footer a {
+  color: #0c7a43;
+  font-weight: 800;
+}
+
+@media (max-width: 520px) {
+  .tutorialPage {
+    padding: 12px;
+  }
+
+  .tutorialPanel {
+    border-radius: 13px;
+    padding: 26px 15px;
+  }
+
+  .offerCountdown {
+    padding: 17px 10px;
+  }
+
+  .countdownItem {
+    min-width: 69px;
+  }
+
+  .countdownDivider {
+    padding: 0 5px;
+  }
+
+  .tutorialFormSection {
+    padding: 22px 15px;
+  }
+}
+
+@media (max-width: 370px) {
+  .tutorialShareButtons {
+    grid-template-columns: 1fr;
+  }
+
+  .shareTelegram {
+    grid-column: auto;
+  }
+
+  .countdownItem {
+    min-width: 62px;
+  }
+
+  .countdownItem strong {
+    font-size: 1.5rem;
+  }
+}
