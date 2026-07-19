@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import styles from "@/styles/tutorial-offer.module.css";
 
 const OFFER_DURATION = 3 * 60 * 60 * 1000;
-const YOUTUBE_SHORT_ID = "YOUR_YOUTUBE_SHORT_ID";
+const YOUTUBE_SHORT_ID = "Yb-Z9G4v700";
 
 export default function TutorialOfferPage() {
   const [email, setEmail] = useState("");
@@ -256,7 +256,7 @@ export default function TutorialOfferPage() {
 
         <div className={styles.tutorialVideoWrapper}>
           <iframe
-            src={`https://www.youtube.com/embed/${YOUTUBE_SHORT_ID}`}
+            src="https://www.youtube.com/embed/Yb-Z9G4v700"
             title="How to create a 5K website tutorial"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowFullScreen
