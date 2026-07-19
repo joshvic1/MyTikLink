@@ -256,14 +256,12 @@ ttq.track("ViewContent", {
   content_name: "${TUTORIAL_CONTENT_NAME}",
   description: "Store page creation tutorial offer",
   currency: "NGN",
-  value: 0,
   contents: [
     {
       content_id: "${TUTORIAL_CONTENT_ID}",
       content_type: "product",
       content_name: "${TUTORIAL_CONTENT_NAME}",
-      quantity: 1,
-      price: 0
+      quantity: 1
     }
   ]
 });
