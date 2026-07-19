@@ -7,6 +7,8 @@ import styles from "@/styles/tutorial-offer.module.css";
 const OFFER_DURATION = 3 * 60 * 60 * 1000;
 const YOUTUBE_SHORT_ID = "Yb-Z9G4v700";
 const TIKTOK_PIXEL_ID = "D7V46AJC77UCL5G1KVLG";
+const TUTORIAL_CONTENT_ID = "website-tutorial-5k";
+const TUTORIAL_CONTENT_NAME = "5K Website Tutorial Offer";
 export default function TutorialOfferPage() {
   const [email, setEmail] = useState("");
   const [timeLeft, setTimeLeft] = useState(OFFER_DURATION);
@@ -62,8 +64,7 @@ export default function TutorialOfferPage() {
     const hours = Math.floor(totalSeconds / 3600);
     const minutes = Math.floor((totalSeconds % 3600) / 60);
     const seconds = totalSeconds % 60;
-    const TUTORIAL_CONTENT_ID = "website-tutorial-5k";
-    const TUTORIAL_CONTENT_NAME = "5K Website Tutorial Offer";
+
     return {
       hours: String(hours).padStart(2, "0"),
       minutes: String(minutes).padStart(2, "0"),
