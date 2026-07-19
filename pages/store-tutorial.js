@@ -12,7 +12,8 @@ export default function TutorialOfferPage() {
   const [timeLeft, setTimeLeft] = useState(OFFER_DURATION);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formMessage, setFormMessage] = useState("");
-
+  const [successOpen, setSuccessOpen] = useState(false);
+  const [submittedEmail, setSubmittedEmail] = useState("");
   const viewContentTracked = useRef(false);
   const year = new Date().getFullYear();
 
@@ -131,8 +132,9 @@ export default function TutorialOfferPage() {
         page_name: "website_tutorial_offer",
       });
 
+      setSubmittedEmail(cleanedEmail);
       setEmail("");
-      setFormMessage("Success! Check your email for the tutorial videos.");
+      setSuccessOpen(true);
     } catch (error) {
       console.error(error);
       setFormMessage(
@@ -221,8 +223,10 @@ export default function TutorialOfferPage() {
         </h1>
 
         <p className={styles.tutorialIntro}>
-          Watch the tutorial and get the complete video series sent directly to
-          your email.
+          Watch the 20 Mins Video Tutorial on how to create your own store page
+          where you can upload your products, get and update your orders. Track
+          sales and monitor your income. Get the 20 Mins tutorial video directly
+          sent to your email.
         </p>
 
         <section className={styles.offerCountdown}>
@@ -363,6 +367,30 @@ export default function TutorialOfferPage() {
           apply
         </footer>
       </section>
+      {successOpen && (
+        <div className={styles.successOverlay}>
+          <div className={styles.successModal}>
+            <div className={styles.successIcon}>
+              <span>✓</span>
+            </div>
+
+            <h2>Success</h2>
+
+            <p>
+              Check your email <strong>({submittedEmail})</strong> for the
+              videos. Don't forget to check your spam as well.
+            </p>
+
+            <button
+              type="button"
+              className={styles.successButton}
+              onClick={() => setSuccessOpen(false)}
+            >
+              Okay
+            </button>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
