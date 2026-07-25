@@ -247,13 +247,27 @@ export default function PublicProductPage() {
     );
   }
 
+  const whatsappQuantity = cartQty > 0 ? cartQty : 1;
+
+  const whatsappTotalPrice = Number(data.price || 0) * whatsappQuantity;
+
+  const variantText =
+    hasVariants && Object.keys(selectedVariants).length > 0
+      ? `
+
+Options:
+${Object.entries(selectedVariants)
+  .map(([key, value]) => `${key}: ${value}`)
+  .join("\n")}`
+      : "";
+
   const whatsappText = `Hi, I want to order:
 
-${data.name}
+${data.name}${variantText}
 
-Quantity: ${qty}
+Quantity: ${whatsappQuantity}
 
-Price: ₦${data.price}
+Total Price: ₦${whatsappTotalPrice.toLocaleString()}
 `;
   if (!hydrated) return null;
 
