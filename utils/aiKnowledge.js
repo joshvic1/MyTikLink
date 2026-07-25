@@ -195,7 +195,7 @@ The AI should respond like this in such cases:
 
 If the user seems serious and needs full assistance, the AI can also suggest a paid setup option:
 
-* “If you would like a professional to help you set everything up for you, you can message this number: +2348129037939”
+* “If you would like a professional to help you set everything up for you, you can message this number: +2347072571740”
 
 ---
 
@@ -1389,7 +1389,7 @@ Instead, guide them to support:
 
 If they need full setup help:
 
-“You can also message +2348129037939 for a professional setup.”
+“You can also message +2347072571740 for a professional setup.”
 
 For ads, video content works best with MyTikLink.
 
@@ -2277,6 +2277,450 @@ mobile responsiveness
 easy editing
 
 all inside one system
-;
+
+
+MYTIKLINK STORE FEATURE
+
+MyTikLink now has an online store feature that allows users to create a simple storefront, add products, receive orders, collect payment details, and manage customers directly from their dashboard.
+
+The store feature is useful for:
+
+Business owners selling physical products
+Creators selling digital products
+Coaches selling files, courses, ebooks, or digital access
+Small businesses that want a simple online shop
+Advertisers who want to send traffic to a product page instead of only WhatsApp
+Users who want to combine ads, pixels, products, and checkout in one system
+
+HOW TO CREATE A STORE
+
+To create a store, the user should go to the Store section from their dashboard.
+
+If they do not have a store yet, they will see the store setup modal.
+
+The setup process asks for:
+
+Store name
+Business type
+Category
+Phone number
+Payment details
+Store design/template
+
+After choosing a design and launching the store, MyTikLink creates a storefront page for the user automatically.
+
+The storefront link usually looks like:
+
+https://www.mytiklink.com/s/store-slug
+
+If the user has connected a custom domain, their store can also be opened through their custom domain.
+
+STORE DESIGN
+
+During store setup, users can choose a storefront template.
+
+The selected template is cloned into their own storefront page.
+
+If the template has a menu, MyTikLink can automatically use the user's store name in the menu.
+
+Users can later edit the storefront design from the Store Design page.
+
+Inside the store design editor, users can customize sections and elements, including:
+
+Menu
+Text
+Images
+Buttons
+Hero sections
+Product sections
+Background colors
+Background images
+Spacing and styling
+
+Users must click Save Design to save their storefront changes.
+
+PRODUCTS
+
+Users can add products from the Store Products page.
+
+There are two major product types:
+
+Physical products
+Digital products
+
+PHYSICAL PRODUCTS
+
+Physical products are normal items that require stock, quantity, delivery, or shipping.
+
+Examples:
+
+Clothes
+Shoes
+Bags
+Beauty products
+Accessories
+Physical goods
+
+For physical products, users can set:
+
+Product name
+Description
+Images
+Price
+Compare price
+Category
+Stock quantity
+SKU
+Product status
+Variants if needed
+
+Physical products can have quantity increase and decrease buttons on the product page and inside the cart.
+
+DIGITAL PRODUCTS
+
+Digital products are products that do not need shipping or physical delivery.
+
+Examples:
+
+Ebooks
+Courses
+PDF files
+Tutorial videos
+Templates
+Downloads
+Digital access
+External course links
+
+For digital products, quantity controls are not shown.
+
+When a customer clicks Buy Now or the custom button text on a digital product, the item is added to cart and the cart drawer opens automatically.
+
+Digital products can use delivery methods such as:
+
+Download file
+External URL
+
+For digital products, stock management and low-stock alerts are not needed.
+
+VARIANTS
+
+Physical products can have variants.
+
+Variants are useful when the same product has different options.
+
+Examples:
+
+Size: Small, Medium, Large
+Color: Red, Black, Blue
+Storage: 64GB, 128GB
+Package: Basic, Premium
+
+When a product has variants, the main stock is calculated from the total stock of all variant options.
+
+For example:
+
+Size 40 has 5 in stock
+Size 41 has 3 in stock
+Size 42 has 2 in stock
+
+The total stock becomes 10.
+
+When variants are enabled, the main stock field should not be manually edited because stock comes from the individual variant inventory.
+
+Customers must select the required variant before adding the product to cart.
+
+If a variant option is out of stock, the customer should not be able to buy it.
+
+LOW STOCK
+
+The dashboard can show low-stock products.
+
+Low stock should only apply to physical products.
+
+Digital products should not appear in low-stock alerts.
+
+Users can open the low-stock modal and add stock directly from there.
+
+PRODUCT LINKS
+
+Each product has its own public product page.
+
+The product link usually looks like:
+
+https://www.mytiklink.com/s/store-slug/product-slug
+
+If the store has a verified custom domain, product links can use the custom domain instead.
+
+Users can copy a product link from the Products page.
+
+Users can also visit the product page directly from the Products page.
+
+CUSTOM ADD TO CART BUTTON TEXT
+
+Store owners can customize the Add to Cart button text from Store Settings.
+
+The custom text should not be more than 5 words.
+
+If no custom text is set:
+
+Physical products use "ADD TO CART"
+Digital products use "BUY NOW"
+
+Examples of custom button text:
+
+Buy This
+Order Now
+Pay Now
+Get Access
+Start Now
+
+CART AND CHECKOUT
+
+Customers can add products to cart.
+
+For physical products, customers can increase or decrease quantity.
+
+For digital products, quantity controls are not shown.
+
+The cart drawer shows selected products, quantity, price, subtotal, and payment information.
+
+Customers can submit their order details.
+
+The cart drawer should always keep important action buttons visible, especially on mobile browsers where the address bar can reduce screen height.
+
+PAYMENT METHODS
+
+Store owners can add payment details in Store Settings.
+
+Supported payment setup can include:
+
+Bank payment
+Crypto wallet
+Paystack, if enabled
+
+For bank payment, the store owner can enter:
+
+Bank name
+Account name
+Account number
+
+Customers can use these details to make payment.
+
+ORDERS
+
+Store owners can view orders from the Store Orders page.
+
+Orders can have statuses such as:
+
+Pending
+Paid
+Shipped
+Delivered
+Cancelled
+
+Digital products may not require shipping.
+
+Physical products may require fulfillment and delivery tracking.
+
+CUSTOMER ACCOUNT PAGE
+
+Customers can log in to view their orders.
+
+The customer account page shows previous purchases and order status.
+
+It should understand both digital and physical orders.
+
+For digital orders, the page should focus on product access and payment status.
+
+For physical orders, the page should focus on order progress, shipping, and delivery status.
+
+STORE SETTINGS
+
+The Store Settings page allows store owners to manage important store details.
+
+Settings can include:
+
+Store name
+Phone number
+Email address
+WhatsApp number
+Branding
+Payment details
+Customer experience
+Appearance
+Analytics
+Custom domain
+Add to cart button text
+Delete store option
+
+The phone number and WhatsApp number can be different.
+
+Phone number is the general store phone.
+
+WhatsApp number is the number used for WhatsApp order/contact buttons.
+
+If WhatsApp number is missing, the system may fall back to the store phone number so the WhatsApp link does not break.
+
+CUSTOM DOMAIN
+
+Store owners can connect an existing custom domain to their storefront.
+
+This allows their store to open on a domain like:
+
+https://www.customer-domain.com
+
+instead of only:
+
+https://www.mytiklink.com/s/store-slug
+
+To connect a domain, the user goes to Store Settings and opens the Domain tab.
+
+The user enters their domain and clicks Connect Domain.
+
+MyTikLink then shows DNS records to add.
+
+The user must add the required DNS records inside their domain registrar dashboard.
+
+Common records include:
+
+TXT record for verification
+CNAME record for www
+A record for root domain if required
+
+Users usually do not need to change nameservers if they are only connecting DNS records.
+
+After adding DNS records, the user clicks Verify DNS.
+
+DNS verification can take a few minutes to a few hours depending on the registrar.
+
+If verification fails, the user should check:
+
+The host/name field is correct
+The value field is correct
+The record was saved
+There are no extra spaces
+The domain has had enough time to propagate
+
+STORE PIXELS AND EVENTS
+
+Storefront pages can load the user's TikTok Pixel and Meta Pixel.
+
+This allows store visits, product views, cart actions, checkout actions, and purchases to be tracked.
+
+MyTikLink also supports server-side events through:
+
+Meta Conversions API
+TikTok Events API
+
+If the user has connected pixels in the Pixel/Events page, their storefront and product pages can use those pixels for tracking.
+
+Store events can include:
+
+ViewContent
+AddToCart
+ClickButton
+Contact
+Checkout
+Purchase
+
+This helps ad platforms understand customer behavior and improve ad optimization.
+
+WHATSAPP ORDER BUTTON
+
+Product pages may show a WhatsApp button if enabled in store settings.
+
+When customers click the WhatsApp button, it opens WhatsApp with a prefilled order message.
+
+The message can include:
+
+Product name
+Selected variants
+Quantity
+Total price
+
+If customers increase the cart quantity, the WhatsApp message should use the cart quantity, not just 1.
+
+If the WhatsApp link shows "undefined", it usually means the product page did not receive the store WhatsApp number or phone number from the backend.
+
+STORE LINK SHARING
+
+The store dashboard can show a Store Link card.
+
+This lets users copy their store link quickly.
+
+If a custom domain is connected and verified, the copied store link should use the custom domain.
+
+If no custom domain is connected, it should use the default MyTikLink store URL.
+
+DELETE STORE
+
+Store owners can delete their store.
+
+When a store is deleted, all related store data should be removed, including:
+
+Products
+Orders
+Storefront page
+Store data
+
+This action should be confirmed through a custom confirmation modal, not just a browser alert.
+
+COMMON STORE QUESTIONS AND ANSWERS
+
+If a user asks how to create a store:
+
+Tell them to go to the Store section from their dashboard, complete the setup steps, choose a design, add payment details, and launch the store.
+
+If a user asks how to add products:
+
+Tell them to go to Store, open Products, click Add Product, fill in the product details, upload images, choose physical or digital product, and save.
+
+If a user asks why digital products do not show quantity controls:
+
+Explain that digital products do not need quantity controls because they are usually bought once for access or download.
+
+If a user asks why a product is out of stock:
+
+Tell them to check the stock quantity. If the product has variants, they should check the stock for the selected variant option.
+
+If a user asks why low stock is not showing digital products:
+
+Explain that low-stock tracking is only for physical products because digital products do not require inventory.
+
+If a user asks how to connect a custom domain:
+
+Tell them to go to Store Settings, open Domain, enter their domain, click Connect Domain, add the DNS records shown, wait for propagation, then click Verify DNS.
+
+If a user asks why their custom domain is not working:
+
+Ask them to confirm that the DNS records were added correctly, that the domain has been added to the hosting provider, and that DNS propagation has completed.
+
+If a user asks why WhatsApp opens with undefined:
+
+Tell them the store WhatsApp number may be empty or not returned properly. They should go to Store Settings and add their WhatsApp number. If the issue continues, they should contact support.
+
+If a user asks how to edit store design:
+
+Tell them to go to Store Design from the store menu, customize the storefront, then click Save Design.
+
+If a user asks how to receive payment:
+
+Tell them to add their bank details or payment method in Store Settings. Customers will see payment instructions during checkout.
+
+If a user asks whether MyTikLink delivers products:
+
+Explain that MyTikLink helps create the storefront and collect orders, but the store owner is responsible for delivery or fulfillment unless a separate fulfillment service is added.
+
+If a user asks about store analytics:
+
+Explain that store analytics help the owner see store activity, product activity, orders, and revenue-related information.
+
+If a store issue is technical, complex, or involves payment/order problems that the AI cannot safely solve, the AI should direct the user to human support.
+
+The AI can say:
+
+"This looks like something support should check directly on your account. Please contact support so they can inspect your store setup."
+
+
 `;
 export default aiKnowledge;
