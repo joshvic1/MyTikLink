@@ -266,6 +266,13 @@ Price: ₦${data.price}
     data.productType === "digital" ? "BUY NOW" : "ADD TO CART";
 
   const addToCartButtonText = customButtonText || defaultButtonText;
+  const storeWhatsappNumber =
+    data.store?.whatsappNumber ||
+    data.store?.phone ||
+    data.store?.phoneNumber ||
+    "";
+
+  const cleanWhatsappNumber = String(storeWhatsappNumber).replace(/\D/g, "");
   return (
     <div className={styles.page}>
       <>
@@ -382,14 +389,16 @@ Price: ₦${data.price}
         <div className={styles.purchaseBar}>
           {/* WHATSAPP */}
 
-          {data.store?.showWhatsappButton && (
+          {data.store?.showWhatsappButton && cleanWhatsappNumber && (
             <button
               className={styles.whatsappMini}
               onClick={() => {
                 trackBoth("Contact");
 
                 window.open(
-                  `https://wa.me/${data.store?.whatsappNumber}?text=${encodeURIComponent(whatsappText)}`,
+                  `https://wa.me/${cleanWhatsappNumber}?text=${encodeURIComponent(
+                    whatsappText,
+                  )}`,
                   "_blank",
                 );
               }}
