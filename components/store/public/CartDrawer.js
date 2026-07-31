@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   X,
@@ -15,7 +15,7 @@ import {
 
 import { useCart } from "../context/CartContext";
 
-import { uploadImage } from "@/services/uploadService";
+import { uploadPaymentProof } from "@/services/uploadService";
 import { trackBoth } from "@/utils/storeTracking";
 import { createOrder } from "@/services/orderService";
 import Toast from "../ui/Toast";
@@ -27,7 +27,7 @@ export default function CartDrawer({ open, onClose }) {
   const [proof, setProof] = useState(null);
 
   const [submitting, setSubmitting] = useState(false);
-
+  const [submitProgress, setSubmitProgress] = useState(0);
   const [customer, setCustomer] = useState({
     name: "",
     email: "",
@@ -41,7 +41,22 @@ export default function CartDrawer({ open, onClose }) {
   });
   const [errors, setErrors] = useState({});
   const { cart, subtotal, removeFromCart, updateQty, clearCart } = useCart();
+  useEffect(() => {
+    if (!submitting) return;
 
+    const timer = setInterval(() => {
+      setSubmitProgress((prev) => {
+        if (prev >= 92) return prev;
+
+        if (prev < 35) return prev + 7;
+        if (prev < 70) return prev + 4;
+
+        return prev + 2;
+      });
+    }, 320);
+
+    return () => clearInterval(timer);
+  }, [submitting]);
   const hasPhysicalProduct = cart.some(
     (item) => item.productType === "physical",
   );
@@ -101,15 +116,33 @@ export default function CartDrawer({ open, onClose }) {
 
     try {
       setSubmitting(true);
+      setSubmitProgress(8);
 
       let paymentProof = "";
 
       if (proof) {
-        const token = localStorage.getItem("token");
+        if (!proof.type?.startsWith("image/")) {
+          showToast("Please upload an image file", "error");
+          return;
+        }
 
-        const uploadRes = await uploadImage(proof, token);
+        if (proof.size > 5 * 1024 * 1024) {
+          showToast("Payment proof must be less than 5MB", "error");
+          return;
+        }
+
+        const uploadRes = await uploadPaymentProof(proof, (progressEvent) => {
+          if (!progressEvent.total) return;
+
+          const percent = Math.round(
+            (progressEvent.loaded * 60) / progressEvent.total,
+          );
+
+          setSubmitProgress(Math.max(8, percent));
+        });
 
         paymentProof = uploadRes.url;
+        setSubmitProgress(65);
       }
 
       await createOrder({
@@ -142,6 +175,9 @@ export default function CartDrawer({ open, onClose }) {
           selectedVariants: item.selectedVariants || {},
         })),
       });
+      setSubmitProgress(100);
+
+      await new Promise((resolve) => setTimeout(resolve, 450));
       trackBoth("AddPaymentInfo", {
         value: Number(subtotal || 0),
         currency: "NGN",
@@ -149,6 +185,7 @@ export default function CartDrawer({ open, onClose }) {
         content_ids: cart.map((item) => item._id),
         content_type: "product",
       });
+
       clearCart();
 
       setStep("success");
@@ -166,8 +203,12 @@ export default function CartDrawer({ open, onClose }) {
       showToast("Order submitted successfully");
     } catch (err) {
       console.log(err);
-
-      alert("Failed to submit order");
+      setSubmitProgress(0);
+      showToast(
+        err?.response?.data?.message ||
+          "Failed to submit order. Please try again.",
+        "error",
+      );
     } finally {
       setSubmitting(false);
     }
@@ -636,11 +677,20 @@ export default function CartDrawer({ open, onClose }) {
               </button>
 
               <button
-                className={styles.action}
+                className={`${styles.action} ${submitting ? styles.progressAction : ""}`}
                 onClick={submitOrder}
                 disabled={submitting}
+                style={{
+                  "--progress": `${submitProgress}%`,
+                }}
               >
-                {submitting ? "Submitting..." : "Submit Proof"}
+                {submitting && <span className={styles.progressFill} />}
+
+                <span className={styles.progressText}>
+                  {submitting
+                    ? `${Math.round(submitProgress)}% Submitting...`
+                    : "Submit Proof"}
+                </span>
               </button>
             </div>
           )}

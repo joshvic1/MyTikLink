@@ -1093,3 +1093,53 @@
   font-size: 11px;
   font-weight: 750;
 }
+.progressAction {
+  position: relative;
+  overflow: hidden;
+  background: #0f172a;
+  color: #ffffff;
+  cursor: not-allowed;
+}
+
+.progressFill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--progress);
+  background: linear-gradient(90deg, #16a34a, #22c55e);
+  border-radius: inherit;
+  transition: width 0.28s ease;
+  z-index: 1;
+}
+
+.progressText {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  color: #ffffff;
+  font-weight: 850;
+}
+
+.progressAction::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    110deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.18) 42%,
+    transparent 72%
+  );
+  transform: translateX(-100%);
+  animation: progressShine 1.1s ease-in-out infinite;
+  z-index: 3;
+  pointer-events: none;
+}
+
+@keyframes progressShine {
+  to {
+    transform: translateX(100%);
+  }
+}

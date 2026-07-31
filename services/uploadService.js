@@ -17,3 +17,18 @@ export const uploadImage = async (file, token) => {
 
   return res.data;
 };
+export const uploadPaymentProof = async (file, onUploadProgress) => {
+  const formData = new FormData();
+
+  formData.append("image", file);
+
+  const res = await axios.post(`${API}/upload/payment-proof`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+    timeout: 60000,
+    onUploadProgress,
+  });
+
+  return res.data;
+};
