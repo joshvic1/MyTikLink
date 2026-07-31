@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 
 import { useCart } from "../context/CartContext";
-
+import imageCompression from "browser-image-compression";
 import { uploadPaymentProof } from "@/services/uploadService";
 import { trackBoth } from "@/utils/storeTracking";
 import { createOrder } from "@/services/orderService";
@@ -41,19 +41,20 @@ export default function CartDrawer({ open, onClose }) {
   });
   const [errors, setErrors] = useState({});
   const { cart, subtotal, removeFromCart, updateQty, clearCart } = useCart();
+
   useEffect(() => {
     if (!submitting) return;
 
     const timer = setInterval(() => {
       setSubmitProgress((prev) => {
-        if (prev >= 92) return prev;
+        if (prev >= 60) return prev;
 
-        if (prev < 35) return prev + 7;
-        if (prev < 70) return prev + 4;
+        if (prev < 30) return prev + 4;
+        if (prev < 50) return prev + 2;
 
-        return prev + 2;
+        return prev + 1;
       });
-    }, 320);
+    }, 450);
 
     return () => clearInterval(timer);
   }, [submitting]);
@@ -116,7 +117,7 @@ export default function CartDrawer({ open, onClose }) {
 
     try {
       setSubmitting(true);
-      setSubmitProgress(8);
+      setSubmitProgress(5);
 
       let paymentProof = "";
 
@@ -131,18 +132,22 @@ export default function CartDrawer({ open, onClose }) {
           return;
         }
 
-        const uploadRes = await uploadPaymentProof(proof, (progressEvent) => {
-          if (!progressEvent.total) return;
+        const uploadRes = await uploadPaymentProof(
+          compressedProof,
+          (progressEvent) => {
+            if (!progressEvent.total) return;
 
-          const percent = Math.round(
-            (progressEvent.loaded * 60) / progressEvent.total,
-          );
+            const uploadPercent = Math.round(
+              (progressEvent.loaded * 65) / progressEvent.total,
+            );
 
-          setSubmitProgress(Math.max(8, percent));
-        });
+            setSubmitProgress((prev) => Math.max(prev, uploadPercent));
+          },
+        );
 
         paymentProof = uploadRes.url;
-        setSubmitProgress(65);
+
+        setSubmitProgress((prev) => Math.max(prev, 70));
       }
 
       await createOrder({
