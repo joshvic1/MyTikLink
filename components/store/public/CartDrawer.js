@@ -115,6 +115,16 @@ export default function CartDrawer({ open, onClose }) {
       return;
     }
 
+    if (!proof.type?.startsWith("image/")) {
+      showToast("Please upload an image file", "error");
+      return;
+    }
+
+    if (proof.size > 5 * 1024 * 1024) {
+      showToast("Payment proof must be less than 5MB", "error");
+      return;
+    }
+
     try {
       setSubmitting(true);
       setSubmitProgress(5);
@@ -122,15 +132,15 @@ export default function CartDrawer({ open, onClose }) {
       let paymentProof = "";
 
       if (proof) {
-        if (!proof.type?.startsWith("image/")) {
-          showToast("Please upload an image file", "error");
-          return;
-        }
+        setSubmitProgress((prev) => Math.max(prev, 12));
 
-        if (proof.size > 5 * 1024 * 1024) {
-          showToast("Payment proof must be less than 5MB", "error");
-          return;
-        }
+        const compressedProof = await imageCompression(proof, {
+          maxSizeMB: 1,
+          maxWidthOrHeight: 1400,
+          useWebWorker: true,
+        });
+
+        setSubmitProgress((prev) => Math.max(prev, 25));
 
         const uploadRes = await uploadPaymentProof(
           compressedProof,
@@ -138,12 +148,16 @@ export default function CartDrawer({ open, onClose }) {
             if (!progressEvent.total) return;
 
             const uploadPercent = Math.round(
-              (progressEvent.loaded * 65) / progressEvent.total,
+              25 + (progressEvent.loaded * 45) / progressEvent.total,
             );
 
             setSubmitProgress((prev) => Math.max(prev, uploadPercent));
           },
         );
+
+        paymentProof = uploadRes.url;
+
+        setSubmitProgress((prev) => Math.max(prev, 75));
 
         paymentProof = uploadRes.url;
 
