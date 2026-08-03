@@ -3,21 +3,17 @@
 import styles from "@/styles/pageNameSheet.module.css";
 import axios from "axios";
 
-export default function PlanChangeSheet({ currentPlan, onClose, onSuccess }) {
+export default function PlanChangeSheet({ currentPlan, onClose }) {
   const token =
     typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
   const plans = getAvailablePlans(currentPlan);
 
-  const handleUpgrade = async (plan, cycle, price, keepExpiry) => {
+  const handleUpgrade = async (plan) => {
     try {
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/payments/initiate`,
-        {
-          plan: p.plan, // ✅ already full string
-          overrideAmount: p.price,
-          keepExpiry: p.keepExpiry || false,
-        },
+        { plan },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -40,12 +36,13 @@ export default function PlanChangeSheet({ currentPlan, onClose, onSuccess }) {
 
         {plans.length === 0 ? (
           <p style={{ textAlign: "center", color: "#aaa" }}>
-            You are on the highest plan. Wait for expiry and renew.
+            You are already on the highest plan. You can change plan after your
+            current plan expires.
           </p>
         ) : (
-          plans.map((p, i) => (
+          plans.map((p) => (
             <div
-              key={i}
+              key={p.plan}
               style={{
                 border: "1px solid #333",
                 borderRadius: "12px",
@@ -54,7 +51,7 @@ export default function PlanChangeSheet({ currentPlan, onClose, onSuccess }) {
               }}
             >
               <h4>
-                {p.name} — ₦{p.price.toLocaleString()}
+                {p.name} - ₦{p.price.toLocaleString()}
               </h4>
 
               {p.discount && (
@@ -63,11 +60,13 @@ export default function PlanChangeSheet({ currentPlan, onClose, onSuccess }) {
                 </p>
               )}
 
+              {p.note && (
+                <p style={{ color: "#94a3b8", fontSize: "12px" }}>{p.note}</p>
+              )}
+
               <button
                 className={styles.button}
-                onClick={() =>
-                  handleUpgrade(p.plan, p.cycle, p.price, p.keepExpiry)
-                }
+                onClick={() => handleUpgrade(p.plan)}
               >
                 Upgrade
               </button>
@@ -78,26 +77,17 @@ export default function PlanChangeSheet({ currentPlan, onClose, onSuccess }) {
     </div>
   );
 }
+
 function getAvailablePlans(currentPlan) {
   switch (currentPlan) {
     case "standard_monthly":
       return [
         {
-          name: "Standard Yearly",
-          plan: "standard_yearly",
-          price: 18000,
-        },
-        {
           name: "Pro Monthly",
           plan: "pro_monthly",
-          price: 3000, // discount
+          price: 3000,
           discount: true,
-          keepExpiry: true,
-        },
-        {
-          name: "Pro Yearly",
-          plan: "pro_yearly",
-          price: 40000,
+          note: "Your current expiry date stays the same.",
         },
       ];
 
@@ -106,9 +96,9 @@ function getAvailablePlans(currentPlan) {
         {
           name: "Pro Yearly",
           plan: "pro_yearly",
-          price: 22000, // discount
+          price: 22000,
           discount: true,
-          keepExpiry: true,
+          note: "Your expiry keeps the same day and month, then moves one year ahead.",
         },
       ];
 
@@ -117,7 +107,9 @@ function getAvailablePlans(currentPlan) {
         {
           name: "Pro Yearly",
           plan: "pro_yearly",
-          price: 40000,
+          price: 35000,
+          discount: true,
+          note: "Your expiry keeps the same day and month, then moves one year ahead.",
         },
       ];
 
