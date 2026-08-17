@@ -97,6 +97,24 @@ export const createElement = (type) => {
         padding: 0,
         margin: 0,
       };
+
+    case "html":
+      return {
+        ...base,
+        html: `<div style="padding: 20px; border-radius: 16px; background: #f8fafc; color: #111827;">
+  <h3 style="margin: 0 0 8px;">Custom HTML Block</h3>
+  <p style="margin: 0;">Paste your HTML here and it will render on the page.</p>
+</div>`,
+        bg: "transparent",
+        padding: 0,
+        margin: 0,
+        borderEnabled: false,
+        borderWidth: 1,
+        borderStyle: "solid",
+        borderColor: "#e5e7eb",
+        radius: 0,
+      };
+
     case "divider":
       return {
         ...base,

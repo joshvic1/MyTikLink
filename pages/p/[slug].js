@@ -479,6 +479,7 @@ export default function PublicPage() {
 ========================= */
   useEffect(() => {
     if (!page) return;
+    if (page.builderType === "custom") return;
 
     const form = document.querySelector("[data-lead-form='true']");
 
@@ -647,6 +648,7 @@ export default function PublicPage() {
 ========================= */
   useEffect(() => {
     if (!page) return;
+    if (page.builderType === "custom") return;
 
     const ctaBtn = document.querySelector("[data-cta='true']");
     if (!ctaBtn) return; // not a button template

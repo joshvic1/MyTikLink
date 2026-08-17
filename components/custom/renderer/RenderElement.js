@@ -12,6 +12,7 @@ import RenderMenu from "../shared/RenderMenu";
 import RenderHero from "../shared/RenderHero";
 import ProductGrid from "../../store/public/ProductGrid";
 import RenderStoreProducts from "../shared/RenderStoreProducts";
+import RenderHtml from "../shared/RenderHtml";
 
 export default function RenderElement({
   el,
@@ -24,6 +25,9 @@ export default function RenderElement({
       return <RenderText element={el} />;
     case "image":
       return <RenderImage element={el} />;
+
+    case "html":
+      return <RenderHtml element={el} page={page} />;
 
     case "button":
       return (

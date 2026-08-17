@@ -1,0 +1,20 @@
+export const normalizeHtml = (html = "") => {
+  return String(html)
+    .replace(/<!doctype[^>]*>/gi, "")
+    .replace(/<html\b[^>]*>/gi, "")
+    .replace(/<\/html>/gi, "")
+    .replace(/<head\b[^>]*>/gi, "")
+    .replace(/<\/head>/gi, "")
+    .replace(/<body\b[^>]*>/gi, "")
+    .replace(/<\/body>/gi, "")
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
+    .replace(/<noscript\b[^<]*(?:(?!<\/noscript>)<[^<]*)*<\/noscript>/gi, "")
+    .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, "")
+    .replace(/<object\b[^<]*(?:(?!<\/object>)<[^<]*)*<\/object>/gi, "")
+    .replace(/<embed\b[^>]*>/gi, "")
+    .replace(/<meta\b[^>]*>/gi, "")
+    .replace(/\son\w+=(["']).*?\1/gi, "")
+    .replace(/\son\w+=([^\s>]+)/gi, "")
+    .replace(/(href|src|action)\s*=\s*(["'])\s*javascript:[^"']*\2/gi, '$1="#"')
+    .trim();
+};

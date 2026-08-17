@@ -17,12 +17,14 @@ import {
   MessageSquare,
   LayoutPanelTop,
   ShoppingBag,
+  Code2,
 } from "lucide-react";
 
 const elements = [
   { type: "text", label: "Text", icon: Type, available: true },
   { type: "image", label: "Image", icon: ImageIcon, available: true },
   { type: "button", label: "Button", icon: MousePointerClick, available: true },
+  { type: "html", label: "HTML", icon: Code2, available: true },
   { type: "video", label: "Video", icon: Video, available: true },
   { type: "divider", label: "Divider", icon: Minus, available: true },
   { type: "spacer", label: "Spacer", icon: ArrowUpDown, available: true },

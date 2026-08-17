@@ -8,6 +8,7 @@ import VideoElement from "../elements/VideoElement";
 import MenuElement from "../elements/MenuElement";
 import HeroElement from "../elements/HeroElement";
 import ProductsElement from "../elements/ProductsElement";
+import HtmlElement from "../elements/HtmlElement";
 export default function ElementRenderer({
   element,
   sectionId,
@@ -37,6 +38,16 @@ export default function ElementRenderer({
     case "button":
       return (
         <ButtonElement
+          element={element}
+          sectionId={sectionId}
+          onUpdateElement={onUpdateElement}
+          onDeleteElement={onDeleteElement}
+        />
+      );
+
+    case "html":
+      return (
+        <HtmlElement
           element={element}
           sectionId={sectionId}
           onUpdateElement={onUpdateElement}

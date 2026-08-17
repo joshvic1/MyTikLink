@@ -3,17 +3,19 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Sparkles } from "lucide-react";
 
 import DashboardLayout from "@/components/DashboardLayout";
 import styles from "@/styles/pageCreate.module.css";
 import Link from "next/link";
 import FeatureAlert from "@/components/ui/FeatureAlert";
+import AIPageBuilderModal from "@/components/custom/ai/AIPageBuilderModal";
 
 export default function CreatePage() {
   const [templates, setTemplates] = useState([]);
   const [selected, setSelected] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showAIBuilder, setShowAIBuilder] = useState(false);
 
   const router = useRouter();
 
@@ -81,6 +83,19 @@ export default function CreatePage() {
 
               <span>Create your own design</span>
             </Link>
+
+            <button
+              type="button"
+              className={styles.aiCard}
+              onClick={() => setShowAIBuilder(true)}
+            >
+              <div className={styles.aiIcon}>
+                <Sparkles size={22} />
+              </div>
+
+              <span>Build with AI</span>
+            </button>
+
             {templates.map((tpl) => (
               <div
                 key={tpl._id}
@@ -114,6 +129,12 @@ export default function CreatePage() {
             </button>
           </div>
         </div>
+
+        <AIPageBuilderModal
+          open={showAIBuilder}
+          onClose={() => setShowAIBuilder(false)}
+          token={token}
+        />
       </div>
     </DashboardLayout>
   );
