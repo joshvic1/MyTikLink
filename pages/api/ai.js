@@ -468,6 +468,8 @@ Action rules:
 - Use variant "success" for completed/safe actions.
 - Use variant "warning" for billing, DNS, or caution actions.
 - Prefer internal links from Available navigation actions.
+- Do not rely only on buttons. When a destination is useful inside your explanation, include it naturally as a markdown hyperlink like [open billing](/dashboard/settings).
+- Use buttons only for the clearest next actions, not every helpful link.
 - Do not return external links as autoRedirect.
 - redirectTo must be an internal path like "/store/products" or null.
 - autoRedirect must be true only when the user clearly asks you to take them somewhere.

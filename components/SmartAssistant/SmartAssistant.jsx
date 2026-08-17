@@ -40,10 +40,10 @@ export default function SmartAssistant() {
   const [loading, setLoading] = useState(false);
   const [userProfile, setUserProfile] = useState(null);
   const bottomRef = useRef(null);
+  const inputRef = useRef(null);
+  const latestAssistantRef = useRef(null);
   const lastRouteRef = useRef("");
 
-  const assistantInitial = "N";
-  const displayName = userProfile?.name || "Mytiklink User";
   const latestAssistantActions = useMemo(() => {
     const latest = [...messages]
       .reverse()
@@ -124,7 +124,30 @@ export default function SmartAssistant() {
   }, []);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (!open) return;
+
+    window.setTimeout(() => {
+      inputRef.current?.focus();
+    }, 120);
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const lastMessage = messages[messages.length - 1];
+
+    window.setTimeout(() => {
+      if (lastMessage?.role === "assistant") {
+        latestAssistantRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+
+        return;
+      }
+
+      bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 80);
   }, [messages, loading, open]);
 
   useEffect(() => {
@@ -329,15 +352,13 @@ export default function SmartAssistant() {
             <header className={styles.header}>
               <div className={styles.headerLeft}>
                 <div className={styles.assistantMark}>
-                  <span>{assistantInitial}</span>
+                  <Sparkles size={22} />
                   <i />
                 </div>
 
                 <div>
                   <p>MyTikLink Assistant</p>
-                  <span>
-                    {displayName} <b>•</b> {routeContext.title}
-                  </span>
+                  <span>ASK ME ANYTHING</span>
                 </div>
               </div>
 
@@ -388,6 +409,12 @@ export default function SmartAssistant() {
                 {messages.map((message, index) => (
                     <div
                       key={`${message.role}-${index}`}
+                      ref={
+                        message.role !== "user" &&
+                        index === messages.length - 1
+                          ? latestAssistantRef
+                          : null
+                      }
                       className={
                         message.role === "user"
                           ? styles.userRow
@@ -396,7 +423,7 @@ export default function SmartAssistant() {
                     >
                       {message.role !== "user" && (
                         <div className={styles.messageAvatar}>
-                          {assistantInitial}
+                          <Sparkles size={15} />
                         </div>
                       )}
 
@@ -477,6 +504,7 @@ export default function SmartAssistant() {
                 }}
               >
                 <input
+                  ref={inputRef}
                   value={input}
                   onChange={(event) => setInput(event.target.value)}
                   placeholder="Ask what you want to do..."
