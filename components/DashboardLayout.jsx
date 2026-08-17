@@ -23,8 +23,6 @@ import AuthModal from "@/components/AuthModal";
 import useAuth from "@/hooks/useAuth";
 import TawkChat from "@/components/TawkChat";
 import TelegramChatButton from "./TelegramChatButton";
-import FloatingAI from "@/components/MyTikLinkAI/FloatingAI";
-import AIChat from "@/components/MyTikLinkAI/AIChat";
 import { motion } from "framer-motion";
 import AddPhoneModal from "@/components/AddPhoneModal";
 import BlogHelpTopbar from "./BlogHelpTopBar";
@@ -43,7 +41,6 @@ export default function DashboardLayout({
   const [expanded, setExpanded] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isPro = user?.plan?.toLowerCase().includes("pro");
-  const [openAI, setOpenAI] = useState(false);
 
   const { login } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -112,7 +109,11 @@ export default function DashboardLayout({
 
   return (
     <>
-      <BlogHelpTopbar onMessageSupport={() => setOpenAI(true)} />
+      <BlogHelpTopbar
+        onMessageSupport={() => {
+          window.dispatchEvent(new CustomEvent("open-smart-assistant"));
+        }}
+      />
       <div
         className={`${s.layout} ${
           expanded ? s.sidebarExpanded : s.sidebarCollapsed
@@ -266,10 +267,6 @@ export default function DashboardLayout({
             }}
           />
         )}
-        {/* Dashboard support chat */}
-
-        <FloatingAI onOpen={() => setOpenAI(true)} />
-        {openAI && <AIChat onClose={() => setOpenAI(false)} />}
         <AddPhoneModal
           isOpen={showPhoneModal}
           onClose={() => {

@@ -3,6 +3,14 @@ import { Toaster } from "react-hot-toast";
 import Layout from "@/components/Layout";
 import { useRouter } from "next/router";
 import { Plus_Jakarta_Sans } from "next/font/google";
+import dynamic from "next/dynamic";
+
+const SmartAssistant = dynamic(
+  () => import("@/components/SmartAssistant/SmartAssistant"),
+  {
+    ssr: false,
+  },
+);
 
 // Load the app font once at module level.
 // Next.js font loaders must stay outside the component.
@@ -49,6 +57,7 @@ export default function App({ Component, pageProps }) {
   const isHomePage = router.pathname === "/home";
   const isStorePage = router.pathname.startsWith("/store");
   const isBlogPage = router.pathname.startsWith("/blog");
+  const showSmartAssistant = isDashboardPage || isStorePage;
 
   // Public pages, dashboards, admin pages, stores, and custom domains
   // should render without the global marketing Layout/menu.
@@ -69,6 +78,8 @@ export default function App({ Component, pageProps }) {
     return (
       <main className={plusJakarta.className}>
         <Component {...pageProps} />
+
+        {showSmartAssistant && <SmartAssistant />}
 
         <Toaster position="top-center" />
       </main>

@@ -1,11 +1,35 @@
 import aiKnowledge from "@/utils/aiKnowledge";
+import { smartAssistantKnowledge } from "@/config/smartAssistantConfig";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { messages } = req.body;
+  const { messages = [], mode, smartContext } = req.body;
+
+  const smartContextPrompt =
+    mode === "smart-assistant" && smartContext
+      ? `
+CURRENT IN-APP CONTEXT
+- Current route: ${smartContext.route || "unknown"}
+- Current page: ${smartContext.pageTitle || "unknown"}
+- Recommended help for this page: ${smartContext.recommendedHelp || "none"}
+- User name: ${smartContext.user?.name || "unknown"}
+- User email: ${smartContext.user?.email || "unknown"}
+- User plan: ${smartContext.user?.plan || "unknown"}
+- User plan expiry: ${smartContext.user?.planExpiry || "unknown"}
+- Available navigation actions:
+${(smartContext.quickActions || [])
+  .map((action) => `  - ${action.label}: ${action.href}`)
+  .join("\n")}
+
+When the user asks where to go, give the relevant internal link in markdown.
+When the user asks how to do something, answer with clear steps for the current page.
+If the user is asking to open, go to, navigate, show, or take them to a page, you may set autoRedirect to true.
+Only set autoRedirect to true when the user clearly asks to be taken somewhere.
+`
+      : "";
 
   const systemPrompt = `
 You are MyTikLink AI — a smart assistant for users.
@@ -13,6 +37,10 @@ You are MyTikLink AI — a smart assistant for users.
 Use the knowledge below to answer questions:
 
 ${aiKnowledge}
+
+${smartAssistantKnowledge}
+
+${smartContextPrompt}
 
 Rules:
 - Always answer based on this knowledge
@@ -415,6 +443,37 @@ It focuses more on results, not just links.
 `;
 
   try {
+    const smartResponseInstructions =
+      mode === "smart-assistant"
+        ? `
+For smart-assistant mode, return ONLY valid JSON.
+Use this shape:
+{
+  "reply": "short helpful markdown response",
+  "actions": [
+    {
+      "label": "Button label",
+      "href": "/internal-path",
+      "variant": "primary"
+    }
+  ],
+  "redirectTo": null,
+  "autoRedirect": false
+}
+
+Action rules:
+- actions can contain up to 3 buttons.
+- Use variant "primary" for the best next action.
+- Use variant "secondary" for other useful actions.
+- Use variant "success" for completed/safe actions.
+- Use variant "warning" for billing, DNS, or caution actions.
+- Prefer internal links from Available navigation actions.
+- Do not return external links as autoRedirect.
+- redirectTo must be an internal path like "/store/products" or null.
+- autoRedirect must be true only when the user clearly asks you to take them somewhere.
+`
+        : "";
+
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -423,14 +482,60 @@ It focuses more on results, not just links.
       },
       body: JSON.stringify({
         model: "gpt-4o-mini",
-        messages: [{ role: "system", content: systemPrompt }, ...messages],
+        messages: [
+          { role: "system", content: `${systemPrompt}\n${smartResponseInstructions}` },
+          ...messages,
+        ],
+        ...(mode === "smart-assistant"
+          ? { response_format: { type: "json_object" } }
+          : {}),
       }),
     });
 
     const data = await response.json();
+    const content = data.choices?.[0]?.message?.content || "";
+
+    if (mode === "smart-assistant") {
+      try {
+        const parsed = JSON.parse(content);
+        const actions = Array.isArray(parsed.actions)
+          ? parsed.actions
+              .filter((action) => action?.label && action?.href)
+              .slice(0, 3)
+              .map((action) => ({
+                label: String(action.label).slice(0, 32),
+                href: String(action.href),
+                variant: ["primary", "secondary", "success", "warning"].includes(
+                  action.variant,
+                )
+                  ? action.variant
+                  : "secondary",
+              }))
+          : [];
+        const redirectTo =
+          typeof parsed.redirectTo === "string" &&
+          parsed.redirectTo.startsWith("/")
+            ? parsed.redirectTo
+            : null;
+
+        return res.status(200).json({
+          reply: parsed.reply || "How can I help you with this page?",
+          actions,
+          redirectTo,
+          autoRedirect: Boolean(parsed.autoRedirect && redirectTo),
+        });
+      } catch (parseErr) {
+        return res.status(200).json({
+          reply: content || "How can I help you with this page?",
+          actions: [],
+          redirectTo: null,
+          autoRedirect: false,
+        });
+      }
+    }
 
     res.status(200).json({
-      reply: data.choices?.[0]?.message?.content || "No response",
+      reply: content || "No response",
     });
   } catch (err) {
     console.error(err);
