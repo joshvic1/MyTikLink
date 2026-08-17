@@ -98,6 +98,10 @@
 
 /* FOOTER */
 .footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 30000;
+
   display: flex;
   gap: 14px;
   padding: 18px 24px;

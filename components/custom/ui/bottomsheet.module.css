@@ -5,7 +5,7 @@
   background: rgba(0, 0, 0, 0.3);
   display: flex;
   align-items: flex-end;
-  z-index: 1000;
+  z-index: 40000;
 }
 
 .sheet {
