@@ -1,4 +1,4 @@
-.floatingButton {
+﻿.floatingButton {
   position: fixed;
   right: 22px;
   bottom: 22px;
@@ -136,7 +136,8 @@
 }
 
 .panel {
-  height: min(820px, calc(100vh - 84px));
+  height: min(820px, calc(100dvh - 84px));
+  max-height: calc(100dvh - 84px);
   border: 1px solid #e6eaf1;
   border-radius: 26px;
   background: #ffffff;
@@ -681,12 +682,16 @@
   }
 
   .panelShell {
-    inset: auto 9px 74px 9px;
+    top: max(10px, env(safe-area-inset-top));
+    right: 9px;
+    bottom: max(10px, env(safe-area-inset-bottom));
+    left: 9px;
     width: auto;
   }
 
   .panel {
-    height: min(760px, calc(100vh - 88px));
+    height: 100%;
+    max-height: none;
     border-radius: 22px;
   }
 
@@ -762,3 +767,4 @@
     text-overflow: ellipsis;
   }
 }
+
