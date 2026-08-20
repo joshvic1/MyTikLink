@@ -1,6 +1,18 @@
 "use client";
 
-import { X, Crown, Info, Loader2, ChevronDown, ChevronUp } from "lucide-react";
+import {
+  X,
+  Crown,
+  Info,
+  Loader2,
+  ChevronDown,
+  ChevronUp,
+  Banknote,
+  CreditCard,
+  Copy,
+  Check,
+  ArrowLeft,
+} from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -12,6 +24,9 @@ export default function UpgradeModal({ currentPlan, setShowModal, onUpgrade }) {
   const [loadingPlan, setLoadingPlan] = useState(null);
   const [expandedCard, setExpandedCard] = useState("null");
   const [paystackReady, setPaystackReady] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState(null);
+  const [transferDetails, setTransferDetails] = useState(null);
+  const [copiedField, setCopiedField] = useState(null);
   const sheetRef = useRef(null);
   const dragZoneRef = useRef(null);
 
@@ -143,10 +158,31 @@ export default function UpgradeModal({ currentPlan, setShowModal, onUpgrade }) {
 
     document.body.appendChild(script);
   }, []);
-  // PAYMENT (unchanged)
-  const handleUpgrade = async ({ id, name, price, cycle }) => {
+  const copyValue = async (label, value) => {
+    if (!value) return;
+
     try {
-      setLoadingPlan(id);
+      await navigator.clipboard.writeText(String(value));
+      setCopiedField(label);
+
+      setTimeout(() => {
+        setCopiedField(null);
+      }, 1500);
+    } catch {
+      toast.error("Could not copy");
+    }
+  };
+
+  const resetPaymentChoice = () => {
+    setSelectedPlan(null);
+    setTransferDetails(null);
+    setCopiedField(null);
+    setLoadingPlan(null);
+  };
+
+  const handleCardPayment = async ({ id, name, price, cycle }) => {
+    try {
+      setLoadingPlan(`${id}-card`);
 
       const token = localStorage.getItem("token");
       if (!token) return toast.error("Please login");
@@ -189,8 +225,37 @@ export default function UpgradeModal({ currentPlan, setShowModal, onUpgrade }) {
     }
   };
 
+  const handleTransferPayment = async ({ id, name, cycle }) => {
+    try {
+      setLoadingPlan(`${id}-transfer`);
+      setTransferDetails(null);
+
+      const token = localStorage.getItem("token");
+      if (!token) return toast.error("Please login");
+
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/payments/initiate-transfer`,
+        { plan: name, cycle },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      setTransferDetails(res.data);
+    } catch (error) {
+      console.error(error);
+      toast.error(error.response?.data?.message || "Could not create transfer account");
+    } finally {
+      setLoadingPlan(null);
+    }
+  };
+
   const verifyPayment = async (reference) => {
     try {
+      setLoadingPlan("verify-transfer");
+
       const token = localStorage.getItem("token");
       const res = await axios.get(
         `${process.env.NEXT_PUBLIC_API_URL}/payments/verify/${reference}`,
@@ -207,8 +272,11 @@ export default function UpgradeModal({ currentPlan, setShowModal, onUpgrade }) {
         onUpgrade(res.data.plan);
         setShowModal(false);
       } else toast.error("Verification failed");
-    } catch {
-      toast.error("Verification error");
+    } catch (err) {
+      toast.error(
+        err.response?.data?.message ||
+          "Payment not confirmed yet. Please wait a moment and try again.",
+      );
     } finally {
       setLoadingPlan(null);
     }
@@ -346,29 +414,193 @@ export default function UpgradeModal({ currentPlan, setShowModal, onUpgrade }) {
                     <button
                       className={styles.upgradeBtn}
                       disabled={
-                        disabled || loadingPlan === plan.id || !paystackReady
+                        disabled ||
+                        loadingPlan === `${plan.id}-card` ||
+                        loadingPlan === `${plan.id}-transfer`
                       }
                       onClick={(e) => {
                         e.stopPropagation();
                         if (disabled) return;
-                        handleUpgrade({
+                        setSelectedPlan({
                           id: plan.id,
                           name: plan.id, // <— send "standard" or "pro"
                           price,
                           cycle: billingCycle,
                         });
+                        setTransferDetails(null);
                       }}
                     >
-                      {loadingPlan === plan.id ? (
-                        <>
-                          <Loader2 className={styles.spin} /> Processing...
-                        </>
-                      ) : !paystackReady ? (
-                        "Preparing payment..."
-                      ) : (
-                        <>{buttonLabel}</>
-                      )}
+                      <>{buttonLabel}</>
                     </button>
+
+                    {selectedPlan?.id === plan.id &&
+                      selectedPlan?.cycle === billingCycle && (
+                        <div
+                          className={styles.paymentPanel}
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <div className={styles.paymentPanelTop}>
+                            <button
+                              type="button"
+                              className={styles.backChoice}
+                              onClick={resetPaymentChoice}
+                            >
+                              <ArrowLeft size={14} />
+                            </button>
+
+                            <div>
+                              <strong>Choose payment method</strong>
+                              <span>
+                                {currency(selectedPlan.price)} for{" "}
+                                {plan.name} {billingCycle}
+                              </span>
+                            </div>
+                          </div>
+
+                          {!transferDetails && (
+                            <div className={styles.paymentOptions}>
+                              <button
+                                type="button"
+                                className={styles.transferBtn}
+                                disabled={loadingPlan === `${plan.id}-transfer`}
+                                onClick={() =>
+                                  handleTransferPayment(selectedPlan)
+                                }
+                              >
+                                {loadingPlan === `${plan.id}-transfer` ? (
+                                  <Loader2 className={styles.spin} />
+                                ) : (
+                                  <Banknote size={17} />
+                                )}
+                                Pay with transfer
+                              </button>
+
+                              <button
+                                type="button"
+                                className={styles.cardBtn}
+                                disabled={
+                                  loadingPlan === `${plan.id}-card` ||
+                                  !paystackReady
+                                }
+                                onClick={() => handleCardPayment(selectedPlan)}
+                              >
+                                {loadingPlan === `${plan.id}-card` ? (
+                                  <Loader2 className={styles.spin} />
+                                ) : (
+                                  <CreditCard size={17} />
+                                )}
+                                {!paystackReady
+                                  ? "Preparing card payment..."
+                                  : "Pay with card"}
+                              </button>
+                            </div>
+                          )}
+
+                          {transferDetails && (
+                            <div className={styles.transferBox}>
+                              <div className={styles.transferNotice}>
+                                Transfer exactly{" "}
+                                <strong>{currency(transferDetails.amount)}</strong>{" "}
+                                to the account below.
+                              </div>
+
+                              <div className={styles.accountRows}>
+                                <div className={styles.accountRow}>
+                                  <span>Bank</span>
+                                  <strong>{transferDetails.bankName}</strong>
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      copyValue("bank", transferDetails.bankName)
+                                    }
+                                  >
+                                    {copiedField === "bank" ? (
+                                      <Check size={14} />
+                                    ) : (
+                                      <Copy size={14} />
+                                    )}
+                                  </button>
+                                </div>
+
+                                <div className={styles.accountRow}>
+                                  <span>Account number</span>
+                                  <strong>
+                                    {transferDetails.accountNumber}
+                                  </strong>
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      copyValue(
+                                        "account",
+                                        transferDetails.accountNumber,
+                                      )
+                                    }
+                                  >
+                                    {copiedField === "account" ? (
+                                      <Check size={14} />
+                                    ) : (
+                                      <Copy size={14} />
+                                    )}
+                                  </button>
+                                </div>
+
+                                <div className={styles.accountRow}>
+                                  <span>Account name</span>
+                                  <strong>
+                                    {transferDetails.accountName}
+                                  </strong>
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      copyValue(
+                                        "name",
+                                        transferDetails.accountName,
+                                      )
+                                    }
+                                  >
+                                    {copiedField === "name" ? (
+                                      <Check size={14} />
+                                    ) : (
+                                      <Copy size={14} />
+                                    )}
+                                  </button>
+                                </div>
+                              </div>
+
+                              {transferDetails.expiresAt && (
+                                <p className={styles.expiresText}>
+                                  This account expires at{" "}
+                                  {new Date(
+                                    transferDetails.expiresAt,
+                                  ).toLocaleTimeString([], {
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                  })}
+                                  .
+                                </p>
+                              )}
+
+                              <button
+                                type="button"
+                                className={styles.paidBtn}
+                                disabled={loadingPlan === "verify-transfer"}
+                                onClick={() =>
+                                  verifyPayment(transferDetails.reference)
+                                }
+                              >
+                                {loadingPlan === "verify-transfer" ? (
+                                  <>
+                                    <Loader2 className={styles.spin} />
+                                    Confirming payment...
+                                  </>
+                                ) : (
+                                  "I have paid"
+                                )}
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      )}
                   </div>
                 )}
               </div>

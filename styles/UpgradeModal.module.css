@@ -289,6 +289,218 @@
   font-size: 13px;
 }
 
+.paymentPanel {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid color-mix(in srgb, var(--accent1) 26%, var(--line) 74%);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--glass) 78%, var(--accent1) 8%);
+  display: grid;
+  gap: 10px;
+}
+
+[data-theme="light"] .paymentPanel {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.paymentPanelTop {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 9px;
+  align-items: center;
+}
+
+.paymentPanelTop strong {
+  display: block;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+[data-theme="light"] .paymentPanelTop strong {
+  color: #ffffff;
+}
+
+.paymentPanelTop span {
+  display: block;
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+[data-theme="light"] .paymentPanelTop span {
+  color: #dbeafe;
+}
+
+.backChoice {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--ink);
+}
+
+[data-theme="light"] .backChoice {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.paymentOptions {
+  display: grid;
+  gap: 8px;
+}
+
+.transferBtn,
+.cardBtn {
+  width: 100%;
+  min-height: 46px;
+  border: 0;
+  border-radius: 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.transferBtn {
+  background: linear-gradient(135deg, #16a34a, #22c55e);
+  box-shadow: 0 12px 22px rgba(34, 197, 94, 0.18);
+}
+
+.cardBtn {
+  background: linear-gradient(135deg, var(--accent1), var(--accent2));
+  box-shadow: 0 12px 22px var(--shadow);
+}
+
+.transferBtn:disabled,
+.cardBtn:disabled,
+.paidBtn:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.transferBox {
+  display: grid;
+  gap: 10px;
+}
+
+.transferNotice {
+  padding: 10px;
+  border-radius: 13px;
+  background: rgba(34, 197, 94, 0.12);
+  color: #16a34a;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+[data-theme="light"] .transferNotice {
+  color: #bbf7d0;
+  background: rgba(34, 197, 94, 0.14);
+}
+
+.accountRows {
+  display: grid;
+  gap: 7px;
+}
+
+.accountRow {
+  min-height: 48px;
+  display: grid;
+  grid-template-columns: 1fr auto 34px;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 8px 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: var(--surface);
+}
+
+[data-theme="light"] .accountRow {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.accountRow span {
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+[data-theme="light"] .accountRow span {
+  color: #cbd5e1;
+}
+
+.accountRow strong {
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 850;
+  text-align: right;
+  word-break: break-word;
+}
+
+[data-theme="light"] .accountRow strong {
+  color: #ffffff;
+}
+
+.accountRow button {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: var(--glass);
+  color: var(--accent1);
+  cursor: pointer;
+}
+
+[data-theme="light"] .accountRow button {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.expiresText {
+  margin: 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+[data-theme="light"] .expiresText {
+  color: #dbeafe;
+}
+
+.paidBtn {
+  width: 100%;
+  min-height: 46px;
+  border: 0;
+  border-radius: 13px;
+  background: #111827;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+[data-theme="light"] .paidBtn {
+  background: #ffffff;
+  color: #111827;
+}
+
 .spin {
   animation: spin 1s linear infinite;
 }
