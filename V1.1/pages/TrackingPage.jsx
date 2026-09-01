@@ -1,0 +1,19 @@
+import { useEffect, useState } from "react";
+import { BadgeCheck, CircleHelp, ExternalLink, Target } from "lucide-react";
+import { Button, Field, Modal, PageHeader } from "../components/UI";
+import { trackingHelp } from "../config/onboarding";
+import { v11Api } from "../lib/api";
+import styles from "../styles/v11.module.css";
+
+const mask = (value) => value ? `${String(value).slice(0, 4)}••••${String(value).slice(-4)}` : "Not connected";
+export function TrackingPage({ user, refreshSession }) {
+  const [form, setForm] = useState({ tiktok: "", meta: "", tiktokEnabled: false, metaEnabled: false, tiktokToken: "", metaToken: "" });
+  const [status, setStatus] = useState({}), [help, setHelp] = useState(false);
+  useEffect(() => setForm({ tiktok: user.tiktokPixelId || "", meta: user.metaPixelId || "", tiktokEnabled: Boolean(user.tiktokEventsApiEnabled), metaEnabled: Boolean(user.metaConversionsApiEnabled), tiktokToken: user.tiktokEventsApiToken || "", metaToken: user.metaConversionsApiToken || "" }), [user]);
+  const save = async (kind) => { setStatus({ [kind]: "Saving…" }); try { if (kind === "tiktok") await v11Api.saveTikTokPixel(form.tiktok); if (kind === "meta") await v11Api.saveMetaPixel(form.meta); if (kind === "tiktokApi") await v11Api.saveTikTokEvents(form.tiktokEnabled, form.tiktokToken); if (kind === "metaApi") await v11Api.saveMetaConversions(form.metaEnabled, form.metaToken); setStatus({ [kind]: "Saved successfully" }); await refreshSession(); } catch (e) { setStatus({ [kind]: e.message }); } };
+  const integrations = [
+    { id: "meta", title: "Meta Pixel", value: form.meta, connected: user.metaPixelId, token: form.metaToken, enabled: form.metaEnabled, apiKind: "metaApi", apiTitle: "Meta Conversions API" },
+    { id: "tiktok", title: "TikTok Pixel", value: form.tiktok, connected: user.tiktokPixelId, token: form.tiktokToken, enabled: form.tiktokEnabled, apiKind: "tiktokApi", apiTitle: "TikTok Events API" },
+  ];
+  return <div className={styles.page}><PageHeader eyebrow="SETTINGS / TRACKING" title="Tracking and integrations" description="Connect the advertising platforms you actually use." actions={<Button variant="secondary" onClick={() => setHelp(true)}><CircleHelp/> How to find a Pixel ID</Button>}/><div className={styles.trackingGrid}>{integrations.map((item) => <section key={item.id}><header><span><Target/></span><div><h2>{item.title}</h2><p>{item.connected ? <><BadgeCheck/> Connected · {mask(item.connected)}</> : "Not connected"}</p></div></header><Field label="Pixel ID or code"><textarea value={item.value} onChange={(e) => setForm({ ...form, [item.id]: e.target.value })} placeholder={`Paste ${item.title} ID or code`}/></Field><Button onClick={() => save(item.id)}>{item.connected ? "Update" : "Connect"} {item.title}</Button>{status[item.id] && <small>{status[item.id]}</small>}<label className={styles.toggleRow}><span><b>{item.apiTitle}</b><small>Optional server-side purchase tracking</small></span><input type="checkbox" checked={item.enabled} onChange={(e) => setForm({ ...form, [`${item.id}Enabled`]: e.target.checked })}/></label>{item.enabled && <><Field label="API access token"><textarea value={item.token} onChange={(e) => setForm({ ...form, [`${item.id}Token`]: e.target.value })}/></Field><Button variant="secondary" onClick={() => save(item.apiKind)}>Save API settings</Button>{status[item.apiKind] && <small>{status[item.apiKind]}</small>}</>}</section>)}</div>{help && <Modal title="How do I find my Pixel ID?" description="Open the platform you advertise with and follow its setup guide." onClose={() => setHelp(false)}><div className={styles.pixelHelpList}>{Object.values(trackingHelp).map((item) => <article key={item.title}><Target/><div><b>{item.title}</b><p>{item.description}</p><a href={item.videoUrl} target="_blank" rel="noreferrer">Watch setup guide <ExternalLink/></a></div></article>)}</div></Modal>}</div>;
+}

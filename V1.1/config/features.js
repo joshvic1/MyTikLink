@@ -1,0 +1,8 @@
+import { FileText, Link2, Store } from "lucide-react";
+import { v11Routes } from "./routes";
+
+export const creationFeatures = [
+  { id: "landing-page", action: "page", title: "Landing Page", dashboardTitle: "Promote an offer or campaign", description: "Build a focused page, collect customer details, or send interested people to WhatsApp.", shortDescription: "A focused page for an offer or campaign.", helpDescription: "Best for ads, promotions, lead generation, offers, and campaigns.", example: "Use this when visitors should see one clear offer before contacting you.", Icon: FileText, route: v11Routes.pages, cardClass: "goalPrimary", modalClass: "createPage" },
+  { id: "storefront", action: "store", title: "Storefront", dashboardTitle: "Sell products online", description: "Let customers browse products, compare prices, and place orders.", shortDescription: "A browsable home for products and services.", helpDescription: "Best when you have several products or services customers should browse.", example: "Use this when customers need to see products, prices, and place orders.", Icon: Store, route: v11Routes.store, cardClass: "goalStore", modalClass: "createStore" },
+  { id: "smart-link", action: "link", title: "Smart Link", dashboardTitle: "Start WhatsApp conversations", description: "Create a trackable link for a direct chat, group, or channel.", shortDescription: "A reliable shortcut to WhatsApp.", helpDescription: "Best when your main goal is sending people directly to WhatsApp.", example: "Use this when customers should click once and immediately reach your destination.", Icon: Link2, route: v11Routes.links, cardClass: "goalLink", modalClass: "createLink" },
+];

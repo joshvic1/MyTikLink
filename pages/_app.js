@@ -58,6 +58,8 @@ export default function App({ Component, pageProps }) {
   const isStorePage = router.pathname.startsWith("/store");
   const isBlogPage = router.pathname.startsWith("/blog");
   const showSmartAssistant = isDashboardPage || isStorePage;
+  const isV2Route = router.pathname.startsWith("/v2");
+  const isV2DashboardRoute = router.pathname.startsWith("/v2.1");
 
   // Public pages, dashboards, admin pages, stores, and custom domains
   // should render without the global marketing Layout/menu.
@@ -73,7 +75,9 @@ export default function App({ Component, pageProps }) {
     isAdminRoute ||
     isHomePage ||
     isStorePage ||
-    isBlogPage
+    isBlogPage ||
+    isV2Route ||
+    isV2DashboardRoute
   ) {
     return (
       <main className={plusJakarta.className}>
