@@ -19,14 +19,22 @@
 .container {
   width: 100%;
   max-width: 500px;
+  max-height: min(720px, calc(100vh - 24px));
+  max-height: min(720px, calc(100dvh - 24px));
   background: color-mix(in srgb, var(--bg) 92%, #020617 8%);
   border-radius: 16px 16px 0 0;
   padding: 14px;
+  padding-bottom: calc(14px + env(safe-area-inset-bottom));
   color: var(--text);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 @media (max-width: 768px) {
   .container {
     border-radius: 16px 16px 0 0;
+    max-height: calc(100vh - 12px);
+    max-height: calc(100dvh - 12px);
   }
 }
 [data-theme="light"] .container {
@@ -297,6 +305,7 @@
   background: color-mix(in srgb, var(--glass) 78%, var(--accent1) 8%);
   display: grid;
   gap: 10px;
+  scroll-margin-bottom: 18px;
 }
 
 [data-theme="light"] .paymentPanel {

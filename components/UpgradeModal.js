@@ -287,6 +287,17 @@ export default function UpgradeModal({ currentPlan, setShowModal, onUpgrade }) {
     }, 300);
   }, []);
 
+  useEffect(() => {
+    if (!transferDetails) return;
+
+    requestAnimationFrame(() => {
+      sheetRef.current?.scrollTo({
+        top: sheetRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    });
+  }, [transferDetails]);
+
   return (
     <div className={styles.backdrop} onClick={() => setShowModal(false)}>
       <div
