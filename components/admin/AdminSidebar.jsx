@@ -1,75 +1,29 @@
 "use client";
-
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import {
-  Grid,
-  Users,
-  Link as LinkIcon,
-  CreditCard,
-  Settings,
-  LogOut,
-  Mail,
-  Newspaper,
-} from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { LogOut, ShieldCheck } from "lucide-react";
+import { adminNavigation, adminPageFor } from "./adminNavigation";
 import styles from "@/styles/admin/AdminLayout.module.css";
 import useAdminAuth from "@/hooks/useAdminAuth";
 
 export default function AdminSidebar({ closeDrawer }) {
   const pathname = usePathname();
+  const router = useRouter();
   const { logout } = useAdminAuth();
-
-  const nav = [
-    { name: "Dashboard", href: "/admin", icon: <Grid size={18} /> },
-    { name: "Users", href: "/admin/users", icon: <Users size={18} /> },
-    { name: "Links", href: "/admin/links", icon: <LinkIcon size={18} /> },
-    { name: "Pages", href: "/admin/pages", icon: <Grid size={18} /> },
-    { name: "Blog", href: "/admin/blog", icon: <Newspaper size={18} /> },
-    {
-      name: "Payments",
-      href: "/admin/payment",
-      icon: <CreditCard size={18} />,
-    },
-
-    {
-      name: "Email Segment",
-      href: "/admin/email/segment",
-      icon: <Mail size={18} />,
-    },
-    { name: "Analytics", href: "/admin/analytics", icon: <Grid size={18} /> },
-    {
-      name: "Agents",
-      href: "/admin/agents",
-      icon: <Users size={18} />,
-    },
-    { name: "Settings", href: "/admin/settings", icon: <Settings size={18} /> },
-  ];
-
-  return (
-    <nav className={styles.sidebarInner}>
-      <h1 className={styles.logo}>TikLink Admin</h1>
-
-      <ul className={styles.menuList}>
-        {nav.map((item) => (
-          <li key={item.href}>
-            <Link
-              href={item.href}
-              onClick={() => closeDrawer?.()}
-              className={`${styles.menuItem} ${
-                pathname === item.href ? styles.active : ""
-              }`}
-            >
-              {item.icon}
-              <span>{item.name}</span>
-            </Link>
-          </li>
-        ))}
-      </ul>
-
-      <button className={styles.logoutBtn} onClick={logout}>
-        <LogOut size={16} />
-        Logout
-      </button>
-    </nav>
-  );
+  const current = adminPageFor(pathname || "/admin");
+  return <nav className={styles.sidebarInner} aria-label="Admin workspace">
+    <Link href="/admin" className={styles.brand} onClick={closeDrawer}>
+      <span className={styles.brandMark}>m<span>.</span></span>
+      <span><strong>MyTikLink</strong><small>BUSINESS WORKSPACE</small></span>
+    </Link>
+    <span className={styles.navLabel}>WORKSPACE</span>
+    <ul className={styles.menuList}>{adminNavigation.map(({ name, href, icon: Icon }) => <li key={href}>
+      <Link href={href} onClick={closeDrawer} aria-current={current.href === href ? "page" : undefined} className={`${styles.menuItem} ${current.href === href ? styles.active : ""}`}>
+        <Icon size={21} strokeWidth={1.7} /><span>{name}</span>
+      </Link>
+    </li>)}</ul>
+    <div className={styles.sidebarFooter}><span className={styles.adminIdentity}><ShieldCheck size={19} /><span>Administrator<small>Manage your workspace</small></span></span>
+      <button className={styles.logoutBtn} onClick={() => { logout(); router.replace("/admin/login"); }}><LogOut size={18} />Sign out</button>
+    </div>
+  </nav>;
 }

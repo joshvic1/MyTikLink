@@ -50,3 +50,7 @@
   color: var(--text);
   margin-top: 10px;
 }
+
+/* Admin workspace refresh */
+.modal{background:#fff;border:1px solid var(--stroke);box-shadow:none;backdrop-filter:none;}
+.closeBtn{background:#f2f4f8;color:var(--text);border:1px solid var(--stroke);}

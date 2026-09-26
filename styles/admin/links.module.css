@@ -271,3 +271,17 @@
     padding: 6px 10px;
   }
 }
+
+/* Admin workspace refresh */
+.pageWrap{padding:0;background:transparent;min-height:0;}
+.pageTitle{font-size:20px;letter-spacing:-.5px;font-weight:700;margin:0 0 22px;color:var(--text);}
+.tableCard{background:#fff;border:1px solid var(--stroke);box-shadow:none;backdrop-filter:none;}
+.filters{background:#fff;border:1px solid var(--stroke);border-radius:16px;padding:22px;gap:14px;}
+.input{background:#fff;min-height:44px;border-color:var(--stroke);}
+.tableCard{border-radius:16px;}
+.table{background:#fff;min-width:700px;}
+.table thead{background:#f8f9fc}.table th{padding:17px 18px;font-size:11px;letter-spacing:.6px;text-align:left}.table td{padding:18px;font-size:13px}.table tbody tr:hover{background:#f8faf5}
+.viewBtn{background:#eaf1e2;color:#36572d;border:1px solid #dce6d3;box-shadow:none;}
+.navBtn{background:#f2f4f8;color:var(--text);border:1px solid var(--stroke);}
+.email,.date{opacity:1;color:var(--muted);}
+@media(max-width:600px){.pageTitle{font-size:18px}}

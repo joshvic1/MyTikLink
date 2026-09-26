@@ -151,5 +151,20 @@
 
   background: rgba(59, 130, 246, 0.18);
 
-  color: #60a5fa;
+  color: var(--text);
 }
+
+/* Admin workspace refresh */
+.page{padding:0;background:transparent;min-height:0;}
+.card{background:#fff;border:1px solid var(--stroke);box-shadow:none;backdrop-filter:none;}
+.viewBtn{background:#eaf1e2;color:#36572d;border:1px solid #dce6d3;box-shadow:none;}
+.deleteBtn{background:#f2f4f8;color:var(--text);border:1px solid var(--stroke);}
+.active,.activateBtn{color:#30764f;background:#edf6ef;}
+.inactive,.deactivateBtn{color:#b94f4f;background:#fff0f0;}
+.grid{gap:20px;}
+.card{transition:border-color .15s;}
+.card:hover{transform:none;box-shadow:none;border-color:#b3c79a}
+
+
+/* Admin workspace refresh */
+.top h1{font-size:20px;margin:0}.top button{background:#eaf1e2;color:#36572d;border:1px solid #dce6d3}.card{padding:25px}.viewBtn{background:#eaf1e2;color:#36572d}.transferBtn{color:#375e91;background:#edf3fa}

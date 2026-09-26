@@ -68,3 +68,12 @@
 .pageIndicator {
   color: var(--text);
 }
+
+/* Admin workspace refresh */
+.pageWrap{padding:0;background:transparent;min-height:0;}
+.pageTitle{font-size:20px;letter-spacing:-.5px;font-weight:700;margin:0 0 22px;color:var(--text);}
+.table{background:#fff;min-width:700px;}
+.table thead{background:#f8f9fc}.table th{padding:17px 18px;font-size:11px;letter-spacing:.6px;text-align:left}.table td{padding:18px;font-size:13px}.table tbody tr:hover{background:#f8faf5}
+.viewBtn{background:#eaf1e2;color:#36572d;border:1px solid #dce6d3;box-shadow:none;}
+.navBtn{background:#f2f4f8;color:var(--text);border:1px solid var(--stroke);}
+@media(max-width:600px){.pageTitle{font-size:18px}}

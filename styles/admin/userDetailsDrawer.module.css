@@ -277,3 +277,13 @@
   margin-top: 10px;
   cursor: pointer;
 }
+
+/* Admin workspace refresh */
+.card,.drawer{background:#fff;border:1px solid var(--stroke);box-shadow:none;backdrop-filter:none;}
+.input{background:#fff;min-height:44px;border-color:var(--stroke);}
+.saveBtn{background:#eaf1e2;color:#36572d;border:1px solid #dce6d3;box-shadow:none;}
+.closeBtn,.deleteBtn{background:#f2f4f8;color:var(--text);border:1px solid var(--stroke);}
+.email{opacity:1;color:var(--muted);}
+.drawer{max-width:100vw;}
+.card{transition:border-color .15s;}
+.card:hover{transform:none;box-shadow:none;border-color:#b3c79a}

@@ -156,7 +156,7 @@
 
   margin-top: 6px;
 
-  color: #60a5fa;
+  color: var(--text);
 
   word-break: break-all;
 }
@@ -189,7 +189,7 @@
 
   border: 1px solid rgba(239, 68, 68, 0.22);
 
-  color: #fca5a5;
+  color: var(--text);
 
   font-size: 12px;
 
@@ -213,7 +213,7 @@
 
   border: 1px solid rgba(16, 185, 129, 0.22);
 
-  color: #6ee7b7;
+  color: var(--text);
 
   font-size: 12px;
 
@@ -235,9 +235,17 @@
 
   border: 1px solid rgba(59, 130, 246, 0.22);
 
-  color: #93c5fd;
+  color: var(--text);
 
   font-size: 12px;
 
   font-weight: 700;
 }
+
+/* Admin workspace refresh */
+.card,.drawer{background:#fff;border:1px solid var(--stroke);box-shadow:none;backdrop-filter:none;}
+.closeBtn{background:#f2f4f8;color:var(--text);border:1px solid var(--stroke);}
+.email{opacity:1;color:var(--muted);}
+.drawer{max-width:100vw;}
+.card{transition:border-color .15s;}
+.card:hover{transform:none;box-shadow:none;border-color:#b3c79a}

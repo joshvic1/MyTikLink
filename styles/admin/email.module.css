@@ -131,3 +131,12 @@
   font-weight: 600;
   color: var(--accent2);
 }
+
+/* Admin workspace refresh */
+.pageWrap{padding:0;background:transparent;min-height:0;}
+.pageTitle{font-size:20px;letter-spacing:-.5px;font-weight:700;margin:0 0 22px;color:var(--text);}
+.card{background:#fff;border:1px solid var(--stroke);box-shadow:none;backdrop-filter:none;}
+.grid{gap:20px;}
+.card{transition:border-color .15s;}
+.card:hover{transform:none;box-shadow:none;border-color:#b3c79a}
+@media(max-width:600px){.pageTitle{font-size:18px}}

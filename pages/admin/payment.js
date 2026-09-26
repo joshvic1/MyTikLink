@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { RefreshCw } from "lucide-react";
 import AdminDashboardLayout from "@/components/admin/AdminLayout";
 import styles from "@/styles/admin/payment.module.css";
 
@@ -77,7 +78,7 @@ export default function AdminPaymentsPage() {
   return (
     <AdminDashboardLayout>
       <div className={styles.pageWrap}>
-        <h2 className={styles.pageTitle}>Payment Analytics</h2>
+        <h2 className={styles.pageTitle}>Subscription performance</h2>
 
         {/* ============================= */}
         {/* STATS CARDS */}
@@ -153,6 +154,7 @@ export default function AdminPaymentsPage() {
             </div>
           </div>
         )} */}
+        <div className={styles.recordsHeader}><div><h3>Payment records</h3><p>Review customer subscriptions and payment status.</p></div><button className={styles.refreshBtn} onClick={fetchPayments} disabled={loading}><RefreshCw size={16} />Refresh records</button></div>
         <div className={styles.tabs}>
           <button
             className={activeTab === "successful" ? styles.activeTab : ""}

@@ -180,3 +180,9 @@
     font-size: 20px;
   }
 }
+
+/* Admin workspace refresh */
+.pageWrap{padding:0;background:transparent;min-height:0;}
+.table{background:#fff;min-width:700px;}
+.table thead{background:#f8f9fc}.table th{padding:17px 18px;font-size:11px;letter-spacing:.6px;text-align:left}.table td{padding:18px;font-size:13px}.table tbody tr:hover{background:#f8faf5}
+.navBtn{background:#f2f4f8;color:var(--text);border:1px solid var(--stroke);}

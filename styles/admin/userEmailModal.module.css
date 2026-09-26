@@ -30,7 +30,7 @@
   display: flex;
   flex-direction: column;
   animation: modalIn 0.25s ease;
-  color: #e5e7eb;
+  color: var(--text);
 }
 
 /* ===============================
@@ -86,14 +86,14 @@
   border-radius: 12px;
   font-size: 14px;
   background: rgba(255, 255, 255, 0.08);
-  color: #e5e7eb;
+  color: var(--text);
   border: 1px solid rgba(255, 255, 255, 0.15);
   outline: none;
 }
 
 .input option {
   background: #0b0d18;
-  color: #e5e7eb;
+  color: var(--text);
 }
 
 /* ===============================
@@ -112,7 +112,7 @@
   font-weight: 600;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.12);
-  color: #e5e7eb;
+  color: var(--text);
   cursor: pointer;
 }
 
@@ -143,7 +143,7 @@
   border-radius: 14px;
   font-size: 13px;
   background: rgba(255, 255, 255, 0.06);
-  color: #e5e7eb;
+  color: var(--text);
   border: 1px solid rgba(255, 255, 255, 0.15);
   resize: vertical;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -169,7 +169,7 @@
 .footer button:first-child {
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.15);
-  color: #e5e7eb;
+  color: var(--text);
   padding: 10px 16px;
   border-radius: 12px;
   font-size: 13px;
@@ -205,3 +205,12 @@
     height: 38vh;
   }
 }
+
+/* Admin workspace refresh */
+.modal{background:#fff;border:1px solid var(--stroke);box-shadow:none;backdrop-filter:none;}
+.input{background:#fff;min-height:44px;border-color:var(--stroke);}
+.active{color:#30764f;background:#edf6ef;}
+
+
+/* Admin workspace refresh */
+.modal{color:var(--text)}.modal select option{background:#fff;color:var(--text)}

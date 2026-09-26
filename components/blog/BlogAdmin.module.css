@@ -6,6 +6,8 @@
   color: #ffffff;
 }
 
+/* This module is exclusive to the admin blog editor. */
+
 .sidebar {
   min-height: 100vh;
   padding: 26px 22px;
@@ -336,3 +338,13 @@
     flex-direction: column;
   }
 }
+
+/* Admin workspace palette */
+.adminPage{min-height:0;background:#fff;color:#1b2943;border:1px solid #dfe5ef;border-radius:16px;overflow:hidden;grid-template-columns:260px minmax(0,1fr)}
+.sidebar{min-height:0;background:#f8fafc;border-color:#dfe5ef;padding:23px 18px}
+.sideHeader h1,.editorTop h2{font-size:22px;line-height:1.3}.sideHeader p,.editorTop p,.coverBox p{color:#71819d}
+.searchWrap,.postRow,.blockCard{background:#fff;border-color:#dfe5ef;color:#334863}.searchWrap input,.blockHeader strong{color:#334863}.postRow small{background:#edf3e5;color:#48643b}
+.activeRow{background:#f0f6e9;border-color:#b4cc96}.editorTop{border-color:#dfe5ef}.editor{padding:25px}
+.sideHeader button,.editorActions button,.blockTools button,.uploadBtn,.inlineUpload{background:#edf3e5;color:#36572d;border:1px solid #dce6d3}.editorActions .deleteBtn{background:#fff0f0;color:#b94f4f}
+.formGrid label,.blockCard{color:#657791}.message{color:#36572d;background:#f0f6e9;border-color:#dce6d3}
+@media(max-width:1100px){.adminPage{grid-template-columns:1fr}.sidebar{border-right:0;border-bottom:1px solid #dfe5ef}.editorTop{flex-wrap:wrap}}

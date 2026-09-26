@@ -71,3 +71,7 @@
 .editBtn:hover {
   background: #1d4ed8;
 }
+
+/* Admin workspace refresh */
+.table{background:#fff;min-width:700px;}
+.table thead{background:#f8f9fc}.table th{padding:17px 18px;font-size:11px;letter-spacing:.6px;text-align:left}.table td{padding:18px;font-size:13px}.table tbody tr:hover{background:#f8faf5}

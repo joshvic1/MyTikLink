@@ -78,3 +78,6 @@
 
   color: white;
 }
+
+/* Admin workspace refresh */
+.modal{background:#fff;border:1px solid var(--stroke);box-shadow:none;backdrop-filter:none;}

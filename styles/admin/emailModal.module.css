@@ -239,3 +239,8 @@
     height: 40vh;
   }
 }
+
+/* Admin workspace refresh */
+.modal{background:#fff;border:1px solid var(--stroke);box-shadow:none;backdrop-filter:none;}
+.input{background:#fff;min-height:44px;border-color:var(--stroke);}
+.active{color:#30764f;background:#edf6ef;}
