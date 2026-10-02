@@ -25,11 +25,13 @@ export const navigation = [
   { key: "home", label: "Home", href: v11Routes.home, icon: "home" },
   { key: "pages", label: "Landing pages", href: v11Routes.pages, icon: "pages" },
   { key: "store", label: "Storefront", href: v11Routes.store, icon: "store" },
-  { key: "links", label: "Smart links", href: v11Routes.links, icon: "links" },
-  { key: "insights", label: "Insights", href: v11Routes.insights, icon: "insights" },
+  { key: "links", label: "Redirect links", href: v11Routes.links, icon: "links" },
+  { key: "insights", label: "Analytics", href: v11Routes.insights, icon: "insights" },
+  { key: "tracking", label: "TikTok/Meta Pixel", href: v11Routes.tracking, icon: "tracking", showInBottom: false },
 ];
 
 export function activeRoute(pathname = "") {
+  if (pathname.includes("/settings/tracking")) return "tracking";
   if (pathname.includes("/settings")) return "settings";
   if (pathname.includes("/store")) return "store";
   if (pathname.includes("/pages")) return "pages";

@@ -1,5 +1,5 @@
 import styles from "../styles/v11.module.css";
-import { AlertCircle, FileText, Link2, ShoppingBag, Sparkles, X } from "lucide-react";
+import { AlertCircle, ArrowRight, FileText, Link2, ShoppingBag, Sparkles, X } from "lucide-react";
 import { forwardRef, useEffect, useRef } from "react";
 
 export function Button({ variant = "primary", className = "", children, ...props }) {
@@ -10,8 +10,19 @@ export const IconButton = forwardRef(function IconButton({ label, children, clas
   return <button ref={ref} aria-label={label} className={`${styles.iconButton} ${className}`} {...props}>{children}</button>;
 });
 
-export function Badge({ tone = "neutral", children }) {
-  return <span className={`${styles.badge} ${styles[`badge_${tone}`]}`}>{children}</span>;
+export function Badge({ tone = "neutral", className = "", children }) {
+  return <span className={`${styles.badge} ${styles[`badge_${tone}`]} ${className}`}>{children}</span>;
+}
+
+export function DashboardActionCard({ count, title, description, action, tone = "violet", onClick }) {
+  return <button type="button" className={`${styles.dashboardActionCard} ${styles[`dashboardAction_${tone}`]}`} onClick={onClick}>
+    <span className={styles.dashboardActionCount}>{count}</span>
+    <span className={styles.dashboardActionBody}>
+      <b>{title}</b>
+      <small>{description}</small>
+      <strong>{action} <ArrowRight aria-hidden="true"/></strong>
+    </span>
+  </button>;
 }
 
 export function PageHeader({ eyebrow, title, description, actions }) {
@@ -24,7 +35,7 @@ export function EmptyState({ icon, title, description, action }) {
 }
 
 export function LoadingState({ label = "Loading your workspace…" }) {
-  return <div className={styles.loadingState}><span className={styles.spinner}/><p>{label}</p></div>;
+  return <div className={styles.loadingState} aria-busy="true" aria-label={label}><div className={styles.loadingSkeleton}><span className={styles.skeletonLogo}/><span className={styles.skeletonLine}/><span className={`${styles.skeletonLine} ${styles.skeletonLineShort}`}/><div className={styles.skeletonGrid}>{[0,1,2].map((item) => <span key={item} className={styles.skeletonCard}/>)}</div></div><p>{label}</p></div>;
 }
 
 export function ErrorState({ title = "We couldn’t load this", message, onRetry }) {

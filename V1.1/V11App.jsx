@@ -2,6 +2,7 @@ import dynamic from "next/dynamic";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { DM_Sans, Manrope } from "next/font/google";
 import { Shell } from "./components/Shell";
 import { CreateLinkModal } from "./components/CreateLinkModal";
 import { LeadsModal } from "./components/LeadsModal";
@@ -33,12 +34,14 @@ const StoreSettings = dynamic(() => import("@/pages/store/settings"), { ssr: fal
 const StoreDesign = dynamic(() => import("@/pages/store/editTemplate"), { ssr: false, loading: () => <LoadingState label="Opening store designer…"/> });
 const StoreSetup = dynamic(() => import("@/pages/store"), { ssr: false, loading: () => <LoadingState label="Opening storefront setup…"/> });
 const SecurityAndPlan = dynamic(() => import("@/pages/dashboard/settings"), { ssr: false, loading: () => <LoadingState label="Opening secure account controls…"/> });
+const dmSans = DM_Sans({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-v11-body" });
+const manrope = Manrope({ subsets: ["latin"], weight: ["600", "700", "800"], variable: "--font-v11-heading" });
 
 function CreateChooser({ onClose, choose }) {
   return <Modal title="What would you like to create?" description="Choose the tool that matches what you want to accomplish." onClose={onClose}><div className={styles.createChoices}>{creationFeatures.map(({ id, action, title, shortDescription, Icon, modalClass }) => <button key={id} className={styles[modalClass]} onClick={() => choose(action)}><span><Icon/></span><div><b>{title}</b><p>{shortDescription}</p></div><strong><ArrowRight/></strong></button>)}</div></Modal>;
 }
 
-export default function V11App() {
+function V11Content() {
   const router = useRouter();
   const session = useV11Session();
   const workspace = useWorkspaceData(session.authenticated);
@@ -75,4 +78,8 @@ export default function V11App() {
   else if (path.endsWith("/help")) content = <HelpPage/>;
   else content = <HomePage user={session.user} data={workspace} onCreate={setModal}/>;
   return <SubscriptionProvider user={session.user} refreshSession={session.refresh}><Head><title>MyTikLink V1.1</title><meta name="viewport" content="width=device-width, initial-scale=1"/></Head><Shell user={session.user} onLogout={session.logout} onCreate={() => setModal("chooser")}>{workspace.warnings.length > 0 && <div className={styles.dataWarning}>Some account data could not be loaded. Available information is still shown.</div>}{content}</Shell>{modal === "chooser" && <CreateChooser onClose={() => setModal(null)} choose={choose}/>} {modal === "link" && <CreateLinkModal onClose={() => setModal(null)} onSaved={workspace.refresh}/>} {editingLink && <CreateLinkModal link={editingLink} onClose={() => setEditingLink(null)} onSaved={workspace.refresh}/>} {modal === "page" && <PageTemplateModal onClose={() => setModal(null)}/>} {leadPage && <LeadsModal page={leadPage} leads={workspace.leads} onClose={() => setLeadPage(null)}/>}</SubscriptionProvider>;
+}
+
+export default function V11App() {
+  return <div className={`${styles.v11FontScope} ${dmSans.variable} ${manrope.variable}`}><V11Content/></div>;
 }

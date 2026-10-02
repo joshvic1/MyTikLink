@@ -8,7 +8,6 @@ import UpgradeModal from "@/components/UpgradeModal";
 import { ArrowLeft, CheckCircle } from "lucide-react";
 import Toast from "@/components/Toast";
 import PlanChangeSheet from "@/components/PlanChangeSheet";
-import { planConfig } from "@/config/planConfig";
 
 export default function Settings() {
   const router = useRouter();
@@ -204,17 +203,18 @@ export default function Settings() {
 
       if (!token) {
         showToast("Please login again", "error");
+        setRenewing(false);
         return;
       }
 
       if (!user.plan || user.plan === "free") {
         showToast("Upgrade to a paid plan first", "error");
+        setRenewing(false);
         return;
       }
 
       const cycle = user.plan.includes("yearly") ? "yearly" : "monthly";
       const plan = user.plan.includes("pro") ? "pro" : "standard";
-      const planKey = `${plan}_${cycle}`;
 
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/payments/initiate`,
@@ -226,66 +226,15 @@ export default function Settings() {
         },
       );
 
-      const { email, paymentId } = res.data;
-
-      if (!window.PaystackPop) {
-        await new Promise((resolve) => {
-          const script = document.createElement("script");
-          script.src = "https://js.paystack.co/v1/inline.js";
-          script.onload = resolve;
-          document.body.appendChild(script);
-        });
+      const checkout = new URL(res.data.authorizationUrl);
+      if (checkout.protocol !== "https:" || checkout.hostname !== "checkout.paystack.com") {
+        throw new Error("Invalid checkout URL");
       }
-
-      const handler = window.PaystackPop.setup({
-        key: process.env.NEXT_PUBLIC_PAYSTACK_KEY,
-        email,
-        plan: planConfig[planKey].paystackPlan,
-        ref: paymentId,
-        callback: (response) => verifyRenewPayment(response.reference),
-        onClose: () => setRenewing(false),
-      });
-
-      handler.openIframe();
+      window.location.assign(checkout.href);
     } catch (err) {
       console.log(err);
       const message = err?.response?.data?.message || "Failed to start payment";
       showToast(message, "error");
-      setRenewing(false);
-    }
-  };
-  const verifyRenewPayment = async (reference) => {
-    try {
-      const token = localStorage.getItem("token");
-
-      const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/payments/verify/${reference}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-
-      if (res.data.success) {
-        if (res.data.token) {
-          localStorage.setItem("token", res.data.token);
-        }
-
-        setUser((prev) => ({
-          ...prev,
-          plan: res.data.plan,
-          planExpiry: res.data.expiresOn,
-        }));
-
-        showToast("Plan renewed successfully", "success");
-      } else {
-        showToast("Payment verification failed", "error");
-      }
-    } catch (err) {
-      console.log(err);
-      showToast("Payment verification failed", "error");
-    } finally {
       setRenewing(false);
     }
   };

@@ -1,8 +1,8 @@
 import { planConfig } from "@/config/planConfig";
 
 export const subscriptionPlans = [
-  { id: "standard", name: "Standard", tone: "standard", description: "For creators and small businesses using MyTikLink consistently.", benefits: ["More smart links", "Up to 5,000 clicks per cycle", "Campaign and storefront tools"], cycles: { monthly: planConfig.standard_monthly, yearly: planConfig.standard_yearly } },
-  { id: "pro", name: "Pro", tone: "pro", description: "For active campaigns, higher traffic, and maximum flexibility.", recommendation: "Best for growth", benefits: ["Unlimited smart links", "Unlimited clicks", "Best fit for active campaigns"], cycles: { monthly: planConfig.pro_monthly, yearly: planConfig.pro_yearly } },
+  { id: "standard", name: "Standard", tone: "standard", description: "Everything you need to publish, sell and collect customer details.", benefits: ["Up to 3 redirect links each month", "Up to 5,000 tracked clicks per cycle", "Landing pages and lead collection", "Storefront, products and order management", "Page and link analytics", "TikTok and Meta Pixel tracking", "Access to premium templates", "Priority customer support"], cycles: { monthly: planConfig.standard_monthly, yearly: planConfig.standard_yearly } },
+  { id: "pro", name: "Pro", tone: "pro", description: "More freedom for active campaigns, growing traffic and multiple offers.", recommendation: "Recommended", benefits: ["Unlimited redirect links", "Unlimited tracked clicks", "Landing pages and lead collection", "Storefront, products and order management", "Page and link analytics", "TikTok and Meta Pixel tracking", "Full premium template access", "Fastest priority customer support"], cycles: { monthly: planConfig.pro_monthly, yearly: planConfig.pro_yearly } },
 ];
 
 export const planGuidance = [

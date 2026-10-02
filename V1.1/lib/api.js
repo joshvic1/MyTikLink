@@ -37,6 +37,7 @@ export async function apiRequest(path, options = {}) {
 }
 
 export const v11Api = {
+  dashboardV11: () => apiRequest("/v1-1/dashboard"),
   publicPage: (slug) => apiRequest(`/pages/public/${encodeURIComponent(slug)}`, { token: null }),
   publicStore: (slug) => apiRequest(`/store/public/${encodeURIComponent(slug)}`, { token: null }),
   publicProducts: (slug) => apiRequest(`/products/public/${encodeURIComponent(slug)}`, { token: null }),

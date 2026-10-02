@@ -5,52 +5,43 @@ import axios from "axios";
 
 export default function VerifyPaymentPage() {
   const [status, setStatus] = useState("verifying");
-  const [courseLink] = useState("https://drive.google.com/YOUR-COURSE-LINK");
+  const [message, setMessage] = useState("");
+  const [reference, setReference] = useState("");
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const reference = params.get("reference");
 
-    if (!reference) return;
+    if (!reference) { setMessage("No payment reference was provided."); setStatus("failed"); return; }
+    setReference(reference);
 
     verify(reference);
   }, []);
 
   const verify = async (reference) => {
+    setStatus("verifying");
     try {
       const token = localStorage.getItem("token");
+      if (!token) { setMessage("Please sign in, then reopen this page to verify your payment."); setStatus("failed"); return; }
 
       const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/payments/verify/${reference}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/payments/verify/${encodeURIComponent(reference)}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         },
       );
 
       if (res.data.success) {
+        if (res.data.token) localStorage.setItem("token", res.data.token);
         setStatus("success");
-
-        // 🔥 FIRE TIKTOK PURCHASE EVENT
-        if (window.ttq) {
-          window.ttq.track("Purchase", {
-            value: 2000,
-            currency: "NGN",
-          });
-        }
-
-        // 📧 SEND COURSE EMAIL
-        await axios.post(
-          `${process.env.NEXT_PUBLIC_API_URL}/course/send-access`,
-          {
-            email: res.data.email,
-            link: courseLink,
-          },
-        );
+        setMessage(`Your ${res.data.plan?.replaceAll("_", " ") || "subscription"} plan is active.`);
       } else {
+        setMessage("Payment has not been confirmed yet. If you were debited, check again—do not pay again.");
         setStatus("failed");
       }
     } catch (err) {
       console.error("Verify error:", err);
+      setMessage("We could not confirm your payment yet. If you were debited, do not pay again. Retry or contact support with your reference.");
       setStatus("failed");
     }
   };
@@ -62,18 +53,20 @@ export default function VerifyPaymentPage() {
       {status === "success" && (
         <div style={card}>
           <h1>✅ Payment Successful</h1>
-          <p>Your course access has been sent to your email.</p>
+          <p>{message}</p>
 
-          <a href={courseLink} style={btn}>
-            Access Course Now
+          <a href="/dashboard/settings" style={btn}>
+            Return to settings
           </a>
         </div>
       )}
 
       {status === "failed" && (
         <div style={card}>
-          <h1>❌ Payment Failed</h1>
-          <p>Please try again.</p>
+          <h1>Payment confirmation needed</h1>
+          <p>{message}</p>
+          {reference && <><p>Reference: {reference}</p><button style={btn} onClick={() => verify(reference)}>Check payment again</button></>}
+          <p><a href="/dashboard/settings">Return to settings</a></p>
         </div>
       )}
     </div>
