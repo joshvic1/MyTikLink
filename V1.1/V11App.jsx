@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DM_Sans, Manrope } from "next/font/google";
 import { Shell } from "./components/Shell";
 import { CreateLinkModal } from "./components/CreateLinkModal";
@@ -46,6 +46,20 @@ function V11Content() {
   const session = useV11Session();
   const workspace = useWorkspaceData(session.authenticated);
   const [modal, setModal] = useState(null), [editingLink, setEditingLink] = useState(null), [leadPage, setLeadPage] = useState(null);
+  const [navigating, setNavigating] = useState(false);
+  useEffect(() => {
+    const start = () => setNavigating(true);
+    const finish = () => setNavigating(false);
+    const complete = () => { setNavigating(false); setModal(null); };
+    router.events.on("routeChangeStart", start);
+    router.events.on("routeChangeComplete", complete);
+    router.events.on("routeChangeError", finish);
+    return () => {
+      router.events.off("routeChangeStart", start);
+      router.events.off("routeChangeComplete", complete);
+      router.events.off("routeChangeError", finish);
+    };
+  }, [router.events]);
   const path = router.asPath.split("?")[0].replace(/\/$/, "");
   const publicParts = path.split("/").filter(Boolean);
   if (publicParts[1] === "p" && publicParts[2]) return <PublicLandingPreview slug={decodeURIComponent(publicParts[2])}/>;
@@ -53,7 +67,7 @@ function V11Content() {
   if (publicParts[1] === "s" && publicParts[2]) return <PublicStorePreview slug={decodeURIComponent(publicParts[2])}/>;
   if (publicParts[1] === "r" && publicParts[2]) return <RedirectPreview linkId={decodeURIComponent(publicParts[2])}/>;
   const editor = path.endsWith("/pages/editor"), builder = path.endsWith("/pages/builder");
-  if (session.loading) return <LoadingState/>;
+  if (session.loading || navigating) return <LoadingState/>;
   if (session.error && !session.user) return <div className={styles.standaloneState}><ErrorState message={session.error.message} onRetry={session.refresh}/></div>;
   if (!session.user) return null;
   if (editor) return <div className={styles.editorIsolation}><TemplateEditor/></div>;

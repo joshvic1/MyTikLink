@@ -35,7 +35,7 @@ export function EmptyState({ icon, title, description, action }) {
 }
 
 export function LoadingState({ label = "Loading your workspace…" }) {
-  return <div className={styles.loadingState} aria-busy="true" aria-label={label}><div className={styles.loadingSkeleton}><span className={styles.skeletonLogo}/><span className={styles.skeletonLine}/><span className={`${styles.skeletonLine} ${styles.skeletonLineShort}`}/><div className={styles.skeletonGrid}>{[0,1,2].map((item) => <span key={item} className={styles.skeletonCard}/>)}</div></div><p>{label}</p></div>;
+  return <div className={styles.loadingState} role="status" aria-busy="true" aria-label={label}><img className={styles.loadingBrand} src="/images/mytiklink-mark-black.png" alt="" width="64" height="64"/></div>;
 }
 
 export function ErrorState({ title = "We couldn’t load this", message, onRetry }) {
@@ -46,7 +46,7 @@ export function Field({ label, hint, error, children }) {
   return <label className={styles.field}><span>{label}</span>{children}{hint && !error && <small>{hint}</small>}{error && <small className={styles.fieldError}>{error}</small>}</label>;
 }
 
-export function Modal({ title, description, onClose, children, footer, wide = false }) {
+export function Modal({ title, description, onClose, children, footer, wide = false, className = "" }) {
   const dialogRef = useRef(null);
   useEffect(() => {
     const previous = document.activeElement;
@@ -59,5 +59,5 @@ export function Modal({ title, description, onClose, children, footer, wide = fa
     document.addEventListener("keydown", keydown);
     return () => { document.removeEventListener("keydown", keydown); document.body.style.overflow = originalOverflow; previous?.focus?.(); };
   }, [onClose]);
-  return <div className={styles.modalBackdrop} onMouseDown={(event) => event.target === event.currentTarget && onClose()}><section ref={dialogRef} className={`${styles.modal} ${wide ? styles.modalWide : ""}`} role="dialog" aria-modal="true" aria-label={title}><header><div><h2>{title}</h2>{description && <p>{description}</p>}</div><IconButton label="Close" onClick={onClose}><X/></IconButton></header><div className={styles.modalBody}>{children}</div>{footer && <footer>{footer}</footer>}</section></div>;
+  return <div className={styles.modalBackdrop} onMouseDown={(event) => event.target === event.currentTarget && onClose()}><section ref={dialogRef} className={`${styles.modal} ${wide ? styles.modalWide : ""} ${className}`} role="dialog" aria-modal="true" aria-label={title}><header><div><h2>{title}</h2>{description && <p>{description}</p>}</div><IconButton label="Close" onClick={onClose}><X/></IconButton></header><div className={styles.modalBody}>{children}</div>{footer && <footer>{footer}</footer>}</section></div>;
 }

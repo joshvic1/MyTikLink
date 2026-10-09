@@ -40,7 +40,7 @@ const isValidRedirectLink = (value) => {
   }
 };
 
-export default function AIPageBuilderModal({ open, onClose, token }) {
+export default function AIPageBuilderModal({ open, onClose, token, builderPath = "/dashboard/page/create/custom" }) {
   const router = useRouter();
   const [step, setStep] = useState("brief");
   const [form, setForm] = useState(initialForm);
@@ -140,7 +140,7 @@ export default function AIPageBuilderModal({ open, onClose, token }) {
       );
 
       toast.success("AI page created");
-      router.push(`/dashboard/page/create/custom?pageId=${saveRes.data._id}`);
+      router.push(`${builderPath}?pageId=${encodeURIComponent(saveRes.data._id)}`);
     } catch (err) {
       console.error(err);
       setError(err.response?.data?.error || "Failed to create AI page.");
