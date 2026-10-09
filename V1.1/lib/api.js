@@ -47,7 +47,7 @@ export const v11Api = {
   pages: () => apiRequest("/pages"),
   pageTemplates: () => apiRequest("/page-templates"),
   links: () => apiRequest("/links"),
-  linkTemplates: () => apiRequest("/templates"),
+  linkTemplates: ({ page = 1, search = "", plan = "all" } = {}) => apiRequest(`/templates?paged=1&limit=12&page=${page}&search=${encodeURIComponent(search)}&plan=${encodeURIComponent(plan)}`),
   store: () => apiRequest("/store/me"),
   storeStats: (range = "30d") => apiRequest(`/store/stats?range=${encodeURIComponent(range)}`),
   products: (page = 1) => apiRequest(`/products/me?page=${page}`),

@@ -1,3 +1,5 @@
+import { FeatureHelp } from "./components/FeatureHelp";
+import { InProgressPage } from "./pages/InProgressPage";
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -22,7 +24,7 @@ import { HelpPage } from "./pages/HelpPage";
 import { PublicLandingPreview, PublicProductPreview, PublicStorePreview, RedirectPreview } from "./pages/PublicPreviewPage";
 import { v11Routes } from "./config/routes";
 import styles from "./styles/v11.module.css";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, CircleHelp } from "lucide-react";
 import { creationFeatures } from "./config/features";
 import { SubscriptionProvider } from "./components/SubscriptionModal";
 
@@ -38,7 +40,9 @@ const dmSans = DM_Sans({ subsets: ["latin"], weight: ["400", "500", "600", "700"
 const manrope = Manrope({ subsets: ["latin"], weight: ["600", "700", "800"], variable: "--font-v11-heading" });
 
 function CreateChooser({ onClose, choose }) {
-  return <Modal title="What would you like to create?" description="Choose the tool that matches what you want to accomplish." onClose={onClose}><div className={styles.createChoices}>{creationFeatures.map(({ id, action, title, shortDescription, Icon, modalClass }) => <button key={id} className={styles[modalClass]} onClick={() => choose(action)}><span><Icon/></span><div><b>{title}</b><p>{shortDescription}</p></div><strong><ArrowRight/></strong></button>)}</div></Modal>;
+  const [info,setInfo]=useState(null);
+  if(info)return <FeatureHelp feature={info} onClose={()=>setInfo(null)} onStart={()=>choose(info.action)}/>;
+  return <Modal title="What would you like to create?" description="Choose the tool that matches what you want to accomplish." onClose={onClose}><div className={styles.createChoices}>{creationFeatures.map(feature=>{const {id,action,title,shortDescription,Icon,modalClass}=feature;return <article key={id} className={`${styles.createChoiceCard} ${styles[modalClass]}`}><button className={styles.createChoiceMain} onClick={()=>choose(action)}><span><Icon/></span><div><b>{title}</b><p>{shortDescription}</p></div><ArrowRight/></button><button className={styles.createChoiceHelp} aria-label={`About ${title}`} onClick={()=>setInfo(feature)}><CircleHelp/></button></article>;})}</div></Modal>;
 }
 
 function V11Content() {
@@ -89,6 +93,8 @@ function V11Content() {
   else if (path.endsWith("/settings/tracking")) content = <TrackingPage user={session.user} refreshSession={session.refresh}/>;
   else if (path.endsWith("/settings/billing")) content = <BillingPage user={session.user}/>;
   else if (path.endsWith("/settings/profile")) content = <AccountPage user={session.user} refreshSession={session.refresh}/>;
+  else if (path.endsWith("/affiliate")) content = <InProgressPage title="Affiliate"/>;
+  else if (path.endsWith("/integrations")) content = <InProgressPage title="Integrations"/>;
   else if (path.endsWith("/help")) content = <HelpPage/>;
   else content = <HomePage user={session.user} data={workspace} onCreate={setModal}/>;
   return <SubscriptionProvider user={session.user} refreshSession={session.refresh}><Head><title>MyTikLink V1.1</title><meta name="viewport" content="width=device-width, initial-scale=1"/></Head><Shell user={session.user} onLogout={session.logout} onCreate={() => setModal("chooser")}>{workspace.warnings.length > 0 && <div className={styles.dataWarning}>Some account data could not be loaded. Available information is still shown.</div>}{content}</Shell>{modal === "chooser" && <CreateChooser onClose={() => setModal(null)} choose={choose}/>} {modal === "link" && <CreateLinkModal onClose={() => setModal(null)} onSaved={workspace.refresh}/>} {editingLink && <CreateLinkModal link={editingLink} onClose={() => setEditingLink(null)} onSaved={workspace.refresh}/>} {modal === "page" && <PageTemplateModal onClose={() => setModal(null)}/>} {leadPage && <LeadsModal page={leadPage} leads={workspace.leads} onClose={() => setLeadPage(null)}/>}</SubscriptionProvider>;

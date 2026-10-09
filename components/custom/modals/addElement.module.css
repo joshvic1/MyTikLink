@@ -1,6 +1,5 @@
 /* /* addElement css */
-body,
-html {
+.container {
   overflow-x: hidden;
 }
 .container {
@@ -128,18 +127,18 @@ html {
   box-sizing: border-box;
 }
 /* SCROLLBAR BASE */
-*::-webkit-scrollbar {
+.container ::-webkit-scrollbar {
   width: 5px;
   height: 1px;
 }
 
 /* TRACK */
-*::-webkit-scrollbar-track {
+.container ::-webkit-scrollbar-track {
   background: transparent;
 }
 
 /* THUMB (THE IMPORTANT PART) */
-*::-webkit-scrollbar-thumb {
+.container ::-webkit-scrollbar-thumb {
   background: linear-gradient(
     180deg,
     rgba(99, 102, 241, 0.6),
@@ -150,7 +149,7 @@ html {
 }
 
 /* HOVER EFFECT */
-*::-webkit-scrollbar-thumb:hover {
+.container ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(
     180deg,
     rgba(99, 102, 241, 0.9),

@@ -292,3 +292,25 @@
     flex: 1;
   }
 }
+
+/* Match the V1.1 landing-page creation palette without changing legacy pages. */
+.v11{background:rgba(15,23,42,.4);backdrop-filter:blur(8px);font-family:var(--font-v11-body),sans-serif;color:#18212f}
+.v11 .modal{width:min(640px,100%);max-height:min(720px,85dvh);border:1px solid #e4e8ee;border-radius:20px;box-shadow:0 24px 80px #10182826}
+.v11 .header{background:#f7fbe9;padding:20px 24px;flex-shrink:0}
+.v11 .brandIcon{background:#d9ff55;color:#233015;box-shadow:none;border-radius:12px}
+.v11 .header p{color:#66764c;font-size:9px;font-weight:700}
+.v11 .header h2{font-family:var(--font-v11-heading),sans-serif;font-size:19px;font-weight:700;letter-spacing:-.025em}
+.v11 .body{min-height:0;padding:22px 24px;gap:18px}
+.v11 .field label{font-weight:600;color:#475467;font-size:12px}
+.v11 .field input,.v11 .field textarea{box-sizing:border-box;border-radius:10px;border-color:#e4e8ee;background:#fafbfc;font-size:12px}
+.v11 .field input:focus,.v11 .field textarea:focus{border-color:#9dbd35;box-shadow:0 0 0 3px #d9ff5533}
+.v11 .optionBox{background:#f8faef;border-color:#e4ebd3;border-radius:12px}
+.v11 .optionBox h3{font-weight:600;font-size:12px}
+.v11 .choiceGrid button{border-radius:10px;min-height:40px;font-weight:600}
+.v11 .choiceGrid .activeChoice{background:#d9ff55;border-color:#bbdd49;color:#263410}
+.v11 .notice{background:#f3f8e6;border-color:#dce9b7;color:#526b23;border-radius:10px;font-size:12px;font-weight:500}
+.v11 .footer{padding:16px 24px;flex-shrink:0}
+.v11 .primaryBtn,.v11 .secondaryBtn{border-radius:10px;font-weight:600;font:inherit;font-size:12px}
+.v11 .primaryBtn{background:#d9ff55;color:#202b14}
+.v11 .primaryBtn:hover:not(:disabled){background:#cbee4d}
+@media(max-width:480px){.v11 .header,.v11 .body,.v11 .footer{padding:16px}.v11 .header h2{font-size:16px}.v11 .modal{max-height:90dvh}}

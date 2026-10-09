@@ -3,11 +3,11 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { activeRoute, navigation, v11Routes } from "../config/routes";
 import { Button, IconButton } from "./UI";
-import { BarChart3, Home, LayoutTemplate, LogOut, Menu, Plus, Route, Settings, Store, Target, X } from "lucide-react";
+import { UsersRound, Plug, BarChart3, Home, LayoutTemplate, LogOut, Menu, Plus, Route, Settings, Store, Target, X } from "lucide-react";
 import { PlanBadge } from "./PlanBadge";
 import styles from "../styles/v11.module.css";
 
-const glyphs = { home: Home, pages: LayoutTemplate, store: Store, links: Route, insights: BarChart3, tracking: Target, settings: Settings };
+const glyphs = { affiliate: UsersRound, integrations: Plug, home: Home, pages: LayoutTemplate, store: Store, links: Route, insights: BarChart3, tracking: Target, settings: Settings };
 
 function NavItems({ current, close, bottom = false }) {
   return <>{navigation.filter((item) => !bottom || item.showInBottom !== false).map((item) => { const Icon = glyphs[item.icon]; const active = current === item.key; return <Link key={item.key} href={item.href} onClick={close} aria-current={active ? "page" : undefined} className={active ? styles.navActive : ""}><span><Icon aria-hidden="true"/></span>{item.label}</Link>; })}</>;

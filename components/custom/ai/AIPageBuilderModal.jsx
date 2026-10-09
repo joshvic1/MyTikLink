@@ -40,7 +40,7 @@ const isValidRedirectLink = (value) => {
   }
 };
 
-export default function AIPageBuilderModal({ open, onClose, token, builderPath = "/dashboard/page/create/custom" }) {
+export default function AIPageBuilderModal({ open, onClose, token, variant = "default", builderPath = "/dashboard/page/create/custom" }) {
   const router = useRouter();
   const [step, setStep] = useState("brief");
   const [form, setForm] = useState(initialForm);
@@ -150,8 +150,8 @@ export default function AIPageBuilderModal({ open, onClose, token, builderPath =
   };
 
   return (
-    <div className={styles.overlay}>
-      <div className={styles.modal}>
+    <div className={`${styles.overlay} ${variant === "v11" ? styles.v11 : ""}`}>
+      <div className={styles.modal} role="dialog" aria-modal="true" aria-label="Build a page with AI">
         <div className={styles.header}>
           <div className={styles.brandIcon}>
             <Sparkles size={18} />
@@ -162,7 +162,7 @@ export default function AIPageBuilderModal({ open, onClose, token, builderPath =
             <h2>Build a page from your idea</h2>
           </div>
 
-          <button type="button" className={styles.closeBtn} onClick={onClose}>
+          <button type="button" className={styles.closeBtn} aria-label="Close AI builder" onClick={onClose}>
             <X size={17} />
           </button>
         </div>

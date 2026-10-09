@@ -1,3 +1,4 @@
+import { V11Toaster } from "@/V1.1/components/Notifications";
 import "@/styles/globals.css";
 import { Toaster } from "react-hot-toast";
 import Layout from "@/components/Layout";
@@ -61,6 +62,12 @@ export default function App({ Component, pageProps }) {
   const isV2Route = router.pathname.startsWith("/v2");
   const isV2DashboardRoute = router.pathname.startsWith("/v2.1");
 
+  if (router.pathname === "/v1-1" || router.pathname.startsWith("/v1-1/")) {
+    return <main className={plusJakarta.className} style={{ minHeight: "100dvh", background: "#fff" }}>
+      <Component {...pageProps} /><V11Toaster />
+    </main>;
+  }
+
   // Public pages, dashboards, admin pages, stores, and custom domains
   // should render without the global marketing Layout/menu.
   if (
@@ -85,7 +92,7 @@ export default function App({ Component, pageProps }) {
 
         {showSmartAssistant && <SmartAssistant />}
 
-        <Toaster position="top-center" />
+        {router.pathname.startsWith("/v1-1") ? <V11Toaster/> : <Toaster position="top-center" />}
       </main>
     );
   }
@@ -96,7 +103,7 @@ export default function App({ Component, pageProps }) {
       <Layout>
         <Component {...pageProps} />
 
-        <Toaster position="top-center" />
+        {router.pathname.startsWith("/v1-1") ? <V11Toaster/> : <Toaster position="top-center" />}
       </Layout>
     </main>
   );

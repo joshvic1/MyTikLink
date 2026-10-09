@@ -1,3 +1,4 @@
+import { notify } from "../components/Notifications";
 import { useEffect, useState } from "react";
 import { BadgeCheck, CircleHelp, ExternalLink, Target } from "lucide-react";
 import { Button, Field, Modal, PageHeader } from "../components/UI";
@@ -10,7 +11,7 @@ export function TrackingPage({ user, refreshSession }) {
   const [form, setForm] = useState({ tiktok: "", meta: "", tiktokEnabled: false, metaEnabled: false, tiktokToken: "", metaToken: "" });
   const [status, setStatus] = useState({}), [help, setHelp] = useState(false);
   useEffect(() => setForm({ tiktok: user.tiktokPixelId || "", meta: user.metaPixelId || "", tiktokEnabled: Boolean(user.tiktokEventsApiEnabled), metaEnabled: Boolean(user.metaConversionsApiEnabled), tiktokToken: user.tiktokEventsApiToken || "", metaToken: user.metaConversionsApiToken || "" }), [user]);
-  const save = async (kind) => { setStatus({ [kind]: "Saving…" }); try { if (kind === "tiktok") await v11Api.saveTikTokPixel(form.tiktok); if (kind === "meta") await v11Api.saveMetaPixel(form.meta); if (kind === "tiktokApi") await v11Api.saveTikTokEvents(form.tiktokEnabled, form.tiktokToken); if (kind === "metaApi") await v11Api.saveMetaConversions(form.metaEnabled, form.metaToken); setStatus({ [kind]: "Saved successfully" }); await refreshSession(); } catch (e) { setStatus({ [kind]: e.message }); } };
+  const save = async (kind) => { setStatus({ [kind]: "Saving…" }); try { if (kind === "tiktok") await v11Api.saveTikTokPixel(form.tiktok); if (kind === "meta") await v11Api.saveMetaPixel(form.meta); if (kind === "tiktokApi") await v11Api.saveTikTokEvents(form.tiktokEnabled, form.tiktokToken); if (kind === "metaApi") await v11Api.saveMetaConversions(form.metaEnabled, form.metaToken); setStatus({ [kind]: "Saved successfully" }); notify.success("Settings saved successfully"); notify.success("Settings saved successfully"); await refreshSession(); } catch (e) { setStatus({ [kind]: e.message }); notify.error(e.message); notify.error(e.message); } };
   const integrations = [
     { id: "meta", title: "Meta Pixel", value: form.meta, connected: user.metaPixelId, token: form.metaToken, enabled: form.metaEnabled, apiKind: "metaApi", apiTitle: "Meta Conversions API" },
     { id: "tiktok", title: "TikTok Pixel", value: form.tiktok, connected: user.tiktokPixelId, token: form.tiktokToken, enabled: form.tiktokEnabled, apiKind: "tiktokApi", apiTitle: "TikTok Events API" },

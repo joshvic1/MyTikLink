@@ -1,11 +1,15 @@
 import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { Notice } from "@/V1.1/components/Notifications";
 
 export default function Toast({ message, type, onClose }) {
+  const router = useRouter();
   useEffect(() => {
     const timer = setTimeout(onClose, 3000);
     return () => clearTimeout(timer);
   }, [onClose]);
 
+  if (router.pathname.startsWith("/v1-1")) return <div style={{position:"fixed",top:20,left:"50%",transform:"translateX(-50%)",zIndex:100000}}><Notice floating tone={type === "success" ? "success" : type === "error" ? "error" : type === "warning" ? "warning" : "info"} onClose={onClose}>{message}</Notice></div>;
   return (
     <div className={`toast ${type}`}>
       {message}

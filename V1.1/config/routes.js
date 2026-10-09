@@ -17,6 +17,8 @@ export const v11Routes = {
   tracking: `${V11_ROOT}/settings/tracking`,
   billing: `${V11_ROOT}/settings/billing`,
   profile: `${V11_ROOT}/settings/profile`,
+  affiliate: `${V11_ROOT}/affiliate`,
+  integrations: `${V11_ROOT}/integrations`,
   help: `${V11_ROOT}/help`,
   login: `${V11_ROOT}/login`,
 };
@@ -27,10 +29,14 @@ export const navigation = [
   { key: "store", label: "Storefront", href: v11Routes.store, icon: "store" },
   { key: "links", label: "Redirect links", href: v11Routes.links, icon: "links" },
   { key: "insights", label: "Analytics", href: v11Routes.insights, icon: "insights" },
+  { key: "affiliate", label: "Affiliate", href: v11Routes.affiliate, icon: "affiliate", showInBottom: false },
+  { key: "integrations", label: "Integrations", href: v11Routes.integrations, icon: "integrations", showInBottom: false },
   { key: "tracking", label: "TikTok/Meta Pixel", href: v11Routes.tracking, icon: "tracking", showInBottom: false },
 ];
 
 export function activeRoute(pathname = "") {
+  if (pathname.includes("/affiliate")) return "affiliate";
+  if (pathname.includes("/integrations")) return "integrations";
   if (pathname.includes("/settings/tracking")) return "tracking";
   if (pathname.includes("/settings")) return "settings";
   if (pathname.includes("/store")) return "store";
