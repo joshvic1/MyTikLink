@@ -48,6 +48,8 @@ export function Field({ label, hint, error, children }) {
 
 export function Modal({ title, description, onClose, children, footer, wide = false, className = "" }) {
   const dialogRef = useRef(null);
+  const closeRef = useRef(onClose);
+  closeRef.current = onClose;
   useEffect(() => {
     const previous = document.activeElement;
     const originalOverflow = document.body.style.overflow;
@@ -55,9 +57,9 @@ export function Modal({ title, description, onClose, children, footer, wide = fa
     const dialog = dialogRef.current;
     const focusable = () => [...(dialog?.querySelectorAll('button:not([disabled]),a[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])') || [])];
     focusable()[0]?.focus();
-    const keydown = (event) => { if (event.key === "Escape") onClose(); if (event.key === "Tab") { const nodes = focusable(); if (!nodes.length) return; const first = nodes[0], last = nodes[nodes.length - 1]; if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); } else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); } } };
+    const keydown = (event) => { if (event.key === "Escape") closeRef.current(); if (event.key === "Tab") { const nodes = focusable(); if (!nodes.length) return; const first = nodes[0], last = nodes[nodes.length - 1]; if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); } else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); } } };
     document.addEventListener("keydown", keydown);
     return () => { document.removeEventListener("keydown", keydown); document.body.style.overflow = originalOverflow; previous?.focus?.(); };
-  }, [onClose]);
+  }, []);
   return <div className={styles.modalBackdrop} onMouseDown={(event) => event.target === event.currentTarget && onClose()}><section ref={dialogRef} className={`${styles.modal} ${wide ? styles.modalWide : ""} ${className}`} role="dialog" aria-modal="true" aria-label={title}><header><div><h2>{title}</h2>{description && <p>{description}</p>}</div><IconButton label="Close" onClick={onClose}><X/></IconButton></header><div className={styles.modalBody}>{children}</div>{footer && <footer>{footer}</footer>}</section></div>;
 }

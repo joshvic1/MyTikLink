@@ -138,12 +138,12 @@ export default function RedirectPage() {
 
           // ⏳ Give TikTok time to send request
           setTimeout(() => {
-            if (data.deepLink) {
+            if (data.deepLink && data.deepLink !== data.fallback) {
               window.location.href = data.deepLink;
 
               // fallback after app attempt
               setTimeout(() => {
-                window.location.href = data.fallback;
+                if (document.visibilityState === "visible") window.location.href = data.fallback;
               }, 1200);
             } else {
               window.location.href = data.fallback;
