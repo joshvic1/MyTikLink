@@ -41,7 +41,7 @@ export function getFallbackUpNext({ pendingOrders, drafts, store, products, link
   if (store && !store.onboardingCompleted) return decorateUpNext({ kind: "store", title: "Your storefront isn’t ready yet", description: "Add the remaining details and get your store ready to share.", ctaLabel: "Continue setup", href: routes.store });
   if (store && products.length === 0) return decorateUpNext({ kind: "product", title: "Add your first product", description: "Add a product to your storefront so people can start ordering from you.", ctaLabel: "Add product", href: routes.products });
   if (store?.isPublished) return decorateUpNext({ kind: "store-share", title: "Your storefront is ready to share", description: "Get your store link and start sharing it with your customers.", ctaLabel: "Get store link", href: routes.store });
-  if (links.length) return decorateUpNext({ kind: "link-share", title: "Your smart link is ready", description: "Copy your link and start using it anywhere you need it.", ctaLabel: "Get link", href: routes.links });
+  if (links.length) return decorateUpNext({ kind: "link-share", title: "Your redirect link is ready", description: "Copy your link and start using it anywhere you need it.", ctaLabel: "Get link", href: routes.links });
   if (publishedPages.length) return decorateUpNext({ kind: "share", title: "Your page is ready to share", description: "Get your link and start sharing it with your audience.", ctaLabel: "View your pages", href: routes.pages });
-  return decorateUpNext({ kind: "create", title: "Create something to share", description: "Start with a landing page, storefront or smart link.", ctaLabel: "Create now", href: routes.home });
+  return decorateUpNext({ kind: "create", title: "Create something to share", description: "Start with a landing page, storefront or redirect link.", ctaLabel: "Create now", href: routes.home });
 }

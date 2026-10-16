@@ -1,9 +1,10 @@
+import { canUseLandingPages } from "../lib/pageAccess";
 import { Notice } from "./Notifications";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { Button, Modal, LoadingState } from "./UI";
 import { v11Api, getToken } from "../lib/api";
-import AIPageBuilderModal from "@/components/custom/ai/AIPageBuilderModal";
+import AIPageBuilderModal from "../landing/AIPageBuilderModal";
 import styles from "../styles/v11.module.css";
 import { Plus, Sparkles, Search, Check, SlidersHorizontal } from "lucide-react";
 const categories = ["Business & Services", "Products & Offers", "Courses & Events", "Personal & Portfolio", "General"];
@@ -16,7 +17,7 @@ function categoryOf(t) {
   if (/business|service|agency|consult|coach|real estate/.test(text)) return "Business & Services";
   return "General";
 }
-export function PageTemplateModal({ onClose }) {
+export function PageTemplateModal({ onClose, user }) {
  const router = useRouter();
  const [templates,setTemplates]=useState([]), [selected,setSelected]=useState(""), [error,setError]=useState(""), [loading,setLoading]=useState(true);
  const [search,setSearch]=useState(""), [category,setCategory]=useState("all"), [form,setForm]=useState("all");
@@ -30,7 +31,7 @@ export function PageTemplateModal({ onClose }) {
  const filter=(setter,value)=>{setter(value);if(!["scratch","ai"].includes(selected))setSelected("");};
  const proceed=async()=>{
   if(!selected){clearTimeout(timer.current);setToast(true);timer.current=setTimeout(()=>setToast(false),4500);return;}
-  if(selected==="ai"){setAiOpen(true);return;}
+  if(selected==="ai"){if(!canUseLandingPages(user)){setError("An active Standard or Pro plan is needed to create an AI page.");return;}setAiOpen(true);return;}
   setNavigating(true);try{await router.push(selected==="scratch"?"/v1-1/pages/builder":`/v1-1/pages/editor?templateId=${encodeURIComponent(selected)}`);}catch{setError("Could not open the editor. Please try again.");}finally{setNavigating(false);}
  };
  if(aiOpen)return <AIPageBuilderModal open variant="v11" token={getToken()} builderPath="/v1-1/pages/builder" onClose={()=>setAiOpen(false)}/>;

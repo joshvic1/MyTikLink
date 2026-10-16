@@ -1,3 +1,4 @@
+import { Breadcrumbs } from "./Breadcrumbs";
 import styles from "../styles/v11.module.css";
 import { AlertCircle, ArrowRight, FileText, Link2, ShoppingBag, Sparkles, X } from "lucide-react";
 import { forwardRef, useEffect, useRef } from "react";
@@ -26,7 +27,7 @@ export function DashboardActionCard({ count, title, description, action, tone = 
 }
 
 export function PageHeader({ eyebrow, title, description, actions }) {
-  return <header className={styles.pageHeader}><div>{eyebrow && <span className={styles.eyebrow}>{eyebrow}</span>}<h1>{title}</h1>{description && <p>{description}</p>}</div>{actions && <div className={styles.headerActions}>{actions}</div>}</header>;
+  return <header className={styles.pageHeader}><div><Breadcrumbs/><h1>{title}</h1>{description && <p>{description}</p>}</div>{actions && <div className={styles.headerActions}>{actions}</div>}</header>;
 }
 
 export function EmptyState({ icon, title, description, action }) {

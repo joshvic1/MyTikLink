@@ -5,7 +5,7 @@ import styles from "../styles/v11.module.css";
 
 export function StorePage({ data }) {
   const router = useRouter();
-  if (!data.store) return <div className={styles.page}><PageHeader eyebrow="STOREFRONT" title="Start selling online." description="Create a store where customers can browse your products and place orders—even while you’re offline."/><EmptyState icon="◇" title="Set up your storefront" description="Your Storefront is an independent product. You do not need a Landing Page or Smart Link to use it." action={<Button onClick={() => router.push("/v1-1/store/setup")}>Set up storefront</Button>}/></div>;
+  if (!data.store) return <div className={styles.page}><PageHeader eyebrow="STOREFRONT" title="Start selling online." description="Create a store where customers can browse your products and place orders—even while you’re offline."/><EmptyState icon="◇" title="Set up your storefront" description="Your Storefront is an independent product. You do not need a Landing Page or Redirect Link to use it." action={<Button onClick={() => router.push("/v1-1/store/setup")}>Set up storefront</Button>}/></div>;
   const store = data.store, stats = data.storeStats || {};
   const pending = data.orders.filter((order) => ["new", "pending"].includes(String(order.status).toLowerCase()));
   const lowStock = data.products.filter((product) => Number(product.stock ?? product.quantity ?? 99) <= 3);

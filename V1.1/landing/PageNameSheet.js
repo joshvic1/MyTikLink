@@ -1,0 +1,158 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import styles from "@/styles/pageNameSheet.module.css";
+
+export default function PageNameSheet({
+  isPro,
+  onClose,
+  onSave,
+  onUpgrade,
+  initialTitle = "",
+  initialRedirectUrl = "",
+}) {
+  const [title, setTitle] = useState(initialTitle);
+  const [redirectUrl, setRedirectUrl] = useState(initialRedirectUrl);
+
+  const [titleError, setTitleError] = useState("");
+  const [linkError, setLinkError] = useState("");
+  const [saving, setSaving] = useState(false);
+
+  // 🔥 THIS is what makes edit mode prefill work
+  useEffect(() => {
+    setTitle(initialTitle);
+    setRedirectUrl(initialRedirectUrl);
+  }, [initialTitle, initialRedirectUrl]);
+
+  const normalizeUrl = (url = "") => {
+    if (typeof url !== "string") return "";
+
+    if (!url.startsWith("http://") && !url.startsWith("https://")) {
+      return "https://" + url;
+    }
+
+    return url;
+  };
+
+  const isValidUrl = (url) => {
+    if (!url || typeof url !== "string") return false;
+
+    try {
+      const finalUrl = normalizeUrl(url);
+      const parsed = new URL(finalUrl);
+
+      if (!parsed.hostname.includes(".")) return false;
+      if (parsed.hostname.length < 4) return false;
+
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  const handleSave = async () => {
+    if (saving) return;
+
+    let hasError = false;
+
+    setTitleError("");
+    setLinkError("");
+
+    if (!title.trim()) {
+      setTitleError("Please enter a page name");
+      hasError = true;
+    }
+
+    if (!redirectUrl || !redirectUrl.trim()) {
+      setLinkError("Please enter a redirect link");
+      hasError = true;
+    } else if (!isValidUrl(redirectUrl)) {
+      setLinkError(
+        "Please enter a valid URL (e.g. wa.me/234xxxx or https://google.com)",
+      );
+      hasError = true;
+    }
+
+    if (hasError) return;
+
+    try {
+      setSaving(true);
+
+      const cleaned = redirectUrl?.trim() || "";
+      const finalUrl = normalizeUrl(cleaned);
+
+      await onSave({
+        title: title.trim(),
+        redirectUrl: finalUrl,
+      });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div className={styles.overlay} onClick={onClose}>
+      <div className={styles.sheet} onClick={(e) => e.stopPropagation()}>
+        <div className={styles.handle} />
+
+        <h2 className={styles.title}>Name Your Page</h2>
+        <p className={styles.subtitle}>
+          Give your page a title and add a redirect URL you want leads to be
+          directed to after filling this form (WhatsApp, Telegram or any link).
+        </p>
+
+        {/* TITLE */}
+        <div className={styles.field}>
+          <label className={styles.label}>Page title</label>
+          {titleError && <span className={styles.error}>{titleError}</span>}
+          <input
+            className={styles.input}
+            placeholder="e.g Free Whatsapp Class"
+            value={title}
+            onChange={(e) => {
+              setTitle(e.target.value);
+              setTitleError("");
+            }}
+          />
+        </div>
+
+        {/* LINK */}
+        <div className={styles.field}>
+          <label className={styles.label}>Redirect link</label>
+          {linkError && <span className={styles.error}>{linkError}</span>}
+          <input
+            className={styles.input}
+            placeholder="https://wa.me/123456789"
+            value={redirectUrl || ""}
+            onChange={(e) => {
+              setRedirectUrl(e.target.value);
+              setLinkError("");
+            }}
+          />
+        </div>
+
+        <button
+          className={styles.button}
+          onClick={handleSave}
+          disabled={!isPro || saving}
+        >
+          {saving ? "Saving..." : "Save Page"}
+        </button>
+
+        {!isPro && (
+          <p className={styles.upgradeText}>
+            Publishing requires an active Standard or Pro plan.
+            <span
+              className={styles.upgradeLink}
+              onClick={() => {
+                if (onUpgrade) onUpgrade();
+              }}
+            >
+              Upgrade
+            </span>
+          </p>
+        )}
+      </div>
+    </div>
+  );
+}

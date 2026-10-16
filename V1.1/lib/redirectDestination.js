@@ -43,7 +43,7 @@ export function normalizeDestination(input) {
   if (platform!=='website' && actualPlatform!==platform) fail(`Paste a ${platform} link, or change the selected platform.`);
   const host=u.hostname.toLowerCase().replace(/^www\./,'');
   if (actualPlatform==='whatsapp') {
-    if (u.searchParams.has('text')&&!prefill) prefill=u.searchParams.get('text');
+    if (u.searchParams.has('text') && !Object.prototype.hasOwnProperty.call(input, 'prefill')) prefill=u.searchParams.get('text');
     const parts=u.pathname.split('/').filter(Boolean);
     if ((u.protocol==='whatsapp:'&&u.hostname==='send') || (['api.whatsapp.com','web.whatsapp.com','whatsapp.com'].includes(host)&&parts[0]==='send') || (host==='wa.me'&&/^\+?\d+$/.test(parts[0]||''))) {
       const code=phone(u.searchParams.get('phone') || parts[0] || '');
@@ -76,4 +76,14 @@ export function redirectTargets(link) {
   // Revalidate stored links too; legacy records use whatsappCode.
   const value=normalizeDestination({destinationUrl:link.destinationUrl,whatsappCode:link.whatsappCode,linkType:link.linkType,platform:link.platform|| (link.linkType==='url'?'website':'whatsapp'),prefill:link.prefill,fallbackUrl:link.fallbackUrl});
   return {deepLink:value.deepLink,fallback:value.fallbackUrl};
+}
+
+export function validateRedirectDestination(value) {
+ for(const raw of [value.destinationUrl,value.fallbackUrl]) {
+  let url;try{url=new URL(raw);}catch{continue;}
+  const hosts=['mytik.link','www.mytik.link','mytiklink.com','www.mytiklink.com','localhost','127.0.0.1'];
+  try{hosts.push(new URL(process.env.NEXT_PUBLIC_SITE_URL).hostname);}catch{}
+  if(hosts.includes(url.hostname)&&/^\/(?:v1-1\/)?r(?:\/|$)/i.test(url.pathname))throw new Error('Use the final destination, not another MyTikLink redirect link.');
+ }
+ return value;
 }

@@ -49,5 +49,5 @@ export function PublicProductPreview({ slug, product }) {
 }
 
 export function RedirectPreview({ linkId }) {
-  return <div className={styles.publicPreview}><PreviewBar label="Smart-link safety preview"/><main className={styles.redirectPreview}><span>↗</span><h1>Redirect preview</h1><p>This V1.1 route intentionally does not count a click or redirect automatically.</p><a href={`/r/${linkId}`} target="_blank" rel="noreferrer">Test the live smart link ↗</a></main></div>;
+  return <div className={styles.publicPreview}><PreviewBar label="Redirect-link safety preview"/><main className={styles.redirectPreview}><span>↗</span><h1>Redirect preview</h1><p>This V1.1 route intentionally does not count a click or redirect automatically.</p><a href={`/r/${linkId}`} target="_blank" rel="noreferrer">Test the live redirect link ↗</a></main></div>;
 }

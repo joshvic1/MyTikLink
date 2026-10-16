@@ -21,7 +21,7 @@ export function findFirstPageImage(value, seen = new Set()) {
 }
 
 export function pageThumbnail(page) {
-  return usableImage(page?.template?.thumbnailUrl) || usableImage(page?.templateId?.thumbnailUrl) || findFirstPageImage(page?.customContent) || findFirstPageImage(page?.config);
+  return usableImage(page?.thumbnailUrl) || usableImage(page?.template?.thumbnailUrl) || usableImage(page?.templateId?.thumbnailUrl) || findFirstPageImage(page?.customContent) || findFirstPageImage(page?.config);
 }
 
 export function pageInitial(page) {
@@ -29,7 +29,7 @@ export function pageInitial(page) {
 }
 
 export function pageHasLeadForm(page) {
-  const html = String(page?.template?.html || page?.html || "").toLowerCase();
+  const html = String(page?.template?.html || page?.templateId?.html || page?.html || "").toLowerCase();
   if (/<form\b|type=["'](?:email|tel)["']|name=["'](?:name|email|phone|whatsapp)["']/.test(html)) return true;
   const formKeys = /^(form|lead|leadform|captureform|contactform|whatsappform)$/i;
   const visit = (value, seen = new Set()) => {

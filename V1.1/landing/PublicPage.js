@@ -1,0 +1,791 @@
+"use client";
+import { validateLeadPhoneInput, prepareLeadPhoneInput } from "@/V1.1/lib/leadPhone.js";
+// hey
+function loadTikTokPixel(pixelId) {
+  if (!pixelId) {
+    console.log("❌ No TikTok Pixel ID found");
+    return;
+  }
+  if (window.ttq) {
+    console.log("⚠️ TikTok pixel already loaded");
+    return;
+  }
+  console.log("🚀 Loading TikTok Pixel:", pixelId);
+
+  !(function (w, d, t) {
+    w.TiktokAnalyticsObject = t;
+
+    const ttq = (w[t] = w[t] || []);
+
+    ttq.methods = [
+      "page",
+      "track",
+      "identify",
+      "instances",
+      "debug",
+      "on",
+      "off",
+      "once",
+      "ready",
+      "alias",
+      "group",
+      "enableCookie",
+      "disableCookie",
+    ];
+
+    ttq.setAndDefer = function (t, e) {
+      t[e] = function () {
+        t.push([e].concat(Array.prototype.slice.call(arguments, 0)));
+      };
+    };
+
+    for (let i = 0; i < ttq.methods.length; i++) {
+      ttq.setAndDefer(ttq, ttq.methods[i]);
+    }
+
+    ttq.load = function (e) {
+      const script = d.createElement("script");
+
+      script.async = true;
+
+      script.src =
+        "https://analytics.tiktok.com/i18n/pixel/events.js?sdkid=" +
+        e +
+        "&lib=" +
+        t;
+
+      const firstScript = d.getElementsByTagName("script")[0];
+
+      firstScript.parentNode.insertBefore(script, firstScript);
+    };
+
+    ttq.load(pixelId);
+
+    ttq.page();
+
+    ttq.ready(() => {
+      console.log("✅ TikTok READY:", pixelId);
+    });
+  })(window, document, "ttq");
+}
+function loadMetaPixel(pixelId) {
+  if (!pixelId) {
+    console.log("❌ No Meta Pixel ID found");
+    return;
+  }
+
+  if (window.fbq) {
+    console.log("⚠️ Meta Pixel already loaded");
+    return;
+  }
+
+  console.log("🚀 Loading Meta Pixel:", pixelId);
+
+  !(function (f, b, e, v, n, t, s) {
+    if (f.fbq) return;
+    n = f.fbq = function () {
+      n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = true;
+    n.version = "2.0";
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = true;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s);
+  })(
+    window,
+    document,
+    "script",
+    "https://connect.facebook.net/en_US/fbevents.js",
+  );
+
+  window.fbq("init", pixelId);
+  window.fbq("track", "PageView");
+
+  console.log("🎯 Meta Pixel Initialized");
+}
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import axios from "axios";
+import Head from "next/head";
+import CustomPageRenderer from "@/V1.1/landing/CustomPageRenderer.js";
+
+/* =========================
+   BROWSER + OS DETECTION
+========================= */
+
+function isTikTokBrowser() {
+  return /tiktok|ttwebview/i.test(navigator.userAgent);
+}
+
+function getOS() {
+  const ua = navigator.userAgent;
+
+  if (/android/i.test(ua)) return "android";
+  if (/iphone|ipad|ipod/i.test(ua)) return "ios";
+
+  return "other";
+}
+
+function getCTAFromUrl(url) {
+  const lower = url.toLowerCase();
+
+  if (lower.includes("chat.whatsapp.com")) {
+    return "Click here to join the WhatsApp group";
+  }
+
+  if (lower.includes("wa.me") || lower.includes("api.whatsapp.com")) {
+    return "Open WhatsApp";
+  }
+
+  if (lower.includes("instagram.com")) {
+    return "Click here to open Instagram";
+  }
+
+  if (lower.includes("t.me")) {
+    return "Click here to open Telegram";
+  }
+
+  return "Click here to proceed";
+}
+
+/* =========================
+   SMART REDIRECT
+========================= */
+function normalizeRedirectUrl(url) {
+  if (!url) return url;
+
+  // Don't touch WhatsApp message links
+  if (url.includes("wa.me/message/")) {
+    return url;
+  }
+
+  // Convert phone-number wa.me links
+  if (url.includes("wa.me")) {
+    const phone = url.match(/\d+/)?.[0];
+
+    if (phone) {
+      return `https://api.whatsapp.com/send?phone=${phone}`;
+    }
+  }
+
+  return url;
+}
+// function smartRedirect(url) {
+//   if (!url) return;
+
+//   const clean = url.trim();
+//   const lower = clean.toLowerCase();
+
+//   // ===== WHATSAPP (ALL TYPES) =====
+//   if (lower.includes("wa.me")) {
+//     const urlObj = new URL(
+//       clean.startsWith("http") ? clean : `https://${clean}`,
+//     );
+
+//     const path = urlObj.pathname;
+
+//     const os = getOS();
+
+//     // =========================
+//     // TYPE 1: wa.me/message/XXXXX
+//     // =========================
+//     if (path.includes("/message/")) {
+//       const fullUrl = urlObj.toString();
+
+//       if (os === "android") {
+//         window.open(
+//           `intent://${fullUrl.replace("https://", "")}#Intent;scheme=https;package=com.whatsapp;end`,
+//           "_self",
+//         );
+//       } else {
+//         window.location.href = fullUrl;
+//       }
+
+//       setTimeout(() => {
+//         window.location.href = fullUrl;
+//       }, 1500);
+
+//       return;
+//     }
+
+//     // =========================
+//     // TYPE 2: wa.me/PHONE
+//     // =========================
+//     const phone = path.replace("/", "").match(/\d+/)?.[0];
+
+//     if (phone) {
+//       if (os === "android") {
+//         window.open(
+//           `intent://send?phone=${phone}#Intent;scheme=whatsapp;end`,
+//           "_self",
+//         );
+//       } else {
+//         window.open(`whatsapp://send?phone=${phone}`, "_self");
+//       }
+
+//       setTimeout(() => {
+//         window.location.href = `https://wa.me/${phone}`;
+//       }, 1200);
+
+//       return;
+//     }
+
+//     // =========================
+//     // FALLBACK
+//     // =========================
+//     window.location.href = urlObj.toString();
+//     return;
+//   }
+
+//   // ===== TELEGRAM =====
+//   if (lower.includes("t.me")) {
+//     try {
+//       const urlObj = new URL(
+//         clean.startsWith("http") ? clean : `https://${clean}`,
+//       );
+//       const path = urlObj.pathname.replace("/", "");
+
+//       // Invite links (new format)
+//       if (path.startsWith("+")) {
+//         const invite = path.replace("+", "");
+
+//         window.location.href = `tg://join?invite=${invite}`;
+
+//         setTimeout(() => {
+//           window.location.href = urlObj.toString();
+//         }, 1200);
+
+//         return;
+//       }
+
+//       // Invite links (old format)
+//       if (path.startsWith("joinchat/")) {
+//         const invite = path.split("joinchat/")[1];
+
+//         window.location.href = `tg://join?invite=${invite}`;
+
+//         setTimeout(() => {
+//           window.location.href = urlObj.toString();
+//         }, 1200);
+
+//         return;
+//       }
+
+//       // Username / public channel
+//       const username = path.split("/")[0];
+
+//       window.location.href = `tg://resolve?domain=${username}`;
+
+//       setTimeout(() => {
+//         window.location.href = urlObj.toString();
+//       }, 1200);
+//     } catch {
+//       window.location.href = clean;
+//     }
+
+//     return;
+//   }
+
+//   // ===== INSTAGRAM =====
+//   if (lower.includes("instagram.com")) {
+//     const username = clean.split("/").filter(Boolean)[1];
+//     window.location.href = `instagram://user?username=${username}`;
+
+//     setTimeout(() => {
+//       window.location.href = clean.startsWith("http")
+//         ? clean
+//         : `https://${clean}`;
+//     }, 800);
+
+//     return;
+//   }
+
+//   // ===== DEFAULT =====
+//   window.location.href = clean.startsWith("http") ? clean : `https://${clean}`;
+// }
+function smartRedirect(url) {
+  if (!url) return;
+
+  const normalized = normalizeRedirectUrl(url);
+
+  const clean = normalized.trim();
+
+  window.location.href = clean.startsWith("http") ? clean : `https://${clean}`;
+}
+function showRedirectButton(form, redirectUrl) {
+  const btn = document.createElement("button");
+
+  btn.innerText = getCTAFromUrl(redirectUrl);
+
+  btn.style.marginTop = "20px";
+  btn.style.padding = "14px";
+  btn.style.width = "100%";
+  btn.style.fontSize = "16px";
+  btn.style.fontWeight = "600";
+  btn.style.background = "#22c55e";
+  btn.style.color = "white";
+  btn.style.border = "none";
+  btn.style.borderRadius = "8px";
+  btn.style.cursor = "pointer";
+
+  btn.addEventListener("click", () => {
+    smartRedirect(redirectUrl);
+  });
+  const note = document.createElement("p");
+
+  note.innerHTML =
+    "If the app doesn't open, tap the TikTok menu (⋮) and choose Open In Browser.";
+
+  note.style.fontSize = "13px";
+  note.style.color = "#666";
+  note.style.marginTop = "10px";
+  note.style.textAlign = "center";
+  const wrapper = document.createElement("div");
+
+  wrapper.appendChild(btn);
+  wrapper.appendChild(note);
+
+  form.replaceWith(wrapper);
+}
+
+function LoadingScreen() {
+  return (
+    <div className="loading-wrap">
+      <div className="loader-card">
+        <div className="pulse-ring"></div>
+        <p>Loading page…</p>
+      </div>
+
+      <style jsx>{`
+        .loading-wrap {
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: radial-gradient(circle at top, #052e24, #020617);
+          color: white;
+          font-family: Inter, system-ui, sans-serif;
+        }
+
+        .loader-card {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 16px;
+        }
+
+        .pulse-ring {
+          width: 64px;
+          height: 64px;
+          border-radius: 50%;
+          border: 4px solid rgba(34, 197, 94, 0.3);
+          border-top-color: #22c55e;
+          animation: spin 1s linear infinite;
+        }
+
+        p {
+          font-size: 14px;
+          color: #86efac;
+          letter-spacing: 0.3px;
+        }
+
+        @keyframes spin {
+          to {
+            transform: rotate(360deg);
+          }
+        }
+      `}</style>
+    </div>
+  );
+}
+
+export default function PublicPage({ slug: providedSlug }) {
+  const router = useRouter();
+  const slug = providedSlug || router.query.slug;
+
+  const [page, setPage] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const COOLDOWN_MS = 2 * 60 * 1000; // 2 minutes
+  const [cooldownActive, setCooldownActive] = useState(false);
+  // =========================
+  // Detect cooldown
+  // =========
+  useEffect(() => {
+    if (!slug) return;
+
+    const last = localStorage.getItem("submitted_" + slug);
+    if (last && Date.now() - Number(last) < COOLDOWN_MS) {
+      setCooldownActive(true);
+    }
+  }, [slug]);
+
+  /* =========================
+     FETCH PAGE
+  ========================= */
+  useEffect(() => {
+    if (!slug) return;
+
+    const fetchPage = async () => {
+      try {
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/v1-1/pages/public/${slug}`,
+        );
+
+        const pageData = res.data;
+
+        setPage(pageData);
+
+        if (pageData.tiktokPixelId) {
+          loadTikTokPixel(pageData.tiktokPixelId);
+
+          setTimeout(() => {
+            if (window.ttq) {
+              console.log("🚀 Sending ViewContent");
+
+              window.ttq.track("ViewContent", {
+                content_id: pageData.slug,
+                content_name: pageData.title,
+              });
+            }
+          }, 1000);
+        }
+
+        if (res.data.metaPixelId) {
+          loadMetaPixel(res.data.metaPixelId);
+        }
+      } catch (err) {
+        // 🔥 EXPIRED → REDIRECT
+        if (err.response?.status === 403) {
+          router.replace("/expired");
+          return;
+        }
+
+        console.error("Public page error:", err);
+        setPage(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPage();
+  }, [slug]);
+
+  /* =========================
+   HANDLE LEAD SUBMIT (FORMS ONLY)
+========================= */
+  useEffect(() => {
+    if (!page) return;
+    if (page.builderType === "custom") return;
+
+    const form = document.querySelector("[data-lead-form='true']");
+
+    if (cooldownActive && form) {
+      const link = document.createElement("a");
+      link.href = page.redirectUrl;
+      link.innerText = "👉 Tap here to join";
+      link.style.display = "block";
+      link.style.fontWeight = "700";
+      link.style.marginTop = "16px";
+      link.style.color = "#22c55e";
+      link.style.textAlign = "center";
+      link.style.fontSize = "16px";
+
+      form.replaceWith(link);
+      return;
+    }
+
+    if (!form) return; // 👈 pages without form will skip this entirely
+
+    const nameInput = form.querySelector("input[name='name']");
+    const whatsappInput = form.querySelector("input[name='whatsapp']");
+    const submitBtn = form.querySelector("button[type='submit']");
+
+    if (!nameInput || !whatsappInput || !submitBtn) return;
+    prepareLeadPhoneInput(whatsappInput);
+
+    // 🔒 disable initially
+    submitBtn.disabled = true;
+    submitBtn.style.opacity = "0.5";
+    submitBtn.style.cursor = "not-allowed";
+
+    const checkInputs = () => {
+      const name = nameInput.value.trim();
+      const whatsapp = whatsappInput.value.trim();
+
+      if (name && whatsapp) {
+        submitBtn.disabled = false;
+        submitBtn.style.opacity = "1";
+        submitBtn.style.cursor = "pointer";
+      } else {
+        submitBtn.disabled = true;
+        submitBtn.style.opacity = "0.5";
+        submitBtn.style.cursor = "not-allowed";
+      }
+    };
+
+    nameInput.addEventListener("input", checkInputs);
+    whatsappInput.addEventListener("input", checkInputs);
+
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+
+      if (cooldownActive) return;
+
+      const name = nameInput.value.trim();
+      const whatsapp = validateLeadPhoneInput(whatsappInput);
+      if (!whatsapp) return;
+      const companyInput = form.querySelector("input[name='company']");
+      const company = companyInput ? companyInput.value : "";
+
+      if (!name || !whatsapp) {
+        alert("Please fill all fields");
+        return;
+      }
+
+      const originalText = submitBtn.innerText;
+      submitBtn.disabled = true;
+      submitBtn.innerText = "Redirecting...";
+
+      try {
+        const res = await axios.post(
+          `${process.env.NEXT_PUBLIC_API_URL}/v1-1/pages/public/${slug}/lead`,
+          { name, whatsapp, company },
+        );
+
+        // ✅ SAVE COOLDOWN
+        localStorage.setItem("submitted_" + slug, Date.now());
+        setCooldownActive(true);
+
+        if (res.data.redirectUrl) {
+          if (window.ttq) {
+            console.log("🚀 Sending TikTok Lead Event");
+
+            const cleanPhone = whatsapp.replace(/\D/g, "");
+
+            const leadEventId = Date.now().toString();
+
+            window.ttq.track(
+              "Lead",
+              {
+                content_type: "product",
+
+                content_id: page.slug,
+
+                content_name: page.title,
+
+                contents: [
+                  {
+                    content_id: page.slug,
+                    content_name: page.title,
+                  },
+                ],
+
+                phone_number: cleanPhone,
+              },
+
+              {
+                event_id: leadEventId,
+              },
+            );
+            setTimeout(() => {
+              window.ttq.track(
+                "CompleteRegistration",
+                {
+                  content_type: "product",
+
+                  content_id: page.slug,
+
+                  content_name: page.title,
+
+                  contents: [
+                    {
+                      content_id: page.slug,
+                      content_name: page.title,
+                    },
+                  ],
+                },
+                {
+                  event_id: Date.now().toString(),
+                },
+              );
+            }, 400);
+          }
+          if (window.fbq) window.fbq("track", "Lead");
+          const redirectUrl = res.data.redirectUrl;
+
+          // If NOT TikTok → auto redirect
+
+          if (!isTikTokBrowser()) {
+            smartRedirect(redirectUrl);
+            return;
+          }
+
+          // If TikTok → show button instead
+          showRedirectButton(form, redirectUrl);
+        }
+      } catch (err) {
+        console.error(err);
+        alert(err.response?.data?.message || "Failed");
+
+        submitBtn.disabled = false;
+        submitBtn.innerText = originalText;
+      }
+    };
+
+    form.addEventListener("submit", handleSubmit);
+
+    return () => {
+      form.removeEventListener("submit", handleSubmit);
+      nameInput.removeEventListener("input", checkInputs);
+      whatsappInput.removeEventListener("input", checkInputs);
+    };
+  }, [page, slug]);
+
+  /* =========================
+   HANDLE CTA BUTTON (NO FORM)
+========================= */
+  useEffect(() => {
+    if (!page) return;
+    if (page.builderType === "custom") return;
+
+    const ctaBtn = document.querySelector("[data-cta='true']");
+    if (!ctaBtn) return; // not a button template
+
+    const handleClick = () => {
+      if (!page.redirectUrl) {
+        alert("No redirect URL set for this page");
+        return;
+      }
+
+      if (window.ttq) {
+        console.log("🚀 Sending TikTok Lead Event");
+
+        const leadEventId = Date.now().toString();
+
+        window.ttq.track(
+          "Lead",
+          {
+            content_type: "product",
+
+            content_id: page.slug,
+
+            content_name: page.title,
+
+            contents: [
+              {
+                content_id: page.slug,
+                content_name: page.title,
+              },
+            ],
+          },
+          {
+            event_id: leadEventId,
+          },
+        );
+        setTimeout(() => {
+          window.ttq.track(
+            "CompleteRegistration",
+            {
+              content_type: "product",
+
+              content_id: page.slug,
+
+              content_name: page.title,
+
+              contents: [
+                {
+                  content_id: page.slug,
+                  content_name: page.title,
+                },
+              ],
+            },
+            {
+              event_id: Date.now().toString(),
+            },
+          );
+        }, 400);
+      }
+
+      if (window.fbq) {
+        window.fbq("track", "Lead");
+      }
+
+      // ✅ FIX: TikTok handling
+      if (isTikTokBrowser()) {
+        showRedirectButton(ctaBtn, page.redirectUrl);
+        return;
+      }
+
+      smartRedirect(page.redirectUrl);
+    };
+
+    ctaBtn.addEventListener("click", handleClick);
+
+    return () => {
+      ctaBtn.removeEventListener("click", handleClick);
+    };
+  }, [page]);
+
+  if (loading) return <LoadingScreen />;
+
+  if (!page) {
+    return (
+      <div style={{ textAlign: "center", padding: "4rem" }}>
+        <h2>404 – Page not found</h2>
+      </div>
+    );
+  }
+  if (page.builderType === "custom") {
+    return (
+      <>
+        <Head>
+          <title>{page.title}</title>
+        </Head>
+
+        <CustomPageRenderer
+          sections={page.customContent}
+          tiktokPixelId={page.tiktokPixelId}
+          metaPixelId={page.metaPixelId}
+          page={page}
+        />
+      </>
+    );
+  }
+
+  if (!page?.template?.html) {
+    return null;
+  }
+
+  const { template, config, title } = page;
+
+  const renderedHTML = template.html.replace(/{{(.*?)}}/g, (_, key) => {
+    const val = config[key.trim()];
+    if (!val) return "";
+
+    // ✅ image field support
+    if (typeof val === "object" && val.url) {
+      return val.url;
+    }
+
+    return val;
+  });
+
+  return (
+    <>
+      <Head>
+        <title>{title}</title>
+      </Head>
+
+      {template.css && (
+        <style dangerouslySetInnerHTML={{ __html: template.css }} />
+      )}
+
+      <div dangerouslySetInnerHTML={{ __html: renderedHTML }} />
+    </>
+  );
+}

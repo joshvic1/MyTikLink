@@ -1,18 +1,35 @@
-import { notify } from "../components/Notifications";
-import { useMemo, useState } from "react";
-import { Badge, Button, EmptyState, PageHeader } from "../components/UI";
-import { v11Api } from "../lib/api";
-import styles from "../styles/v11.module.css";
-
-export function LinksPage({ links, history, refresh, onCreate, onEdit }) {
-  const [query, setQuery] = useState(""), [error, setError] = useState("");
-  const filtered = useMemo(() => links.filter((link) => `${link.title} ${link.whatsappCode}`.toLowerCase().includes(query.toLowerCase())), [links, query]);
-  const clickCount = (link) => history.filter((item) => String(item.linkId?._id || item.linkId) === String(link._id)).length || link.redirectCount || 0;
-  const remove = async (link) => { if (!window.confirm(`Delete “${link.title}”? This cannot be undone.`)) return; try { await v11Api.deleteLink(link._id); await refresh(); notify.success("Deleted successfully"); } catch (e) { setError(e.message); notify.error(e.message); } };
-  const copy = async (link) => { try { await navigator.clipboard.writeText(`${window.location.origin}/r/${link.linkId || link.slug || link._id}`); notify.success("Link copied"); } catch { notify.error("Could not copy the link. Please try again."); } };
-  return <div className={styles.page}><PageHeader eyebrow="REDIRECT LINKS" title="A shorter path to any destination." description="Create and manage links for websites, social profiles, chats and channels." actions={<Button onClick={onCreate}>＋ Create redirect link</Button>}/>
-    <div className={styles.metricRow}><div><span>Redirect links</span><b>{links.length}</b></div><div><span>Recorded clicks</span><b>{links.reduce((sum, link) => sum + Number(clickCount(link)), 0).toLocaleString()}</b></div><div><span>Active</span><b>{links.length}</b></div></div>
-    <div className={styles.toolbar}><label className={styles.search}>⌕<input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search redirect links"/></label></div>{error && <p className={styles.inlineError}>{error}</p>}
-    {filtered.length ? <div className={styles.dataList}>{filtered.map((link) => <article key={link._id}><span className={styles.assetIcon}>↗</span><span className={styles.itemIdentity}><b>{link.title || "Untitled link"}</b><small>{window.location.host}/r/{link.linkId || link.slug || link._id}</small></span><span><small>Destination</small><b>{link.platform || "WhatsApp"} {link.linkType === "dm" ? "chat" : link.linkType}</b></span><span><small>Clicks</small><b>{clickCount(link)}</b></span><Badge tone="success">Active</Badge><div className={styles.rowActions}><Button variant="secondary" onClick={() => copy(link)}>Copy</Button><Button variant="ghost" onClick={() => onEdit(link)}>Edit</Button><Button variant="ghost" onClick={() => remove(link)}>Delete</Button></div></article>)}</div> : <EmptyState icon="↗" title={query ? "No matching links" : "Create your first redirect link"} description={query ? "Try a different search." : "Choose a destination, then copy and share your redirect link."} action={!query && <Button onClick={onCreate}>Create redirect link</Button>}/>}
-  </div>;
+import { useEffect, useRef, useState } from 'react';
+import { SummaryMetrics } from '../components/SummaryMetrics';
+import { notify } from '../components/Notifications';
+import { Button, EmptyState, PageHeader, Modal, LoadingState } from '../components/UI';
+import { WorkspaceCard } from '../components/WorkspaceCard';
+import { Plus, Search, Trash2 } from 'lucide-react';
+import { v11Api } from '../lib/api';
+import { linkUrl, recordedClicks, destinationLabel } from '../lib/linkPresentation';
+import { useLinkCollection } from '../hooks/useLinkCollection';
+import styles from '../styles/v11.module.css';
+export function LinksPage({onCreate,onEdit,revision=0}) {
+ const [query,setQuery]=useState(''),[page,setPage]=useState(1),[copiedId,setCopiedId]=useState('');
+ const [pendingDelete,setPendingDelete]=useState(null),[deleting,setDeleting]=useState(false),[deleteError,setDeleteError]=useState('');
+ const data=useLinkCollection(query,page,revision),timer=useRef(null);
+ useEffect(()=>()=>clearTimeout(timer.current),[]);
+ useEffect(()=>{if(!data.loading&&!data.error&&page>data.totalPages)setPage(data.totalPages);},[data.loading,data.error,data.totalPages,page]);
+ const copy=async link=>{try{await navigator.clipboard.writeText(linkUrl(link));setCopiedId(link._id);clearTimeout(timer.current);timer.current=setTimeout(()=>setCopiedId(''),1800);}catch{notify.error('Could not copy. Please try again.');}};
+ const remove=async()=>{
+  if(deleting)return;setDeleting(true);setDeleteError('');
+  try{await v11Api.deleteLink(pendingDelete._id);setPendingDelete(null);notify.success('Redirect link and its click history deleted');await data.refresh();}catch(e){setDeleteError(e.message);}finally{setDeleting(false);}
+ };
+ return <div className={`${styles.page} ${styles.landingPagesView} ${styles.redirectLinksView}`}>
+  <PageHeader title="Redirect Links"/>
+  <SummaryMetrics label="Redirect link statistics" items={[{label:'Links',value:data.summary?.links},{label:'Recorded clicks',value:data.summary?.clicks}]}/>
+  <p className={styles.linkMetricNote}>Saved click totals, including archived usage. Repeat visitors can count again; these are not unique people.</p>
+  {(data.summary?.links>0||query)&&<div className={styles.landingPageToolbar}><label className={styles.search}><Search size={16}/><input aria-label="Search redirect links" value={query} onChange={e=>{setQuery(e.target.value);setPage(1);}} placeholder="Search name or destination"/></label><Button onClick={onCreate}><Plus size={16}/>Create</Button></div>}
+  {data.error&&<div className={styles.inlineError} role="alert">{data.error} <Button variant="secondary" onClick={data.refresh}>Retry</Button></div>}
+  {data.loading&&!data.summary?<LoadingState label="Loading redirect links"/>:<>
+   <div aria-busy={data.loading} className={styles.workspaceCardGrid}>{data.links.map(link=><WorkspaceCard key={link._id} fallback={(link.title||'R').charAt(0).toUpperCase()} title={link.title} status={link.status} statusTone={link.status==='Active'?'success':'warning'} url={linkUrl(link).replace(/^https?:\/\//,'')} href={linkUrl(link)} destination={destinationLabel(link)} copied={copiedId===link._id} onCopy={()=>copy(link)} metrics={[{label:'Recorded clicks',value:recordedClicks(link)},{label:'Current period',value:link.currentClicks}]} primaryLabel="Edit link" onPrimary={()=>onEdit(link)} onDelete={()=>{setDeleteError('');setPendingDelete(link);}}/>)}</div>
+   {!data.error&&!data.loading&&!data.links.length&&<EmptyState icon="↗" title={query?'No matching links':'Create your first redirect link'} description={query?'Try another name or destination.':'Send visitors to your website, WhatsApp or another social platform.'} action={query?<Button variant="secondary" onClick={()=>{setQuery('');setPage(1);}}>Clear search</Button>:<Button onClick={onCreate}><Plus size={16}/>Create redirect link</Button>}/>}
+   {data.totalPages>1&&<nav className={styles.templatePagination} aria-label="Redirect link pages"><Button variant="secondary" disabled={page===1||data.loading} onClick={()=>setPage(p=>p-1)}>Previous</Button><span>Page {page} of {data.totalPages}</span><Button variant="secondary" disabled={page>=data.totalPages||data.loading} onClick={()=>setPage(p=>p+1)}>Next</Button></nav>}
+  </>}
+  {pendingDelete&&<Modal className={styles.deleteConfirm} title="Delete redirect link?" description="This cannot be undone." onClose={()=>!deleting&&setPendingDelete(null)} footer={<><Button variant="secondary" disabled={deleting} onClick={()=>setPendingDelete(null)}>Keep link</Button><Button variant="danger" disabled={deleting} onClick={remove}>{deleting?'Deleting…':'Delete link'}</Button></>}><div className={styles.deleteConfirmIcon}><Trash2 size={22}/></div><h3>{pendingDelete.title}</h3><p>{linkUrl(pendingDelete)}</p><p>This removes the link, its saved click history and temporary visit records. Its clicks will also disappear from your totals. Visitors will no longer be redirected.</p>{deleteError&&<p role="alert" className={styles.inlineError}>{deleteError}</p>}</Modal>}
+ </div>;
 }
