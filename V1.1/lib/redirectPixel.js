@@ -46,4 +46,3 @@ export function loadTikTokPixel(pixelId) {
     ttq.page();
   })(window, document, "ttq");
 }
-
