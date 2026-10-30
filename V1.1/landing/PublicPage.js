@@ -1,4 +1,6 @@
 "use client";
+import { v11ApiBase } from "../lib/apiBase";
+
 import { validateLeadPhoneInput, prepareLeadPhoneInput } from "@/V1.1/lib/leadPhone.js";
 // hey
 function loadTikTokPixel(pixelId) {
@@ -433,7 +435,7 @@ export default function PublicPage({ slug: providedSlug }) {
     const fetchPage = async () => {
       try {
         const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/v1-1/pages/public/${slug}`,
+          `${v11ApiBase()}/v1-1/pages/public/${slug}`,
         );
 
         const pageData = res.data;
@@ -553,7 +555,7 @@ export default function PublicPage({ slug: providedSlug }) {
 
       try {
         const res = await axios.post(
-          `${process.env.NEXT_PUBLIC_API_URL}/v1-1/pages/public/${slug}/lead`,
+          `${v11ApiBase()}/v1-1/pages/public/${slug}/lead`,
           { name, whatsapp, company },
         );
 

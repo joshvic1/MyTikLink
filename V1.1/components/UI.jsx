@@ -1,7 +1,7 @@
 import { Breadcrumbs } from "./Breadcrumbs";
 import styles from "../styles/v11.module.css";
 import { AlertCircle, ArrowRight, FileText, Link2, ShoppingBag, Sparkles, X } from "lucide-react";
-import { forwardRef, useEffect, useRef } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 
 export function Button({ variant = "primary", className = "", children, ...props }) {
   return <button className={`${styles.button} ${styles[variant]} ${className}`} {...props}>{children}</button>;
@@ -35,8 +35,12 @@ export function EmptyState({ icon, title, description, action }) {
   return <div className={styles.emptyState}><span className={styles.emptyIcon}>{resolvedIcon || <Sparkles/>}</span><h2>{title}</h2><p>{description}</p>{action}</div>;
 }
 
-export function LoadingState({ label = "Loading your workspace…" }) {
-  return <div className={styles.loadingState} role="status" aria-busy="true" aria-label={label}><img className={styles.loadingBrand} src="/images/mytiklink-mark-black.png" alt="" width="64" height="64"/></div>;
+export function LoadingState({ label = "Preparing your workspace...", progress }) {
+  const hasMeasuredProgress = Number.isFinite(progress);
+  const target = hasMeasuredProgress ? Math.max(0, Math.min(100, progress)) : null;
+  const [visibleProgress, setVisibleProgress] = useState(hasMeasuredProgress ? 0 : null);
+  useEffect(() => { if (target !== null) setVisibleProgress((current) => current === null ? target : Math.max(current, target)); }, [target]);
+  return <div className={styles.loadingState} role="status" aria-busy="true" aria-label={label}><div className={styles.loadingScene} aria-hidden="true"><span className={styles.loadingBrandFrame}><img className={styles.loadingBrand} src="/images/mytiklink-mark-black.png" alt="" width="56" height="56"/></span></div><span className={styles.loadingProgress} role={hasMeasuredProgress ? "progressbar" : undefined} aria-label={hasMeasuredProgress ? "Loading progress" : undefined} aria-valuemin={hasMeasuredProgress ? 0 : undefined} aria-valuemax={hasMeasuredProgress ? 100 : undefined} aria-valuenow={hasMeasuredProgress ? visibleProgress : undefined}><span className={styles.loadingProgressFill} style={visibleProgress === null ? undefined : { width: `${visibleProgress}%` }}/></span><span className={styles.loadingLabel}>{label}</span></div>;
 }
 
 export function ErrorState({ title = "We couldn’t load this", message, onRetry }) {
@@ -47,7 +51,7 @@ export function Field({ label, hint, error, children }) {
   return <label className={styles.field}><span>{label}</span>{children}{hint && !error && <small>{hint}</small>}{error && <small className={styles.fieldError}>{error}</small>}</label>;
 }
 
-export function Modal({ title, description, onClose, children, footer, wide = false, className = "" }) {
+export function Modal({ title, description, headerIcon, onClose, children, footer, wide = false, className = "" }) {
   const dialogRef = useRef(null);
   const closeRef = useRef(onClose);
   closeRef.current = onClose;
@@ -62,5 +66,5 @@ export function Modal({ title, description, onClose, children, footer, wide = fa
     document.addEventListener("keydown", keydown);
     return () => { document.removeEventListener("keydown", keydown); document.body.style.overflow = originalOverflow; previous?.focus?.(); };
   }, []);
-  return <div className={styles.modalBackdrop} onMouseDown={(event) => event.target === event.currentTarget && onClose()}><section ref={dialogRef} className={`${styles.modal} ${wide ? styles.modalWide : ""} ${className}`} role="dialog" aria-modal="true" aria-label={title}><header><div><h2>{title}</h2>{description && <p>{description}</p>}</div><IconButton label="Close" onClick={onClose}><X/></IconButton></header><div className={styles.modalBody}>{children}</div>{footer && <footer>{footer}</footer>}</section></div>;
+  return <div className={styles.modalBackdrop} onMouseDown={(event) => event.target === event.currentTarget && onClose()}><section ref={dialogRef} className={`${styles.modal} ${wide ? styles.modalWide : ""} ${className}`} role="dialog" aria-modal="true" aria-label={title}><header><div className={headerIcon ? styles.modalHeadingWithIcon : ""}>{headerIcon && <span className={styles.modalHeaderIcon}>{headerIcon}</span>}<div><h2>{title}</h2>{description && <p>{description}</p>}</div></div><IconButton label="Close" onClick={onClose}><X/></IconButton></header><div className={styles.modalBody}>{children}</div>{footer && <footer>{footer}</footer>}</section></div>;
 }

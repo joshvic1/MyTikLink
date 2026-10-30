@@ -1,4 +1,6 @@
 "use client";
+import { v11ApiBase } from "../lib/apiBase";
+
 
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
@@ -11,7 +13,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import TemplateEditor from "@/components/TemplateEditor";
 import PageNameSheet from "@/V1.1/landing/PageNameSheet.js";
 import styles from "@/styles/pageEditor.module.css";
-import UpgradeModal from "@/components/UpgradeModal";
+import UpgradeModal from "./UpgradeModal";
 
 export default function PageEditor() {
   const router = useRouter();
@@ -65,7 +67,7 @@ export default function PageEditor() {
 
         if (pageId) {
           const pageRes = await axios.get(
-            `${process.env.NEXT_PUBLIC_API_URL}/v1-1/pages/${pageId}`,
+            `${v11ApiBase()}/v1-1/pages/${pageId}`,
             { headers: { Authorization: `Bearer ${token}` } },
           );
 
@@ -156,14 +158,14 @@ export default function PageEditor() {
             try {
               if (pageId) {
                 await axios.put(
-                  `${process.env.NEXT_PUBLIC_API_URL}/v1-1/pages/${pageId}`,
+                  `${v11ApiBase()}/v1-1/pages/${pageId}`,
                   { title, redirectUrl, config },
                   { headers: { Authorization: `Bearer ${token}` } },
                 );
                 toast.success("Page updated");
               } else {
                 await axios.post(
-                  `${process.env.NEXT_PUBLIC_API_URL}/v1-1/pages`,
+                  `${v11ApiBase()}/v1-1/pages`,
                   { templateId: template._id, title, redirectUrl, config },
                   { headers: { Authorization: `Bearer ${token}` } },
                 );
@@ -177,7 +179,7 @@ export default function PageEditor() {
           }}
         />
       )}
-      {showUpgradeModal && <UpgradeModal setShowModal={setShowUpgradeModal} />}
+      {showUpgradeModal && <UpgradeModal onUserUpdated={setUser} setShowModal={setShowUpgradeModal} />}
     </>
   );
 }

@@ -1,3 +1,4 @@
+import { v11ApiBase } from "./apiBase.js";
 export class ApiError extends Error {
   constructor(message, status, details) {
     super(message);
@@ -15,14 +16,14 @@ export function getToken() {
 export async function apiRequest(path, options = {}) {
   const token = Object.prototype.hasOwnProperty.call(options, "token") ? options.token : getToken();
   const isForm = typeof FormData !== "undefined" && options.body instanceof FormData;
-  const { timeoutMs = 0, ...requestOptions } = options;
+  const { timeoutMs = 20000, ...requestOptions } = options;
   const controller = new AbortController();
   const abort = () => controller.abort();
   if (options.signal?.aborted) abort();
   options.signal?.addEventListener("abort", abort, { once: true });
   const timer = timeoutMs > 0 ? setTimeout(abort, timeoutMs) : null;
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${path}`, {
+    const response = await fetch(`${path.startsWith("/v1-1/") ? v11ApiBase() : process.env.NEXT_PUBLIC_API_URL}${path}`, {
       ...requestOptions,
       signal: controller.signal,
       headers: {
@@ -56,6 +57,11 @@ export const v11Api = {
   publicProduct: (slug, product) => apiRequest(`/products/public/${encodeURIComponent(slug)}/${encodeURIComponent(product)}`, { token: null }),
   session: () => apiRequest("/auth/me"),
   plan: () => apiRequest("/users/plan"),
+  onboarding: () => apiRequest("/v1-1/onboarding"),
+  onboardingCategories: (query = "") => apiRequest(`/v1-1/onboarding/categories?query=${encodeURIComponent(query)}`),
+  saveOnboardingStage: (stage, payload) => apiRequest(`/v1-1/onboarding/stage/${encodeURIComponent(stage)}`, { method: "PUT", body: JSON.stringify(payload) }),
+  completeOnboarding: () => apiRequest("/v1-1/onboarding/complete", { method: "POST" }),
+  uploadImage: (file) => { const body = new FormData(); body.append("image", file); return apiRequest("/upload", { method: "POST", body }); },
   pages: () => apiRequest("/v1-1/pages"),
   pageCollection: ({ page = 1, search = "" } = {}) => apiRequest(`/v1-1/pages?paged=1&limit=20&page=${page}&search=${encodeURIComponent(search)}`, { timeoutMs: 20000 }),
   pageDetail: (id) => apiRequest(`/v1-1/pages/${encodeURIComponent(id)}`, { timeoutMs: 20000 }),
@@ -65,8 +71,12 @@ export const v11Api = {
   linkTemplates: ({ page = 1, search = "", plan = "all" } = {}) => apiRequest(`/v1-1/links/templates?paged=1&limit=12&page=${page}&search=${encodeURIComponent(search)}&plan=${encodeURIComponent(plan)}`),
   store: () => apiRequest("/store/me"),
   storeStats: (range = "30d") => apiRequest(`/store/stats?range=${encodeURIComponent(range)}`),
-  products: (page = 1) => apiRequest(`/products/me?page=${page}`),
-  orders: (page = 1) => apiRequest(`/orders/me?page=${page}`),
+  products: ({ page = 1, search = "", status = "all", stock = "all", sort = "newest" } = {}) => apiRequest(`/products/me?page=${page}&search=${encodeURIComponent(search)}&status=${encodeURIComponent(status)}&stock=${encodeURIComponent(stock)}&sort=${encodeURIComponent(sort)}`),
+  productCategories: () => apiRequest("/products/categories"),
+  createProduct: (payload) => apiRequest("/products", { method: "POST", body: JSON.stringify(payload) }),
+  updateProduct: (id, payload) => apiRequest(`/products/${encodeURIComponent(id)}`, { method: "PUT", body: JSON.stringify(payload) }),
+  deleteProduct: (id) => apiRequest(`/products/${encodeURIComponent(id)}`, { method: "DELETE" }),
+  orders: ({ page = 1, search = "", status = "all" } = {}) => apiRequest(`/orders/me?page=${page}&search=${encodeURIComponent(search)}&status=${encodeURIComponent(status)}`),
   recentOrders: () => apiRequest("/orders/recent"),
   lowStock: () => apiRequest("/products/low-stock"),
   clickHistory: () => apiRequest("/history"),

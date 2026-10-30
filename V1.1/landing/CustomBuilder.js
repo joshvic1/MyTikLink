@@ -1,3 +1,4 @@
+import { v11ApiBase } from "../lib/apiBase";
 // builder/customBuilder.js
 import { canUseLandingPages } from "@/V1.1/lib/pageAccess.js";
 import styles from "@/components/custom/styles/builder.module.css";
@@ -13,7 +14,7 @@ import toast from "react-hot-toast";
 
 import PublishSheet from "@/V1.1/landing/PublishSheet.jsx";
 
-import UpgradeModal from "@/components/UpgradeModal";
+import UpgradeModal from "./UpgradeModal";
 import {
   getDrafts,
   saveDraft,
@@ -91,7 +92,7 @@ export default function CustomBuilder() {
         setIsEditMode(true);
 
         const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/v1-1/pages/${pageId}`,
+          `${v11ApiBase()}/v1-1/pages/${pageId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -335,7 +336,7 @@ export default function CustomBuilder() {
       // =========================
       if (isEditMode && pageId) {
         await axios.put(
-          `${process.env.NEXT_PUBLIC_API_URL}/v1-1/pages/${pageId}`,
+          `${v11ApiBase()}/v1-1/pages/${pageId}`,
           {
             title,
             customContent: sections,
@@ -360,7 +361,7 @@ export default function CustomBuilder() {
       // CREATE NEW PAGE
       // =========================
       await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/v1-1/pages`,
+        `${v11ApiBase()}/v1-1/pages`,
         {
           builderType: "custom",
           title,
@@ -487,7 +488,7 @@ export default function CustomBuilder() {
         initialTitle={pageTitle}
       />
       {showUpgradeModal && (
-        <UpgradeModal
+        <UpgradeModal onUserUpdated={setUser}
           currentPlan={user?.plan || "free"}
           o
           setShowModal={setShowUpgradeModal}

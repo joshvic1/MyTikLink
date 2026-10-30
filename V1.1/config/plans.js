@@ -1,7 +1,7 @@
 import { planConfig } from "@/config/planConfig";
 
 export const subscriptionPlans = [
-  { id: "standard", name: "Standard", tone: "standard", description: "Access to basic features.", benefits: ["Up to 3 redirect links each month", "Up to 5,000 tracked clicks per cycle", "Landing pages and lead collection", "Storefront, products and order management", "Page and link analytics", "TikTok and Meta Pixel tracking", "Access to premium templates", "Priority customer support"], cycles: { monthly: planConfig.standard_monthly, yearly: planConfig.standard_yearly } },
+  { id: "standard", name: "Standard", tone: "standard", description: "Access to basic features.", benefits: ["Up to 3 redirect links each month", "Up to 5,000 tracked clicks per cycle", "Redirect link analytics", "TikTok and Meta Pixel tracking", "Access to premium templates", "Priority customer support"], cycles: { monthly: planConfig.standard_monthly, yearly: planConfig.standard_yearly } },
   { id: "pro", name: "Pro", tone: "pro", description: "Access to unlimited features.", recommendation: "Recommended", benefits: ["Unlimited redirect links", "Unlimited tracked clicks", "Landing pages and lead collection", "Storefront, products and order management", "Page and link analytics", "TikTok and Meta Pixel tracking", "Full premium template access", "Fastest priority customer support"], cycles: { monthly: planConfig.pro_monthly, yearly: planConfig.pro_yearly } },
 ];
 

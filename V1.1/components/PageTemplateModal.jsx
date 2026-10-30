@@ -1,4 +1,3 @@
-import { canUseLandingPages } from "../lib/pageAccess";
 import { Notice } from "./Notifications";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/router";
@@ -31,11 +30,11 @@ export function PageTemplateModal({ onClose, user }) {
  const filter=(setter,value)=>{setter(value);if(!["scratch","ai"].includes(selected))setSelected("");};
  const proceed=async()=>{
   if(!selected){clearTimeout(timer.current);setToast(true);timer.current=setTimeout(()=>setToast(false),4500);return;}
-  if(selected==="ai"){if(!canUseLandingPages(user)){setError("An active Standard or Pro plan is needed to create an AI page.");return;}setAiOpen(true);return;}
+  if(selected==="ai"){setAiOpen(true);return;}
   setNavigating(true);try{await router.push(selected==="scratch"?"/v1-1/pages/builder":`/v1-1/pages/editor?templateId=${encodeURIComponent(selected)}`);}catch{setError("Could not open the editor. Please try again.");}finally{setNavigating(false);}
  };
  if(aiOpen)return <AIPageBuilderModal open variant="v11" token={getToken()} builderPath="/v1-1/pages/builder" onClose={()=>setAiOpen(false)}/>;
- return <Modal wide className={styles.templatePicker} title="Select a Page template" description="Pick any design you'd love to use for your page, you can also build from scratch or build with AI as well." onClose={onClose} footer={<><Button variant="secondary" onClick={onClose}>Cancel</Button><Button disabled={navigating} onClick={proceed}>{navigating?"Opening…":"Use this template"}</Button></>}>
+ return <Modal wide className={styles.templatePicker} title="Select a Page template" description="Pick any design you'd love to use for your page, you can also build from scratch or build with AI as well." onClose={onClose} footer={<><Button variant="secondary" onClick={onClose}>Cancel</Button><Button disabled={navigating} onClick={proceed}>{navigating?"Opening…":selected==="scratch"?"Continue (Build from scratch)":selected==="ai"?"Continue (Build with AI)":"Use this template"}</Button></>}>
  <div className={styles.templateTools}>
   <div className={styles.templateSearch}><Search size={16}/><input aria-label="Search templates" placeholder="Search templates…" value={search} onChange={e=>filter(setSearch,e.target.value)}/><button type="button" className={styles.templateFilterToggle} aria-label="Filter templates" aria-expanded={filtersOpen} aria-controls="page-template-filters" onClick={()=>setFiltersOpen(value=>!value)}><SlidersHorizontal size={17}/>{(category!=="all"||form!=="all")&&<span/>}</button></div>
   {filtersOpen&&<div id="page-template-filters" className={styles.templateFilterPanel} onKeyDown={e=>{if(e.key==="Escape"){e.stopPropagation();setFiltersOpen(false);}}}>

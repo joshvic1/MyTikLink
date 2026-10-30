@@ -21,7 +21,7 @@ import styles from "./SmartAssistant.module.css";
 const STORAGE_KEY = "mytiklink_smart_assistant_messages";
 const DISMISSED_KEY = "mytiklink_smart_assistant_dismissed";
 
-export default function SmartAssistant() {
+export default function SmartAssistant({ hideLauncher = false }) {
   const router = useRouter();
   const pathname = router.asPath?.split("?")[0] || router.pathname || "";
   const routeContext = useMemo(
@@ -305,7 +305,7 @@ export default function SmartAssistant() {
 
   return (
     <>
-      {nudgeOpen && !open && (
+      {!hideLauncher && nudgeOpen && !open && (
         <div className={styles.nudge}>
           <button
             type="button"
@@ -335,7 +335,7 @@ export default function SmartAssistant() {
         </div>
       )}
 
-      <button
+      {!hideLauncher && <button
         type="button"
         className={styles.floatingButton}
         onClick={() => {
@@ -344,7 +344,7 @@ export default function SmartAssistant() {
         aria-label="Open MyTikLink assistant"
       >
         <Sparkles size={18} />
-      </button>
+      </button>}
 
       {open && (
         <div className={styles.panelShell}>

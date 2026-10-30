@@ -1,7 +1,5 @@
 export function linkUrl(link) {
- if (link.publicUrl) return link.publicUrl;
- const origin=(process.env.NEXT_PUBLIC_SITE_URL || 'https://mytik.link').replace(/\/$/,'');
- return `${origin}/v1-1/r/${encodeURIComponent(link.linkId)}`;
+ return `https://mytiklink.com/v1-1/r/${encodeURIComponent(link.linkId)}`;
 }
 export function recordedClicks(link,history=[]) {
  if(Number.isFinite(link.recordedClicks))return link.recordedClicks;

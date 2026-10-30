@@ -133,15 +133,15 @@ export default function PageNameSheet({
 
         <button
           className={styles.button}
-          onClick={handleSave}
-          disabled={!isPro || saving}
+          onClick={()=>isPro?handleSave():onUpgrade?.()}
+          disabled={saving}
         >
           {saving ? "Saving..." : "Save Page"}
         </button>
 
         {!isPro && (
           <p className={styles.upgradeText}>
-            Publishing requires an active Standard or Pro plan.
+            Publishing requires an active Pro plan.
             <span
               className={styles.upgradeLink}
               onClick={() => {

@@ -10,7 +10,7 @@ export function useV11Session({ required = true } = {}) {
     const token = getToken();
     if (!token) {
       setState({ user: null, loading: false, error: null });
-      if (required) router.replace("/?auth=login");
+      if (required) router.replace("/v1-1/login");
       return null;
     }
     setState((current) => ({ ...current, loading: true, error: null }));
@@ -22,7 +22,7 @@ export function useV11Session({ required = true } = {}) {
     } catch (error) {
       if (error instanceof ApiError && error.status === 401) {
         window.localStorage.removeItem("token");
-        if (required) router.replace("/?auth=login");
+        if (required) router.replace("/v1-1/login");
       }
       setState({ user: null, loading: false, error });
       return null;
@@ -33,7 +33,7 @@ export function useV11Session({ required = true } = {}) {
 
   const logout = useCallback(() => {
     window.localStorage.removeItem("token");
-    router.push("/?auth=login");
+    router.push("/v1-1/login");
   }, [router]);
 
   return { ...state, refresh, logout, authenticated: Boolean(state.user) };

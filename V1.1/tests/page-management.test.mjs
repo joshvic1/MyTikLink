@@ -41,8 +41,7 @@ test("failed collection requests never become a successful empty state", async (
   await assert.rejects(loadPageCollection({ pageCollection: async () => { throw new Error("offline"); } }), /offline/);
 });
 
-const apiSource = await fs.readFile(new URL("../lib/api.js", import.meta.url), "utf8");
-const { v11Api, apiRequest } = await import(`data:text/javascript;base64,${Buffer.from(apiSource).toString("base64")}`);
+const { v11Api, apiRequest } = await import("../lib/api.js");
 test("malformed lead responses are errors, not empty collections", async () => {
   const original = globalThis.fetch;
   try {
@@ -59,14 +58,14 @@ test("bounded read requests abort a stalled connection", async () => {
 });
 
 const { isV11Enabled } = await import("../lib/release.js");
-test("V1.1 stays hidden in production even with an old enable flag", () => {
+test("V1.1 is visible in production only when its release flag is enabled", () => {
   const previous = { node: process.env.NODE_ENV, flag: process.env.NEXT_PUBLIC_ENABLE_V11 };
   try {
     process.env.NODE_ENV = "production"; delete process.env.NEXT_PUBLIC_ENABLE_V11;
     assert.equal(isV11Enabled(), false);
     process.env.NODE_ENV = "development"; assert.equal(isV11Enabled(), true);
     process.env.NODE_ENV = "production"; process.env.NEXT_PUBLIC_ENABLE_V11 = "true";
-    assert.equal(isV11Enabled(), false);
+    assert.equal(isV11Enabled(), true);
   } finally {
     if (previous.node === undefined) delete process.env.NODE_ENV; else process.env.NODE_ENV = previous.node;
     if (previous.flag === undefined) delete process.env.NEXT_PUBLIC_ENABLE_V11; else process.env.NEXT_PUBLIC_ENABLE_V11 = previous.flag;

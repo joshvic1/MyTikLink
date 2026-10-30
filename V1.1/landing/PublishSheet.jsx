@@ -25,6 +25,7 @@ export default function PublishSheet({
 
   const handlePublish = async () => {
     if (!title.trim()) return;
+    if (!isPro) { onUpgrade?.(); return; }
 
     try {
       setLoading(true);
@@ -77,7 +78,7 @@ export default function PublishSheet({
         </p>
         {!isPro && (
           <p className={styles.upgradeText}>
-            Publishing requires an active Standard or Pro plan.
+            Publishing requires an active Pro plan.
             <span
               className={styles.upgradeLink}
               onClick={() => {
@@ -91,7 +92,7 @@ export default function PublishSheet({
         <button
           className={styles.publishBtn}
           onClick={handlePublish}
-          disabled={loading || !title.trim() || !isPro}
+          disabled={loading || !title.trim()}
         >
           {loading ? (
             <>

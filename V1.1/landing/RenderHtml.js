@@ -1,4 +1,6 @@
 "use client";
+import { v11ApiBase } from "../lib/apiBase";
+
 import { useEffect, useRef } from "react";
 import { validateLeadPhoneInput, prepareLeadPhoneInput } from "@/V1.1/lib/leadPhone.js";
 
@@ -242,7 +244,7 @@ export default function RenderHtml({ element, page }) {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/v1-1/pages/public/${page.slug}/lead`,
+        `${v11ApiBase()}/v1-1/pages/public/${page.slug}/lead`,
         {
           method: "POST",
           headers: {

@@ -64,7 +64,7 @@ export default function App({ Component, pageProps }) {
 
   if (router.pathname === "/v1-1" || router.pathname.startsWith("/v1-1/")) {
     return <main className={plusJakarta.className} style={{ minHeight: "100dvh", background: "#fff" }}>
-      <Component {...pageProps} /><V11Toaster />
+      <Component {...pageProps} /><SmartAssistant hideLauncher /><V11Toaster />
     </main>;
   }
 

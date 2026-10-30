@@ -1,4 +1,6 @@
 "use client";
+import { v11ApiBase } from "../lib/apiBase";
+
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/router";
@@ -125,7 +127,7 @@ export default function AIPageBuilderModal({ open, onClose, token, variant = "de
       }
 
       const saveRes = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/v1-1/pages`,
+        `${v11ApiBase()}/v1-1/pages`,
         {
           builderType: "custom",
           title: page.title,

@@ -12,7 +12,7 @@ export const useSubscription = () => useContext(SubscriptionContext);
 const getType = (value) => String(value || "free").toLowerCase().includes("pro") ? "pro" : String(value || "").toLowerCase().includes("standard") ? "standard" : "free";
 const getCycle = (value) => String(value || "").toLowerCase().includes("yearly") ? "yearly" : "monthly";
 
-function SubscriptionModal({ state, user, refreshSession, close, update }) {
+export function SubscriptionModal({ state, user, refreshSession, close, update }) {
   const current = getType(user?.plan);
   const mode = state.mode || "upgrade";
   const [selected, setSelected] = useState(state.preselected || (mode === "upgrade" ? "pro" : current === "free" ? "pro" : current));

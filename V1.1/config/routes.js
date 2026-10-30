@@ -31,7 +31,7 @@ export const navigation = [
   { key: "insights", label: "Insights", href: v11Routes.insights, icon: "insights" },
   { key: "affiliate", label: "Affiliate", href: v11Routes.affiliate, icon: "affiliate", showInBottom: false },
   { key: "integrations", label: "Integrations", href: v11Routes.integrations, icon: "integrations", showInBottom: false },
-  { key: "tracking", label: "TikTok/Meta Pixel", href: v11Routes.tracking, icon: "tracking", showInBottom: false },
+  { key: "tracking", label: "Pixels", href: v11Routes.tracking, icon: "tracking", showInBottom: false },
 ];
 
 export function activeRoute(pathname = "") {
@@ -39,6 +39,9 @@ export function activeRoute(pathname = "") {
   if (pathname.includes("/integrations")) return "integrations";
   if (pathname.includes("/settings/tracking")) return "tracking";
   if (pathname.includes("/settings")) return "settings";
+  if (pathname.includes("/store/products")) return "products";
+  if (pathname.includes("/store/orders")) return "orders";
+  if (pathname.includes("/store/design")) return "design";
   if (pathname.includes("/store")) return "store";
   if (pathname.includes("/pages")) return "pages";
   if (pathname.includes("/links")) return "links";
