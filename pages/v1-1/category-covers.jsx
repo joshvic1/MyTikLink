@@ -1,0 +1,8 @@
+import {useState} from 'react';
+import CategoryCover from '../../V1.1/media/CategoryCover';
+import manifest from '../../V1.1/media/category-covers.generated.json';
+export default function CategoryCovers(){
+ const [query,setQuery]=useState(''),[limit,setLimit]=useState(24);
+ const entries=Object.entries(manifest.entries).filter(([id,entry])=>`${id} ${entry.alt}`.toLowerCase().includes(query.toLowerCase()));
+ return <main style={{padding:'32px 5%',background:'#f5f5f0',minHeight:'100vh',fontFamily:'Arial,sans-serif',color:'#20251e'}}><a href="/v1-1/themes">← Themes</a><h1>Category covers</h1><p>{manifest.readyCount} of {manifest.expectedCount} original category covers ready. Each cover is 2:1, with no added text.</p><label>Find a category<input value={query} onChange={e=>{setQuery(e.target.value);setLimit(24);}} style={{display:'block',padding:12,margin:'8px 0 24px',maxWidth:'100%',width:400}}/></label><div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(min(100%,280px),1fr))',gap:24}}>{entries.slice(0,limit).map(([id,entry],i)=><article key={id} style={{background:'#fff',border:'1px solid #ddd',borderRadius:12,overflow:'hidden'}}><CategoryCover categoryId={id} sizes="(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 33vw" priority={i<2} style={{display:'block',width:'100%',height:'auto'}}/><div style={{padding:16}}><h2 style={{fontSize:16,margin:0}}>{entry.alt.replace(/^Illustrative /,'').replace(/ cover$/,'')}</h2><p style={{fontSize:11,color:'#56614f',overflowWrap:'anywhere'}}>{id}</p></div></article>)}</div>{!entries.length&&<p>No ready covers match this search yet.</p>}{entries.length>limit&&<button onClick={()=>setLimit(n=>n+24)} style={{marginTop:24,padding:12}}>Show 24 more</button>}</main>;
+}

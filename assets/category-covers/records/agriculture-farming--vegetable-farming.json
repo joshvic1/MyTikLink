@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "categoryId": "agriculture-farming/vegetable-farming",
+  "label": "Vegetable farming",
+  "parentId": "agriculture-farming",
+  "assetKey": "agriculture-farming--vegetable-farming",
+  "revision": "e8b7e5d5a1f14e15",
+  "status": "ready",
+  "alt": "Illustrative vegetable farming cover",
+  "width": 1600,
+  "height": 800,
+  "focalPoint": {
+    "x": 0.5,
+    "y": 0.5
+  },
+  "source": {
+    "sha256": "9d70afc45ac1524bff4a5b0100675884ab79a78873ffe43b7a0c23b3862f5c31",
+    "width": 1774,
+    "height": 887,
+    "originalFilename": "exec-4910e2e9-b253-4f1e-b0b9-a61931b831a0.png",
+    "provider": "OpenAI built-in image generation",
+    "prompt": "Create one original premium photographic cover for the exact business category \"Vegetable farming\" within \"Agriculture & Farming\". This is a default category image for MyTikLink, not a page mockup. Choose a concrete, immediately recognizable subject and environment specific to this category; distinguish it from neighbouring categories. Realistic editorial photography, believable materials, natural professional lighting, polished but authentic. Relevant Nigerian or broadly African context where appropriate, without stereotypes. For abstract digital services, depict a carefully composed credible workspace or physical visual metaphor with blank/unreadable screens. Compose a SINGLE landscape image at 1600 x 800 pixels, 2:1 ratio, edge-to-edge, with the important subject safely inside the central 80% and generous horizontal crop room. No collage of unrelated categories. Absolutely NO text, letters, numbers, captions, logos, watermarks, signage, brand names, UI, borders or typography anywhere. Any packaging, devices, documents or clothing must be unbranded and free of writing. Show safe, respectful, non-graphic professional scenes; no claims, endorsements, real public figures or identifiable private people. Output only the image.",
+    "generatedAt": "2026-10-30T21:55:33.422Z"
+  },
+  "variants": [
+    {
+      "format": "avif",
+      "width": 400,
+      "height": 200,
+      "bytes": 15795,
+      "quality": 43,
+      "url": "/category-covers/agriculture-farming--vegetable-farming/e8b7e5d5a1f14e15/400.avif"
+    },
+    {
+      "format": "avif",
+      "width": 800,
+      "height": 400,
+      "bytes": 41995,
+      "quality": 43,
+      "url": "/category-covers/agriculture-farming--vegetable-farming/e8b7e5d5a1f14e15/800.avif"
+    },
+    {
+      "format": "avif",
+      "width": 1200,
+      "height": 600,
+      "bytes": 85513,
+      "quality": 47,
+      "url": "/category-covers/agriculture-farming--vegetable-farming/e8b7e5d5a1f14e15/1200.avif"
+    },
+    {
+      "format": "avif",
+      "width": 1600,
+      "height": 800,
+      "bytes": 129004,
+      "quality": 51,
+      "url": "/category-covers/agriculture-farming--vegetable-farming/e8b7e5d5a1f14e15/1600.avif"
+    },
+    {
+      "format": "webp",
+      "width": 400,
+      "height": 200,
+      "bytes": 22532,
+      "quality": 78,
+      "url": "/category-covers/agriculture-farming--vegetable-farming/e8b7e5d5a1f14e15/400.webp"
+    },
+    {
+      "format": "webp",
+      "width": 800,
+      "height": 400,
+      "bytes": 66726,
+      "quality": 78,
+      "url": "/category-covers/agriculture-farming--vegetable-farming/e8b7e5d5a1f14e15/800.webp"
+    },
+    {
+      "format": "webp",
+      "width": 1200,
+      "height": 600,
+      "bytes": 138646,
+      "quality": 82,
+      "url": "/category-covers/agriculture-farming--vegetable-farming/e8b7e5d5a1f14e15/1200.webp"
+    },
+    {
+      "format": "webp",
+      "width": 1600,
+      "height": 800,
+      "bytes": 204248,
+      "quality": 82,
+      "url": "/category-covers/agriculture-farming--vegetable-farming/e8b7e5d5a1f14e15/1600.webp"
+    }
+  ],
+  "warnings": [],
+  "reviewedAt": "2026-10-30T22:09:35.401Z",
+  "reviewChecklist": [
+    "category match",
+    "no text or logos",
+    "composition",
+    "compression quality"
+  ]
+}

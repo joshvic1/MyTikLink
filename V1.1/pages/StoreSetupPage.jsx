@@ -59,6 +59,6 @@ export default function StoreSetupPage({user,refreshSession,onCreated}){
    <div className={styles.previewDetails}><Palette size={16}/><div><small>SELECTED DESIGN</small><b>{selected?.title}</b></div><Check size={15}/></div>
    <p className={styles.previewHint}>This is a design preview. Add your products and customise your store after setup.</p>
   </aside></div>
-  {upgrade&&<Modal className={styles.proPrompt} title="Storefronts are available on Pro only" description="Upgrade to the Pro plan to be able to create a storefront. Your setup details will remain in drafts. Click the button below to upgrade." onClose={()=>setUpgrade(false)} footer={<><Button variant="secondary" onClick={()=>setUpgrade(false)}>Keep editing</Button><Button onClick={()=>{setUpgrade(false);openSubscription({mode:"upgrade",preselected:"pro"});}}>Upgrade to Pro</Button></>}/>} 
+  {upgrade&&<Modal tone="teal" className={styles.proPrompt} title="Storefronts are available on Pro only" description="Upgrade to the Pro plan to be able to create a storefront. Your setup details will remain in drafts. Click the button below to upgrade." onClose={()=>setUpgrade(false)} footer={<><Button variant="secondary" onClick={()=>setUpgrade(false)}>Keep editing</Button><Button onClick={()=>{setUpgrade(false);openSubscription({mode:"upgrade",preselected:"pro"});}}>Upgrade to Pro</Button></>}/>}
  </div>;
 }

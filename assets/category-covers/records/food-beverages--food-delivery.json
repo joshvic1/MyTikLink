@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "categoryId": "food-beverages/food-delivery",
+  "label": "Food delivery",
+  "parentId": "food-beverages",
+  "assetKey": "food-beverages--food-delivery",
+  "revision": "369b50526989496e",
+  "status": "ready",
+  "alt": "Illustrative food delivery cover",
+  "width": 1600,
+  "height": 800,
+  "focalPoint": {
+    "x": 0.5,
+    "y": 0.5
+  },
+  "source": {
+    "sha256": "59f1e69a9f89dbaca0d23ae16ef105725738ee26aec967cc2a2f9f1295237a1c",
+    "width": 1774,
+    "height": 887,
+    "originalFilename": "exec-26aac7c0-8735-45ef-97fe-68cb5a5e3d18.png",
+    "provider": "OpenAI built-in image generation",
+    "prompt": "Create one original premium photographic cover for the exact business category \"Food delivery\" within \"Food & Beverages\". This is a default category image for MyTikLink, not a page mockup. Choose a concrete, immediately recognizable subject and environment specific to this category; distinguish it from neighbouring categories. Realistic editorial photography, believable materials, natural professional lighting, polished but authentic. Relevant Nigerian or broadly African context where appropriate, without stereotypes. For abstract digital services, depict a carefully composed credible workspace or physical visual metaphor with blank/unreadable screens. Compose a SINGLE landscape image at 1600 x 800 pixels, 2:1 ratio, edge-to-edge, with the important subject safely inside the central 80% and generous horizontal crop room. No collage of unrelated categories. Absolutely NO text, letters, numbers, captions, logos, watermarks, signage, brand names, UI, borders or typography anywhere. Any packaging, devices, documents or clothing must be unbranded and free of writing. Show safe, respectful, non-graphic professional scenes; no claims, endorsements, real public figures or identifiable private people. Output only the image.",
+    "generatedAt": "2026-10-30T22:32:27.936Z"
+  },
+  "variants": [
+    {
+      "format": "avif",
+      "width": 400,
+      "height": 200,
+      "bytes": 15087,
+      "quality": 55,
+      "url": "/category-covers/food-beverages--food-delivery/369b50526989496e/400.avif"
+    },
+    {
+      "format": "avif",
+      "width": 800,
+      "height": 400,
+      "bytes": 34783,
+      "quality": 55,
+      "url": "/category-covers/food-beverages--food-delivery/369b50526989496e/800.avif"
+    },
+    {
+      "format": "avif",
+      "width": 1200,
+      "height": 600,
+      "bytes": 55596,
+      "quality": 55,
+      "url": "/category-covers/food-beverages--food-delivery/369b50526989496e/1200.avif"
+    },
+    {
+      "format": "avif",
+      "width": 1600,
+      "height": 800,
+      "bytes": 75433,
+      "quality": 55,
+      "url": "/category-covers/food-beverages--food-delivery/369b50526989496e/1600.avif"
+    },
+    {
+      "format": "webp",
+      "width": 400,
+      "height": 200,
+      "bytes": 18148,
+      "quality": 82,
+      "url": "/category-covers/food-beverages--food-delivery/369b50526989496e/400.webp"
+    },
+    {
+      "format": "webp",
+      "width": 800,
+      "height": 400,
+      "bytes": 48090,
+      "quality": 82,
+      "url": "/category-covers/food-beverages--food-delivery/369b50526989496e/800.webp"
+    },
+    {
+      "format": "webp",
+      "width": 1200,
+      "height": 600,
+      "bytes": 83804,
+      "quality": 82,
+      "url": "/category-covers/food-beverages--food-delivery/369b50526989496e/1200.webp"
+    },
+    {
+      "format": "webp",
+      "width": 1600,
+      "height": 800,
+      "bytes": 121194,
+      "quality": 82,
+      "url": "/category-covers/food-beverages--food-delivery/369b50526989496e/1600.webp"
+    }
+  ],
+  "warnings": [],
+  "reviewedAt": "2026-10-30T22:32:27.950Z",
+  "reviewChecklist": [
+    "category match",
+    "no text or logos",
+    "composition",
+    "compression quality"
+  ]
+}

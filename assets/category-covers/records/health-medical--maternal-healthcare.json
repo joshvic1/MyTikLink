@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "categoryId": "health-medical/maternal-healthcare",
+  "label": "Maternal healthcare",
+  "parentId": "health-medical",
+  "assetKey": "health-medical--maternal-healthcare",
+  "revision": "455c0017aca40600",
+  "status": "ready",
+  "alt": "Illustrative maternal healthcare cover",
+  "width": 1600,
+  "height": 800,
+  "focalPoint": {
+    "x": 0.5,
+    "y": 0.5
+  },
+  "source": {
+    "sha256": "f91e883acffce7d0ffe30110caa8dfcd830bdae9b15e1c78bbd8e46ca1100ca0",
+    "width": 1774,
+    "height": 887,
+    "originalFilename": "exec-bce51d63-8c28-489d-bdf6-e63e7ae80c63.png",
+    "provider": "OpenAI built-in image generation",
+    "prompt": "Create one original premium photographic cover for the exact business category \"Maternal healthcare\" within \"Health & Medical\". This is a default category image for MyTikLink, not a page mockup. Choose a concrete, immediately recognizable subject and environment specific to this category; distinguish it from neighbouring categories. Realistic editorial photography, believable materials, natural professional lighting, polished but authentic. Relevant Nigerian or broadly African context where appropriate, without stereotypes. For abstract digital services, depict a carefully composed credible workspace or physical visual metaphor with blank/unreadable screens. Compose a SINGLE landscape image at 1600 x 800 pixels, 2:1 ratio, edge-to-edge, with the important subject safely inside the central 80% and generous horizontal crop room. No collage of unrelated categories. Absolutely NO text, letters, numbers, captions, logos, watermarks, signage, brand names, UI, borders or typography anywhere. Any packaging, devices, documents or clothing must be unbranded and free of writing. Show safe, respectful, non-graphic professional scenes; no claims, endorsements, real public figures or identifiable private people. Output only the image.",
+    "generatedAt": "2026-10-31T05:07:51.181Z"
+  },
+  "variants": [
+    {
+      "format": "avif",
+      "width": 400,
+      "height": 200,
+      "bytes": 9511,
+      "quality": 55,
+      "url": "/category-covers/health-medical--maternal-healthcare/455c0017aca40600/400.avif"
+    },
+    {
+      "format": "avif",
+      "width": 800,
+      "height": 400,
+      "bytes": 21338,
+      "quality": 55,
+      "url": "/category-covers/health-medical--maternal-healthcare/455c0017aca40600/800.avif"
+    },
+    {
+      "format": "avif",
+      "width": 1200,
+      "height": 600,
+      "bytes": 33941,
+      "quality": 55,
+      "url": "/category-covers/health-medical--maternal-healthcare/455c0017aca40600/1200.avif"
+    },
+    {
+      "format": "avif",
+      "width": 1600,
+      "height": 800,
+      "bytes": 45822,
+      "quality": 55,
+      "url": "/category-covers/health-medical--maternal-healthcare/455c0017aca40600/1600.avif"
+    },
+    {
+      "format": "webp",
+      "width": 400,
+      "height": 200,
+      "bytes": 12522,
+      "quality": 82,
+      "url": "/category-covers/health-medical--maternal-healthcare/455c0017aca40600/400.webp"
+    },
+    {
+      "format": "webp",
+      "width": 800,
+      "height": 400,
+      "bytes": 31904,
+      "quality": 82,
+      "url": "/category-covers/health-medical--maternal-healthcare/455c0017aca40600/800.webp"
+    },
+    {
+      "format": "webp",
+      "width": 1200,
+      "height": 600,
+      "bytes": 54002,
+      "quality": 82,
+      "url": "/category-covers/health-medical--maternal-healthcare/455c0017aca40600/1200.webp"
+    },
+    {
+      "format": "webp",
+      "width": 1600,
+      "height": 800,
+      "bytes": 77986,
+      "quality": 82,
+      "url": "/category-covers/health-medical--maternal-healthcare/455c0017aca40600/1600.webp"
+    }
+  ],
+  "warnings": [],
+  "reviewedAt": "2026-10-31T05:07:51.186Z",
+  "reviewChecklist": [
+    "category match",
+    "no text or logos",
+    "composition",
+    "compression quality"
+  ]
+}

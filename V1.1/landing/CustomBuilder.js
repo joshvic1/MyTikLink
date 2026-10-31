@@ -1,3 +1,7 @@
+import ThemeEditor from "./ThemeEditor";
+import { createThemeInstance, getThemeBlock } from "./themeModel";
+import { allThemes } from "./themeLibrary";
+import { v11Api } from "../lib/api";
 import { v11ApiBase } from "../lib/apiBase";
 // builder/customBuilder.js
 import { canUseLandingPages } from "@/V1.1/lib/pageAccess.js";
@@ -27,7 +31,7 @@ export default function CustomBuilder() {
   const router = useRouter();
   const returnPath = router.asPath.startsWith("/v1-1") ? "/v1-1/pages" : "/dashboard/page";
 
-  const { pageId } = router.query;
+  const { pageId, themeId } = router.query;
   const [sections, setSections] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [addTarget, setAddTarget] = useState(null);
@@ -118,8 +122,26 @@ export default function CustomBuilder() {
   }, [pageId, token]);
   const isPro = canUseLandingPages(user);
   useEffect(() => {
+    if (!router.isReady || pageId || !themeId) return;
+    const theme = allThemes.find(item => item.id === themeId);
+    if (!theme) { toast.error("Theme not found"); return; }
+    let active = true;
+    setLoadingPage(true);
+    Promise.all([v11Api.onboarding().then(result => result.data || {}).catch(() => ({})), v11Api.onboardingCategories().then(result => result.categories || []).catch(() => [])]).then(([profile, registry]) => {
+      if (!active) return;
+      const instance = createThemeInstance(theme, profile, registry);
+      if (/^#[\da-f]{6}$/i.test(String(router.query.brandColor || ""))) instance.colorOverride = router.query.brandColor;
+      const restored = router.query.themeDraft ? getDrafts().find(draft => draft.id === router.query.themeDraft && getThemeBlock(draft.content)?.themeId === themeId) : null;
+      const content = restored?.content || [instance];
+      const draftId = restored?.id || saveDraft(content);
+      setCurrentDraftId(draftId); setSections(content); setShowDrafts(false); setLoadingPage(false);
+      if (!restored) router.replace({pathname:router.pathname,query:{...router.query,themeDraft:draftId}},undefined,{shallow:true});
+    });
+    return () => { active = false; };
+  }, [router.isReady, pageId, themeId]);
+  useEffect(() => {
     // 🚫 don't show drafts during edit
-    if (pageId) return;
+    if (pageId || themeId) return;
 
     const savedDrafts = getDrafts();
 
@@ -127,7 +149,7 @@ export default function CustomBuilder() {
       setDrafts(savedDrafts);
       setShowDrafts(true);
     }
-  }, [pageId]);
+  }, [pageId, themeId]);
 
   useEffect(() => {
     if (sections.length === 0) return;
@@ -391,6 +413,12 @@ export default function CustomBuilder() {
       );
     }
   };
+  const themeInstance = getThemeBlock(sections);
+  if (themeInstance && !loadingPage) return <>
+    <ThemeEditor instance={themeInstance} onChange={instance => {setSections([instance]);setHasChanges(true);}} onBack={() => router.push(returnPath)} onSaveDraft={handleSaveDraft} saving={isSaving} onPublish={() => setShowPublishSheet(true)}/>
+    <PublishSheet isOpen={showPublishSheet} onClose={() => setShowPublishSheet(false)} hasContent isPro={isPro} onUpgrade={() => setShowUpgradeModal(true)} onPublish={publishCustomPage} initialTitle={pageTitle || themeInstance.personalization?.displayName || themeInstance.name}/>
+    {showUpgradeModal && <UpgradeModal onUserUpdated={setUser} currentPlan={user?.plan || "free"} setShowModal={setShowUpgradeModal}/>}
+  </>;
   if (loadingPage) {
     return <div className={styles.loading}>Loading page...</div>;
   }

@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "categoryId": "education-training/vocational-schools",
+  "label": "Vocational schools",
+  "parentId": "education-training",
+  "assetKey": "education-training--vocational-schools",
+  "revision": "8be0096521b101f9",
+  "status": "needs-review",
+  "alt": "Illustrative vocational schools cover",
+  "width": 1600,
+  "height": 800,
+  "focalPoint": {
+    "x": 0.5,
+    "y": 0.5
+  },
+  "source": {
+    "sha256": "a66ae340e88385645ab149a49ab962c20fe972c979ac7f79085cc09f47e70c8c",
+    "width": 1774,
+    "height": 887,
+    "originalFilename": "exec-c3a6f26f-417a-4109-ac19-356ea85247fd.png",
+    "provider": "OpenAI built-in image generation",
+    "prompt": "Create one original premium photographic cover for the exact business category \"Vocational schools\" within \"Education & Training\". This is a default category image for MyTikLink, not a page mockup. Choose a concrete, immediately recognizable subject and environment specific to this category; distinguish it from neighbouring categories. Realistic editorial photography, believable materials, natural professional lighting, polished but authentic. Relevant Nigerian or broadly African context where appropriate, without stereotypes. For abstract digital services, depict a carefully composed credible workspace or physical visual metaphor with blank/unreadable screens. Compose a SINGLE landscape image at 1600 x 800 pixels, 2:1 ratio, edge-to-edge, with the important subject safely inside the central 80% and generous horizontal crop room. No collage of unrelated categories. Absolutely NO text, letters, numbers, captions, logos, watermarks, signage, brand names, UI, borders or typography anywhere. Any packaging, devices, documents or clothing must be unbranded and free of writing. Show safe, respectful, non-graphic professional scenes; no claims, endorsements, real public figures or identifiable private people. Output only the image.",
+    "generatedAt": "2026-10-31T05:16:48.555Z"
+  },
+  "variants": [
+    {
+      "format": "avif",
+      "width": 400,
+      "height": 200,
+      "bytes": 17658,
+      "quality": 55,
+      "url": "/category-covers/education-training--vocational-schools/8be0096521b101f9/400.avif"
+    },
+    {
+      "format": "avif",
+      "width": 800,
+      "height": 400,
+      "bytes": 40982,
+      "quality": 55,
+      "url": "/category-covers/education-training--vocational-schools/8be0096521b101f9/800.avif"
+    },
+    {
+      "format": "avif",
+      "width": 1200,
+      "height": 600,
+      "bytes": 63940,
+      "quality": 55,
+      "url": "/category-covers/education-training--vocational-schools/8be0096521b101f9/1200.avif"
+    },
+    {
+      "format": "avif",
+      "width": 1600,
+      "height": 800,
+      "bytes": 85422,
+      "quality": 55,
+      "url": "/category-covers/education-training--vocational-schools/8be0096521b101f9/1600.avif"
+    },
+    {
+      "format": "webp",
+      "width": 400,
+      "height": 200,
+      "bytes": 20860,
+      "quality": 82,
+      "url": "/category-covers/education-training--vocational-schools/8be0096521b101f9/400.webp"
+    },
+    {
+      "format": "webp",
+      "width": 800,
+      "height": 400,
+      "bytes": 54200,
+      "quality": 82,
+      "url": "/category-covers/education-training--vocational-schools/8be0096521b101f9/800.webp"
+    },
+    {
+      "format": "webp",
+      "width": 1200,
+      "height": 600,
+      "bytes": 93148,
+      "quality": 82,
+      "url": "/category-covers/education-training--vocational-schools/8be0096521b101f9/1200.webp"
+    },
+    {
+      "format": "webp",
+      "width": 1600,
+      "height": 800,
+      "bytes": 131454,
+      "quality": 82,
+      "url": "/category-covers/education-training--vocational-schools/8be0096521b101f9/1600.webp"
+    }
+  ],
+  "warnings": []
+}

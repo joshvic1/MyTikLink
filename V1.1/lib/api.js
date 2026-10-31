@@ -59,6 +59,7 @@ export const v11Api = {
   plan: () => apiRequest("/users/plan"),
   onboarding: () => apiRequest("/v1-1/onboarding"),
   onboardingCategories: (query = "") => apiRequest(`/v1-1/onboarding/categories?query=${encodeURIComponent(query)}`),
+  generateBrandDescription: () => apiRequest("/v1-1/onboarding/generate-brand-description", { method: "POST", body: JSON.stringify({}), timeoutMs: 20000 }),
   saveOnboardingStage: (stage, payload) => apiRequest(`/v1-1/onboarding/stage/${encodeURIComponent(stage)}`, { method: "PUT", body: JSON.stringify(payload) }),
   completeOnboarding: () => apiRequest("/v1-1/onboarding/complete", { method: "POST" }),
   uploadImage: (file) => { const body = new FormData(); body.append("image", file); return apiRequest("/upload", { method: "POST", body }); },

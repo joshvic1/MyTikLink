@@ -1,0 +1,1 @@
+.preview{display:block;position:relative;overflow:hidden;height:260px;width:100%;border-radius:8px;pointer-events:none;background:#eee;text-align:left;container-type:inline-size}.scaled{width:1000px;transform:scale(.3);transform-origin:top left;position:absolute;top:0;left:0}@supports(width:1cqw){.scaled{zoom:calc(100cqw / 1000px);transform:none}}

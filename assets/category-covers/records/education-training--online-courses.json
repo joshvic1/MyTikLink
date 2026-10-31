@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "categoryId": "education-training/online-courses",
+  "label": "Online courses",
+  "parentId": "education-training",
+  "assetKey": "education-training--online-courses",
+  "revision": "fa1d5a2d58b47e11",
+  "status": "needs-review",
+  "alt": "Illustrative online courses cover",
+  "width": 1600,
+  "height": 800,
+  "focalPoint": {
+    "x": 0.5,
+    "y": 0.5
+  },
+  "source": {
+    "sha256": "d54822d55a16473b7ba56210dc38914ef1eb0924f3d63c5100350a73c5473dc0",
+    "width": 1774,
+    "height": 887,
+    "originalFilename": "exec-5c1e67b5-83f0-4375-893d-bac2a0a623af.png",
+    "provider": "OpenAI built-in image generation",
+    "prompt": "Create one original premium photographic cover for the exact business category \"Online courses\" within \"Education & Training\". This is a default category image for MyTikLink, not a page mockup. Choose a concrete, immediately recognizable subject and environment specific to this category; distinguish it from neighbouring categories. Realistic editorial photography, believable materials, natural professional lighting, polished but authentic. Relevant Nigerian or broadly African context where appropriate, without stereotypes. For abstract digital services, depict a carefully composed credible workspace or physical visual metaphor with blank/unreadable screens. Compose a SINGLE landscape image at 1600 x 800 pixels, 2:1 ratio, edge-to-edge, with the important subject safely inside the central 80% and generous horizontal crop room. No collage of unrelated categories. Absolutely NO text, letters, numbers, captions, logos, watermarks, signage, brand names, UI, borders or typography anywhere. Any packaging, devices, documents or clothing must be unbranded and free of writing. Show safe, respectful, non-graphic professional scenes; no claims, endorsements, real public figures or identifiable private people. Output only the image.",
+    "generatedAt": "2026-10-31T05:15:57.591Z"
+  },
+  "variants": [
+    {
+      "format": "avif",
+      "width": 400,
+      "height": 200,
+      "bytes": 13800,
+      "quality": 55,
+      "url": "/category-covers/education-training--online-courses/fa1d5a2d58b47e11/400.avif"
+    },
+    {
+      "format": "avif",
+      "width": 800,
+      "height": 400,
+      "bytes": 31402,
+      "quality": 55,
+      "url": "/category-covers/education-training--online-courses/fa1d5a2d58b47e11/800.avif"
+    },
+    {
+      "format": "avif",
+      "width": 1200,
+      "height": 600,
+      "bytes": 48803,
+      "quality": 55,
+      "url": "/category-covers/education-training--online-courses/fa1d5a2d58b47e11/1200.avif"
+    },
+    {
+      "format": "avif",
+      "width": 1600,
+      "height": 800,
+      "bytes": 64551,
+      "quality": 55,
+      "url": "/category-covers/education-training--online-courses/fa1d5a2d58b47e11/1600.avif"
+    },
+    {
+      "format": "webp",
+      "width": 400,
+      "height": 200,
+      "bytes": 17286,
+      "quality": 82,
+      "url": "/category-covers/education-training--online-courses/fa1d5a2d58b47e11/400.webp"
+    },
+    {
+      "format": "webp",
+      "width": 800,
+      "height": 400,
+      "bytes": 44356,
+      "quality": 82,
+      "url": "/category-covers/education-training--online-courses/fa1d5a2d58b47e11/800.webp"
+    },
+    {
+      "format": "webp",
+      "width": 1200,
+      "height": 600,
+      "bytes": 75456,
+      "quality": 82,
+      "url": "/category-covers/education-training--online-courses/fa1d5a2d58b47e11/1200.webp"
+    },
+    {
+      "format": "webp",
+      "width": 1600,
+      "height": 800,
+      "bytes": 106964,
+      "quality": 82,
+      "url": "/category-covers/education-training--online-courses/fa1d5a2d58b47e11/1600.webp"
+    }
+  ],
+  "warnings": []
+}

@@ -20,7 +20,7 @@ export function LeadsModal({ page, onClose }) {
   }, [page._id]);
   useEffect(() => { setRecords(null); setQuery(""); refresh(); return () => { sequence.current += 1; }; }, [refresh]);
   const filtered = (records || []).filter(lead => `${lead.name} ${lead.whatsapp}`.toLowerCase().includes(query.toLowerCase()));
-  return <Modal wide title={`${page.title || "Landing page"} leads`} description={records ? `${records.length} customer submission${records.length === 1 ? "" : "s"}` : "Customer submissions"} onClose={onClose}
+  return <Modal tone="teal" wide title={`${page.title || "Landing page"} leads`} description={records ? `${records.length} customer submission${records.length === 1 ? "" : "s"}` : "Customer submissions"} onClose={onClose}
     footer={<><Button variant="secondary" onClick={onClose}>Close</Button><Button disabled={loading || !!error || !records?.length} onClick={() => downloadLeads(records, page.title)}>Export all leads (CSV)</Button></>}>
     <label className={styles.search}><Search aria-hidden="true"/><input aria-label="Search leads by name or WhatsApp number" value={query} onChange={event => setQuery(event.target.value)} placeholder="Search name or WhatsApp"/></label>
     <Button variant="ghost" disabled={loading} onClick={refresh}>Refresh leads</Button>

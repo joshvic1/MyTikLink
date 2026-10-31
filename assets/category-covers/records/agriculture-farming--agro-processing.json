@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "categoryId": "agriculture-farming/agro-processing",
+  "label": "Agro processing",
+  "parentId": "agriculture-farming",
+  "assetKey": "agriculture-farming--agro-processing",
+  "revision": "9ca626c63946d5c6",
+  "status": "ready",
+  "alt": "Illustrative agro processing cover",
+  "width": 1600,
+  "height": 800,
+  "focalPoint": {
+    "x": 0.5,
+    "y": 0.5
+  },
+  "source": {
+    "sha256": "f227a0e2e1169bbc45b7f0d1939d29a28d73592bc5809153709b4767b7e6aec8",
+    "width": 1774,
+    "height": 887,
+    "originalFilename": "exec-5f1a0a38-c23b-4b95-827c-432f115b51a4.png",
+    "provider": "OpenAI built-in image generation",
+    "prompt": "Create one original premium photographic cover for the exact business category \"Agro processing\" within \"Agriculture & Farming\". This is a default category image for MyTikLink, not a page mockup. Choose a concrete, immediately recognizable subject and environment specific to this category; distinguish it from neighbouring categories. Realistic editorial photography, believable materials, natural professional lighting, polished but authentic. Relevant Nigerian or broadly African context where appropriate, without stereotypes. For abstract digital services, depict a carefully composed credible workspace or physical visual metaphor with blank/unreadable screens. Compose a SINGLE landscape image at 1600 x 800 pixels, 2:1 ratio, edge-to-edge, with the important subject safely inside the central 80% and generous horizontal crop room. No collage of unrelated categories. Absolutely NO text, letters, numbers, captions, logos, watermarks, signage, brand names, UI, borders or typography anywhere. Any packaging, devices, documents or clothing must be unbranded and free of writing. Show safe, respectful, non-graphic professional scenes; no claims, endorsements, real public figures or identifiable private people. Output only the image.",
+    "generatedAt": "2026-10-30T22:08:01.394Z"
+  },
+  "variants": [
+    {
+      "format": "avif",
+      "width": 400,
+      "height": 200,
+      "bytes": 16135,
+      "quality": 43,
+      "url": "/category-covers/agriculture-farming--agro-processing/9ca626c63946d5c6/400.avif"
+    },
+    {
+      "format": "avif",
+      "width": 800,
+      "height": 400,
+      "bytes": 44505,
+      "quality": 47,
+      "url": "/category-covers/agriculture-farming--agro-processing/9ca626c63946d5c6/800.avif"
+    },
+    {
+      "format": "avif",
+      "width": 1200,
+      "height": 600,
+      "bytes": 79018,
+      "quality": 51,
+      "url": "/category-covers/agriculture-farming--agro-processing/9ca626c63946d5c6/1200.avif"
+    },
+    {
+      "format": "avif",
+      "width": 1600,
+      "height": 800,
+      "bytes": 121282,
+      "quality": 55,
+      "url": "/category-covers/agriculture-farming--agro-processing/9ca626c63946d5c6/1600.avif"
+    },
+    {
+      "format": "webp",
+      "width": 400,
+      "height": 200,
+      "bytes": 22602,
+      "quality": 78,
+      "url": "/category-covers/agriculture-farming--agro-processing/9ca626c63946d5c6/400.webp"
+    },
+    {
+      "format": "webp",
+      "width": 800,
+      "height": 400,
+      "bytes": 68648,
+      "quality": 82,
+      "url": "/category-covers/agriculture-farming--agro-processing/9ca626c63946d5c6/800.webp"
+    },
+    {
+      "format": "webp",
+      "width": 1200,
+      "height": 600,
+      "bytes": 119880,
+      "quality": 82,
+      "url": "/category-covers/agriculture-farming--agro-processing/9ca626c63946d5c6/1200.webp"
+    },
+    {
+      "format": "webp",
+      "width": 1600,
+      "height": 800,
+      "bytes": 171466,
+      "quality": 82,
+      "url": "/category-covers/agriculture-farming--agro-processing/9ca626c63946d5c6/1600.webp"
+    }
+  ],
+  "warnings": [],
+  "reviewedAt": "2026-10-30T22:08:01.399Z",
+  "reviewChecklist": [
+    "category match",
+    "no text or logos",
+    "composition",
+    "compression quality"
+  ]
+}

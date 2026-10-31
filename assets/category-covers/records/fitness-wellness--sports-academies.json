@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "categoryId": "fitness-wellness/sports-academies",
+  "label": "Sports academies",
+  "parentId": "fitness-wellness",
+  "assetKey": "fitness-wellness--sports-academies",
+  "revision": "9517847e3b41f4db",
+  "status": "needs-review",
+  "alt": "Illustrative sports academies cover",
+  "width": 1600,
+  "height": 800,
+  "focalPoint": {
+    "x": 0.5,
+    "y": 0.5
+  },
+  "source": {
+    "sha256": "151da6d4947699f61b2c9d9db200116a5ef23d1233babb64b312e8e7921689b7",
+    "width": 1774,
+    "height": 887,
+    "originalFilename": "exec-86882c04-1523-4290-b69f-a936b1effd2f.png",
+    "provider": "OpenAI built-in image generation",
+    "prompt": "Create one original premium photographic cover for the exact business category \"Sports academies\" within \"Fitness & Wellness\". This is a default category image for MyTikLink, not a page mockup. Choose a concrete, immediately recognizable subject and environment specific to this category; distinguish it from neighbouring categories. Realistic editorial photography, believable materials, natural professional lighting, polished but authentic. Relevant Nigerian or broadly African context where appropriate, without stereotypes. For abstract digital services, depict a carefully composed credible workspace or physical visual metaphor with blank/unreadable screens. Compose a SINGLE landscape image at 1600 x 800 pixels, 2:1 ratio, edge-to-edge, with the important subject safely inside the central 80% and generous horizontal crop room. No collage of unrelated categories. Absolutely NO text, letters, numbers, captions, logos, watermarks, signage, brand names, UI, borders or typography anywhere. Any packaging, devices, documents or clothing must be unbranded and free of writing. Show safe, respectful, non-graphic professional scenes; no claims, endorsements, real public figures or identifiable private people. Output only the image.",
+    "generatedAt": "2026-10-31T05:06:48.235Z"
+  },
+  "variants": [
+    {
+      "format": "avif",
+      "width": 400,
+      "height": 200,
+      "bytes": 15296,
+      "quality": 55,
+      "url": "/category-covers/fitness-wellness--sports-academies/9517847e3b41f4db/400.avif"
+    },
+    {
+      "format": "avif",
+      "width": 800,
+      "height": 400,
+      "bytes": 36516,
+      "quality": 55,
+      "url": "/category-covers/fitness-wellness--sports-academies/9517847e3b41f4db/800.avif"
+    },
+    {
+      "format": "avif",
+      "width": 1200,
+      "height": 600,
+      "bytes": 59283,
+      "quality": 55,
+      "url": "/category-covers/fitness-wellness--sports-academies/9517847e3b41f4db/1200.avif"
+    },
+    {
+      "format": "avif",
+      "width": 1600,
+      "height": 800,
+      "bytes": 79099,
+      "quality": 55,
+      "url": "/category-covers/fitness-wellness--sports-academies/9517847e3b41f4db/1600.avif"
+    },
+    {
+      "format": "webp",
+      "width": 400,
+      "height": 200,
+      "bytes": 18022,
+      "quality": 82,
+      "url": "/category-covers/fitness-wellness--sports-academies/9517847e3b41f4db/400.webp"
+    },
+    {
+      "format": "webp",
+      "width": 800,
+      "height": 400,
+      "bytes": 49370,
+      "quality": 82,
+      "url": "/category-covers/fitness-wellness--sports-academies/9517847e3b41f4db/800.webp"
+    },
+    {
+      "format": "webp",
+      "width": 1200,
+      "height": 600,
+      "bytes": 85574,
+      "quality": 82,
+      "url": "/category-covers/fitness-wellness--sports-academies/9517847e3b41f4db/1200.webp"
+    },
+    {
+      "format": "webp",
+      "width": 1600,
+      "height": 800,
+      "bytes": 124156,
+      "quality": 82,
+      "url": "/category-covers/fitness-wellness--sports-academies/9517847e3b41f4db/1600.webp"
+    }
+  ],
+  "warnings": []
+}

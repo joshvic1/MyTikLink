@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "categoryId": "health-medical/doctors",
+  "label": "Doctors",
+  "parentId": "health-medical",
+  "assetKey": "health-medical--doctors",
+  "revision": "1b12574ffd8d2947",
+  "status": "ready",
+  "alt": "Illustrative doctors cover",
+  "width": 1600,
+  "height": 800,
+  "focalPoint": {
+    "x": 0.5,
+    "y": 0.5
+  },
+  "source": {
+    "sha256": "d8590fcdfaf253c423cb822e92afb651fcae7149563d9d017b42814dff90f05c",
+    "width": 1774,
+    "height": 887,
+    "originalFilename": "exec-963a1055-0c5a-4e8b-8a6e-18348d36b453.png",
+    "provider": "OpenAI built-in image generation",
+    "prompt": "Create one original premium photographic cover for the exact business category \"Doctors\" within \"Health & Medical\". This is a default category image for MyTikLink, not a page mockup. Choose a concrete, immediately recognizable subject and environment specific to this category; distinguish it from neighbouring categories. Realistic editorial photography, believable materials, natural professional lighting, polished but authentic. Relevant Nigerian or broadly African context where appropriate, without stereotypes. For abstract digital services, depict a carefully composed credible workspace or physical visual metaphor with blank/unreadable screens. Compose a SINGLE landscape image at 1600 x 800 pixels, 2:1 ratio, edge-to-edge, with the important subject safely inside the central 80% and generous horizontal crop room. No collage of unrelated categories. Absolutely NO text, letters, numbers, captions, logos, watermarks, signage, brand names, UI, borders or typography anywhere. Any packaging, devices, documents or clothing must be unbranded and free of writing. Show safe, respectful, non-graphic professional scenes; no claims, endorsements, real public figures or identifiable private people. Output only the image.",
+    "generatedAt": "2026-10-31T04:51:30.123Z"
+  },
+  "variants": [
+    {
+      "format": "avif",
+      "width": 400,
+      "height": 200,
+      "bytes": 10272,
+      "quality": 55,
+      "url": "/category-covers/health-medical--doctors/1b12574ffd8d2947/400.avif"
+    },
+    {
+      "format": "avif",
+      "width": 800,
+      "height": 400,
+      "bytes": 21132,
+      "quality": 55,
+      "url": "/category-covers/health-medical--doctors/1b12574ffd8d2947/800.avif"
+    },
+    {
+      "format": "avif",
+      "width": 1200,
+      "height": 600,
+      "bytes": 31461,
+      "quality": 55,
+      "url": "/category-covers/health-medical--doctors/1b12574ffd8d2947/1200.avif"
+    },
+    {
+      "format": "avif",
+      "width": 1600,
+      "height": 800,
+      "bytes": 40950,
+      "quality": 55,
+      "url": "/category-covers/health-medical--doctors/1b12574ffd8d2947/1600.avif"
+    },
+    {
+      "format": "webp",
+      "width": 400,
+      "height": 200,
+      "bytes": 13454,
+      "quality": 82,
+      "url": "/category-covers/health-medical--doctors/1b12574ffd8d2947/400.webp"
+    },
+    {
+      "format": "webp",
+      "width": 800,
+      "height": 400,
+      "bytes": 31104,
+      "quality": 82,
+      "url": "/category-covers/health-medical--doctors/1b12574ffd8d2947/800.webp"
+    },
+    {
+      "format": "webp",
+      "width": 1200,
+      "height": 600,
+      "bytes": 51068,
+      "quality": 82,
+      "url": "/category-covers/health-medical--doctors/1b12574ffd8d2947/1200.webp"
+    },
+    {
+      "format": "webp",
+      "width": 1600,
+      "height": 800,
+      "bytes": 72118,
+      "quality": 82,
+      "url": "/category-covers/health-medical--doctors/1b12574ffd8d2947/1600.webp"
+    }
+  ],
+  "warnings": [],
+  "reviewedAt": "2026-10-31T05:07:21.318Z",
+  "reviewChecklist": [
+    "category match",
+    "no text or logos",
+    "composition",
+    "compression quality"
+  ]
+}

@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "categoryId": "hair-grooming/locs",
+  "label": "Locs",
+  "parentId": "hair-grooming",
+  "assetKey": "hair-grooming--locs",
+  "revision": "389f9c6eb2604859",
+  "status": "ready",
+  "alt": "Illustrative locs cover",
+  "width": 1600,
+  "height": 800,
+  "focalPoint": {
+    "x": 0.5,
+    "y": 0.5
+  },
+  "source": {
+    "sha256": "cbdeec385a546d694add847952c0b2f4eb4919e2af36ff225ec63f3426fac0af",
+    "width": 1774,
+    "height": 887,
+    "originalFilename": "exec-a532737e-524d-4a2e-989e-8cad719133cf.png",
+    "provider": "OpenAI built-in image generation",
+    "prompt": "Create one original premium photographic cover for the exact business category \"Locs\" within \"Hair & Grooming\". This is a default category image for MyTikLink, not a page mockup. Choose a concrete, immediately recognizable subject and environment specific to this category; distinguish it from neighbouring categories. Realistic editorial photography, believable materials, natural professional lighting, polished but authentic. Relevant Nigerian or broadly African context where appropriate, without stereotypes. For abstract digital services, depict a carefully composed credible workspace or physical visual metaphor with blank/unreadable screens. Compose a SINGLE landscape image at 1600 x 800 pixels, 2:1 ratio, edge-to-edge, with the important subject safely inside the central 80% and generous horizontal crop room. No collage of unrelated categories. Absolutely NO text, letters, numbers, captions, logos, watermarks, signage, brand names, UI, borders or typography anywhere. Any packaging, devices, documents or clothing must be unbranded and free of writing. Show safe, respectful, non-graphic professional scenes; no claims, endorsements, real public figures or identifiable private people. Output only the image.",
+    "generatedAt": "2026-10-31T04:50:38.411Z"
+  },
+  "variants": [
+    {
+      "format": "avif",
+      "width": 400,
+      "height": 200,
+      "bytes": 14924,
+      "quality": 55,
+      "url": "/category-covers/hair-grooming--locs/389f9c6eb2604859/400.avif"
+    },
+    {
+      "format": "avif",
+      "width": 800,
+      "height": 400,
+      "bytes": 33094,
+      "quality": 55,
+      "url": "/category-covers/hair-grooming--locs/389f9c6eb2604859/800.avif"
+    },
+    {
+      "format": "avif",
+      "width": 1200,
+      "height": 600,
+      "bytes": 52229,
+      "quality": 55,
+      "url": "/category-covers/hair-grooming--locs/389f9c6eb2604859/1200.avif"
+    },
+    {
+      "format": "avif",
+      "width": 1600,
+      "height": 800,
+      "bytes": 70345,
+      "quality": 55,
+      "url": "/category-covers/hair-grooming--locs/389f9c6eb2604859/1600.avif"
+    },
+    {
+      "format": "webp",
+      "width": 400,
+      "height": 200,
+      "bytes": 18874,
+      "quality": 82,
+      "url": "/category-covers/hair-grooming--locs/389f9c6eb2604859/400.webp"
+    },
+    {
+      "format": "webp",
+      "width": 800,
+      "height": 400,
+      "bytes": 46614,
+      "quality": 82,
+      "url": "/category-covers/hair-grooming--locs/389f9c6eb2604859/800.webp"
+    },
+    {
+      "format": "webp",
+      "width": 1200,
+      "height": 600,
+      "bytes": 80494,
+      "quality": 82,
+      "url": "/category-covers/hair-grooming--locs/389f9c6eb2604859/1200.webp"
+    },
+    {
+      "format": "webp",
+      "width": 1600,
+      "height": 800,
+      "bytes": 113816,
+      "quality": 82,
+      "url": "/category-covers/hair-grooming--locs/389f9c6eb2604859/1600.webp"
+    }
+  ],
+  "warnings": [],
+  "reviewedAt": "2026-10-31T04:50:38.416Z",
+  "reviewChecklist": [
+    "category match",
+    "no text or logos",
+    "composition",
+    "compression quality"
+  ]
+}

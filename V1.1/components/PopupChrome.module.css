@@ -1,0 +1,31 @@
+/* Shared onboarding-inspired chrome for V1.1 dialogs. */
+.surface{--popup-start:#E6DAFF;--popup-mid:#F2ECFF;--popup-end:#E6F3FF;--popup-accent:#6F3BF5;--popup-accent-end:#9B71F8;--popup-ink:#35206D}
+.surface .header{position:relative;isolation:isolate;overflow:hidden;background:linear-gradient(112deg,var(--popup-start),var(--popup-mid) 48%,var(--popup-end))!important;border-bottom:0!important;padding-top:25px!important;padding-bottom:23px!important;gap:16px}
+.header:before,.header:after{content:"";position:absolute;z-index:-1;pointer-events:none;border-radius:50%;background:rgba(255,255,255,.5)}
+.header:before{width:92px;height:92px;right:-30px;top:-48px;animation:drift 7s ease-in-out infinite alternate}
+.header:after{width:35px;height:35px;right:72px;bottom:-19px;animation:float 4.5s ease-in-out infinite alternate}
+.surface .header h2{margin:0;color:var(--popup-ink)!important;font-size:20px!important;line-height:1.35;letter-spacing:-.035em;font-weight:750}
+.surface .header p{margin:7px 0 0;color:var(--popup-muted,#655194)!important;font-size:12px!important;line-height:1.5}
+.surface .header button{flex-shrink:0;transition:transform .18s ease,background .18s ease}
+.surface .header button:active{transform:scale(.94)}
+.surface .footer{gap:10px;padding-top:15px!important;padding-bottom:max(16px,env(safe-area-inset-bottom))!important;background:#fff!important}
+.surface [data-popup-action]{position:relative;overflow:hidden;min-height:38px!important;border-radius:9px!important;font-size:11px!important;font-weight:700;transition:transform .18s ease,box-shadow .18s ease,filter .18s ease!important;text-decoration:none!important}
+.surface [data-popup-action="primary"]{background:linear-gradient(135deg,var(--popup-accent),var(--popup-accent-end))!important;border:1px solid var(--popup-accent)!important;color:white!important;box-shadow:0 4px 10px #3a1f7714}
+.surface [data-popup-action="primary"]:before{content:"";position:absolute;pointer-events:none;inset:0;transform:translateX(-130%) skewX(-22deg);background:linear-gradient(90deg,transparent,#ffffff48,transparent);transition:transform .48s ease}
+.surface [data-popup-action="primary"]:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 18px #3a1f773d;filter:saturate(1.08)}
+.surface [data-popup-action="primary"]:hover:not(:disabled):before{transform:translateX(140%) skewX(-22deg)}
+.surface [data-popup-action="secondary"]{background:#fff!important;border:1px solid #E3DFE9!important;color:#51485F!important;box-shadow:none}
+.surface [data-popup-action="secondary"]:hover:not(:disabled){transform:translateX(-2px);background:#FAF9FC!important}
+.surface [data-popup-action]:active:not(:disabled){transform:scale(.98)}
+.surface [data-popup-action]:focus-visible{outline:2px solid var(--popup-accent);outline-offset:3px}
+.surface [data-popup-action]:disabled{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none}
+@keyframes drift{to{transform:translate3d(-9px,10px,0) scale(1.08)}}
+@keyframes float{to{transform:translate3d(9px,-5px,0)}}
+@media(max-width:640px){.surface .header{padding-top:23px!important;padding-bottom:21px!important}.surface .header h2{font-size:19px!important}}
+@media(prefers-reduced-motion:reduce){.header:before,.header:after{animation:none}.surface [data-popup-action],.surface [data-popup-action]:before,.surface .header button{transition:none!important}.surface [data-popup-action]:hover:not(:disabled){transform:none}}
+
+/* Stable palettes by popup purpose; header and primary action always match. */
+.surface[data-popup-tone="lime"]{--popup-start:#D9FF58;--popup-mid:#EEFFD2;--popup-end:#DFFFF6;--popup-accent:#597600;--popup-accent-end:#718F14;--popup-ink:#15230D;--popup-muted:#51613A}
+.surface[data-popup-tone="peach"]{--popup-start:#FFE0C8;--popup-mid:#FFF0D8;--popup-end:#FFF9EB;--popup-accent:#AE441A;--popup-accent-end:#C45A22;--popup-ink:#612D13;--popup-muted:#9A542F}
+.surface[data-popup-tone="teal"]{--popup-start:#CFF7EB;--popup-mid:#E5FBF4;--popup-end:#E8FAFF;--popup-accent:#087B68;--popup-accent-end:#11836F;--popup-ink:#075C50;--popup-muted:#28786D}
+.surface[data-popup-tone="pink"]{--popup-start:#FFD6EA;--popup-mid:#FFF0F8;--popup-end:#F6E8FF;--popup-accent:#B52472;--popup-accent-end:#C13580;--popup-ink:#751B4E;--popup-muted:#A9507B}

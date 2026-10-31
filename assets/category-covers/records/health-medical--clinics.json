@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "categoryId": "health-medical/clinics",
+  "label": "Clinics",
+  "parentId": "health-medical",
+  "assetKey": "health-medical--clinics",
+  "revision": "89be35f11d2ecc9b",
+  "status": "ready",
+  "alt": "Illustrative clinics cover",
+  "width": 1600,
+  "height": 800,
+  "focalPoint": {
+    "x": 0.5,
+    "y": 0.5
+  },
+  "source": {
+    "sha256": "141d06231b5af8e7e10b9d1bdca44b9e5f3211ea61e5d191eea34397e23f75aa",
+    "width": 1774,
+    "height": 887,
+    "originalFilename": "exec-33037e7a-f31c-4716-9bfb-5873c984c596.png",
+    "provider": "OpenAI built-in image generation",
+    "prompt": "Create one original premium photographic cover for the exact business category \"Clinics\" within \"Health & Medical\". This is a default category image for MyTikLink, not a page mockup. Choose a concrete, immediately recognizable subject and environment specific to this category; distinguish it from neighbouring categories. Realistic editorial photography, believable materials, natural professional lighting, polished but authentic. Relevant Nigerian or broadly African context where appropriate, without stereotypes. For abstract digital services, depict a carefully composed credible workspace or physical visual metaphor with blank/unreadable screens. Compose a SINGLE landscape image at 1600 x 800 pixels, 2:1 ratio, edge-to-edge, with the important subject safely inside the central 80% and generous horizontal crop room. No collage of unrelated categories. Absolutely NO text, letters, numbers, captions, logos, watermarks, signage, brand names, UI, borders or typography anywhere. Any packaging, devices, documents or clothing must be unbranded and free of writing. Show safe, respectful, non-graphic professional scenes; no claims, endorsements, real public figures or identifiable private people. Output only the image.",
+    "generatedAt": "2026-10-31T04:51:10.904Z"
+  },
+  "variants": [
+    {
+      "format": "avif",
+      "width": 400,
+      "height": 200,
+      "bytes": 13198,
+      "quality": 55,
+      "url": "/category-covers/health-medical--clinics/89be35f11d2ecc9b/400.avif"
+    },
+    {
+      "format": "avif",
+      "width": 800,
+      "height": 400,
+      "bytes": 30856,
+      "quality": 55,
+      "url": "/category-covers/health-medical--clinics/89be35f11d2ecc9b/800.avif"
+    },
+    {
+      "format": "avif",
+      "width": 1200,
+      "height": 600,
+      "bytes": 47959,
+      "quality": 55,
+      "url": "/category-covers/health-medical--clinics/89be35f11d2ecc9b/1200.avif"
+    },
+    {
+      "format": "avif",
+      "width": 1600,
+      "height": 800,
+      "bytes": 62929,
+      "quality": 55,
+      "url": "/category-covers/health-medical--clinics/89be35f11d2ecc9b/1600.avif"
+    },
+    {
+      "format": "webp",
+      "width": 400,
+      "height": 200,
+      "bytes": 15652,
+      "quality": 82,
+      "url": "/category-covers/health-medical--clinics/89be35f11d2ecc9b/400.webp"
+    },
+    {
+      "format": "webp",
+      "width": 800,
+      "height": 400,
+      "bytes": 40468,
+      "quality": 82,
+      "url": "/category-covers/health-medical--clinics/89be35f11d2ecc9b/800.webp"
+    },
+    {
+      "format": "webp",
+      "width": 1200,
+      "height": 600,
+      "bytes": 69404,
+      "quality": 82,
+      "url": "/category-covers/health-medical--clinics/89be35f11d2ecc9b/1200.webp"
+    },
+    {
+      "format": "webp",
+      "width": 1600,
+      "height": 800,
+      "bytes": 98322,
+      "quality": 82,
+      "url": "/category-covers/health-medical--clinics/89be35f11d2ecc9b/1600.webp"
+    }
+  ],
+  "warnings": [],
+  "reviewedAt": "2026-10-31T05:07:21.260Z",
+  "reviewChecklist": [
+    "category match",
+    "no text or logos",
+    "composition",
+    "compression quality"
+  ]
+}

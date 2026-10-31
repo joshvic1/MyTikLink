@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "categoryId": "jewelry-accessories/fine-jewelry",
+  "label": "Fine jewelry",
+  "parentId": "jewelry-accessories",
+  "assetKey": "jewelry-accessories--fine-jewelry",
+  "revision": "32c0e40f3bc58a66",
+  "status": "ready",
+  "alt": "Illustrative fine jewelry cover",
+  "width": 1600,
+  "height": 800,
+  "focalPoint": {
+    "x": 0.5,
+    "y": 0.5
+  },
+  "source": {
+    "sha256": "8e388d25de81a6e5b60018c689ad6156e1b19e8aed63c5a7dbc592155b9d1663",
+    "width": 1774,
+    "height": 887,
+    "originalFilename": "exec-c3266334-0fe6-4729-9b77-9a1bb71a18c8.png",
+    "provider": "OpenAI built-in image generation",
+    "prompt": "Create one original premium photographic cover for the exact business category \"Fine jewelry\" within \"Jewelry & Accessories\". This is a default category image for MyTikLink, not a page mockup. Choose a concrete, immediately recognizable subject and environment specific to this category; distinguish it from neighbouring categories. Realistic editorial photography, believable materials, natural professional lighting, polished but authentic. Relevant Nigerian or broadly African context where appropriate, without stereotypes. For abstract digital services, depict a carefully composed credible workspace or physical visual metaphor with blank/unreadable screens. Compose a SINGLE landscape image at 1600 x 800 pixels, 2:1 ratio, edge-to-edge, with the important subject safely inside the central 80% and generous horizontal crop room. No collage of unrelated categories. Absolutely NO text, letters, numbers, captions, logos, watermarks, signage, brand names, UI, borders or typography anywhere. Any packaging, devices, documents or clothing must be unbranded and free of writing. Show safe, respectful, non-graphic professional scenes; no claims, endorsements, real public figures or identifiable private people. Output only the image.",
+    "generatedAt": "2026-10-31T04:52:30.807Z"
+  },
+  "variants": [
+    {
+      "format": "avif",
+      "width": 400,
+      "height": 200,
+      "bytes": 15492,
+      "quality": 55,
+      "url": "/category-covers/jewelry-accessories--fine-jewelry/32c0e40f3bc58a66/400.avif"
+    },
+    {
+      "format": "avif",
+      "width": 800,
+      "height": 400,
+      "bytes": 40892,
+      "quality": 55,
+      "url": "/category-covers/jewelry-accessories--fine-jewelry/32c0e40f3bc58a66/800.avif"
+    },
+    {
+      "format": "avif",
+      "width": 1200,
+      "height": 600,
+      "bytes": 74235,
+      "quality": 55,
+      "url": "/category-covers/jewelry-accessories--fine-jewelry/32c0e40f3bc58a66/1200.avif"
+    },
+    {
+      "format": "avif",
+      "width": 1600,
+      "height": 800,
+      "bytes": 103263,
+      "quality": 55,
+      "url": "/category-covers/jewelry-accessories--fine-jewelry/32c0e40f3bc58a66/1600.avif"
+    },
+    {
+      "format": "webp",
+      "width": 400,
+      "height": 200,
+      "bytes": 18658,
+      "quality": 82,
+      "url": "/category-covers/jewelry-accessories--fine-jewelry/32c0e40f3bc58a66/400.webp"
+    },
+    {
+      "format": "webp",
+      "width": 800,
+      "height": 400,
+      "bytes": 55972,
+      "quality": 82,
+      "url": "/category-covers/jewelry-accessories--fine-jewelry/32c0e40f3bc58a66/800.webp"
+    },
+    {
+      "format": "webp",
+      "width": 1200,
+      "height": 600,
+      "bytes": 105484,
+      "quality": 82,
+      "url": "/category-covers/jewelry-accessories--fine-jewelry/32c0e40f3bc58a66/1200.webp"
+    },
+    {
+      "format": "webp",
+      "width": 1600,
+      "height": 800,
+      "bytes": 157990,
+      "quality": 82,
+      "url": "/category-covers/jewelry-accessories--fine-jewelry/32c0e40f3bc58a66/1600.webp"
+    }
+  ],
+  "warnings": [],
+  "reviewedAt": "2026-10-31T05:08:48.441Z",
+  "reviewChecklist": [
+    "category match",
+    "no text or logos",
+    "composition",
+    "compression quality"
+  ]
+}

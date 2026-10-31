@@ -1,0 +1,148 @@
+{
+  "assets": [
+    {
+      "file": "food-480.webp",
+      "width": 480,
+      "bytes": 68582,
+      "source": "exec-4023d85b-e85b-475e-96d7-9795a0aa2d13.png",
+      "origin": "Original OpenAI image generation, 2026-10-30",
+      "usage": "Illustrative demo imagery. Fictional people and products; no client work or actual property listing implied."
+    },
+    {
+      "file": "food-960.webp",
+      "width": 960,
+      "bytes": 229714,
+      "source": "exec-4023d85b-e85b-475e-96d7-9795a0aa2d13.png",
+      "origin": "Original OpenAI image generation, 2026-10-30",
+      "usage": "Illustrative demo imagery. Fictional people and products; no client work or actual property listing implied."
+    },
+    {
+      "file": "hair-480.webp",
+      "width": 480,
+      "bytes": 36774,
+      "source": "exec-60a09a9f-1ff0-483f-a375-945f54a932c5.png",
+      "origin": "Original OpenAI image generation, 2026-10-30",
+      "usage": "Illustrative demo imagery. Fictional people and products; no client work or actual property listing implied."
+    },
+    {
+      "file": "hair-960.webp",
+      "width": 960,
+      "bytes": 132202,
+      "source": "exec-60a09a9f-1ff0-483f-a375-945f54a932c5.png",
+      "origin": "Original OpenAI image generation, 2026-10-30",
+      "usage": "Illustrative demo imagery. Fictional people and products; no client work or actual property listing implied."
+    },
+    {
+      "file": "footwear-480.webp",
+      "width": 480,
+      "bytes": 43666,
+      "source": "exec-f28dc088-11da-4590-bed7-223e5a885db6.png",
+      "origin": "Original OpenAI image generation, 2026-10-30",
+      "usage": "Illustrative demo imagery. Fictional people and products; no client work or actual property listing implied."
+    },
+    {
+      "file": "footwear-960.webp",
+      "width": 960,
+      "bytes": 156572,
+      "source": "exec-f28dc088-11da-4590-bed7-223e5a885db6.png",
+      "origin": "Original OpenAI image generation, 2026-10-30",
+      "usage": "Illustrative demo imagery. Fictional people and products; no client work or actual property listing implied."
+    },
+    {
+      "file": "consultant-480.webp",
+      "width": 480,
+      "bytes": 34294,
+      "source": "exec-f0cc0c54-da93-4bf2-b3a0-d7edef9725a0.png",
+      "origin": "Original OpenAI image generation, 2026-10-30",
+      "usage": "Illustrative demo imagery. Fictional people and products; no client work or actual property listing implied."
+    },
+    {
+      "file": "consultant-960.webp",
+      "width": 960,
+      "bytes": 107264,
+      "source": "exec-f0cc0c54-da93-4bf2-b3a0-d7edef9725a0.png",
+      "origin": "Original OpenAI image generation, 2026-10-30",
+      "usage": "Illustrative demo imagery. Fictional people and products; no client work or actual property listing implied."
+    },
+    {
+      "file": "event-480.webp",
+      "width": 480,
+      "bytes": 32168,
+      "source": "exec-5abfddb8-ac21-4ac1-b3c7-0fdd48932395.png",
+      "origin": "Original OpenAI image generation, 2026-10-30",
+      "usage": "Illustrative demo imagery. Fictional people and products; no client work or actual property listing implied."
+    },
+    {
+      "file": "event-960.webp",
+      "width": 960,
+      "bytes": 89224,
+      "source": "exec-5abfddb8-ac21-4ac1-b3c7-0fdd48932395.png",
+      "origin": "Original OpenAI image generation, 2026-10-30",
+      "usage": "Illustrative demo imagery. Fictional people and products; no client work or actual property listing implied."
+    },
+    {
+      "file": "property-480.webp",
+      "width": 480,
+      "bytes": 70336,
+      "source": "exec-ec6d510a-ba75-45c5-915e-26afe27df4ab.png",
+      "origin": "Original OpenAI image generation, 2026-10-30",
+      "usage": "Illustrative demo imagery. Fictional people and products; no client work or actual property listing implied."
+    },
+    {
+      "file": "property-960.webp",
+      "width": 960,
+      "bytes": 219050,
+      "source": "exec-ec6d510a-ba75-45c5-915e-26afe27df4ab.png",
+      "origin": "Original OpenAI image generation, 2026-10-30",
+      "usage": "Illustrative demo imagery. Fictional people and products; no client work or actual property listing implied."
+    },
+    {
+      "file": "skincare-480.webp",
+      "width": 480,
+      "bytes": 28046,
+      "source": "exec-7bac9b81-ae27-4bec-aa14-392ef8f2bfc2.png",
+      "origin": "Original OpenAI image generation, 2026-10-30",
+      "usage": "Illustrative demo imagery. Fictional people and products; no client work or actual property listing implied."
+    },
+    {
+      "file": "skincare-960.webp",
+      "width": 960,
+      "bytes": 78708,
+      "source": "exec-7bac9b81-ae27-4bec-aa14-392ef8f2bfc2.png",
+      "origin": "Original OpenAI image generation, 2026-10-30",
+      "usage": "Illustrative demo imagery. Fictional people and products; no client work or actual property listing implied."
+    },
+    {
+      "file": "fitness-480.webp",
+      "width": 480,
+      "bytes": 27626,
+      "source": "exec-b32fcba1-fd79-44f3-859f-04b6865bfe56.png",
+      "origin": "Original OpenAI image generation, 2026-10-30",
+      "usage": "Illustrative demo imagery. Fictional people and products; no client work or actual property listing implied."
+    },
+    {
+      "file": "fitness-960.webp",
+      "width": 960,
+      "bytes": 69742,
+      "source": "exec-b32fcba1-fd79-44f3-859f-04b6865bfe56.png",
+      "origin": "Original OpenAI image generation, 2026-10-30",
+      "usage": "Illustrative demo imagery. Fictional people and products; no client work or actual property listing implied."
+    },
+    {
+      "file": "photography-480.webp",
+      "width": 480,
+      "bytes": 17562,
+      "source": "exec-19ad7ba6-cf29-490b-beaf-c175aa92a43b.png",
+      "origin": "Original OpenAI image generation, 2026-10-30",
+      "usage": "Illustrative demo imagery. Fictional people and products; no client work or actual property listing implied."
+    },
+    {
+      "file": "photography-960.webp",
+      "width": 960,
+      "bytes": 52556,
+      "source": "exec-19ad7ba6-cf29-490b-beaf-c175aa92a43b.png",
+      "origin": "Original OpenAI image generation, 2026-10-30",
+      "usage": "Illustrative demo imagery. Fictional people and products; no client work or actual property listing implied."
+    }
+  ]
+}

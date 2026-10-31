@@ -1,5 +1,6 @@
 "use client";
 
+import { Modal, Button } from "../components/UI";
 import { useState, useEffect } from "react";
 import styles from "@/styles/pageNameSheet.module.css";
 
@@ -91,16 +92,7 @@ export default function PageNameSheet({
   };
 
   return (
-    <div className={styles.overlay} onClick={onClose}>
-      <div className={styles.sheet} onClick={(e) => e.stopPropagation()}>
-        <div className={styles.handle} />
-
-        <h2 className={styles.title}>Name Your Page</h2>
-        <p className={styles.subtitle}>
-          Give your page a title and add a redirect URL you want leads to be
-          directed to after filling this form (WhatsApp, Telegram or any link).
-        </p>
-
+    <Modal tone="lime" title="Name Your Page" description="Give your page a title and add a redirect URL for after the form is filled." onClose={onClose} footer={<><Button variant="secondary" onClick={onClose} disabled={saving}>Back</Button><Button onClick={()=>isPro?handleSave():onUpgrade?.()} disabled={saving}>{saving ? "Saving..." : "Save Page"}</Button></>}>
         {/* TITLE */}
         <div className={styles.field}>
           <label className={styles.label}>Page title</label>
@@ -131,14 +123,6 @@ export default function PageNameSheet({
           />
         </div>
 
-        <button
-          className={styles.button}
-          onClick={()=>isPro?handleSave():onUpgrade?.()}
-          disabled={saving}
-        >
-          {saving ? "Saving..." : "Save Page"}
-        </button>
-
         {!isPro && (
           <p className={styles.upgradeText}>
             Publishing requires an active Pro plan.
@@ -152,7 +136,6 @@ export default function PageNameSheet({
             </span>
           </p>
         )}
-      </div>
-    </div>
+    </Modal>
   );
 }

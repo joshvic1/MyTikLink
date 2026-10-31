@@ -1,0 +1,70 @@
+const test = require('node:test');
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const vm = require('node:vm');
+const root = path.resolve(__dirname, '..');
+const swc = require(path.join(root,'node_modules/next/dist/build/swc'));
+const React = require(path.join(root,'node_modules/react'));
+const {renderToStaticMarkup} = require(path.join(root,'node_modules/react-dom/server'));
+const cache = new Map();
+function load(filename) {
+ filename = path.resolve(filename); if(filename.endsWith('.json'))return JSON.parse(fs.readFileSync(filename,'utf8')); if(cache.has(filename))return cache.get(filename).exports;
+ const module = {exports:{}}; cache.set(filename,module);
+ const code = swc.transformSync(fs.readFileSync(filename,'utf8'),{filename,jsc:{parser:{syntax:'ecmascript',jsx:true},transform:{react:{runtime:'automatic'}},target:'es2020'},module:{type:'commonjs'}}).code;
+ vm.runInNewContext(code,{module,exports:module.exports,console,URL,JSON,FormData,require(specifier){
+  if(specifier.endsWith('.css'))return new Proxy({},{get:(_,key)=>String(key)});
+  if(specifier.endsWith('/api'))return {apiRequest:async()=>({success:true})};
+  if(specifier.startsWith('.')){const base=path.resolve(path.dirname(filename),specifier);return load([base,base+'.js',base+'.jsx'].find(p=>fs.existsSync(p)));}
+  return require(require.resolve(specifier,{paths:[root]}));
+ }});return module.exports;
+}
+(async()=>{
+ await swc.loadBindings();
+ const model=load(path.join(root,'V1.1/landing/themeModel.js'));
+ const catalog=load(path.join(root,'V1.1/landing/themeLibrary.js'));
+ const Renderer=load(path.join(root,'V1.1/landing/ThemeRenderer.jsx')).default;
+ const registryText=fs.readFileSync(path.join(root,'../backend/V1.1/onboarding/categoryRegistry.js'),'utf8');
+ const registry=JSON.parse(registryText.slice(registryText.indexOf('['),registryText.indexOf('];')+1));
+ test('exactly ten canonical demos, five ACTION and five LEAD; independent instances',()=>{
+  assert.equal(registry.length,735);assert.equal(catalog.phaseOneThemes.length,10);
+  assert.equal(catalog.phaseOneThemes.filter(t=>t.variant==='lead').length,5);
+  for(const theme of catalog.phaseOneThemes){for(const id of theme.categoryIds)assert.ok(registry.some(c=>c.id===id),id);const a=model.createThemeInstance(theme),b=model.createThemeInstance(theme);a.sections[0].title='Changed';assert.notEqual(b.sections[0].title,a.sections[0].title);assert.notEqual(theme.sectionRecipe[0].title,a.sections[0].title);}
+ });
+ test('all published LEAD render name, WhatsApp and consent; ACTION render no forms',()=>{
+  for(const theme of catalog.phaseOneThemes){const instance=model.createThemeInstance(theme);const html=renderToStaticMarkup(React.createElement(Renderer,{instance,page:{slug:'fixture'}}));assert.equal((html.match(/<form/g)||[]).length,theme.hasForm?1:0,theme.id);if(theme.hasForm){assert.match(html,/name="name"/);assert.match(html,/name="whatsapp"/);assert.match(html,/type="checkbox"/);}const preview=renderToStaticMarkup(React.createElement(Renderer,{instance,preview:true}));assert.equal((preview.match(/<form/g)||[]).length,theme.hasForm?1:0);if(theme.hasForm)assert.match(preview,/disabled/);}
+ });
+ test('brand button text exceeds 4.5:1 across dark, pale, saturated and midtone colours',()=>{
+  for(const color of ['#000000','#ffffff','#ffff00','#777777','#ff0000','#111144','#eeeeff','#00ff00','#c3e067','#7c3aed','#ff7f50','#001f3f','#ec4899','#15803d']){const t=model.brandTokens(color);const linear=color.slice(1).match(/../g).map(x=>parseInt(x,16)/255).map(x=>x<=.04045?x/12.92:((x+.055)/1.055)**2.4);const l=linear[0]*.2126+linear[1]*.7152+linear[2]*.0722;assert.ok((t.onAccent==='#000000'?(l+.05)/.05:1.05/(l+.05))>=4.5,color);}
+ });
+ test('category relations, keyword aliases, variants and unsafe URLs',()=>{
+  assert.equal(catalog.recommendedThemes({categoryId:'food-beverages/restaurants',registry})[0].id,'restaurant-visual-menu');
+  assert.equal(catalog.recommendedThemes({categoryId:'hair-grooming/barbershops',registry})[0].id,'beauty-cinematic-hero');
+  assert.equal(catalog.recommendedThemes({form:'lead',registry}).length,5);
+  assert.ok(catalog.recommendedThemes({query:'barbershops',registry}).some(t=>t.id==='beauty-cinematic-hero'));
+  for(const value of ['javascript:alert(1)','//evil.test','data:text/html,test'])assert.equal(model.safeUrl(value),'');
+  assert.equal(model.safeUrl('https://example.com'),'https://example.com');assert.equal(model.safeUrl('#enquiry'),'#enquiry');
+ });
+ test('profile prefill and page colour override survive JSON persistence',()=>{
+  const a=model.createThemeInstance(catalog.phaseOneThemes[0],{publicName:'Test studio',brand:{preferredColor:'#123456',description:'Public description',imageUrl:'https://example.com/logo.png'},whatsappNumber:'+2348012345678'});a.colorOverride='#fafafa';const saved=JSON.parse(JSON.stringify(a));assert.equal(saved.name,'Test studio');assert.equal(saved.sections[0].description,'Public description');assert.equal(saved.colorOverride,'#fafafa');assert.equal(saved.profileColor,'#123456');assert.equal(saved.ownerWhatsapp,'+2348012345678');
+ });
+ test('Phase 1B adds ten short themes across ten canonical categories without replacing Phase 1',()=>{
+  assert.equal(catalog.allThemes.length,32);assert.equal(new Set(catalog.allThemes.map(t=>t.id)).size,32);
+  assert.equal(catalog.shortThemes.length,10);assert.equal(catalog.shortThemes.filter(t=>t.hasForm).length,5);
+  assert.equal(new Set(catalog.shortThemes.map(t=>t.categoryIds[0])).size,10);
+  assert.equal(new Set(catalog.shortThemes.map(t=>t.family)).size,10);
+  for(const theme of catalog.shortThemes){assert.ok(registry.some(c=>c.id===theme.categoryIds[0]));assert.equal(theme.sectionRecipe.length,1);assert.equal(theme.renderer,'short-form');assert.equal(theme.publishingStatus,'demo-ready');const instance=model.createThemeInstance(theme);assert.equal(instance.renderer,'short-form');assert.equal(instance.batch,'1b');assert.deepEqual(JSON.parse(JSON.stringify(instance)).sections,instance.sections);}
+  assert.equal(catalog.recommendedThemes({batch:'1b',form:'lead'}).length,5);assert.equal(catalog.recommendedThemes({batch:'all'}).length,32);
+ });
+ test('short published and preview renderers share content and the existing five lead forms',()=>{
+  for(const theme of catalog.shortThemes){const instance=model.createThemeInstance(theme,{whatsappNumber:'+2348012345678'});for(const preview of [false,true]){const html=renderToStaticMarkup(React.createElement(Renderer,{instance,page:{slug:'fixture'},preview}));assert.equal((html.match(/<form/g)||[]).length,theme.hasForm?1:0,theme.id);assert.match(html,new RegExp(`data-short-family="${theme.family}"`));assert.ok(!html.includes('href="#'));if(theme.hasForm){assert.match(html,/name="name"/);assert.match(html,/name="whatsapp"/);assert.match(html,/name="company"/);assert.match(html,/type="checkbox"/);}else assert.match(html,/href="https:\/\/wa.me\/2348012345678"/);}}
+ });
+ test('short CTA fallback is preview-only; public buttons require a configured safe destination',()=>{
+  const {shortActionDestination}=load(path.join(root,'V1.1/landing/ShortThemeRenderer.jsx'));
+  for(const theme of catalog.shortThemes.filter(t=>!t.hasForm)){const instance=model.createThemeInstance(theme),section=instance.sections[0];assert.equal(shortActionDestination(instance,section),'');assert.match(shortActionDestination(instance,section,true),/^\/v1-1\/themes\/action-demo\?theme=/);for(const url of ['javascript:alert(1)','#missing','//evil.test'])assert.equal(shortActionDestination(instance,{...section,primaryUrl:url}),'');assert.equal(shortActionDestination(instance,{...section,primaryUrl:'https://example.com/shop'}),'https://example.com/shop');}
+ });
+ test('short photo assets exist in both optimized sizes with meaningful descriptions',()=>{
+  for(const theme of catalog.shortThemes){const hero=theme.sectionRecipe[0];if(hero.image){assert.ok(hero.imageAlt.length>12);for(const width of [480,960]){const file=path.join(root,'public',hero.image.replace('-960',`-${width}`));assert.ok(fs.existsSync(file));assert.ok(fs.statSync(file).size<250000);}}}
+ });
+
+})();

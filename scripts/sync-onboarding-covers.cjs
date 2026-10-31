@@ -1,0 +1,1 @@
+const fs=require('node:fs');const path=require('node:path');fs.copyFileSync(path.join(__dirname,'../V1.1/media/category-covers.generated.json'),path.join(__dirname,'../../backend/V1.1/onboarding/category-covers.generated.json'));console.log('Onboarding category covers synced.');

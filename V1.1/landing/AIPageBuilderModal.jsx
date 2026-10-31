@@ -1,4 +1,5 @@
 "use client";
+import popup from "../components/PopupChrome.module.css";
 import { v11ApiBase } from "../lib/apiBase";
 
 
@@ -153,8 +154,8 @@ export default function AIPageBuilderModal({ open, onClose, token, variant = "de
 
   return (
     <div className={`${styles.overlay} ${variant === "v11" ? styles.v11 : ""}`}>
-      <div className={styles.modal} role="dialog" aria-modal="true" aria-label="Build a page with AI">
-        <div className={styles.header}>
+      <div className={`${styles.modal} ${popup.surface}`} role="dialog" aria-modal="true" aria-label="Build a page with AI">
+        <div className={`${styles.header} ${popup.header}`}>
           <div className={styles.brandIcon}>
             <Sparkles size={18} />
           </div>
@@ -303,11 +304,11 @@ export default function AIPageBuilderModal({ open, onClose, token, variant = "de
 
         {error && <div className={styles.inlineError}>{error}</div>}
 
-        <div className={styles.footer}>
+        <div className={`${styles.footer} ${popup.footer}`}>
           {step === "questions" ? (
             <button
               type="button"
-              className={styles.secondaryBtn}
+              data-popup-action="secondary" className={styles.secondaryBtn}
               onClick={() => setStep("brief")}
               disabled={loading}
             >
@@ -317,7 +318,7 @@ export default function AIPageBuilderModal({ open, onClose, token, variant = "de
           ) : (
             <button
               type="button"
-              className={styles.secondaryBtn}
+              data-popup-action="secondary" className={styles.secondaryBtn}
               onClick={onClose}
               disabled={loading}
             >
@@ -327,7 +328,7 @@ export default function AIPageBuilderModal({ open, onClose, token, variant = "de
 
           <button
             type="button"
-            className={styles.primaryBtn}
+            data-popup-action="primary" className={styles.primaryBtn}
             onClick={step === "brief" ? getQuestions : generateAndSave}
             disabled={loading}
           >

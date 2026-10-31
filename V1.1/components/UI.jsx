@@ -1,10 +1,11 @@
+import popup from "./PopupChrome.module.css";
 import { Breadcrumbs } from "./Breadcrumbs";
 import styles from "../styles/v11.module.css";
 import { AlertCircle, ArrowRight, FileText, Link2, ShoppingBag, Sparkles, X } from "lucide-react";
 import { forwardRef, useEffect, useRef, useState } from "react";
 
 export function Button({ variant = "primary", className = "", children, ...props }) {
-  return <button className={`${styles.button} ${styles[variant]} ${className}`} {...props}>{children}</button>;
+  return <button data-popup-action={variant} className={`${styles.button} ${styles[variant]} ${className}`} {...props}>{children}</button>;
 }
 
 export const IconButton = forwardRef(function IconButton({ label, children, className = "", ...props }, ref) {
@@ -51,7 +52,7 @@ export function Field({ label, hint, error, children }) {
   return <label className={styles.field}><span>{label}</span>{children}{hint && !error && <small>{hint}</small>}{error && <small className={styles.fieldError}>{error}</small>}</label>;
 }
 
-export function Modal({ title, description, headerIcon, onClose, children, footer, wide = false, className = "" }) {
+export function Modal({ tone = "purple", title, description, headerIcon, onClose, children, footer, wide = false, className = "" }) {
   const dialogRef = useRef(null);
   const closeRef = useRef(onClose);
   closeRef.current = onClose;
@@ -66,5 +67,5 @@ export function Modal({ title, description, headerIcon, onClose, children, foote
     document.addEventListener("keydown", keydown);
     return () => { document.removeEventListener("keydown", keydown); document.body.style.overflow = originalOverflow; previous?.focus?.(); };
   }, []);
-  return <div className={styles.modalBackdrop} onMouseDown={(event) => event.target === event.currentTarget && onClose()}><section ref={dialogRef} className={`${styles.modal} ${wide ? styles.modalWide : ""} ${className}`} role="dialog" aria-modal="true" aria-label={title}><header><div className={headerIcon ? styles.modalHeadingWithIcon : ""}>{headerIcon && <span className={styles.modalHeaderIcon}>{headerIcon}</span>}<div><h2>{title}</h2>{description && <p>{description}</p>}</div></div><IconButton label="Close" onClick={onClose}><X/></IconButton></header><div className={styles.modalBody}>{children}</div>{footer && <footer>{footer}</footer>}</section></div>;
+  return <div className={styles.modalBackdrop} onMouseDown={(event) => event.target === event.currentTarget && onClose()}><section ref={dialogRef} data-popup-tone={tone} className={`${styles.modal} ${popup.surface} ${wide ? styles.modalWide : ""} ${className}`} role="dialog" aria-modal="true" aria-label={title}><header className={popup.header}><div className={headerIcon ? styles.modalHeadingWithIcon : ""}>{headerIcon && <span className={styles.modalHeaderIcon}>{headerIcon}</span>}<div><h2>{title}</h2>{description && <p>{description}</p>}</div></div><IconButton label="Close" onClick={onClose}><X/></IconButton></header><div className={styles.modalBody}>{children}</div>{footer && <footer className={popup.footer}>{footer}</footer>}</section></div>;
 }

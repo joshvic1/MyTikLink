@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "categoryId": "beauty-cosmetics/cosmetics",
+  "label": "Cosmetics",
+  "parentId": "beauty-cosmetics",
+  "assetKey": "beauty-cosmetics--cosmetics",
+  "revision": "b82ae2855b6fa45f",
+  "status": "ready",
+  "alt": "Illustrative cosmetics cover",
+  "width": 1600,
+  "height": 800,
+  "focalPoint": {
+    "x": 0.5,
+    "y": 0.5
+  },
+  "source": {
+    "sha256": "1c074d2fab176a8a410501978baa9380fcf39c6f94f16ec083de480cde42805e",
+    "width": 1774,
+    "height": 887,
+    "originalFilename": "exec-3b7bbd4c-10fc-44fe-8aa0-094b5a294201.png",
+    "provider": "OpenAI built-in image generation",
+    "prompt": "Create one original premium photographic cover for the exact business category \"Cosmetics\" within \"Beauty & Cosmetics\". This is a default category image for MyTikLink, not a page mockup. Choose a concrete, immediately recognizable subject and environment specific to this category; distinguish it from neighbouring categories. Realistic editorial photography, believable materials, natural professional lighting, polished but authentic. Relevant Nigerian or broadly African context where appropriate, without stereotypes. For abstract digital services, depict a carefully composed credible workspace or physical visual metaphor with blank/unreadable screens. Compose a SINGLE landscape image at 1600 x 800 pixels, 2:1 ratio, edge-to-edge, with the important subject safely inside the central 80% and generous horizontal crop room. No collage of unrelated categories. Absolutely NO text, letters, numbers, captions, logos, watermarks, signage, brand names, UI, borders or typography anywhere. Any packaging, devices, documents or clothing must be unbranded and free of writing. Show safe, respectful, non-graphic professional scenes; no claims, endorsements, real public figures or identifiable private people. Output only the image.",
+    "generatedAt": "2026-10-31T04:47:21.049Z"
+  },
+  "variants": [
+    {
+      "format": "avif",
+      "width": 400,
+      "height": 200,
+      "bytes": 12818,
+      "quality": 55,
+      "url": "/category-covers/beauty-cosmetics--cosmetics/b82ae2855b6fa45f/400.avif"
+    },
+    {
+      "format": "avif",
+      "width": 800,
+      "height": 400,
+      "bytes": 25939,
+      "quality": 55,
+      "url": "/category-covers/beauty-cosmetics--cosmetics/b82ae2855b6fa45f/800.avif"
+    },
+    {
+      "format": "avif",
+      "width": 1200,
+      "height": 600,
+      "bytes": 38847,
+      "quality": 55,
+      "url": "/category-covers/beauty-cosmetics--cosmetics/b82ae2855b6fa45f/1200.avif"
+    },
+    {
+      "format": "avif",
+      "width": 1600,
+      "height": 800,
+      "bytes": 50223,
+      "quality": 55,
+      "url": "/category-covers/beauty-cosmetics--cosmetics/b82ae2855b6fa45f/1600.avif"
+    },
+    {
+      "format": "webp",
+      "width": 400,
+      "height": 200,
+      "bytes": 16322,
+      "quality": 82,
+      "url": "/category-covers/beauty-cosmetics--cosmetics/b82ae2855b6fa45f/400.webp"
+    },
+    {
+      "format": "webp",
+      "width": 800,
+      "height": 400,
+      "bytes": 37964,
+      "quality": 82,
+      "url": "/category-covers/beauty-cosmetics--cosmetics/b82ae2855b6fa45f/800.webp"
+    },
+    {
+      "format": "webp",
+      "width": 1200,
+      "height": 600,
+      "bytes": 61384,
+      "quality": 82,
+      "url": "/category-covers/beauty-cosmetics--cosmetics/b82ae2855b6fa45f/1200.webp"
+    },
+    {
+      "format": "webp",
+      "width": 1600,
+      "height": 800,
+      "bytes": 85810,
+      "quality": 82,
+      "url": "/category-covers/beauty-cosmetics--cosmetics/b82ae2855b6fa45f/1600.webp"
+    }
+  ],
+  "warnings": [],
+  "reviewedAt": "2026-10-31T04:47:21.053Z",
+  "reviewChecklist": [
+    "category match",
+    "no text or logos",
+    "composition",
+    "compression quality"
+  ]
+}

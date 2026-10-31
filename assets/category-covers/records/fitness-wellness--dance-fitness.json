@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "categoryId": "fitness-wellness/dance-fitness",
+  "label": "Dance fitness",
+  "parentId": "fitness-wellness",
+  "assetKey": "fitness-wellness--dance-fitness",
+  "revision": "b6cbe03df79f7118",
+  "status": "ready",
+  "alt": "Illustrative dance fitness cover",
+  "width": 1600,
+  "height": 800,
+  "focalPoint": {
+    "x": 0.5,
+    "y": 0.5
+  },
+  "source": {
+    "sha256": "eb99e386b7c62c91c648f250183fa27898de6a0fe9fe0b72ead28bafaea8c36d",
+    "width": 1774,
+    "height": 887,
+    "originalFilename": "exec-356878c8-ca1d-4a21-b72b-629749e23c8e.png",
+    "provider": "OpenAI built-in image generation",
+    "prompt": "Create one original premium photographic cover for the exact business category \"Dance fitness\" within \"Fitness & Wellness\". This is a default category image for MyTikLink, not a page mockup. Choose a concrete, immediately recognizable subject and environment specific to this category; distinguish it from neighbouring categories. Realistic editorial photography, believable materials, natural professional lighting, polished but authentic. Relevant Nigerian or broadly African context where appropriate, without stereotypes. For abstract digital services, depict a carefully composed credible workspace or physical visual metaphor with blank/unreadable screens. Compose a SINGLE landscape image at 1600 x 800 pixels, 2:1 ratio, edge-to-edge, with the important subject safely inside the central 80% and generous horizontal crop room. No collage of unrelated categories. Absolutely NO text, letters, numbers, captions, logos, watermarks, signage, brand names, UI, borders or typography anywhere. Any packaging, devices, documents or clothing must be unbranded and free of writing. Show safe, respectful, non-graphic professional scenes; no claims, endorsements, real public figures or identifiable private people. Output only the image.",
+    "generatedAt": "2026-10-31T05:05:54.517Z"
+  },
+  "variants": [
+    {
+      "format": "avif",
+      "width": 400,
+      "height": 200,
+      "bytes": 17834,
+      "quality": 55,
+      "url": "/category-covers/fitness-wellness--dance-fitness/b6cbe03df79f7118/400.avif"
+    },
+    {
+      "format": "avif",
+      "width": 800,
+      "height": 400,
+      "bytes": 40182,
+      "quality": 55,
+      "url": "/category-covers/fitness-wellness--dance-fitness/b6cbe03df79f7118/800.avif"
+    },
+    {
+      "format": "avif",
+      "width": 1200,
+      "height": 600,
+      "bytes": 62041,
+      "quality": 55,
+      "url": "/category-covers/fitness-wellness--dance-fitness/b6cbe03df79f7118/1200.avif"
+    },
+    {
+      "format": "avif",
+      "width": 1600,
+      "height": 800,
+      "bytes": 81924,
+      "quality": 55,
+      "url": "/category-covers/fitness-wellness--dance-fitness/b6cbe03df79f7118/1600.avif"
+    },
+    {
+      "format": "webp",
+      "width": 400,
+      "height": 200,
+      "bytes": 20616,
+      "quality": 82,
+      "url": "/category-covers/fitness-wellness--dance-fitness/b6cbe03df79f7118/400.webp"
+    },
+    {
+      "format": "webp",
+      "width": 800,
+      "height": 400,
+      "bytes": 52560,
+      "quality": 82,
+      "url": "/category-covers/fitness-wellness--dance-fitness/b6cbe03df79f7118/800.webp"
+    },
+    {
+      "format": "webp",
+      "width": 1200,
+      "height": 600,
+      "bytes": 89692,
+      "quality": 82,
+      "url": "/category-covers/fitness-wellness--dance-fitness/b6cbe03df79f7118/1200.webp"
+    },
+    {
+      "format": "webp",
+      "width": 1600,
+      "height": 800,
+      "bytes": 124058,
+      "quality": 82,
+      "url": "/category-covers/fitness-wellness--dance-fitness/b6cbe03df79f7118/1600.webp"
+    }
+  ],
+  "warnings": [],
+  "reviewedAt": "2026-10-31T05:16:55.091Z",
+  "reviewChecklist": [
+    "category match",
+    "no text or logos",
+    "composition",
+    "compression quality"
+  ]
+}

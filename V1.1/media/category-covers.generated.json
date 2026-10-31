@@ -1,0 +1,1369 @@
+{
+  "schemaVersion": 1,
+  "expectedCount": 735,
+  "readyCount": 136,
+  "aspectRatio": 2,
+  "baseUrl": "https://pub-e0ff826b0e9843069a4df3548bc6fa39.r2.dev",
+  "entries": {
+    "agriculture-farming/agricultural-inputs": {
+      "assetKey": "agriculture-farming--agricultural-inputs",
+      "revision": "15ae1132ad3d683c",
+      "parentId": "agriculture-farming",
+      "alt": "Illustrative agricultural inputs cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "agriculture-farming/agro-processing": {
+      "assetKey": "agriculture-farming--agro-processing",
+      "revision": "9ca626c63946d5c6",
+      "parentId": "agriculture-farming",
+      "alt": "Illustrative agro processing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "agriculture-farming/animal-feed": {
+      "assetKey": "agriculture-farming--animal-feed",
+      "revision": "c335e4ce1fcb4644",
+      "parentId": "agriculture-farming",
+      "alt": "Illustrative animal feed cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "agriculture-farming/beekeeping": {
+      "assetKey": "agriculture-farming--beekeeping",
+      "revision": "79fdcde5b3957c9e",
+      "parentId": "agriculture-farming",
+      "alt": "Illustrative beekeeping cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "agriculture-farming/crop-farming": {
+      "assetKey": "agriculture-farming--crop-farming",
+      "revision": "2611cb4933494c51",
+      "parentId": "agriculture-farming",
+      "alt": "Illustrative crop farming cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "agriculture-farming/farm-machinery": {
+      "assetKey": "agriculture-farming--farm-machinery",
+      "revision": "7b458b3dfd023498",
+      "parentId": "agriculture-farming",
+      "alt": "Illustrative farm machinery cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "agriculture-farming/fish-farming": {
+      "assetKey": "agriculture-farming--fish-farming",
+      "revision": "46ac9b803425b822",
+      "parentId": "agriculture-farming",
+      "alt": "Illustrative fish farming cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "agriculture-farming/fruit-farming": {
+      "assetKey": "agriculture-farming--fruit-farming",
+      "revision": "b2b5d2937b8a15a0",
+      "parentId": "agriculture-farming",
+      "alt": "Illustrative fruit farming cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "agriculture-farming/greenhouse-farming": {
+      "assetKey": "agriculture-farming--greenhouse-farming",
+      "revision": "8d4f33844559f2b5",
+      "parentId": "agriculture-farming",
+      "alt": "Illustrative greenhouse farming cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "agriculture-farming/livestock": {
+      "assetKey": "agriculture-farming--livestock",
+      "revision": "6d19b013d0a5c91f",
+      "parentId": "agriculture-farming",
+      "alt": "Illustrative livestock cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "agriculture-farming/organic-farming": {
+      "assetKey": "agriculture-farming--organic-farming",
+      "revision": "f18cfea956ed6730",
+      "parentId": "agriculture-farming",
+      "alt": "Illustrative organic farming cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "agriculture-farming/plant-nurseries": {
+      "assetKey": "agriculture-farming--plant-nurseries",
+      "revision": "4c644a77b93c90cf",
+      "parentId": "agriculture-farming",
+      "alt": "Illustrative plant nurseries cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "agriculture-farming/poultry-farming": {
+      "assetKey": "agriculture-farming--poultry-farming",
+      "revision": "bfba1b5e6d0df069",
+      "parentId": "agriculture-farming",
+      "alt": "Illustrative poultry farming cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "agriculture-farming/vegetable-farming": {
+      "assetKey": "agriculture-farming--vegetable-farming",
+      "revision": "e8b7e5d5a1f14e15",
+      "parentId": "agriculture-farming",
+      "alt": "Illustrative vegetable farming cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "agriculture-farming": {
+      "assetKey": "agriculture-farming",
+      "revision": "5f0aefb2ba6457a3",
+      "parentId": null,
+      "alt": "Illustrative agriculture & farming cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "beauty-cosmetics/beauty-salons": {
+      "assetKey": "beauty-cosmetics--beauty-salons",
+      "revision": "c49a2343ef27ba14",
+      "parentId": "beauty-cosmetics",
+      "alt": "Illustrative beauty salons cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "beauty-cosmetics/beauty-training": {
+      "assetKey": "beauty-cosmetics--beauty-training",
+      "revision": "b4eb5e989a9f9cbd",
+      "parentId": "beauty-cosmetics",
+      "alt": "Illustrative beauty training cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "beauty-cosmetics/body-care": {
+      "assetKey": "beauty-cosmetics--body-care",
+      "revision": "f1b761d7bfd273be",
+      "parentId": "beauty-cosmetics",
+      "alt": "Illustrative body care cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "beauty-cosmetics/bridal-makeup": {
+      "assetKey": "beauty-cosmetics--bridal-makeup",
+      "revision": "10260de7385aede4",
+      "parentId": "beauty-cosmetics",
+      "alt": "Illustrative bridal makeup cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "beauty-cosmetics/brow-services": {
+      "assetKey": "beauty-cosmetics--brow-services",
+      "revision": "cd2b08ce32029892",
+      "parentId": "beauty-cosmetics",
+      "alt": "Illustrative brow services cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "beauty-cosmetics/cosmetics": {
+      "assetKey": "beauty-cosmetics--cosmetics",
+      "revision": "b82ae2855b6fa45f",
+      "parentId": "beauty-cosmetics",
+      "alt": "Illustrative cosmetics cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "beauty-cosmetics/facials": {
+      "assetKey": "beauty-cosmetics--facials",
+      "revision": "f75fa78726b06098",
+      "parentId": "beauty-cosmetics",
+      "alt": "Illustrative facials cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "beauty-cosmetics/lash-extensions": {
+      "assetKey": "beauty-cosmetics--lash-extensions",
+      "revision": "2590385f4cdca68c",
+      "parentId": "beauty-cosmetics",
+      "alt": "Illustrative lash extensions cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "beauty-cosmetics/makeup-artistry": {
+      "assetKey": "beauty-cosmetics--makeup-artistry",
+      "revision": "bd2750df0b1211f9",
+      "parentId": "beauty-cosmetics",
+      "alt": "Illustrative makeup artistry cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "beauty-cosmetics/nails": {
+      "assetKey": "beauty-cosmetics--nails",
+      "revision": "0041584cea7cb507",
+      "parentId": "beauty-cosmetics",
+      "alt": "Illustrative nails cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "beauty-cosmetics/perfumes": {
+      "assetKey": "beauty-cosmetics--perfumes",
+      "revision": "5c15695ed0bcd250",
+      "parentId": "beauty-cosmetics",
+      "alt": "Illustrative perfumes cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "beauty-cosmetics/skincare": {
+      "assetKey": "beauty-cosmetics--skincare",
+      "revision": "06ff2c7db3ca2b10",
+      "parentId": "beauty-cosmetics",
+      "alt": "Illustrative skincare cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "beauty-cosmetics/soap-products": {
+      "assetKey": "beauty-cosmetics--soap-products",
+      "revision": "38c13b4f01f8db2e",
+      "parentId": "beauty-cosmetics",
+      "alt": "Illustrative soap products cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "beauty-cosmetics/spas": {
+      "assetKey": "beauty-cosmetics--spas",
+      "revision": "3e18e9206f5ffe72",
+      "parentId": "beauty-cosmetics",
+      "alt": "Illustrative spas cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "beauty-cosmetics": {
+      "assetKey": "beauty-cosmetics",
+      "revision": "45588b1d33d3fe11",
+      "parentId": null,
+      "alt": "Illustrative beauty & cosmetics cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "education-training/business-training": {
+      "assetKey": "education-training--business-training",
+      "revision": "5fddaae32a8ddca8",
+      "parentId": "education-training",
+      "alt": "Illustrative business training cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "education-training/certifications": {
+      "assetKey": "education-training--certifications",
+      "revision": "6a46ed4505c27fd8",
+      "parentId": "education-training",
+      "alt": "Illustrative certifications cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "education-training/coding-bootcamps": {
+      "assetKey": "education-training--coding-bootcamps",
+      "revision": "654bc9490d107e42",
+      "parentId": "education-training",
+      "alt": "Illustrative coding bootcamps cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "education-training/corporate-training": {
+      "assetKey": "education-training--corporate-training",
+      "revision": "fd44a9635f375874",
+      "parentId": "education-training",
+      "alt": "Illustrative corporate training cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "education-training/exam-preparation": {
+      "assetKey": "education-training--exam-preparation",
+      "revision": "63630a692f533d1b",
+      "parentId": "education-training",
+      "alt": "Illustrative exam preparation cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "education-training/music-schools": {
+      "assetKey": "education-training--music-schools",
+      "revision": "a5e3678ebc2614f8",
+      "parentId": "education-training",
+      "alt": "Illustrative music schools cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "education-training/online-courses": {
+      "assetKey": "education-training--online-courses",
+      "revision": "fa1d5a2d58b47e11",
+      "parentId": "education-training",
+      "alt": "Illustrative online courses cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "education-training/preschools": {
+      "assetKey": "education-training--preschools",
+      "revision": "25f039d64fa044b8",
+      "parentId": "education-training",
+      "alt": "Illustrative preschools cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "education-training/primary-schools": {
+      "assetKey": "education-training--primary-schools",
+      "revision": "14ee48ec99316b82",
+      "parentId": "education-training",
+      "alt": "Illustrative primary schools cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "education-training/secondary-schools": {
+      "assetKey": "education-training--secondary-schools",
+      "revision": "535f8d278ef30433",
+      "parentId": "education-training",
+      "alt": "Illustrative secondary schools cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "education-training/tutoring": {
+      "assetKey": "education-training--tutoring",
+      "revision": "212dfad5cd8b1ebc",
+      "parentId": "education-training",
+      "alt": "Illustrative tutoring cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "education-training/universities": {
+      "assetKey": "education-training--universities",
+      "revision": "4c5697bbeb5c4e04",
+      "parentId": "education-training",
+      "alt": "Illustrative universities cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "education-training": {
+      "assetKey": "education-training",
+      "revision": "50d5b98fc03f7f87",
+      "parentId": null,
+      "alt": "Illustrative education & training cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "fashion-textiles/african-print-fabrics": {
+      "assetKey": "fashion-textiles--african-print-fabrics",
+      "revision": "e164ea16314ca5ac",
+      "parentId": "fashion-textiles",
+      "alt": "Illustrative african print fabrics cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "fashion-textiles/bags": {
+      "assetKey": "fashion-textiles--bags",
+      "revision": "aa1d126b83612b93",
+      "parentId": "fashion-textiles",
+      "alt": "Illustrative bags cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "fashion-textiles/bridal-fashion": {
+      "assetKey": "fashion-textiles--bridal-fashion",
+      "revision": "8f752fdf81abc2c3",
+      "parentId": "fashion-textiles",
+      "alt": "Illustrative bridal fashion cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "fashion-textiles/fabric-retail": {
+      "assetKey": "fashion-textiles--fabric-retail",
+      "revision": "0d57b2e2216117ef",
+      "parentId": "fashion-textiles",
+      "alt": "Illustrative fabric retail cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "fashion-textiles/fashion-design": {
+      "assetKey": "fashion-textiles--fashion-design",
+      "revision": "5083683c877d9ec6",
+      "parentId": "fashion-textiles",
+      "alt": "Illustrative fashion design cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "fashion-textiles/fashion-styling": {
+      "assetKey": "fashion-textiles--fashion-styling",
+      "revision": "fc5e6453ee3773a8",
+      "parentId": "fashion-textiles",
+      "alt": "Illustrative fashion styling cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "fashion-textiles/footwear": {
+      "assetKey": "fashion-textiles--footwear",
+      "revision": "202b143ec3dd7cc4",
+      "parentId": "fashion-textiles",
+      "alt": "Illustrative footwear cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "fashion-textiles/kids-clothing": {
+      "assetKey": "fashion-textiles--kids-clothing",
+      "revision": "c06f582c09b93e54",
+      "parentId": "fashion-textiles",
+      "alt": "Illustrative kids clothing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "fashion-textiles/mens-clothing": {
+      "assetKey": "fashion-textiles--mens-clothing",
+      "revision": "d740d4fbca469143",
+      "parentId": "fashion-textiles",
+      "alt": "Illustrative mens clothing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "fashion-textiles/modest-fashion": {
+      "assetKey": "fashion-textiles--modest-fashion",
+      "revision": "a9145c57e78fa865",
+      "parentId": "fashion-textiles",
+      "alt": "Illustrative modest fashion cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "fashion-textiles/ready-to-wear": {
+      "assetKey": "fashion-textiles--ready-to-wear",
+      "revision": "807ebc0ea523450c",
+      "parentId": "fashion-textiles",
+      "alt": "Illustrative ready to wear cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "fashion-textiles/sportswear": {
+      "assetKey": "fashion-textiles--sportswear",
+      "revision": "235c5c4ccd28b815",
+      "parentId": "fashion-textiles",
+      "alt": "Illustrative sportswear cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "fashion-textiles/streetwear": {
+      "assetKey": "fashion-textiles--streetwear",
+      "revision": "4e621f680797dd83",
+      "parentId": "fashion-textiles",
+      "alt": "Illustrative streetwear cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "fashion-textiles/tailoring": {
+      "assetKey": "fashion-textiles--tailoring",
+      "revision": "bddf9cdf01692c32",
+      "parentId": "fashion-textiles",
+      "alt": "Illustrative tailoring cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "fashion-textiles/thrift-clothing": {
+      "assetKey": "fashion-textiles--thrift-clothing",
+      "revision": "44d675e9d3fffed5",
+      "parentId": "fashion-textiles",
+      "alt": "Illustrative thrift clothing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "fashion-textiles/traditional-attire": {
+      "assetKey": "fashion-textiles--traditional-attire",
+      "revision": "1fb1d7fd9ca98e9f",
+      "parentId": "fashion-textiles",
+      "alt": "Illustrative traditional attire cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "fashion-textiles/uniforms": {
+      "assetKey": "fashion-textiles--uniforms",
+      "revision": "e2205c46a993134e",
+      "parentId": "fashion-textiles",
+      "alt": "Illustrative uniforms cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "fashion-textiles/womens-clothing": {
+      "assetKey": "fashion-textiles--womens-clothing",
+      "revision": "ad1b54a86fa789d1",
+      "parentId": "fashion-textiles",
+      "alt": "Illustrative womens clothing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "fashion-textiles": {
+      "assetKey": "fashion-textiles",
+      "revision": "e05e493b69abb5f3",
+      "parentId": null,
+      "alt": "Illustrative fashion & textiles cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "fitness-wellness/boxing": {
+      "assetKey": "fitness-wellness--boxing",
+      "revision": "039b5cf98f1701f2",
+      "parentId": "fitness-wellness",
+      "alt": "Illustrative boxing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "fitness-wellness/dance-fitness": {
+      "assetKey": "fitness-wellness--dance-fitness",
+      "revision": "b6cbe03df79f7118",
+      "parentId": "fitness-wellness",
+      "alt": "Illustrative dance fitness cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "fitness-wellness/fitness-coaching": {
+      "assetKey": "fitness-wellness--fitness-coaching",
+      "revision": "17108369027e7cc2",
+      "parentId": "fitness-wellness",
+      "alt": "Illustrative fitness coaching cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "fitness-wellness/gyms": {
+      "assetKey": "fitness-wellness--gyms",
+      "revision": "7ea862cda76b9758",
+      "parentId": "fitness-wellness",
+      "alt": "Illustrative gyms cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "fitness-wellness/martial-arts": {
+      "assetKey": "fitness-wellness--martial-arts",
+      "revision": "adfba80697c8a7ed",
+      "parentId": "fitness-wellness",
+      "alt": "Illustrative martial arts cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "fitness-wellness/meditation": {
+      "assetKey": "fitness-wellness--meditation",
+      "revision": "60e91e279bed96d1",
+      "parentId": "fitness-wellness",
+      "alt": "Illustrative meditation cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "fitness-wellness/personal-training": {
+      "assetKey": "fitness-wellness--personal-training",
+      "revision": "79d442f367eb08b7",
+      "parentId": "fitness-wellness",
+      "alt": "Illustrative personal training cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "fitness-wellness/pilates": {
+      "assetKey": "fitness-wellness--pilates",
+      "revision": "74b98bec4dc0fd29",
+      "parentId": "fitness-wellness",
+      "alt": "Illustrative pilates cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "fitness-wellness/sports-clubs": {
+      "assetKey": "fitness-wellness--sports-clubs",
+      "revision": "47a5f36eb18fe2eb",
+      "parentId": "fitness-wellness",
+      "alt": "Illustrative sports clubs cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "fitness-wellness/swimming": {
+      "assetKey": "fitness-wellness--swimming",
+      "revision": "8b3bf4d5c16e9120",
+      "parentId": "fitness-wellness",
+      "alt": "Illustrative swimming cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "fitness-wellness/wellness-coaching": {
+      "assetKey": "fitness-wellness--wellness-coaching",
+      "revision": "c327b9077ee2e66a",
+      "parentId": "fitness-wellness",
+      "alt": "Illustrative wellness coaching cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "fitness-wellness/yoga": {
+      "assetKey": "fitness-wellness--yoga",
+      "revision": "4400f0c7eecc0f7f",
+      "parentId": "fitness-wellness",
+      "alt": "Illustrative yoga cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "fitness-wellness": {
+      "assetKey": "fitness-wellness",
+      "revision": "6ba748005e657bce",
+      "parentId": null,
+      "alt": "Illustrative fitness & wellness cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "food-beverages/bakeries": {
+      "assetKey": "food-beverages--bakeries",
+      "revision": "97d65ce8e2bebe5e",
+      "parentId": "food-beverages",
+      "alt": "Illustrative bakeries cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "food-beverages/cakes": {
+      "assetKey": "food-beverages--cakes",
+      "revision": "53f6e206f6e52199",
+      "parentId": "food-beverages",
+      "alt": "Illustrative cakes cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "food-beverages/catering": {
+      "assetKey": "food-beverages--catering",
+      "revision": "c9893d72f5fa4891",
+      "parentId": "food-beverages",
+      "alt": "Illustrative catering cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "food-beverages/cloud-kitchens": {
+      "assetKey": "food-beverages--cloud-kitchens",
+      "revision": "78253f912bbcd459",
+      "parentId": "food-beverages",
+      "alt": "Illustrative cloud kitchens cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "food-beverages/coffee-shops": {
+      "assetKey": "food-beverages--coffee-shops",
+      "revision": "d3e36b1b495f468f",
+      "parentId": "food-beverages",
+      "alt": "Illustrative coffee shops cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "food-beverages/fast-food": {
+      "assetKey": "food-beverages--fast-food",
+      "revision": "f018b65ec1f7c8d3",
+      "parentId": "food-beverages",
+      "alt": "Illustrative fast food cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "food-beverages/food-delivery": {
+      "assetKey": "food-beverages--food-delivery",
+      "revision": "369b50526989496e",
+      "parentId": "food-beverages",
+      "alt": "Illustrative food delivery cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "food-beverages/frozen-foods": {
+      "assetKey": "food-beverages--frozen-foods",
+      "revision": "a0e71ae3dc78b730",
+      "parentId": "food-beverages",
+      "alt": "Illustrative frozen foods cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "food-beverages/groceries": {
+      "assetKey": "food-beverages--groceries",
+      "revision": "bd1ea30bece9adbf",
+      "parentId": "food-beverages",
+      "alt": "Illustrative groceries cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "food-beverages/ice-cream": {
+      "assetKey": "food-beverages--ice-cream",
+      "revision": "e98f8e906783ddd8",
+      "parentId": "food-beverages",
+      "alt": "Illustrative ice cream cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "food-beverages/juices": {
+      "assetKey": "food-beverages--juices",
+      "revision": "29dbe0fd60eb9765",
+      "parentId": "food-beverages",
+      "alt": "Illustrative juices cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "food-beverages/meal-prep": {
+      "assetKey": "food-beverages--meal-prep",
+      "revision": "3c11159950d628c8",
+      "parentId": "food-beverages",
+      "alt": "Illustrative meal prep cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "food-beverages/packaged-food": {
+      "assetKey": "food-beverages--packaged-food",
+      "revision": "e5fab10e94c3b3e7",
+      "parentId": "food-beverages",
+      "alt": "Illustrative packaged food cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "food-beverages/private-chefs": {
+      "assetKey": "food-beverages--private-chefs",
+      "revision": "2d488f8cb2dea312",
+      "parentId": "food-beverages",
+      "alt": "Illustrative private chefs cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "food-beverages/restaurants": {
+      "assetKey": "food-beverages--restaurants",
+      "revision": "b93e339d2600dc1f",
+      "parentId": "food-beverages",
+      "alt": "Illustrative restaurants cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "food-beverages/small-chops": {
+      "assetKey": "food-beverages--small-chops",
+      "revision": "69bca696a563771d",
+      "parentId": "food-beverages",
+      "alt": "Illustrative small chops cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "food-beverages/smoothies": {
+      "assetKey": "food-beverages--smoothies",
+      "revision": "68f978f574437bdd",
+      "parentId": "food-beverages",
+      "alt": "Illustrative smoothies cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "food-beverages/snacks": {
+      "assetKey": "food-beverages--snacks",
+      "revision": "cd4617e73fbda68c",
+      "parentId": "food-beverages",
+      "alt": "Illustrative snacks cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "food-beverages/spices": {
+      "assetKey": "food-beverages--spices",
+      "revision": "a8928f89966362d1",
+      "parentId": "food-beverages",
+      "alt": "Illustrative spices cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "food-beverages/street-food": {
+      "assetKey": "food-beverages--street-food",
+      "revision": "7fe01d1dac2eadbd",
+      "parentId": "food-beverages",
+      "alt": "Illustrative street food cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "food-beverages": {
+      "assetKey": "food-beverages",
+      "revision": "d6b5efa7a0557d9a",
+      "parentId": null,
+      "alt": "Illustrative food & beverages cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "hair-grooming/barbershops": {
+      "assetKey": "hair-grooming--barbershops",
+      "revision": "1a5f1788759b94dd",
+      "parentId": "hair-grooming",
+      "alt": "Illustrative barbershops cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "hair-grooming/beard-grooming": {
+      "assetKey": "hair-grooming--beard-grooming",
+      "revision": "91129189ad15deac",
+      "parentId": "hair-grooming",
+      "alt": "Illustrative beard grooming cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "hair-grooming/hair-extensions": {
+      "assetKey": "hair-grooming--hair-extensions",
+      "revision": "f4e7c6454db3a4ec",
+      "parentId": "hair-grooming",
+      "alt": "Illustrative hair extensions cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "hair-grooming/hair-products": {
+      "assetKey": "hair-grooming--hair-products",
+      "revision": "330b6925b89ac9f5",
+      "parentId": "hair-grooming",
+      "alt": "Illustrative hair products cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "hair-grooming/hair-salons": {
+      "assetKey": "hair-grooming--hair-salons",
+      "revision": "5b70c2801c356f43",
+      "parentId": "hair-grooming",
+      "alt": "Illustrative hair salons cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "hair-grooming/hair-treatments": {
+      "assetKey": "hair-grooming--hair-treatments",
+      "revision": "969136f0a9f03811",
+      "parentId": "hair-grooming",
+      "alt": "Illustrative hair treatments cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "hair-grooming/locs": {
+      "assetKey": "hair-grooming--locs",
+      "revision": "389f9c6eb2604859",
+      "parentId": "hair-grooming",
+      "alt": "Illustrative locs cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "hair-grooming/natural-hair": {
+      "assetKey": "hair-grooming--natural-hair",
+      "revision": "28ef017b602f599c",
+      "parentId": "hair-grooming",
+      "alt": "Illustrative natural hair cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "hair-grooming/wig-installation": {
+      "assetKey": "hair-grooming--wig-installation",
+      "revision": "af3f9fde02a088d5",
+      "parentId": "hair-grooming",
+      "alt": "Illustrative wig installation cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "hair-grooming/wigs": {
+      "assetKey": "hair-grooming--wigs",
+      "revision": "0c65bb2c08d4de83",
+      "parentId": "hair-grooming",
+      "alt": "Illustrative wigs cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "hair-grooming": {
+      "assetKey": "hair-grooming",
+      "revision": "0a7a49c9ba7fdb53",
+      "parentId": null,
+      "alt": "Illustrative hair & grooming cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "health-medical/clinics": {
+      "assetKey": "health-medical--clinics",
+      "revision": "89be35f11d2ecc9b",
+      "parentId": "health-medical",
+      "alt": "Illustrative clinics cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "health-medical/dentists": {
+      "assetKey": "health-medical--dentists",
+      "revision": "a1c86cdbaa3e42e3",
+      "parentId": "health-medical",
+      "alt": "Illustrative dentists cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "health-medical/diagnostic-imaging": {
+      "assetKey": "health-medical--diagnostic-imaging",
+      "revision": "71abf43080949e3f",
+      "parentId": "health-medical",
+      "alt": "Illustrative diagnostic imaging cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "health-medical/doctors": {
+      "assetKey": "health-medical--doctors",
+      "revision": "1b12574ffd8d2947",
+      "parentId": "health-medical",
+      "alt": "Illustrative doctors cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "health-medical/elder-care": {
+      "assetKey": "health-medical--elder-care",
+      "revision": "d9109311571bbc6b",
+      "parentId": "health-medical",
+      "alt": "Illustrative elder care cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "health-medical/health-technology": {
+      "assetKey": "health-medical--health-technology",
+      "revision": "dc1d471ff9674f62",
+      "parentId": "health-medical",
+      "alt": "Illustrative health technology cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "health-medical/home-nursing": {
+      "assetKey": "health-medical--home-nursing",
+      "revision": "97e00be35348ca33",
+      "parentId": "health-medical",
+      "alt": "Illustrative home nursing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "health-medical/hospitals": {
+      "assetKey": "health-medical--hospitals",
+      "revision": "3febcd8d752d3e7e",
+      "parentId": "health-medical",
+      "alt": "Illustrative hospitals cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "health-medical/maternal-healthcare": {
+      "assetKey": "health-medical--maternal-healthcare",
+      "revision": "455c0017aca40600",
+      "parentId": "health-medical",
+      "alt": "Illustrative maternal healthcare cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "health-medical/medical-laboratories": {
+      "assetKey": "health-medical--medical-laboratories",
+      "revision": "ec392273a74feebd",
+      "parentId": "health-medical",
+      "alt": "Illustrative medical laboratories cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "health-medical/mental-health": {
+      "assetKey": "health-medical--mental-health",
+      "revision": "fae5700563259cfb",
+      "parentId": "health-medical",
+      "alt": "Illustrative mental health cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "health-medical/nutrition": {
+      "assetKey": "health-medical--nutrition",
+      "revision": "cfc302404f4890dc",
+      "parentId": "health-medical",
+      "alt": "Illustrative nutrition cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "health-medical/pharmacies": {
+      "assetKey": "health-medical--pharmacies",
+      "revision": "ddce745d1cf17674",
+      "parentId": "health-medical",
+      "alt": "Illustrative pharmacies cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "health-medical/physiotherapy": {
+      "assetKey": "health-medical--physiotherapy",
+      "revision": "efe2b7df02b277b1",
+      "parentId": "health-medical",
+      "alt": "Illustrative physiotherapy cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "health-medical/psychology": {
+      "assetKey": "health-medical--psychology",
+      "revision": "fed6c62ad9d126c7",
+      "parentId": "health-medical",
+      "alt": "Illustrative psychology cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "health-medical": {
+      "assetKey": "health-medical",
+      "revision": "5e4c4f3b694cb847",
+      "parentId": null,
+      "alt": "Illustrative health & medical cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "jewelry-accessories/bracelets": {
+      "assetKey": "jewelry-accessories--bracelets",
+      "revision": "ca9b7ad7eaf0e3e4",
+      "parentId": "jewelry-accessories",
+      "alt": "Illustrative bracelets cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "jewelry-accessories/earrings": {
+      "assetKey": "jewelry-accessories--earrings",
+      "revision": "c295a629e4e21251",
+      "parentId": "jewelry-accessories",
+      "alt": "Illustrative earrings cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "jewelry-accessories/fashion-jewelry": {
+      "assetKey": "jewelry-accessories--fashion-jewelry",
+      "revision": "e4b44c76bb8e296b",
+      "parentId": "jewelry-accessories",
+      "alt": "Illustrative fashion jewelry cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "jewelry-accessories/fine-jewelry": {
+      "assetKey": "jewelry-accessories--fine-jewelry",
+      "revision": "32c0e40f3bc58a66",
+      "parentId": "jewelry-accessories",
+      "alt": "Illustrative fine jewelry cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "jewelry-accessories/gemstones": {
+      "assetKey": "jewelry-accessories--gemstones",
+      "revision": "f1ed962df2e491c7",
+      "parentId": "jewelry-accessories",
+      "alt": "Illustrative gemstones cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "jewelry-accessories/handmade-jewelry": {
+      "assetKey": "jewelry-accessories--handmade-jewelry",
+      "revision": "5c4fd4bb9c1a2462",
+      "parentId": "jewelry-accessories",
+      "alt": "Illustrative handmade jewelry cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "jewelry-accessories/necklaces": {
+      "assetKey": "jewelry-accessories--necklaces",
+      "revision": "156b23e34a77515a",
+      "parentId": "jewelry-accessories",
+      "alt": "Illustrative necklaces cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "jewelry-accessories/prescription-eyewear": {
+      "assetKey": "jewelry-accessories--prescription-eyewear",
+      "revision": "256871b5a415b2df",
+      "parentId": "jewelry-accessories",
+      "alt": "Illustrative prescription eyewear cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "jewelry-accessories/rings": {
+      "assetKey": "jewelry-accessories--rings",
+      "revision": "6be8da4228c60cc8",
+      "parentId": "jewelry-accessories",
+      "alt": "Illustrative rings cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "jewelry-accessories/sunglasses": {
+      "assetKey": "jewelry-accessories--sunglasses",
+      "revision": "ea27ac25b9206213",
+      "parentId": "jewelry-accessories",
+      "alt": "Illustrative sunglasses cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "jewelry-accessories/watch-repairs": {
+      "assetKey": "jewelry-accessories--watch-repairs",
+      "revision": "152849d317168941",
+      "parentId": "jewelry-accessories",
+      "alt": "Illustrative watch repairs cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "jewelry-accessories/wristwatches": {
+      "assetKey": "jewelry-accessories--wristwatches",
+      "revision": "7b4c696c97dd1418",
+      "parentId": "jewelry-accessories",
+      "alt": "Illustrative wristwatches cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "jewelry-accessories": {
+      "assetKey": "jewelry-accessories",
+      "revision": "cc5f8460e398b64c",
+      "parentId": null,
+      "alt": "Illustrative jewelry & accessories cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    }
+  }
+}

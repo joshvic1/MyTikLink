@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "categoryId": "fashion-textiles/fabric-retail",
+  "label": "Fabric retail",
+  "parentId": "fashion-textiles",
+  "assetKey": "fashion-textiles--fabric-retail",
+  "revision": "0d57b2e2216117ef",
+  "status": "ready",
+  "alt": "Illustrative fabric retail cover",
+  "width": 1600,
+  "height": 800,
+  "focalPoint": {
+    "x": 0.5,
+    "y": 0.5
+  },
+  "source": {
+    "sha256": "12bed375a4970b9518c2a6d54db821f0a0b85168dd9784e421ff035cf49d0494",
+    "width": 1774,
+    "height": 887,
+    "originalFilename": "exec-d4a1f510-3ec0-4a4c-ad60-34b3416737d8.png",
+    "provider": "OpenAI built-in image generation",
+    "prompt": "Create one original premium photographic cover for the exact business category \"Fabric retail\" within \"Fashion & Textiles\". This is a default category image for MyTikLink, not a page mockup. Choose a concrete, immediately recognizable subject and environment specific to this category; distinguish it from neighbouring categories. Realistic editorial photography, believable materials, natural professional lighting, polished but authentic. Relevant Nigerian or broadly African context where appropriate, without stereotypes. For abstract digital services, depict a carefully composed credible workspace or physical visual metaphor with blank/unreadable screens. Compose a SINGLE landscape image at 1600 x 800 pixels, 2:1 ratio, edge-to-edge, with the important subject safely inside the central 80% and generous horizontal crop room. No collage of unrelated categories. Absolutely NO text, letters, numbers, captions, logos, watermarks, signage, brand names, UI, borders or typography anywhere. Any packaging, devices, documents or clothing must be unbranded and free of writing. Show safe, respectful, non-graphic professional scenes; no claims, endorsements, real public figures or identifiable private people. Output only the image.",
+    "generatedAt": "2026-10-31T04:48:46.518Z"
+  },
+  "variants": [
+    {
+      "format": "avif",
+      "width": 400,
+      "height": 200,
+      "bytes": 19845,
+      "quality": 43,
+      "url": "/category-covers/fashion-textiles--fabric-retail/0d57b2e2216117ef/400.avif"
+    },
+    {
+      "format": "avif",
+      "width": 800,
+      "height": 400,
+      "bytes": 56484,
+      "quality": 43,
+      "url": "/category-covers/fashion-textiles--fabric-retail/0d57b2e2216117ef/800.avif"
+    },
+    {
+      "format": "avif",
+      "width": 1200,
+      "height": 600,
+      "bytes": 95469,
+      "quality": 43,
+      "url": "/category-covers/fashion-textiles--fabric-retail/0d57b2e2216117ef/1200.avif"
+    },
+    {
+      "format": "avif",
+      "width": 1600,
+      "height": 800,
+      "bytes": 128126,
+      "quality": 43,
+      "url": "/category-covers/fashion-textiles--fabric-retail/0d57b2e2216117ef/1600.avif"
+    },
+    {
+      "format": "webp",
+      "width": 400,
+      "height": 200,
+      "bytes": 23648,
+      "quality": 74,
+      "url": "/category-covers/fashion-textiles--fabric-retail/0d57b2e2216117ef/400.webp"
+    },
+    {
+      "format": "webp",
+      "width": 800,
+      "height": 400,
+      "bytes": 69496,
+      "quality": 68,
+      "url": "/category-covers/fashion-textiles--fabric-retail/0d57b2e2216117ef/800.webp"
+    },
+    {
+      "format": "webp",
+      "width": 1200,
+      "height": 600,
+      "bytes": 135402,
+      "quality": 74,
+      "url": "/category-covers/fashion-textiles--fabric-retail/0d57b2e2216117ef/1200.webp"
+    },
+    {
+      "format": "webp",
+      "width": 1600,
+      "height": 800,
+      "bytes": 219910,
+      "quality": 78,
+      "url": "/category-covers/fashion-textiles--fabric-retail/0d57b2e2216117ef/1600.webp"
+    }
+  ],
+  "warnings": [
+    "400.avif exceeds target budget (19845 bytes); kept quality floor.",
+    "800.avif exceeds target budget (56484 bytes); kept quality floor.",
+    "1200.avif exceeds target budget (95469 bytes); kept quality floor."
+  ],
+  "reviewedAt": "2026-10-31T04:48:46.529Z",
+  "reviewChecklist": [
+    "category match",
+    "no text or logos",
+    "composition",
+    "compression quality"
+  ]
+}

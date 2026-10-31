@@ -36,6 +36,7 @@ import styles from "./styles/v11.module.css";
 import { ArrowRight } from "lucide-react";
 import { creationFeatures } from "./config/features";
 import { SubscriptionProvider } from "./components/SubscriptionModal";
+import { notify } from "./components/Notifications";
 
 const VersionedPublicPage = dynamic(() => import("./landing/PublicPage"), { ssr: false, loading: () => <LoadingState/> });
 const TemplateEditor = dynamic(() => import("./landing/PageEditor"), { ssr: false, loading: () => <LoadingState label="Opening the page editor…"/> });
@@ -48,6 +49,15 @@ const StoreSetup = dynamic(() => import("./pages/StoreSetupPage"), { ssr: false,
 const SecurityAndPlan = dynamic(() => import("@/pages/dashboard/settings"), { ssr: false, loading: () => <LoadingState label="Opening secure account controls…"/> });
 const dmSans = DM_Sans({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-v11-body" });
 const manrope = Manrope({ subsets: ["latin"], weight: ["600", "700", "800"], variable: "--font-v11-heading" });
+const preparingLabel = (path) => {
+  if (path.endsWith("/pages") || path.includes("/pages/")) return "Preparing landing pages…";
+  if (path.endsWith("/links") || path.endsWith("/analytics") || path.endsWith("/insights")) return "Preparing redirect links…";
+  if (path.includes("/store")) return "Preparing storefront…";
+  if (path.includes("/settings")) return "Preparing settings…";
+  if (path.includes("/affiliate")) return "Preparing affiliate…";
+  if (path.includes("/integrations")) return "Preparing integrations…";
+  return "Preparing dashboard…";
+};
 
 function CreateChooser({ onClose, choose }) {
   return <Modal title="What would you like to create?" onClose={onClose}><div className={styles.createChoices}>{creationFeatures.map(feature=>{const {id,action,title,shortDescription,Icon,modalClass}=feature;return <article key={id} className={`${styles.createChoiceCard} ${styles[modalClass]}`}><button className={styles.createChoiceMain} onClick={()=>choose(action)}><span><Icon/></span><div><b>{title}</b><p>{shortDescription}</p></div><ArrowRight/></button></article>;})}</div></Modal>;
@@ -65,11 +75,13 @@ function V11Content() {
   const [linkRevision,setLinkRevision] = useState(0);
   const workspace = useWorkspaceData(session.authenticated && !isPagesList && !isLinksList && !publicRoute);
   const [modal, setModal] = useState(null), [editingLink, setEditingLink] = useState(null), [leadPage, setLeadPage] = useState(null), [productComposer, setProductComposer] = useState(false);
-  const [navigating, setNavigating] = useState(false);
+  const [navigating, setNavigating] = useState(false), [loadingPath, setLoadingPath] = useState("");
+  const loadingLabel = preparingLabel(loadingPath || path);
+  useEffect(() => { const message = sessionStorage.getItem("v11-auth-notice"); if (message) { sessionStorage.removeItem("v11-auth-notice"); notify.success(message); } }, [path]);
   useEffect(() => {
-    const start = () => setNavigating(true);
-    const finish = () => setNavigating(false);
-    const complete = () => { setNavigating(false); setModal(null); };
+    const start = (url) => { setLoadingPath(String(url).split("?")[0]); setNavigating(true); };
+    const finish = () => { setNavigating(false); setLoadingPath(""); };
+    const complete = () => { setNavigating(false); setLoadingPath(""); setModal(null); };
     router.events.on("routeChangeStart", start);
     router.events.on("routeChangeComplete", complete);
     router.events.on("routeChangeError", finish);
@@ -90,15 +102,15 @@ function V11Content() {
   if (publicParts[1] === "s" && publicParts[2]) return <PublicStore slug={decodeURIComponent(publicParts[2])}/>;
   if (publicParts[1] === "r" && publicParts[2]) return <RedirectPage linkId={decodeURIComponent(publicParts[2])}/>;
   const editor = path.endsWith("/pages/editor"), builder = path.endsWith("/pages/builder");
-  if ((session.loading && !session.user) || navigating) return <LoadingState progress={session.loading && !session.user ? 32 : 62}/>;
+  if ((session.loading && !session.user) || navigating) return <LoadingState label={loadingLabel} progress={session.loading && !session.user ? 32 : 62}/>;
   if (session.error && !session.user) return <div className={styles.standaloneState}><ErrorState message={session.error.message} onRetry={session.refresh}/></div>;
   if (!session.user) return null;
   if (!publicRoute && onboarding.loading) return <LoadingState label="Preparing your setup…" progress={58}/>;
-  if (!publicRoute && onboarding.required) return <><div className={styles.onboardingWorkspaceBackdrop} aria-hidden="true"><SubscriptionProvider user={session.user} refreshSession={session.refresh}><Shell user={session.user} onLogout={session.logout} onCreate={() => {}}><HomePage user={session.user} data={workspace} onCreate={() => {}}/></Shell></SubscriptionProvider></div><OnboardingWizard state={onboarding.data} onLogout={session.logout} onComplete={async () => { await onboarding.refresh(); await session.refresh(); }}/></>
+  if (!publicRoute && onboarding.required) return <><div className={styles.onboardingWorkspaceBackdrop} aria-hidden="true"><SubscriptionProvider user={session.user} refreshSession={session.refresh}><Shell user={session.user} onLogout={session.logout} onCreate={() => {}}><HomePage user={session.user} data={workspace} onCreate={() => {}}/></Shell></SubscriptionProvider></div><OnboardingWizard state={onboarding.data} onLogout={session.logout} onComplete={async () => { await router.replace("/v1-1/dashboard"); await onboarding.refresh(); await session.refresh(); await workspace.refresh(); }}/></>
   if (editor) return <div className={styles.editorIsolation}><div className={styles.editorBreadcrumbBar}><Breadcrumbs/></div><TemplateEditor/></div>;
   if (builder) return <div className={styles.editorIsolation}><div className={styles.editorBreadcrumbBar}><Breadcrumbs/></div><CustomBuilder/></div>;
   if (path.endsWith("/settings/security") || path.endsWith("/settings/plan")) return <div className={styles.editorIsolation}><div className={styles.editorBreadcrumbBar}><Breadcrumbs/></div><SecurityAndPlan/></div>;
-  if (!isPagesList && !isLinksList && workspace.loading) return <LoadingState label="Preparing your workspace..." progress={82}/>;
+  if (!isPagesList && !isLinksList && workspace.loading) return <LoadingState label={loadingLabel} progress={82}/>;
   if (!isPagesList && !isLinksList && workspace.error) return <div className={styles.standaloneState}><ErrorState message={workspace.error.message} onRetry={workspace.refresh}/></div>;
   const choose = (type) => { setModal(null); if (type === "store") router.push(v11Routes.store); else setModal(type); };
   let content;

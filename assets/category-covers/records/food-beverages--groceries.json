@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "categoryId": "food-beverages/groceries",
+  "label": "Groceries",
+  "parentId": "food-beverages",
+  "assetKey": "food-beverages--groceries",
+  "revision": "bd1ea30bece9adbf",
+  "status": "ready",
+  "alt": "Illustrative groceries cover",
+  "width": 1600,
+  "height": 800,
+  "focalPoint": {
+    "x": 0.5,
+    "y": 0.5
+  },
+  "source": {
+    "sha256": "278678d46b32777d345554c1fce12fac3e36369f0a466fe314242075b91ff924",
+    "width": 1774,
+    "height": 887,
+    "originalFilename": "exec-26ceea77-0a84-4594-a71a-6330a2d73890.png",
+    "provider": "OpenAI built-in image generation",
+    "prompt": "Create one original premium photographic cover for the exact business category \"Groceries\" within \"Food & Beverages\". This is a default category image for MyTikLink, not a page mockup. Choose a concrete, immediately recognizable subject and environment specific to this category; distinguish it from neighbouring categories. Realistic editorial photography, believable materials, natural professional lighting, polished but authentic. Relevant Nigerian or broadly African context where appropriate, without stereotypes. For abstract digital services, depict a carefully composed credible workspace or physical visual metaphor with blank/unreadable screens. Compose a SINGLE landscape image at 1600 x 800 pixels, 2:1 ratio, edge-to-edge, with the important subject safely inside the central 80% and generous horizontal crop room. No collage of unrelated categories. Absolutely NO text, letters, numbers, captions, logos, watermarks, signage, brand names, UI, borders or typography anywhere. Any packaging, devices, documents or clothing must be unbranded and free of writing. Show safe, respectful, non-graphic professional scenes; no claims, endorsements, real public figures or identifiable private people. Output only the image.",
+    "generatedAt": "2026-10-30T22:32:49.983Z"
+  },
+  "variants": [
+    {
+      "format": "avif",
+      "width": 400,
+      "height": 200,
+      "bytes": 17985,
+      "quality": 47,
+      "url": "/category-covers/food-beverages--groceries/bd1ea30bece9adbf/400.avif"
+    },
+    {
+      "format": "avif",
+      "width": 800,
+      "height": 400,
+      "bytes": 43657,
+      "quality": 47,
+      "url": "/category-covers/food-beverages--groceries/bd1ea30bece9adbf/800.avif"
+    },
+    {
+      "format": "avif",
+      "width": 1200,
+      "height": 600,
+      "bytes": 78845,
+      "quality": 51,
+      "url": "/category-covers/food-beverages--groceries/bd1ea30bece9adbf/1200.avif"
+    },
+    {
+      "format": "avif",
+      "width": 1600,
+      "height": 800,
+      "bytes": 122316,
+      "quality": 55,
+      "url": "/category-covers/food-beverages--groceries/bd1ea30bece9adbf/1600.avif"
+    },
+    {
+      "format": "webp",
+      "width": 400,
+      "height": 200,
+      "bytes": 22166,
+      "quality": 78,
+      "url": "/category-covers/food-beverages--groceries/bd1ea30bece9adbf/400.webp"
+    },
+    {
+      "format": "webp",
+      "width": 800,
+      "height": 400,
+      "bytes": 60190,
+      "quality": 78,
+      "url": "/category-covers/food-beverages--groceries/bd1ea30bece9adbf/800.webp"
+    },
+    {
+      "format": "webp",
+      "width": 1200,
+      "height": 600,
+      "bytes": 123664,
+      "quality": 82,
+      "url": "/category-covers/food-beverages--groceries/bd1ea30bece9adbf/1200.webp"
+    },
+    {
+      "format": "webp",
+      "width": 1600,
+      "height": 800,
+      "bytes": 175438,
+      "quality": 82,
+      "url": "/category-covers/food-beverages--groceries/bd1ea30bece9adbf/1600.webp"
+    }
+  ],
+  "warnings": [],
+  "reviewedAt": "2026-10-30T22:32:49.988Z",
+  "reviewChecklist": [
+    "category match",
+    "no text or logos",
+    "composition",
+    "compression quality"
+  ]
+}

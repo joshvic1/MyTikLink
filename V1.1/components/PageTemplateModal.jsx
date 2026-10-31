@@ -1,9 +1,11 @@
 import { Notice } from "./Notifications";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/router";
-import { Button, Modal, LoadingState } from "./UI";
+import { Button, Modal } from "./UI";
 import { v11Api, getToken } from "../lib/api";
 import AIPageBuilderModal from "../landing/AIPageBuilderModal";
+import { allThemes } from "../landing/themeLibrary";
+import { ThemePreview } from "../landing/ThemePreview";
 import styles from "../styles/v11.module.css";
 import { Plus, Sparkles, Search, Check, SlidersHorizontal } from "lucide-react";
 const categories = ["Business & Services", "Products & Offers", "Courses & Events", "Personal & Portfolio", "General"];
@@ -18,23 +20,30 @@ function categoryOf(t) {
 }
 export function PageTemplateModal({ onClose, user }) {
  const router = useRouter();
+ const [registry,setRegistry]=useState([]);
+ useEffect(()=>{v11Api.onboardingCategories().then(result=>setRegistry(result.categories || [])).catch(()=>{});},[]);
+ const pilotTemplates=useMemo(()=>allThemes.map(theme=>({...theme,_id:`phase-one:${theme.id}`,name:theme.title,description:theme.copy,category:registry.find(c=>c.id===theme.categoryIds[0])?.label || theme.tags[0],pilot:true})),[registry]);
  const [templates,setTemplates]=useState([]), [selected,setSelected]=useState(""), [error,setError]=useState(""), [loading,setLoading]=useState(true);
  const [search,setSearch]=useState(""), [category,setCategory]=useState("all"), [form,setForm]=useState("all");
  const [toast,setToast]=useState(false), [aiOpen,setAiOpen]=useState(false), [navigating,setNavigating]=useState(false);
- const [filtersOpen,setFiltersOpen]=useState(false);
+ const [filtersOpen,setFiltersOpen]=useState(false), [pilotNotice,setPilotNotice]=useState("");
  const timer=useRef(null);
  useEffect(()=>{let active=true; v11Api.pageTemplates().then(data=>{if(active)setTemplates(Array.isArray(data)?data:[]);}).catch(e=>{if(active)setError(e.message);}).finally(()=>{if(active)setLoading(false);});return()=>{active=false;clearTimeout(timer.current);};},[]);
- const options=useMemo(()=>[...new Set([...categories,...templates.map(categoryOf)])],[templates]);
- const visible=useMemo(()=>templates.filter(t=>`${t.name || ""} ${t.description || ""} ${categoryOf(t)} ${(t.tags || []).join(" ")}`.toLowerCase().includes(search.trim().toLowerCase())&&(category==="all"||categoryOf(t)===category)&&(form==="all"||(form==="yes"?t.hasForm===true:t.hasForm===false))),[templates,search,category,form]);
- const choose=value=>{setSelected(value);setToast(false);};
- const filter=(setter,value)=>{setter(value);if(!["scratch","ai"].includes(selected))setSelected("");};
+ const availableTemplates=useMemo(()=>[...pilotTemplates,...templates],[templates,pilotTemplates]);
+ const options=useMemo(()=>[...new Set([...categories,...availableTemplates.map(categoryOf)])],[availableTemplates]);
+ const visible=useMemo(()=>availableTemplates.filter(t=>`${t.name || ""} ${t.description || ""} ${categoryOf(t)} ${(t.tags || []).join(" ")}`.toLowerCase().includes(search.trim().toLowerCase())&&(category==="all"||categoryOf(t)===category)&&(form==="all"||(form==="yes"?t.hasForm===true:t.hasForm===false))),[availableTemplates,search,category,form]);
+ const selectedPilot=useMemo(()=>pilotTemplates.find(theme=>theme._id===selected),[selected,pilotTemplates]);
+ const choose=value=>{setSelected(value);setToast(false);setPilotNotice("");};
+ const filter=(setter,value)=>{setter(value);setPilotNotice("");if(!["scratch","ai"].includes(selected))setSelected("");};
  const proceed=async()=>{
   if(!selected){clearTimeout(timer.current);setToast(true);timer.current=setTimeout(()=>setToast(false),4500);return;}
   if(selected==="ai"){setAiOpen(true);return;}
+  if(selectedPilot){setNavigating(true);try{await router.push(`/v1-1/pages/builder?themeId=${encodeURIComponent(selectedPilot.id)}`);}catch{setError("Could not open theme editor.");}finally{setNavigating(false);}return;}
   setNavigating(true);try{await router.push(selected==="scratch"?"/v1-1/pages/builder":`/v1-1/pages/editor?templateId=${encodeURIComponent(selected)}`);}catch{setError("Could not open the editor. Please try again.");}finally{setNavigating(false);}
  };
  if(aiOpen)return <AIPageBuilderModal open variant="v11" token={getToken()} builderPath="/v1-1/pages/builder" onClose={()=>setAiOpen(false)}/>;
- return <Modal wide className={styles.templatePicker} title="Select a Page template" description="Pick any design you'd love to use for your page, you can also build from scratch or build with AI as well." onClose={onClose} footer={<><Button variant="secondary" onClick={onClose}>Cancel</Button><Button disabled={navigating} onClick={proceed}>{navigating?"Opening…":selected==="scratch"?"Continue (Build from scratch)":selected==="ai"?"Continue (Build with AI)":"Use this template"}</Button></>}>
+ return <Modal tone="lime" wide className={styles.templatePicker} title="Select a Page template" description="Pick any design you'd love to use for your page, you can also build from scratch or build with AI as well." onClose={onClose} footer={<><Button variant="secondary" onClick={onClose}>Cancel</Button><Button disabled={navigating} onClick={proceed}>{navigating?"Opening…":selected==="scratch"?"Continue (Build from scratch)":selected==="ai"?"Continue (Build with AI)":selectedPilot?"Use theme":"Use this template"}</Button></>}>
+ <div style={{marginBottom:16}}><Button variant="secondary" onClick={()=>router.push("/v1-1/themes")}>Explore twenty demo themes · full previews</Button></div>
  <div className={styles.templateTools}>
   <div className={styles.templateSearch}><Search size={16}/><input aria-label="Search templates" placeholder="Search templates…" value={search} onChange={e=>filter(setSearch,e.target.value)}/><button type="button" className={styles.templateFilterToggle} aria-label="Filter templates" aria-expanded={filtersOpen} aria-controls="page-template-filters" onClick={()=>setFiltersOpen(value=>!value)}><SlidersHorizontal size={17}/>{(category!=="all"||form!=="all")&&<span/>}</button></div>
   {filtersOpen&&<div id="page-template-filters" className={styles.templateFilterPanel} onKeyDown={e=>{if(e.key==="Escape"){e.stopPropagation();setFiltersOpen(false);}}}>
@@ -43,8 +52,9 @@ export function PageTemplateModal({ onClose, user }) {
   </div>}
  </div>
  <div className={styles.templateBuildOptions}>{[{id:"scratch",title:"Build from scratch",copy:"Start with a blank canvas",Icon:Plus},{id:"ai",title:"Build with AI",copy:"Let AI build for you",Icon:Sparkles}].map(({id,title,copy,Icon})=><button type="button" key={id} aria-pressed={selected===id} className={`${styles.templateBuildOption} ${selected===id?styles.pickerSelected:""}`} onClick={()=>choose(id)}><span><Icon/></span><div><b>{title}</b><small>{copy}</small></div>{selected===id&&<Check size={16}/>}</button>)}</div>
- {loading?<div className={styles.templateLoading}><LoadingState label="Loading templates"/></div>:<div className={styles.pageTemplateGrid}>{visible.map(t=><button type="button" key={t._id} aria-pressed={selected===t._id} className={selected===t._id?styles.templateSelected:""} onClick={()=>choose(t._id)}>{t.thumbnailUrl?<img src={t.thumbnailUrl} alt="" loading="lazy"/>:<span><Sparkles/></span>}<b>{t.name}</b><small>{categoryOf(t)}{typeof t.hasForm==="boolean"?` · ${t.hasForm?"With form":"No form"}`:""}</small></button>)}</div>}
+ <div className={styles.pageTemplateGrid}>{visible.map(t=><div role="button" tabIndex={0} onKeyDown={event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();choose(t._id);}}} key={t._id} aria-pressed={selected===t._id} className={`${selected===t._id?styles.templateSelected:""} ${t.pilot?styles.pilotTemplateCard:""}`} onClick={()=>choose(t._id)}>{t.thumbnailUrl?<img src={t.thumbnailUrl} alt="" loading="lazy"/>:t.pilot?<ThemePreview theme={t} compact asButtonContent/>:<span><Sparkles/></span>}<b>{t.name}</b><small>{categoryOf(t)}{typeof t.hasForm==="boolean"?` · ${t.hasForm?"With form":"No form"}`:""}</small>{t.pilot&&<span className={styles.pilotThemeBadge}>{t.batch === "1b" ? "Phase 1B · Short form" : "Phase 1"}</span>}{selected===t._id&&<span className={styles.templateSelectionMark}><Check aria-hidden="true"/></span>}</div>)}</div>
+ {loading&&<p className={styles.templateLoadingMore}>Loading more templates…</p>}
  {!loading&&!visible.length&&<div className={styles.templateEmpty}><Search size={22}/><b>No matching templates</b><p>Try another search or reset your filters.</p><Button variant="secondary" onClick={()=>{setSearch("");setCategory("all");setForm("all");}}>Reset filters</Button></div>}
- {error&&<p className={styles.inlineError} role="alert">{error}</p>}{toast&&<div role="alert" className={styles.templateToast}><Notice tone="error">Select any of the templates or options to continue</Notice></div>}
+ {pilotNotice&&<Notice tone="info" onClose={()=>setPilotNotice("")}>{pilotNotice}</Notice>}{error&&<p className={styles.inlineError} role="alert">{error}</p>}{toast&&<div role="alert" className={styles.templateToast}><Notice tone="error">Select any of the templates or options to continue</Notice></div>}
  </Modal>;
 }

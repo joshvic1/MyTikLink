@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "categoryId": "health-medical",
+  "label": "Health & Medical",
+  "parentId": null,
+  "assetKey": "health-medical",
+  "revision": "5e4c4f3b694cb847",
+  "status": "ready",
+  "alt": "Illustrative health & medical cover",
+  "width": 1600,
+  "height": 800,
+  "focalPoint": {
+    "x": 0.5,
+    "y": 0.5
+  },
+  "source": {
+    "sha256": "9f806f31ddebcdd03ac4a04fde5bae26339f3f64f9a3b686810d28460c3bf627",
+    "width": 1774,
+    "height": 887,
+    "originalFilename": "exec-e5e11c47-bde4-4077-b086-8177ce770c5b.png",
+    "provider": "OpenAI built-in image generation",
+    "prompt": "Create one original premium photographic cover for the exact business category \"Health & Medical\". This is a default category image for MyTikLink, not a page mockup. Choose a concrete, immediately recognizable subject and environment specific to this category; distinguish it from neighbouring categories. Realistic editorial photography, believable materials, natural professional lighting, polished but authentic. Relevant Nigerian or broadly African context where appropriate, without stereotypes. For abstract digital services, depict a carefully composed credible workspace or physical visual metaphor with blank/unreadable screens. Compose a SINGLE landscape image at 1600 x 800 pixels, 2:1 ratio, edge-to-edge, with the important subject safely inside the central 80% and generous horizontal crop room. No collage of unrelated categories. Absolutely NO text, letters, numbers, captions, logos, watermarks, signage, brand names, UI, borders or typography anywhere. Any packaging, devices, documents or clothing must be unbranded and free of writing. Show safe, respectful, non-graphic professional scenes; no claims, endorsements, real public figures or identifiable private people. Output only the image.",
+    "generatedAt": "2026-10-31T04:52:00.759Z"
+  },
+  "variants": [
+    {
+      "format": "avif",
+      "width": 400,
+      "height": 200,
+      "bytes": 10753,
+      "quality": 55,
+      "url": "/category-covers/health-medical/5e4c4f3b694cb847/400.avif"
+    },
+    {
+      "format": "avif",
+      "width": 800,
+      "height": 400,
+      "bytes": 22816,
+      "quality": 55,
+      "url": "/category-covers/health-medical/5e4c4f3b694cb847/800.avif"
+    },
+    {
+      "format": "avif",
+      "width": 1200,
+      "height": 600,
+      "bytes": 34974,
+      "quality": 55,
+      "url": "/category-covers/health-medical/5e4c4f3b694cb847/1200.avif"
+    },
+    {
+      "format": "avif",
+      "width": 1600,
+      "height": 800,
+      "bytes": 45737,
+      "quality": 55,
+      "url": "/category-covers/health-medical/5e4c4f3b694cb847/1600.avif"
+    },
+    {
+      "format": "webp",
+      "width": 400,
+      "height": 200,
+      "bytes": 13792,
+      "quality": 82,
+      "url": "/category-covers/health-medical/5e4c4f3b694cb847/400.webp"
+    },
+    {
+      "format": "webp",
+      "width": 800,
+      "height": 400,
+      "bytes": 33104,
+      "quality": 82,
+      "url": "/category-covers/health-medical/5e4c4f3b694cb847/800.webp"
+    },
+    {
+      "format": "webp",
+      "width": 1200,
+      "height": 600,
+      "bytes": 54608,
+      "quality": 82,
+      "url": "/category-covers/health-medical/5e4c4f3b694cb847/1200.webp"
+    },
+    {
+      "format": "webp",
+      "width": 1600,
+      "height": 800,
+      "bytes": 78536,
+      "quality": 82,
+      "url": "/category-covers/health-medical/5e4c4f3b694cb847/1600.webp"
+    }
+  ],
+  "warnings": [],
+  "reviewedAt": "2026-10-31T05:08:48.364Z",
+  "reviewChecklist": [
+    "category match",
+    "no text or logos",
+    "composition",
+    "compression quality"
+  ]
+}

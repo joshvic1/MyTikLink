@@ -10,13 +10,13 @@ import styles from "../styles/v11.module.css";
 import { useSubscription } from "./SubscriptionModal";
 
 function FeatureHelp({ onClose }) {
-  return <Modal title="Which one should I use?" description="Choose the simplest tool for the result you need." onClose={onClose}><div className={styles.helpStack}>{creationFeatures.map(({ id, title, helpDescription, example, Icon, modalClass }) => <article key={id} className={styles[modalClass]}><span><Icon/></span><div><b>{title}</b><p>{helpDescription}</p><small>{example}</small></div></article>)}<aside><b>Still unsure?</b><p>Landing Page is the best starting point for most campaigns.</p></aside></div></Modal>;
+  return <Modal tone="lime" title="Which one should I use?" description="Choose the simplest tool for the result you need." onClose={onClose}><div className={styles.helpStack}>{creationFeatures.map(({ id, title, helpDescription, example, Icon, modalClass }) => <article key={id} className={styles[modalClass]}><span><Icon/></span><div><b>{title}</b><p>{helpDescription}</p><small>{example}</small></div></article>)}<aside><b>Still unsure?</b><p>Landing Page is the best starting point for most campaigns.</p></aside></div></Modal>;
 }
 function PlanHelp({ onClose, openPlans }) {
-  return <Modal title="Which plan should I choose?" description="A practical guide based on how actively you use MyTikLink." onClose={onClose} footer={<Button onClick={openPlans}>View plans</Button>}><div className={styles.planHelpList}>{planGuidance.map((plan) => <article key={plan.id}><span>{plan.title === "Pro" && <BadgeCheck/>}</span><div><b>{plan.title}</b><p>{plan.description}</p><small>{plan.limits}</small></div></article>)}</div></Modal>;
+  return <Modal tone="lime" title="Which plan should I choose?" description="A practical guide based on how actively you use MyTikLink." onClose={onClose} footer={<Button onClick={openPlans}>View plans</Button>}><div className={styles.planHelpList}>{planGuidance.map((plan) => <article key={plan.id}><span>{plan.title === "Pro" && <BadgeCheck/>}</span><div><b>{plan.title}</b><p>{plan.description}</p><small>{plan.limits}</small></div></article>)}</div></Modal>;
 }
 function PixelHelp({ onClose }) {
-  return <Modal title="How do I find my Pixel ID?" description="Connect at least one platform to complete this setup step." onClose={onClose}><div className={styles.pixelHelpList}>{Object.values(trackingHelp).map((item) => <article key={item.title}><Target/><div><b>{item.title}</b><p>{item.description}</p><a href={item.videoUrl} target="_blank" rel="noreferrer">Watch setup guide <ExternalLink/></a></div></article>)}</div></Modal>;
+  return <Modal tone="lime" title="How do I find my Pixel ID?" description="Connect at least one platform to complete this setup step." onClose={onClose}><div className={styles.pixelHelpList}>{Object.values(trackingHelp).map((item) => <article key={item.title}><Target/><div><b>{item.title}</b><p>{item.description}</p><a href={item.videoUrl} target="_blank" rel="noreferrer">Watch setup guide <ExternalLink/></a></div></article>)}</div></Modal>;
 }
 
 export function OnboardingPanel({ user, data, chooseFeature }) {

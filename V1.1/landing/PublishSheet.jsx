@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 
-import BottomSheet from "@/components/custom/ui/BottomSheet";
+import { Modal, Button } from "../components/UI";
 
 import styles from "@/components/custom/modals/publishSheet.module.css";
 
@@ -37,9 +37,10 @@ export default function PublishSheet({
       setLoading(false);
     }
   };
+  if (!isOpen) return null;
   if (!hasContent) {
     return (
-      <BottomSheet isOpen={isOpen} onClose={onClose}>
+      <Modal tone="teal" title="Publish Page" onClose={onClose}>
         <div className={styles.emptyState}>
           <div className={styles.emptyIcon}>✨</div>
 
@@ -49,17 +50,17 @@ export default function PublishSheet({
             You haven’t added any elements to this page yet.
           </p>
 
-          <button className={styles.closeBtn} onClick={onClose}>
+          <Button className={styles.closeBtn} onClick={onClose}>
             Continue Editing
-          </button>
+          </Button>
         </div>
-      </BottomSheet>
+      </Modal>
     );
   }
   return (
-    <BottomSheet isOpen={isOpen} onClose={onClose}>
+    <Modal tone="teal" title="Publish Page" onClose={onClose}>
       <div className={styles.container}>
-        <h2 className={styles.title}>Publish Page</h2>
+
 
         <p className={styles.subtitle}>Give your page a name</p>
 
@@ -89,7 +90,7 @@ export default function PublishSheet({
             </span>
           </p>
         )}
-        <button
+        <Button
           className={styles.publishBtn}
           onClick={handlePublish}
           disabled={loading || !title.trim()}
@@ -105,8 +106,8 @@ export default function PublishSheet({
               Publish
             </>
           )}
-        </button>
+        </Button>
       </div>
-    </BottomSheet>
+    </Modal>
   );
 }
