@@ -1,0 +1,82 @@
+.card{--tint:#FFE1E4;--blob:#FFC7CE;position:relative;display:grid;grid-template-columns:76px minmax(0,1fr) 26px;gap:0 10px;min-height:90px;box-sizing:border-box;padding:8px 10px 8px 8px;border:1px solid #F1F0F7;border-radius:14px;background:linear-gradient(110deg,#FFFFFF,#FCFCFF);box-shadow:0 3px 12px #27204404;color:#17192D}.rose{--tint:#FFE1E4;--blob:#FFC7CE}.peach{--tint:#FFF0D7;--blob:#FFE4BC}.mint{--tint:#DCF6E8;--blob:#C6EDD8}.violet{--tint:#EFE0FF;--blob:#DFC7FA}.art{position:relative;isolation:isolate;display:flex;align-items:center;justify-content:flex-end;grid-row:1/3;width:76px;min-height:72px;border-radius:12px;background:linear-gradient(130deg,var(--tint),#FFFFFF00);overflow:hidden}.art:after{content:"";position:absolute;z-index:-1;left:-7px;bottom:-7px;width:45px;height:45px;border-radius:15px;background:var(--blob);transform:rotate(-25deg)}.thumbnail{display:grid;place-items:center;width:64px;height:66px;border-radius:11px;background:var(--tint);overflow:hidden;margin-right:1px}.thumbnail img{width:100%;height:100%;object-fit:cover}.thumbnail b{font-size:23px;color:#795B93}.identity{grid-column:2;grid-row:1/3;min-width:0;padding-top:2px;padding-bottom:3px}.identity h3{margin:0;font-size:12px;font-weight:750;line-height:1.4;letter-spacing:-.025em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-right:2px}.link{display:flex;align-items:center;gap:5px;min-width:0;margin-top:2px;height:18px;max-width:100%}.link>svg{width:11px;height:11px;flex:none;color:#9B9CBD}.link a{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#9897BA;text-decoration:none;font-size:9px;line-height:1.4}.link button{display:grid;place-items:center;flex:none;padding:0;width:19px;height:19px;border:0;border-radius:6px;background:#F1EBFF;color:#8050ED;cursor:pointer}.link button svg{width:11px;height:11px}.badge{display:inline-flex;align-items:center;gap:5px;margin-top:9px;padding:3px 8px;border:0;border-radius:7px;font-size:9px;line-height:1.4;font-weight:650;cursor:pointer}.badge>span{width:6px;height:6px;border-radius:50%;background:currentColor}.active{background:#E4F7EE;color:#13A36D}.inactive{background:#FFF0F2;color:#BE425A}.badge:disabled{opacity:.65;cursor:not-allowed}.more{position:relative;grid-column:3;grid-row:1;justify-self:end;align-self:start;z-index:3}.trigger{display:grid;place-items:center;width:25px;height:25px;padding:0;border:1px solid #EDEDF6;border-radius:8px;background:#FCFCFF;color:#555472;cursor:pointer}.trigger svg{width:14px;height:14px}.actions{position:absolute;right:10px;bottom:9px;display:flex;align-items:center;gap:9px}.edit{display:flex;align-items:center;justify-content:center;gap:6px;height:27px;min-width:54px;padding:0 10px;border:1px solid #EEEBFA;border-radius:8px;background:#F5F2FF;color:#343252;font-size:10px;font-weight:650;cursor:pointer}.edit svg{width:13px;height:13px;color:#6032E7;fill:#6032E715}.analytics{display:grid;place-items:center;width:28px;height:28px;padding:0;border:0;border-radius:50%;background:#F2EEFF;color:#9387C0;cursor:pointer}.analytics svg{width:15px;height:15px;stroke-width:2.6}.edit:hover,.analytics:hover,.link button:hover,.trigger:hover{background:#EAE3FE}.card button:focus-visible,.link a:focus-visible{outline:2px solid #8454DF;outline-offset:3px}.identity .badge{max-width:calc(100% - 85px)}
+.menu{position:absolute;right:0;top:39px;z-index:30;width:205px;padding:6px;background:#fff;border:1px solid #E8E1EF;border-radius:14px;box-shadow:0 16px 44px #23143B29}.menu button{width:100%;display:flex;align-items:center;gap:10px;padding:10px;border:0;border-radius:8px;background:transparent;color:#3B3248;text-align:left;font-size:12px;font-weight:600;cursor:pointer}.menu button svg{width:16px;height:16px}.menu button:hover,.menu button:focus-visible{background:#F4EFFB;outline:none}.menu .danger{color:#C12B42;border-top:1px solid #F0E9EF;margin-top:4px}
+@media(max-width:360px){.card{grid-template-columns:62px minmax(0,1fr) 25px;gap:0 7px}.art{width:62px}.thumbnail{width:55px;height:64px}.identity h3{font-size:11px}.actions{gap:5px}.edit{min-width:46px;padding:0 7px}.identity .badge{max-width:calc(100% - 65px)}}
+
+/* Light, finite motion; no render loop or layout changes. */
+.card{transition:transform .24s cubic-bezier(.2,.8,.2,1),box-shadow .24s ease,border-color .24s ease;animation:cardReveal .35s ease var(--card-delay,0ms) backwards}
+.thumbnail img{transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+.art:after{transition:transform .4s ease}
+.edit,.analytics,.trigger,.link button,.badge{transition:background .18s ease,transform .18s ease,box-shadow .18s ease}
+.edit{position:relative;overflow:hidden}
+.edit:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(100deg,transparent,#FFFFFFC9,transparent);transform:translateX(-140%) skewX(-20deg);transition:transform .5s ease}
+.card:focus-within{border-color:#CFC0EA;box-shadow:0 7px 20px #6C489514}
+.card.menuOpen{z-index:40;transform:none}
+.menu{animation:menuReveal .16s ease-out;transform-origin:top right}
+@media(hover:hover) and (pointer:fine){
+ .card:hover{transform:translateY(-3px);border-color:#D8C8F0;box-shadow:0 12px 28px #6F48A51A,0 3px 8px #40305B08}
+ .card:hover .thumbnail img{transform:scale(1.055)}
+ .card:hover .art:after{transform:rotate(-14deg) translate(3px,-2px)}
+ .edit:hover:after{transform:translateX(140%) skewX(-20deg)}
+ .edit:hover,.analytics:hover,.trigger:hover,.link button:hover{transform:translateY(-1px)}
+ .card.menuOpen:hover{transform:none}
+}
+.card button:active:not(:disabled){transform:scale(.96)}
+@keyframes cardReveal{from{opacity:0}to{opacity:1}}
+@keyframes menuReveal{from{opacity:0;transform:translateY(-4px) scale(.98)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.card,.menu{animation:none}.card,.thumbnail img,.art:after,.edit,.edit:after,.analytics,.trigger,.link button,.badge{transition:none}.card:hover,.card:hover .thumbnail img,.card:hover .art:after,.card button:hover,.card button:active:not(:disabled){transform:none}.edit:after{display:none}}
+
+/* Expressive card interactions, limited to devices with a real hover pointer. */
+.card{transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .3s ease,border-color .25s ease}
+.card button,.link a{transition:transform .25s cubic-bezier(.34,1.56,.64,1),background .2s ease,box-shadow .25s ease,color .2s ease}
+.card button svg,.link>svg{transition:transform .35s cubic-bezier(.34,1.56,.64,1),color .2s ease}
+.link a{display:inline-block;transform-origin:left center}
+.badge>span{transition:transform .25s ease,box-shadow .25s ease}
+.menu button{transform-origin:right center}
+@media(hover:hover) and (pointer:fine){
+ .card:hover{transform:translateY(-6px) scale(1.012);border-color:#BBA0E6;box-shadow:0 18px 36px #7044AC2B,0 5px 12px #49326512;z-index:2}
+ .card:hover .thumbnail img{transform:scale(1.12) rotate(-2deg)}
+ .card:hover .art:after{transform:rotate(3deg) translate(6px,-5px) scale(1.15)}
+ .card .edit:hover{transform:translateY(-3px) scale(1.06);background:#E5DAFF;box-shadow:0 7px 15px #7740D52B}
+ .edit:hover svg{transform:rotate(-16deg) scale(1.18)}
+ .card .analytics:hover{transform:translateY(-3px) scale(1.15);background:#E5DAFF;box-shadow:0 6px 15px #7740D52B}
+ .analytics:hover svg{transform:scale(1.16) rotate(8deg)}
+ .card .trigger:hover{transform:translateY(-2px) scale(1.12);box-shadow:0 5px 12px #62478620}
+ .trigger:hover svg{transform:rotate(90deg)}
+ .card .link button:hover{transform:translateY(-2px) rotate(-6deg) scale(1.16);box-shadow:0 5px 10px #7740D529}
+ .link button:hover svg{transform:scale(1.12)}
+ .link a:hover{color:#7141CE;transform:translateX(2px);text-decoration:underline;text-underline-offset:3px}
+ .card .badge:hover:not(:disabled){transform:translateY(-2px) scale(1.07);box-shadow:0 5px 12px #3932551A}
+ .badge:hover:not(:disabled)>span{transform:scale(1.25);box-shadow:0 0 0 4px #ffffff90}
+ .card .menu button:hover:not(:disabled){transform:translateX(-4px);background:#EDE4FC;box-shadow:3px 0 0 #9A73D4 inset}
+ .menu button:hover svg{transform:scale(1.15) rotate(-8deg)}
+ .card.menuOpen,.card.menuOpen:hover{z-index:40;transform:none}
+}
+.card button:active:not(:disabled){transform:scale(.89)!important;transition-duration:.08s;box-shadow:none}
+.link a:active{transform:scale(.95);transition-duration:.08s}
+.card button:focus-visible,.link a:focus-visible{outline:2px solid #8454DF;outline-offset:4px;box-shadow:0 0 0 5px #8454DF18}
+@media(prefers-reduced-motion:reduce){
+ .card,.card button,.card button svg,.link a,.link>svg,.badge>span{transition:none}
+ .card:hover,.card:hover .thumbnail img,.card:hover .art:after,.card button:hover,.card button:hover svg,.card .menu button:hover:not(:disabled),.card .badge:hover:not(:disabled),.badge:hover:not(:disabled)>span,.link a:hover,.link a:active,.card button:active:not(:disabled){transform:none!important}
+}
+
+/* Compact action menu with clear item-level feedback. */
+.menu{top:30px;width:169px;padding:4px;border-radius:10px;box-shadow:0 12px 30px #23143B24}
+.menu button{gap:7px;min-height:29px;padding:7px 8px;border-radius:6px;font-size:10px;line-height:1.35}
+.menu button svg{width:13px;height:13px;flex:none}
+.menu .danger{margin-top:3px;padding-top:8px}
+@media(hover:hover) and (pointer:fine){
+ .card .menu button:hover:not(:disabled){transform:translateX(-3px) scale(1.02);background:#E8DCFB;box-shadow:3px 0 0 #9765D9 inset}
+ .card .menu .danger:hover:not(:disabled){background:#FFF0F2;box-shadow:3px 0 0 #D94A63 inset}
+}
+@media(prefers-reduced-motion:reduce){.card .menu button:hover:not(:disabled){transform:none!important}}
+
+.price{margin-top:4px;font-size:12px;font-weight:750;color:#6941AC;line-height:18px}.badge:disabled{cursor:default}
+
+/* Portalled menus escape card transforms and scrolling/stacking containers. */
+.portalMenu{z-index:100010;box-sizing:border-box;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;font-family:var(--font-v11-body),Inter,Arial,sans-serif}
+.portalMenu button{transition:transform .2s cubic-bezier(.34,1.56,.64,1),background .18s,box-shadow .18s}
+.portalMenu button svg{transition:transform .2s ease}
+@media(hover:hover) and (pointer:fine){.portalMenu button:hover:not(:disabled){transform:translateX(-2px);background:#E8DCFB;box-shadow:3px 0 0 #9765D9 inset}.portalMenu button:hover svg{transform:scale(1.12) rotate(-8deg)}.portalMenu .danger:hover:not(:disabled){background:#FFF0F2;box-shadow:3px 0 0 #D94A63 inset}}
+.portalMenu button:active:not(:disabled){transform:scale(.96)}
+.portalMenu button:focus-visible{outline:2px solid #8454DF;outline-offset:-2px}
+@media(prefers-reduced-motion:reduce){.portalMenu button,.portalMenu button svg{transition:none}.portalMenu button:hover:not(:disabled),.portalMenu button:hover svg,.portalMenu button:active:not(:disabled){transform:none}}

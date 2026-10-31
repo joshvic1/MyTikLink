@@ -4,7 +4,7 @@ import { Trash2, Plus, Search } from "lucide-react";
 import { SummaryMetrics } from "../components/SummaryMetrics";
 import { notify } from "../components/Notifications";
 import { Button, EmptyState, PageHeader, Modal } from "../components/UI";
-import { WorkspaceCard } from "../components/WorkspaceCard";
+import LandingPageCard from "../components/LandingPageCard";
 import { v11Api, unwrapCollection } from "../lib/api";
 import { pageInitial, pageThumbnail } from "../lib/pagePresentation";
 import { pageUrl } from "../lib/pageUrl";
@@ -15,6 +15,8 @@ import styles from "../styles/v11.module.css";
 export function PagesPage({ onCreate, onLeads }) {
   const router = useRouter();
   const [query, setQuery] = useState(""), [search, setSearch] = useState(""), [number, setNumber] = useState(1);
+  const [actionId,setActionId]=useState(""), [stats,setStats]=useState(null);
+  const changePage=async(page,operation)=>{if(actionId)return;setActionId(page._id);try{await operation();await refresh()}catch(e){notify.error(e.message || "Could not update page")}finally{setActionId("")}};
   const [copiedId, setCopiedId] = useState("");
   const [pendingDelete, setPendingDelete] = useState(null), [deleting, setDeleting] = useState(false), [exporting, setExporting] = useState(false), [deleteError, setDeleteError] = useState("");
   const collection = usePageCollection(search, number);
@@ -36,7 +38,7 @@ export function PagesPage({ onCreate, onLeads }) {
     finally { setExporting(false); }
   };
   const copyUrl = async page => {
-    try { await navigator.clipboard.writeText(pageUrl(page)); setCopiedId(page._id); }
+    try { await navigator.clipboard.writeText(pageUrl(page)); setCopiedId(page._id); notify.success("Page link copied"); }
     catch { notify.error("Could not copy the page link."); }
   };
   useEffect(() => { if (!copiedId) return; const timer = setTimeout(() => setCopiedId(""), 1800); return () => clearTimeout(timer); }, [copiedId]);
@@ -44,23 +46,24 @@ export function PagesPage({ onCreate, onLeads }) {
     <PageHeader title="Landing pages"/>
     <SummaryMetrics label="Landing page statistics" items={[{ label: "Pages", value: summary?.pages ?? null }, { label: "Leads", value: summary?.leads ?? null }]}/>
     {(summary?.pages > 0 || query) && <div className={styles.landingPageToolbar}>
-      <label className={styles.search}><Search size={16} aria-hidden="true"/><input value={query} onChange={event => setQuery(event.target.value)} aria-label="Search landing pages" placeholder="Search your pages…"/></label>
+      <label className={styles.search}><span className={styles.searchIconChip}><Search size={16} strokeWidth={1.8} aria-hidden="true"/></span><input value={query} onChange={event => setQuery(event.target.value)} aria-label="Search landing pages" placeholder="Search your pages…"/></label>
       <Button className={styles.landingPageCreate} onClick={onCreate}><Plus size={16} aria-hidden="true"/>Create</Button>
     </div>}
     {error && <div className={styles.dataWarning} role="alert"><span>{error}{summary ? " Previously loaded information is still shown." : ""}</span><Button onClick={refresh}>Retry</Button></div>}
     {loading && <div className={`${styles.pageListLoading} ${summary ? styles.pageListRefreshing : ""}`} role="status" aria-busy="true" aria-label={summary ? "Updating landing pages" : "Loading landing pages"}><img className={styles.loadingBrand} src="/images/mytiklink-mark-black.png" alt="" width="64" height="64"/></div>}
-    {pages.length > 0 ? <div className={styles.workspaceCardGrid} aria-busy={loading}>{pages.map(page => {
+    {pages.length > 0 ? <div className={styles.workspaceCardGrid} aria-busy={loading}>{pages.map((page,index) => {
       const active = page.availability === "active";
-      return <WorkspaceCard key={page._id} thumbnail={pageThumbnail(page)} fallback={pageInitial(page)} title={page.title || "Untitled page"}
-        status={active ? "Active" : page.availability === "unverified" ? "Check access" : "Plan required"} statusTone={active ? "success" : "warning"}
-        url={pageUrl(page).replace(/^https?:\/\//, "")} href={pageUrl(page)} copied={copiedId === page._id} onCopy={page.availability !== "plan_required" ? () => copyUrl(page) : undefined}
-        onLeads={page.hasLeadForm || page.leadsCount > 0 ? () => onLeads(page, refresh) : undefined} leadsLabel={`View leads (${page.leadsCount})`}
-        primaryLabel="Edit page" onPrimary={() => router.push(`/v1-1/pages/${page.builderType === "custom" ? "builder" : "editor"}?pageId=${page._id}`)}
-        onDelete={() => { setDeleteError(""); setPendingDelete(page); }}/>
+      return <LandingPageCard key={page._id} index={index} page={page} thumbnail={pageThumbnail(page)} fallback={pageInitial(page)} url={pageUrl(page)} busy={!!actionId}
+        onCopy={()=>copyUrl(page)} onEdit={()=>router.push(`/v1-1/pages/${page.builderType === "custom" ? "builder" : "editor"}?pageId=${page._id}`)}
+        onLeads={()=>onLeads(page,refresh)} onStats={()=>setStats(page)}
+        onDuplicate={()=>changePage(page,async()=>{await v11Api.duplicatePage(page._id);notify.success("Page duplicated — the copy is inactive")})}
+        onToggle={isActive=>changePage(page,async()=>{await v11Api.setPageActive(page._id,isActive);notify.success(isActive?"Page activated":"Page deactivated")})}
+        onDelete={()=>{setDeleteError("");setPendingDelete(page)}}/>;
     })}</div> : !loading && !error && <EmptyState icon="▣" title={summary?.pages > 0 || search ? "No matching pages" : "Create your first landing page"}
       description={summary?.pages > 0 || search ? "Try a different search." : "Create a page to showcase your offer, collect customer details, or direct people to WhatsApp."}
       action={summary?.pages === 0 && !search ? <Button onClick={onCreate}><Plus size={16}/>Create landing page</Button> : <Button variant="secondary" onClick={() => setQuery("")}>Clear search</Button>}/>}
     {total > limit && <nav className={styles.pagePagination} aria-label="Landing page results"><Button variant="secondary" disabled={loading || page <= 1} onClick={() => setNumber(page - 1)}>Previous</Button><span>Page {page} of {Math.ceil(total / limit)}</span><Button variant="secondary" disabled={loading || page * limit >= total} onClick={() => setNumber(page + 1)}>Next</Button></nav>}
+    {stats && <Modal tone="teal" title="Views & clicks" description={stats.title} onClose={()=>setStats(null)} footer={<Button variant="secondary" onClick={()=>setStats(null)}>Close</Button>}><SummaryMetrics items={[{label:"Views",value:stats.viewsCount || 0},{label:"Clicks",value:stats.clicksCount || 0}]}/><p>Views count once per browser session per 30 minutes. Clicks count each action once in that window. Refreshes and repeated taps are deduplicated.</p><p>Tracking starts with this update. These are session-based counts, not unique people. Blocked tracking and offline visits may not be counted.</p></Modal>}
     {pendingDelete && <Modal className={styles.deleteConfirm} title="Delete landing page?" description="This action cannot be undone." onClose={() => { if (!deleting && !exporting) setPendingDelete(null); }}
       footer={<><Button variant="secondary" disabled={deleting || exporting} onClick={() => setPendingDelete(null)}>Keep page</Button><Button variant="danger" disabled={deleting || exporting} onClick={remove}>{deleting ? "Deleting…" : "Delete page and leads"}</Button></>}>
       <div className={styles.deleteConfirmIcon}><Trash2 size={22}/></div><h3>{pendingDelete.title || "Untitled page"}</h3><p>{pageUrl(pendingDelete)}</p>

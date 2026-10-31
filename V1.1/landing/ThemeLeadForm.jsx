@@ -20,6 +20,7 @@ export default function ThemeLeadForm({ section, page, preview, name, className 
     try {
       const result = await apiRequest(`/v1-1/pages/public/${encodeURIComponent(page.slug)}/lead`, {token:null, method:"POST",body:JSON.stringify({name:String(values.get("name")).trim(),whatsapp,company:values.get("company") || ""})});
       if (result?.success !== true) throw new Error("Your enquiry was not confirmed. Please try again.");
+      try { if (typeof document !== "undefined") document.dispatchEvent(new Event("v11:lead-success")); } catch {}
       setDone(true);setStatus(section.successMessage || "Thank you. Your enquiry has been received.");
     } catch(error) {setStatus(error.message || "Unable to send. Please try again.");} finally {inFlight.current = false;setBusy(false);}
   };

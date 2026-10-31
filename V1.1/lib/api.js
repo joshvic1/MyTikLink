@@ -23,7 +23,7 @@ export async function apiRequest(path, options = {}) {
   options.signal?.addEventListener("abort", abort, { once: true });
   const timer = timeoutMs > 0 ? setTimeout(abort, timeoutMs) : null;
   try {
-    const response = await fetch(`${path.startsWith("/v1-1/") ? v11ApiBase() : process.env.NEXT_PUBLIC_API_URL}${path}`, {
+    const response = await fetch(path.startsWith("/api/") ? path : `${path.startsWith("/v1-1/") ? v11ApiBase() : process.env.NEXT_PUBLIC_API_URL}${path}`, {
       ...requestOptions,
       signal: controller.signal,
       headers: {
@@ -59,7 +59,7 @@ export const v11Api = {
   plan: () => apiRequest("/users/plan"),
   onboarding: () => apiRequest("/v1-1/onboarding"),
   onboardingCategories: (query = "") => apiRequest(`/v1-1/onboarding/categories?query=${encodeURIComponent(query)}`),
-  generateBrandDescription: () => apiRequest("/v1-1/onboarding/generate-brand-description", { method: "POST", body: JSON.stringify({}), timeoutMs: 20000 }),
+  generateBrandDescription: () => apiRequest("/api/brand-description", { method: "POST", body: JSON.stringify({}), timeoutMs: 26000 }),
   saveOnboardingStage: (stage, payload) => apiRequest(`/v1-1/onboarding/stage/${encodeURIComponent(stage)}`, { method: "PUT", body: JSON.stringify(payload) }),
   completeOnboarding: () => apiRequest("/v1-1/onboarding/complete", { method: "POST" }),
   uploadImage: (file) => { const body = new FormData(); body.append("image", file); return apiRequest("/upload", { method: "POST", body }); },
@@ -88,7 +88,10 @@ export const v11Api = {
   },
   createLink: (payload) => apiRequest("/v1-1/links", { method: "POST", body: JSON.stringify(payload) }),
   updateLink: (id, payload) => apiRequest(`/v1-1/links/${encodeURIComponent(id)}`, { method: "PUT", body: JSON.stringify(payload) }),
+  setLinkActive: (id,isActive) => apiRequest(`/v1-1/links/${encodeURIComponent(id)}/active`,{method:"PATCH",body:JSON.stringify({isActive})}),
   deleteLink: (id) => apiRequest(`/v1-1/links/${encodeURIComponent(id)}`, { method: "DELETE" }),
+  setPageActive: (id,isActive) => apiRequest(`/v1-1/pages/${id}/active`,{method:"PATCH",body:JSON.stringify({isActive})}),
+  duplicatePage: (id) => apiRequest(`/v1-1/pages/${id}/duplicate`,{method:"POST",body:"{}"}),
   deletePage: (id) => apiRequest(`/v1-1/pages/${id}`, { method: "DELETE" }),
   paymentHistory: () => apiRequest("/payments/history"),
   initiatePayment: (plan, cycle, keepExpiry = false) => apiRequest("/payments/initiate", { method: "POST", body: JSON.stringify({ plan, cycle, keepExpiry }) }),

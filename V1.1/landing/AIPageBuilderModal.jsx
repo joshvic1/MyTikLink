@@ -153,7 +153,7 @@ export default function AIPageBuilderModal({ open, onClose, token, variant = "de
   };
 
   return (
-    <div className={`${styles.overlay} ${variant === "v11" ? styles.v11 : ""}`}>
+    <div data-keyboard-sheet="" className={`${styles.overlay} ${variant === "v11" ? styles.v11 : ""}`}>
       <div className={`${styles.modal} ${popup.surface}`} role="dialog" aria-modal="true" aria-label="Build a page with AI">
         <div className={`${styles.header} ${popup.header}`}>
           <div className={styles.brandIcon}>

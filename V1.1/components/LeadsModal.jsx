@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { FaWhatsapp } from "react-icons/fa";
 import { Search } from "lucide-react";
 import { Button, EmptyState, Modal } from "./UI";
 import { unwrapCollection, v11Api } from "../lib/api";
@@ -28,7 +29,7 @@ export function LeadsModal({ page, onClose }) {
     {error && <p role="alert" className={styles.inlineError}>{error}</p>}
     {filtered.length > 0 ? <div className={styles.leadList}>{filtered.map(lead => {
       const phone = normalizeLeadPhone(lead.whatsapp);
-      return <article key={lead._id}><span><b>{lead.name || "Unnamed lead"}</b><small>{lead.whatsapp}</small></span><small>{new Date(lead.createdAt).toLocaleString()}</small>{phone ? <a href={`https://wa.me/${phone.slice(1)}`} target="_blank" rel="noreferrer">Open WhatsApp →</a> : <small>Country code needed to open WhatsApp</small>}</article>;
+      return <article key={lead._id}><span><b>{lead.name || "Unnamed lead"}</b><small>{lead.whatsapp}</small></span><small>{new Date(lead.createdAt).toLocaleString()}</small>{phone ? <a href={`https://wa.me/${phone.slice(1)}`} target="_blank" rel="noreferrer"><FaWhatsapp aria-hidden="true"/> Message on WhatsApp</a> : <small>Country code needed to open WhatsApp</small>}</article>;
     })}</div> : !loading && !error && <EmptyState title={query ? "No matching leads" : "No leads here yet"} description={query ? "Try another name or WhatsApp number." : "Customer submissions from this page will appear here."}/>}
   </Modal>;
 }

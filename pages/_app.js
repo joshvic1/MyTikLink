@@ -1,3 +1,4 @@
+import KeyboardViewport from "@/V1.1/components/KeyboardViewport";
 import { V11Toaster } from "@/V1.1/components/Notifications";
 import "@/styles/globals.css";
 import { Toaster } from "react-hot-toast";
@@ -64,7 +65,7 @@ export default function App({ Component, pageProps }) {
 
   if (router.pathname === "/v1-1" || router.pathname.startsWith("/v1-1/")) {
     return <main className={plusJakarta.className} style={{ minHeight: "100dvh", background: "#fff" }}>
-      <Component {...pageProps} /><SmartAssistant hideLauncher /><V11Toaster />
+      <KeyboardViewport /><Component {...pageProps} /><SmartAssistant hideLauncher /><V11Toaster />
     </main>;
   }
 

@@ -775,3 +775,37 @@
 .v11AuthField input::placeholder{font-family:inherit;font-size:13px!important;font-weight:400;line-height:1.45!important;color:#8993A3;opacity:1}
 .v11AuthField input:-webkit-autofill,.v11AuthField input:-webkit-autofill:hover,.v11AuthField input:-webkit-autofill:focus{font-size:13px!important}
 .v11AuthField>span{font-size:11px!important;font-weight:600;line-height:1.4}
+
+/* Page/link search: one shared vertical centre for icon, value and placeholder. */
+.landingPageToolbar .search,.landingPagesView .landingPageToolbar .search{display:flex;align-items:center;gap:9px;height:44px;box-sizing:border-box;padding:0 11px;border:1px solid #E8E3EF;border-radius:11px;background:#fff}
+.landingPageToolbar .search input{display:block;flex:1;min-width:0;width:100%;height:100%;box-sizing:border-box;margin:0!important;padding:0!important;border:0!important;border-radius:0;background:transparent!important;box-shadow:none!important;font-family:inherit;font-weight:400;line-height:normal!important;letter-spacing:normal;text-align:left;outline:0}
+.landingPageToolbar .search input::placeholder{line-height:normal!important;font-weight:400;letter-spacing:normal;color:#9993A6;opacity:1}
+.landingPageToolbar .searchIconChip{display:grid;place-items:center;flex:0 0 27px;width:27px;height:27px;border-radius:8px;background:#F2EDFC;color:#8865BD}
+.landingPageToolbar .searchIconChip svg{display:block;position:static;width:16px;height:16px;margin:0;transform:none;color:inherit}
+.landingPageToolbar .search:focus-within{border-color:#B59AD9;box-shadow:0 0 0 3px #8655C810}
+
+/* Landing-page manager: consistent interaction feedback beyond the cards. */
+.landingPagesView .button{position:relative;overflow:hidden;transition:transform .24s cubic-bezier(.34,1.56,.64,1),box-shadow .24s ease,background .2s ease,filter .2s ease}
+.landingPagesView .button svg{transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+.landingPagesView .landingPageCreate:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(100deg,transparent,#FFFFFFA6,transparent);transform:translateX(-140%) skewX(-20deg);transition:transform .5s ease}
+.landingPagesView .landingPageToolbar .search{transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease}
+.landingPagesView .searchIconChip,.landingPagesView .searchIconChip svg{transition:transform .28s cubic-bezier(.34,1.56,.64,1),background .2s ease,color .2s ease}
+.landingPagesView .landingPageToolbar .search:focus-within{border-color:#A67FD8;box-shadow:0 0 0 4px #8655C817,0 5px 16px #7044AC0D}
+.landingPagesView .search:focus-within .searchIconChip{background:#E9DEFB;color:#7242B4}
+@media(hover:hover) and (pointer:fine){
+ .landingPagesView .button:hover:not(:disabled){transform:translateY(-3px);box-shadow:0 8px 18px #5C427A24;filter:saturate(1.1)}
+ .landingPagesView .landingPageCreate:hover:not(:disabled){transform:translateY(-3px) scale(1.04);box-shadow:0 9px 20px #80A51730}
+ .landingPagesView .landingPageCreate:hover:not(:disabled):after{transform:translateX(140%) skewX(-20deg)}
+ .landingPagesView .landingPageCreate:hover:not(:disabled) svg{transform:rotate(90deg) scale(1.12)}
+ .landingPagesView .landingPageToolbar .search:hover{transform:translateY(-1px);border-color:#CDB7E8;box-shadow:0 5px 14px #7044AC12}
+ .landingPagesView .search:hover .searchIconChip svg{transform:rotate(-12deg) scale(1.12)}
+ .landingPagesView .pagePagination .button:first-child:hover:not(:disabled){transform:translateX(-3px)}
+ .landingPagesView .pagePagination .button:last-child:hover:not(:disabled){transform:translateX(3px)}
+}
+.landingPagesView .button:active:not(:disabled){transform:scale(.94);box-shadow:none;transition-duration:.08s}
+.landingPagesView .button:focus-visible{outline:2px solid #8454DF;outline-offset:3px}
+@media(prefers-reduced-motion:reduce){
+ .landingPagesView .button,.landingPagesView .button svg,.landingPagesView .landingPageCreate:after,.landingPagesView .landingPageToolbar .search,.landingPagesView .searchIconChip,.landingPagesView .searchIconChip svg{transition:none}
+ .landingPagesView .button:hover:not(:disabled),.landingPagesView .button:active:not(:disabled),.landingPagesView .landingPageCreate:hover:not(:disabled) svg,.landingPagesView .landingPageToolbar .search:hover,.landingPagesView .search:hover .searchIconChip svg{transform:none}
+ .landingPagesView .landingPageCreate:after{display:none}
+}

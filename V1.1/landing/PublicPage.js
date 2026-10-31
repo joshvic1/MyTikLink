@@ -1,4 +1,5 @@
 "use client";
+import usePageAnalytics from "../lib/usePageAnalytics";
 import { v11ApiBase } from "../lib/apiBase";
 
 import { validateLeadPhoneInput, prepareLeadPhoneInput } from "@/V1.1/lib/leadPhone.js";
@@ -411,6 +412,7 @@ export default function PublicPage({ slug: providedSlug }) {
   const slug = providedSlug || router.query.slug;
 
   const [page, setPage] = useState(null);
+  usePageAnalytics(page);
   const [loading, setLoading] = useState(true);
   const COOLDOWN_MS = 2 * 60 * 1000; // 2 minutes
   const [cooldownActive, setCooldownActive] = useState(false);
@@ -559,6 +561,7 @@ export default function PublicPage({ slug: providedSlug }) {
           { name, whatsapp, company },
         );
 
+        document.dispatchEvent(new Event("v11:lead-success"));
         // ✅ SAVE COOLDOWN
         localStorage.setItem("submitted_" + slug, Date.now());
         setCooldownActive(true);
