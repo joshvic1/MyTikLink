@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "expectedCount": 735,
-  "readyCount": 136,
+  "readyCount": 735,
   "aspectRatio": 2,
   "baseUrl": "https://pub-e0ff826b0e9843069a4df3548bc6fa39.r2.dev",
   "entries": {
@@ -150,6 +150,376 @@
       "revision": "5f0aefb2ba6457a3",
       "parentId": null,
       "alt": "Illustrative agriculture & farming cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "arts-handmade/art-galleries": {
+      "assetKey": "arts-handmade--art-galleries",
+      "revision": "92b00001e72d967a",
+      "parentId": "arts-handmade",
+      "alt": "Illustrative art galleries cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "arts-handmade/art-supplies": {
+      "assetKey": "arts-handmade--art-supplies",
+      "revision": "0ae4cd839849f9b5",
+      "parentId": "arts-handmade",
+      "alt": "Illustrative art supplies cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "arts-handmade/beadwork": {
+      "assetKey": "arts-handmade--beadwork",
+      "revision": "6ac091a227818ec3",
+      "parentId": "arts-handmade",
+      "alt": "Illustrative beadwork cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "arts-handmade/calligraphy": {
+      "assetKey": "arts-handmade--calligraphy",
+      "revision": "db3375a28a692bc2",
+      "parentId": "arts-handmade",
+      "alt": "Illustrative calligraphy cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "arts-handmade/ceramics": {
+      "assetKey": "arts-handmade--ceramics",
+      "revision": "b510e3c15abb8724",
+      "parentId": "arts-handmade",
+      "alt": "Illustrative ceramics cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "arts-handmade/craft-workshops": {
+      "assetKey": "arts-handmade--craft-workshops",
+      "revision": "2d506f79dd7d8468",
+      "parentId": "arts-handmade",
+      "alt": "Illustrative craft workshops cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "arts-handmade/crochet": {
+      "assetKey": "arts-handmade--crochet",
+      "revision": "38a1485d102738b4",
+      "parentId": "arts-handmade",
+      "alt": "Illustrative crochet cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "arts-handmade/custom-portraits": {
+      "assetKey": "arts-handmade--custom-portraits",
+      "revision": "8b6bac7bbd572998",
+      "parentId": "arts-handmade",
+      "alt": "Illustrative custom portraits cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "arts-handmade/digital-art": {
+      "assetKey": "arts-handmade--digital-art",
+      "revision": "e55a70045ed499c4",
+      "parentId": "arts-handmade",
+      "alt": "Illustrative digital art cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "arts-handmade/fine-art": {
+      "assetKey": "arts-handmade--fine-art",
+      "revision": "3056dfbbaba0164c",
+      "parentId": "arts-handmade",
+      "alt": "Illustrative fine art cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "arts-handmade/graphic-design": {
+      "assetKey": "arts-handmade--graphic-design",
+      "revision": "60a082be9c0d78a1",
+      "parentId": "arts-handmade",
+      "alt": "Illustrative graphic design cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "arts-handmade/handmade-crafts": {
+      "assetKey": "arts-handmade--handmade-crafts",
+      "revision": "dc232a21a17c19b6",
+      "parentId": "arts-handmade",
+      "alt": "Illustrative handmade crafts cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "arts-handmade/handmade-gifts": {
+      "assetKey": "arts-handmade--handmade-gifts",
+      "revision": "f5c28c70e897f2d6",
+      "parentId": "arts-handmade",
+      "alt": "Illustrative handmade gifts cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "arts-handmade/illustration": {
+      "assetKey": "arts-handmade--illustration",
+      "revision": "0c961b82d75b4a86",
+      "parentId": "arts-handmade",
+      "alt": "Illustrative illustration cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "arts-handmade/knitting": {
+      "assetKey": "arts-handmade--knitting",
+      "revision": "ee41b4e0d40b3777",
+      "parentId": "arts-handmade",
+      "alt": "Illustrative knitting cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "arts-handmade/leathercraft": {
+      "assetKey": "arts-handmade--leathercraft",
+      "revision": "011ca2d0f5f0aa38",
+      "parentId": "arts-handmade",
+      "alt": "Illustrative leathercraft cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "arts-handmade/resin-art": {
+      "assetKey": "arts-handmade--resin-art",
+      "revision": "2082f91e6a56d4ab",
+      "parentId": "arts-handmade",
+      "alt": "Illustrative resin art cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "arts-handmade/sculpture": {
+      "assetKey": "arts-handmade--sculpture",
+      "revision": "119127133f2e9b30",
+      "parentId": "arts-handmade",
+      "alt": "Illustrative sculpture cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "arts-handmade/woodworking": {
+      "assetKey": "arts-handmade--woodworking",
+      "revision": "827cd7ee514ef2a2",
+      "parentId": "arts-handmade",
+      "alt": "Illustrative woodworking cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "arts-handmade": {
+      "assetKey": "arts-handmade",
+      "revision": "3251de43e70b6987",
+      "parentId": null,
+      "alt": "Illustrative arts & handmade cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "automotive/auto-electrical": {
+      "assetKey": "automotive--auto-electrical",
+      "revision": "a5f4561c23c42c89",
+      "parentId": "automotive",
+      "alt": "Illustrative auto electrical cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "automotive/auto-repairs": {
+      "assetKey": "automotive--auto-repairs",
+      "revision": "1928b6e57a7325de",
+      "parentId": "automotive",
+      "alt": "Illustrative auto repairs cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "automotive/auto-spare-parts": {
+      "assetKey": "automotive--auto-spare-parts",
+      "revision": "b88df4d037cb9efc",
+      "parentId": "automotive",
+      "alt": "Illustrative auto spare parts cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "automotive/car-accessories": {
+      "assetKey": "automotive--car-accessories",
+      "revision": "53b89d6bdff6e432",
+      "parentId": "automotive",
+      "alt": "Illustrative car accessories cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "automotive/car-dealerships": {
+      "assetKey": "automotive--car-dealerships",
+      "revision": "ca78d3f3e1fe7c67",
+      "parentId": "automotive",
+      "alt": "Illustrative car dealerships cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "automotive/car-rentals": {
+      "assetKey": "automotive--car-rentals",
+      "revision": "0c19da58786061a9",
+      "parentId": "automotive",
+      "alt": "Illustrative car rentals cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "automotive/car-wash": {
+      "assetKey": "automotive--car-wash",
+      "revision": "9f6fd709c4532db7",
+      "parentId": "automotive",
+      "alt": "Illustrative car wash cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "automotive/driving-instructors": {
+      "assetKey": "automotive--driving-instructors",
+      "revision": "3f683fc5e5799279",
+      "parentId": "automotive",
+      "alt": "Illustrative driving instructors cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "automotive/electric-vehicles": {
+      "assetKey": "automotive--electric-vehicles",
+      "revision": "6d5fcbb8070cfe01",
+      "parentId": "automotive",
+      "alt": "Illustrative electric vehicles cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "automotive/fleet-management": {
+      "assetKey": "automotive--fleet-management",
+      "revision": "75fe42e84f84c467",
+      "parentId": "automotive",
+      "alt": "Illustrative fleet management cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "automotive/motorcycle-repairs": {
+      "assetKey": "automotive--motorcycle-repairs",
+      "revision": "7d976b8b306abfbe",
+      "parentId": "automotive",
+      "alt": "Illustrative motorcycle repairs cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "automotive/motorcycles": {
+      "assetKey": "automotive--motorcycles",
+      "revision": "3dd00728b731ba8f",
+      "parentId": "automotive",
+      "alt": "Illustrative motorcycles cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "automotive/tyres-and-batteries": {
+      "assetKey": "automotive--tyres-and-batteries",
+      "revision": "2b914a1704c8754d",
+      "parentId": "automotive",
+      "alt": "Illustrative tyres and batteries cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "automotive/used-cars": {
+      "assetKey": "automotive--used-cars",
+      "revision": "49b9c7599de14b34",
+      "parentId": "automotive",
+      "alt": "Illustrative used cars cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "automotive/vehicle-inspections": {
+      "assetKey": "automotive--vehicle-inspections",
+      "revision": "d2e0a80844356f4b",
+      "parentId": "automotive",
+      "alt": "Illustrative vehicle inspections cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "automotive/vehicle-tracking": {
+      "assetKey": "automotive--vehicle-tracking",
+      "revision": "6acc7d322a4d8927",
+      "parentId": "automotive",
+      "alt": "Illustrative vehicle tracking cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "automotive": {
+      "assetKey": "automotive",
+      "revision": "da9d0b41bcd4ac54",
+      "parentId": null,
+      "alt": "Illustrative automotive cover",
       "focalPoint": {
         "x": 0.5,
         "y": 0.5
@@ -305,6 +675,1316 @@
         "y": 0.5
       }
     },
+    "books-stationery/audiobooks": {
+      "assetKey": "books-stationery--audiobooks",
+      "revision": "e0b09b57a8a9cf63",
+      "parentId": "books-stationery",
+      "alt": "Illustrative audiobooks cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "books-stationery/book-binding": {
+      "assetKey": "books-stationery--book-binding",
+      "revision": "cf3e50818c035a9a",
+      "parentId": "books-stationery",
+      "alt": "Illustrative book binding cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "books-stationery/bookstores": {
+      "assetKey": "books-stationery--bookstores",
+      "revision": "042f856e27918373",
+      "parentId": "books-stationery",
+      "alt": "Illustrative bookstores cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "books-stationery/custom-notebooks": {
+      "assetKey": "books-stationery--custom-notebooks",
+      "revision": "52e30ef7340fbeda",
+      "parentId": "books-stationery",
+      "alt": "Illustrative custom notebooks cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "books-stationery/digital-publishing": {
+      "assetKey": "books-stationery--digital-publishing",
+      "revision": "368e22a5a5ad8b48",
+      "parentId": "books-stationery",
+      "alt": "Illustrative digital publishing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "books-stationery/educational-books": {
+      "assetKey": "books-stationery--educational-books",
+      "revision": "fc2f9c58e8f10611",
+      "parentId": "books-stationery",
+      "alt": "Illustrative educational books cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "books-stationery/journals": {
+      "assetKey": "books-stationery--journals",
+      "revision": "2e35baf23caf5bac",
+      "parentId": "books-stationery",
+      "alt": "Illustrative journals cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "books-stationery/libraries": {
+      "assetKey": "books-stationery--libraries",
+      "revision": "4632776fbd1a17a8",
+      "parentId": "books-stationery",
+      "alt": "Illustrative libraries cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "books-stationery/office-equipment": {
+      "assetKey": "books-stationery--office-equipment",
+      "revision": "1efb28df07c0e0c4",
+      "parentId": "books-stationery",
+      "alt": "Illustrative office equipment cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "books-stationery/office-supplies": {
+      "assetKey": "books-stationery--office-supplies",
+      "revision": "92ce5c5162ac52b4",
+      "parentId": "books-stationery",
+      "alt": "Illustrative office supplies cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "books-stationery/photocopying": {
+      "assetKey": "books-stationery--photocopying",
+      "revision": "5976b5a6332f87d7",
+      "parentId": "books-stationery",
+      "alt": "Illustrative photocopying cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "books-stationery/religious-books": {
+      "assetKey": "books-stationery--religious-books",
+      "revision": "a08b9be276192b72",
+      "parentId": "books-stationery",
+      "alt": "Illustrative religious books cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "books-stationery/school-supplies": {
+      "assetKey": "books-stationery--school-supplies",
+      "revision": "32c17089af672c91",
+      "parentId": "books-stationery",
+      "alt": "Illustrative school supplies cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "books-stationery/stationery": {
+      "assetKey": "books-stationery--stationery",
+      "revision": "0248a2c037435d42",
+      "parentId": "books-stationery",
+      "alt": "Illustrative stationery cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "books-stationery": {
+      "assetKey": "books-stationery",
+      "revision": "dbc77dca01e82fa0",
+      "parentId": null,
+      "alt": "Illustrative books & stationery cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "children-family/baby-food": {
+      "assetKey": "children-family--baby-food",
+      "revision": "76b499820e2e1498",
+      "parentId": "children-family",
+      "alt": "Illustrative baby food cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "children-family/baby-products": {
+      "assetKey": "children-family--baby-products",
+      "revision": "3f10ec985e4f1958",
+      "parentId": "children-family",
+      "alt": "Illustrative baby products cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "children-family/babysitting": {
+      "assetKey": "children-family--babysitting",
+      "revision": "d3dd98934d953252",
+      "parentId": "children-family",
+      "alt": "Illustrative babysitting cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "children-family/child-photography": {
+      "assetKey": "children-family--child-photography",
+      "revision": "dab4e2a18350c175",
+      "parentId": "children-family",
+      "alt": "Illustrative child photography cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "children-family/childcare": {
+      "assetKey": "children-family--childcare",
+      "revision": "8002d0b42aa6cc11",
+      "parentId": "children-family",
+      "alt": "Illustrative childcare cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "children-family/childrens-parties": {
+      "assetKey": "children-family--childrens-parties",
+      "revision": "c6f6c80e1cf4b0dd",
+      "parentId": "children-family",
+      "alt": "Illustrative childrens parties cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "children-family/daycare": {
+      "assetKey": "children-family--daycare",
+      "revision": "be357d3ad91966bb",
+      "parentId": "children-family",
+      "alt": "Illustrative daycare cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "children-family/family-counseling": {
+      "assetKey": "children-family--family-counseling",
+      "revision": "6a4bc9cdbf16a0e4",
+      "parentId": "children-family",
+      "alt": "Illustrative family counseling cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "children-family/kids-clothing": {
+      "assetKey": "children-family--kids-clothing",
+      "revision": "4fb3c32c2f8870e1",
+      "parentId": "children-family",
+      "alt": "Illustrative kids clothing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "children-family/kids-education": {
+      "assetKey": "children-family--kids-education",
+      "revision": "0f0fba8656ccb252",
+      "parentId": "children-family",
+      "alt": "Illustrative kids education cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "children-family/maternity-products": {
+      "assetKey": "children-family--maternity-products",
+      "revision": "586fcefd4aa2f6f7",
+      "parentId": "children-family",
+      "alt": "Illustrative maternity products cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "children-family/nannies": {
+      "assetKey": "children-family--nannies",
+      "revision": "83936264d1450bf9",
+      "parentId": "children-family",
+      "alt": "Illustrative nannies cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "children-family/parenting-coaching": {
+      "assetKey": "children-family--parenting-coaching",
+      "revision": "ca64052ba3db7754",
+      "parentId": "children-family",
+      "alt": "Illustrative parenting coaching cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "children-family/play-centers": {
+      "assetKey": "children-family--play-centers",
+      "revision": "058d90589a5f6280",
+      "parentId": "children-family",
+      "alt": "Illustrative play centers cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "children-family/toys-and-games": {
+      "assetKey": "children-family--toys-and-games",
+      "revision": "e6e5fbdba4b99040",
+      "parentId": "children-family",
+      "alt": "Illustrative toys and games cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "children-family": {
+      "assetKey": "children-family",
+      "revision": "2524dd6c08078e43",
+      "parentId": null,
+      "alt": "Illustrative children & family cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "cleaning-maintenance/air-conditioner-repairs": {
+      "assetKey": "cleaning-maintenance--air-conditioner-repairs",
+      "revision": "f1dd995e62f26bee",
+      "parentId": "cleaning-maintenance",
+      "alt": "Illustrative air conditioner repairs cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "cleaning-maintenance/appliance-repairs": {
+      "assetKey": "cleaning-maintenance--appliance-repairs",
+      "revision": "e5e849b0cdf9f78f",
+      "parentId": "cleaning-maintenance",
+      "alt": "Illustrative appliance repairs cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "cleaning-maintenance/carpet-cleaning": {
+      "assetKey": "cleaning-maintenance--carpet-cleaning",
+      "revision": "d4d5a4d25ade16fb",
+      "parentId": "cleaning-maintenance",
+      "alt": "Illustrative carpet cleaning cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "cleaning-maintenance/commercial-cleaning": {
+      "assetKey": "cleaning-maintenance--commercial-cleaning",
+      "revision": "f412029bb7bd5a83",
+      "parentId": "cleaning-maintenance",
+      "alt": "Illustrative commercial cleaning cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "cleaning-maintenance/dry-cleaning": {
+      "assetKey": "cleaning-maintenance--dry-cleaning",
+      "revision": "aedf334c3dbd8de5",
+      "parentId": "cleaning-maintenance",
+      "alt": "Illustrative dry cleaning cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "cleaning-maintenance/electrical-repairs": {
+      "assetKey": "cleaning-maintenance--electrical-repairs",
+      "revision": "3d2a1cb493cde91d",
+      "parentId": "cleaning-maintenance",
+      "alt": "Illustrative electrical repairs cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "cleaning-maintenance/facility-maintenance": {
+      "assetKey": "cleaning-maintenance--facility-maintenance",
+      "revision": "f55d8d6d360df2da",
+      "parentId": "cleaning-maintenance",
+      "alt": "Illustrative facility maintenance cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "cleaning-maintenance/generator-servicing": {
+      "assetKey": "cleaning-maintenance--generator-servicing",
+      "revision": "50a02547ef18c728",
+      "parentId": "cleaning-maintenance",
+      "alt": "Illustrative generator servicing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "cleaning-maintenance/handyman": {
+      "assetKey": "cleaning-maintenance--handyman",
+      "revision": "360c7ee125ee8383",
+      "parentId": "cleaning-maintenance",
+      "alt": "Illustrative handyman cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "cleaning-maintenance/laundry": {
+      "assetKey": "cleaning-maintenance--laundry",
+      "revision": "38879176d5a89ec7",
+      "parentId": "cleaning-maintenance",
+      "alt": "Illustrative laundry cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "cleaning-maintenance/pest-control": {
+      "assetKey": "cleaning-maintenance--pest-control",
+      "revision": "425762ae58b4b047",
+      "parentId": "cleaning-maintenance",
+      "alt": "Illustrative pest control cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "cleaning-maintenance/plumbing-repairs": {
+      "assetKey": "cleaning-maintenance--plumbing-repairs",
+      "revision": "112974b386c8ba62",
+      "parentId": "cleaning-maintenance",
+      "alt": "Illustrative plumbing repairs cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "cleaning-maintenance/pool-cleaning": {
+      "assetKey": "cleaning-maintenance--pool-cleaning",
+      "revision": "d39dff9998be1e68",
+      "parentId": "cleaning-maintenance",
+      "alt": "Illustrative pool cleaning cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "cleaning-maintenance/residential-cleaning": {
+      "assetKey": "cleaning-maintenance--residential-cleaning",
+      "revision": "cea4807f40fcba08",
+      "parentId": "cleaning-maintenance",
+      "alt": "Illustrative residential cleaning cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "cleaning-maintenance/waste-removal": {
+      "assetKey": "cleaning-maintenance--waste-removal",
+      "revision": "f62fe8ac829619f0",
+      "parentId": "cleaning-maintenance",
+      "alt": "Illustrative waste removal cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "cleaning-maintenance": {
+      "assetKey": "cleaning-maintenance",
+      "revision": "b29f9935653b7f7b",
+      "parentId": null,
+      "alt": "Illustrative cleaning & maintenance cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "coaching-personal-development/academic-coaching": {
+      "assetKey": "coaching-personal-development--academic-coaching",
+      "revision": "80d65bedbf94d6b0",
+      "parentId": "coaching-personal-development",
+      "alt": "Illustrative academic coaching cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "coaching-personal-development/business-coaching": {
+      "assetKey": "coaching-personal-development--business-coaching",
+      "revision": "3b3d929d2172ab81",
+      "parentId": "coaching-personal-development",
+      "alt": "Illustrative business coaching cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "coaching-personal-development/career-coaching": {
+      "assetKey": "coaching-personal-development--career-coaching",
+      "revision": "78b10f64b9eb58bb",
+      "parentId": "coaching-personal-development",
+      "alt": "Illustrative career coaching cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "coaching-personal-development/communication-coaching": {
+      "assetKey": "coaching-personal-development--communication-coaching",
+      "revision": "634ad1540581d3ec",
+      "parentId": "coaching-personal-development",
+      "alt": "Illustrative communication coaching cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "coaching-personal-development/confidence-coaching": {
+      "assetKey": "coaching-personal-development--confidence-coaching",
+      "revision": "8659b0a909e186ca",
+      "parentId": "coaching-personal-development",
+      "alt": "Illustrative confidence coaching cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "coaching-personal-development/executive-coaching": {
+      "assetKey": "coaching-personal-development--executive-coaching",
+      "revision": "141a3bd6e7f769d7",
+      "parentId": "coaching-personal-development",
+      "alt": "Illustrative executive coaching cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "coaching-personal-development/financial-coaching": {
+      "assetKey": "coaching-personal-development--financial-coaching",
+      "revision": "1395838bb1be14e0",
+      "parentId": "coaching-personal-development",
+      "alt": "Illustrative financial coaching cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "coaching-personal-development/interview-preparation": {
+      "assetKey": "coaching-personal-development--interview-preparation",
+      "revision": "0f1993262eaf8172",
+      "parentId": "coaching-personal-development",
+      "alt": "Illustrative interview preparation cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "coaching-personal-development/leadership-coaching": {
+      "assetKey": "coaching-personal-development--leadership-coaching",
+      "revision": "70cd18aaea684b10",
+      "parentId": "coaching-personal-development",
+      "alt": "Illustrative leadership coaching cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "coaching-personal-development/life-coaching": {
+      "assetKey": "coaching-personal-development--life-coaching",
+      "revision": "a69c2b7c33dad901",
+      "parentId": "coaching-personal-development",
+      "alt": "Illustrative life coaching cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "coaching-personal-development/mentoring": {
+      "assetKey": "coaching-personal-development--mentoring",
+      "revision": "eca334826e4085ab",
+      "parentId": "coaching-personal-development",
+      "alt": "Illustrative mentoring cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "coaching-personal-development/productivity-coaching": {
+      "assetKey": "coaching-personal-development--productivity-coaching",
+      "revision": "70ff6976af120644",
+      "parentId": "coaching-personal-development",
+      "alt": "Illustrative productivity coaching cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "coaching-personal-development/public-speaking": {
+      "assetKey": "coaching-personal-development--public-speaking",
+      "revision": "a647f7b9327d6d76",
+      "parentId": "coaching-personal-development",
+      "alt": "Illustrative public speaking cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "coaching-personal-development/relationship-coaching": {
+      "assetKey": "coaching-personal-development--relationship-coaching",
+      "revision": "c98db03b300ab799",
+      "parentId": "coaching-personal-development",
+      "alt": "Illustrative relationship coaching cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "coaching-personal-development/resume-services": {
+      "assetKey": "coaching-personal-development--resume-services",
+      "revision": "5aea51db8c0e2e23",
+      "parentId": "coaching-personal-development",
+      "alt": "Illustrative resume services cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "coaching-personal-development": {
+      "assetKey": "coaching-personal-development",
+      "revision": "3edbdba22b7a7390",
+      "parentId": null,
+      "alt": "Illustrative coaching & personal development cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "construction-engineering/architecture": {
+      "assetKey": "construction-engineering--architecture",
+      "revision": "6cf0e85565d5dbfc",
+      "parentId": "construction-engineering",
+      "alt": "Illustrative architecture cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "construction-engineering/building-contractors": {
+      "assetKey": "construction-engineering--building-contractors",
+      "revision": "7a5e718e74775f2e",
+      "parentId": "construction-engineering",
+      "alt": "Illustrative building contractors cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "construction-engineering/building-materials": {
+      "assetKey": "construction-engineering--building-materials",
+      "revision": "b96361d9c223265c",
+      "parentId": "construction-engineering",
+      "alt": "Illustrative building materials cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "construction-engineering/civil-engineering": {
+      "assetKey": "construction-engineering--civil-engineering",
+      "revision": "ef388d892ac21e20",
+      "parentId": "construction-engineering",
+      "alt": "Illustrative civil engineering cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "construction-engineering/construction-equipment": {
+      "assetKey": "construction-engineering--construction-equipment",
+      "revision": "6f77a6abb40e6ef2",
+      "parentId": "construction-engineering",
+      "alt": "Illustrative construction equipment cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "construction-engineering/construction": {
+      "assetKey": "construction-engineering--construction",
+      "revision": "8f69f77344cd69ad",
+      "parentId": "construction-engineering",
+      "alt": "Illustrative construction cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "construction-engineering/electrical-engineering": {
+      "assetKey": "construction-engineering--electrical-engineering",
+      "revision": "e6ca9273f7b20e90",
+      "parentId": "construction-engineering",
+      "alt": "Illustrative electrical engineering cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "construction-engineering/electrical-installation": {
+      "assetKey": "construction-engineering--electrical-installation",
+      "revision": "be0ea6ec3a82aac2",
+      "parentId": "construction-engineering",
+      "alt": "Illustrative electrical installation cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "construction-engineering/land-surveying": {
+      "assetKey": "construction-engineering--land-surveying",
+      "revision": "1d3c7e26b0c8ee77",
+      "parentId": "construction-engineering",
+      "alt": "Illustrative land surveying cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "construction-engineering/mechanical-engineering": {
+      "assetKey": "construction-engineering--mechanical-engineering",
+      "revision": "b81e2ea9d696cc1d",
+      "parentId": "construction-engineering",
+      "alt": "Illustrative mechanical engineering cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "construction-engineering/painting": {
+      "assetKey": "construction-engineering--painting",
+      "revision": "42259a0886c34e11",
+      "parentId": "construction-engineering",
+      "alt": "Illustrative painting cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "construction-engineering/plumbing": {
+      "assetKey": "construction-engineering--plumbing",
+      "revision": "69cd1730ed680501",
+      "parentId": "construction-engineering",
+      "alt": "Illustrative plumbing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "construction-engineering/quantity-surveying": {
+      "assetKey": "construction-engineering--quantity-surveying",
+      "revision": "9d956cd251d9713f",
+      "parentId": "construction-engineering",
+      "alt": "Illustrative quantity surveying cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "construction-engineering/renovation": {
+      "assetKey": "construction-engineering--renovation",
+      "revision": "576355b28fc432d8",
+      "parentId": "construction-engineering",
+      "alt": "Illustrative renovation cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "construction-engineering/roofing": {
+      "assetKey": "construction-engineering--roofing",
+      "revision": "cb0bef711e4565a2",
+      "parentId": "construction-engineering",
+      "alt": "Illustrative roofing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "construction-engineering/structural-engineering": {
+      "assetKey": "construction-engineering--structural-engineering",
+      "revision": "8ec805b1b27365ef",
+      "parentId": "construction-engineering",
+      "alt": "Illustrative structural engineering cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "construction-engineering/tiling": {
+      "assetKey": "construction-engineering--tiling",
+      "revision": "39fefc169c489e02",
+      "parentId": "construction-engineering",
+      "alt": "Illustrative tiling cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "construction-engineering/welding": {
+      "assetKey": "construction-engineering--welding",
+      "revision": "949d1712d0a7d500",
+      "parentId": "construction-engineering",
+      "alt": "Illustrative welding cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "construction-engineering": {
+      "assetKey": "construction-engineering",
+      "revision": "c4018b3539361870",
+      "parentId": null,
+      "alt": "Illustrative construction & engineering cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "creators-personal-brands/beauty-creators": {
+      "assetKey": "creators-personal-brands--beauty-creators",
+      "revision": "94e94834ef7f4442",
+      "parentId": "creators-personal-brands",
+      "alt": "Illustrative beauty creators cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "creators-personal-brands/book-reviewers": {
+      "assetKey": "creators-personal-brands--book-reviewers",
+      "revision": "d3bcdc45d0c651e5",
+      "parentId": "creators-personal-brands",
+      "alt": "Illustrative book reviewers cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "creators-personal-brands/business-creators": {
+      "assetKey": "creators-personal-brands--business-creators",
+      "revision": "24189cbabd2a5d2b",
+      "parentId": "creators-personal-brands",
+      "alt": "Illustrative business creators cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "creators-personal-brands/comedy-creators": {
+      "assetKey": "creators-personal-brands--comedy-creators",
+      "revision": "6008606443b4b789",
+      "parentId": "creators-personal-brands",
+      "alt": "Illustrative comedy creators cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "creators-personal-brands/education-creators": {
+      "assetKey": "creators-personal-brands--education-creators",
+      "revision": "7e4a81a7d053e494",
+      "parentId": "creators-personal-brands",
+      "alt": "Illustrative education creators cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "creators-personal-brands/faith-creators": {
+      "assetKey": "creators-personal-brands--faith-creators",
+      "revision": "63570f5d6da6217b",
+      "parentId": "creators-personal-brands",
+      "alt": "Illustrative faith creators cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "creators-personal-brands/fashion-creators": {
+      "assetKey": "creators-personal-brands--fashion-creators",
+      "revision": "4621bc9634fb9e10",
+      "parentId": "creators-personal-brands",
+      "alt": "Illustrative fashion creators cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "creators-personal-brands/fitness-creators": {
+      "assetKey": "creators-personal-brands--fitness-creators",
+      "revision": "69e21ddeacf93558",
+      "parentId": "creators-personal-brands",
+      "alt": "Illustrative fitness creators cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "creators-personal-brands/food-creators": {
+      "assetKey": "creators-personal-brands--food-creators",
+      "revision": "a0c0397de847e3d9",
+      "parentId": "creators-personal-brands",
+      "alt": "Illustrative food creators cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "creators-personal-brands/gaming-streamers": {
+      "assetKey": "creators-personal-brands--gaming-streamers",
+      "revision": "7aa31df9ae681c79",
+      "parentId": "creators-personal-brands",
+      "alt": "Illustrative gaming streamers cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "creators-personal-brands/instagram-creators": {
+      "assetKey": "creators-personal-brands--instagram-creators",
+      "revision": "c59a3a4c8e429cc8",
+      "parentId": "creators-personal-brands",
+      "alt": "Illustrative instagram creators cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "creators-personal-brands/lifestyle-creators": {
+      "assetKey": "creators-personal-brands--lifestyle-creators",
+      "revision": "434c27694f02c245",
+      "parentId": "creators-personal-brands",
+      "alt": "Illustrative lifestyle creators cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "creators-personal-brands/motivational-creators": {
+      "assetKey": "creators-personal-brands--motivational-creators",
+      "revision": "81b797e8dda69765",
+      "parentId": "creators-personal-brands",
+      "alt": "Illustrative motivational creators cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "creators-personal-brands/movie-reviewers": {
+      "assetKey": "creators-personal-brands--movie-reviewers",
+      "revision": "f6db908e0fbb645d",
+      "parentId": "creators-personal-brands",
+      "alt": "Illustrative movie reviewers cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "creators-personal-brands/music-creators": {
+      "assetKey": "creators-personal-brands--music-creators",
+      "revision": "075e31ce2548a0f9",
+      "parentId": "creators-personal-brands",
+      "alt": "Illustrative music creators cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "creators-personal-brands/newsletter-creators": {
+      "assetKey": "creators-personal-brands--newsletter-creators",
+      "revision": "376c909f14104284",
+      "parentId": "creators-personal-brands",
+      "alt": "Illustrative newsletter creators cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "creators-personal-brands/parenting-creators": {
+      "assetKey": "creators-personal-brands--parenting-creators",
+      "revision": "66ae39d41992fb55",
+      "parentId": "creators-personal-brands",
+      "alt": "Illustrative parenting creators cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "creators-personal-brands/podcasters": {
+      "assetKey": "creators-personal-brands--podcasters",
+      "revision": "117d40db6b55d1a0",
+      "parentId": "creators-personal-brands",
+      "alt": "Illustrative podcasters cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "creators-personal-brands/sports-creators": {
+      "assetKey": "creators-personal-brands--sports-creators",
+      "revision": "215792359f004bdc",
+      "parentId": "creators-personal-brands",
+      "alt": "Illustrative sports creators cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "creators-personal-brands/storytelling-creators": {
+      "assetKey": "creators-personal-brands--storytelling-creators",
+      "revision": "2a85c430949811f2",
+      "parentId": "creators-personal-brands",
+      "alt": "Illustrative storytelling creators cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "creators-personal-brands/tech-creators": {
+      "assetKey": "creators-personal-brands--tech-creators",
+      "revision": "2843484401feadb2",
+      "parentId": "creators-personal-brands",
+      "alt": "Illustrative tech creators cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "creators-personal-brands/tiktok-creators": {
+      "assetKey": "creators-personal-brands--tiktok-creators",
+      "revision": "e1e786757259daec",
+      "parentId": "creators-personal-brands",
+      "alt": "Illustrative tiktok creators cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "creators-personal-brands/travel-creators": {
+      "assetKey": "creators-personal-brands--travel-creators",
+      "revision": "26fd6b92b6ddb461",
+      "parentId": "creators-personal-brands",
+      "alt": "Illustrative travel creators cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "creators-personal-brands/ugc-creators": {
+      "assetKey": "creators-personal-brands--ugc-creators",
+      "revision": "2a3c9a79cbb79fb1",
+      "parentId": "creators-personal-brands",
+      "alt": "Illustrative ugc creators cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "creators-personal-brands/youtubers": {
+      "assetKey": "creators-personal-brands--youtubers",
+      "revision": "5c5850b176f0444b",
+      "parentId": "creators-personal-brands",
+      "alt": "Illustrative youtubers cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "creators-personal-brands": {
+      "assetKey": "creators-personal-brands",
+      "revision": "86bafb447cd43a36",
+      "parentId": null,
+      "alt": "Illustrative creators & personal brands cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "digital-products-online-business/affiliate-websites": {
+      "assetKey": "digital-products-online-business--affiliate-websites",
+      "revision": "76d27a0865b19209",
+      "parentId": "digital-products-online-business",
+      "alt": "Illustrative affiliate websites cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "digital-products-online-business/ai-prompts": {
+      "assetKey": "digital-products-online-business--ai-prompts",
+      "revision": "828459a2893fd527",
+      "parentId": "digital-products-online-business",
+      "alt": "Illustrative ai prompts cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "digital-products-online-business/canva-templates": {
+      "assetKey": "digital-products-online-business--canva-templates",
+      "revision": "7605b6158055d1b3",
+      "parentId": "digital-products-online-business",
+      "alt": "Illustrative canva templates cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "digital-products-online-business/design-assets": {
+      "assetKey": "digital-products-online-business--design-assets",
+      "revision": "044253a6101875e8",
+      "parentId": "digital-products-online-business",
+      "alt": "Illustrative design assets cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "digital-products-online-business/digital-downloads": {
+      "assetKey": "digital-products-online-business--digital-downloads",
+      "revision": "f07cde8c532ddc44",
+      "parentId": "digital-products-online-business",
+      "alt": "Illustrative digital downloads cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "digital-products-online-business/digital-memberships": {
+      "assetKey": "digital-products-online-business--digital-memberships",
+      "revision": "6a8fbc6681b1dbdc",
+      "parentId": "digital-products-online-business",
+      "alt": "Illustrative digital memberships cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "digital-products-online-business/digital-planners": {
+      "assetKey": "digital-products-online-business--digital-planners",
+      "revision": "e32a539b70b5772d",
+      "parentId": "digital-products-online-business",
+      "alt": "Illustrative digital planners cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "digital-products-online-business/digital-subscriptions": {
+      "assetKey": "digital-products-online-business--digital-subscriptions",
+      "revision": "13bf4df603bfe426",
+      "parentId": "digital-products-online-business",
+      "alt": "Illustrative digital subscriptions cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "digital-products-online-business/digital-templates": {
+      "assetKey": "digital-products-online-business--digital-templates",
+      "revision": "71af00fdd1861324",
+      "parentId": "digital-products-online-business",
+      "alt": "Illustrative digital templates cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "digital-products-online-business/ebooks": {
+      "assetKey": "digital-products-online-business--ebooks",
+      "revision": "cb82bd847a9ab1d7",
+      "parentId": "digital-products-online-business",
+      "alt": "Illustrative ebooks cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "digital-products-online-business/newsletter-subscriptions": {
+      "assetKey": "digital-products-online-business--newsletter-subscriptions",
+      "revision": "6d47b1dab5f75cb0",
+      "parentId": "digital-products-online-business",
+      "alt": "Illustrative newsletter subscriptions cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "digital-products-online-business/notion-templates": {
+      "assetKey": "digital-products-online-business--notion-templates",
+      "revision": "e828dd296ab73e3c",
+      "parentId": "digital-products-online-business",
+      "alt": "Illustrative notion templates cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "digital-products-online-business/online-coaching-products": {
+      "assetKey": "digital-products-online-business--online-coaching-products",
+      "revision": "6714d54b0bbc8607",
+      "parentId": "digital-products-online-business",
+      "alt": "Illustrative online coaching products cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "digital-products-online-business/online-courses": {
+      "assetKey": "digital-products-online-business--online-courses",
+      "revision": "da02c774d339137d",
+      "parentId": "digital-products-online-business",
+      "alt": "Illustrative online courses cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "digital-products-online-business/paid-communities": {
+      "assetKey": "digital-products-online-business--paid-communities",
+      "revision": "63d1a685beb93635",
+      "parentId": "digital-products-online-business",
+      "alt": "Illustrative paid communities cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "digital-products-online-business/software-licenses": {
+      "assetKey": "digital-products-online-business--software-licenses",
+      "revision": "3a16ce5851090f7c",
+      "parentId": "digital-products-online-business",
+      "alt": "Illustrative software licenses cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "digital-products-online-business/spreadsheets": {
+      "assetKey": "digital-products-online-business--spreadsheets",
+      "revision": "56631bafa1132383",
+      "parentId": "digital-products-online-business",
+      "alt": "Illustrative spreadsheets cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "digital-products-online-business/stock-photos": {
+      "assetKey": "digital-products-online-business--stock-photos",
+      "revision": "ba9918e01593d1a3",
+      "parentId": "digital-products-online-business",
+      "alt": "Illustrative stock photos cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "digital-products-online-business/stock-videos": {
+      "assetKey": "digital-products-online-business--stock-videos",
+      "revision": "ab3c9837d7cc2730",
+      "parentId": "digital-products-online-business",
+      "alt": "Illustrative stock videos cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "digital-products-online-business/virtual-events": {
+      "assetKey": "digital-products-online-business--virtual-events",
+      "revision": "e055b1e3b663f22d",
+      "parentId": "digital-products-online-business",
+      "alt": "Illustrative virtual events cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "digital-products-online-business/website-templates": {
+      "assetKey": "digital-products-online-business--website-templates",
+      "revision": "ab2dc6f61ea322c2",
+      "parentId": "digital-products-online-business",
+      "alt": "Illustrative website templates cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "digital-products-online-business": {
+      "assetKey": "digital-products-online-business",
+      "revision": "9ee1b3dac211cba9",
+      "parentId": null,
+      "alt": "Illustrative digital products & online business cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "education-training/art-schools": {
+      "assetKey": "education-training--art-schools",
+      "revision": "413f7f6d2c7ec2c8",
+      "parentId": "education-training",
+      "alt": "Illustrative art schools cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
     "education-training/business-training": {
       "assetKey": "education-training--business-training",
       "revision": "5fddaae32a8ddca8",
@@ -345,11 +2025,51 @@
         "y": 0.5
       }
     },
+    "education-training/driving-schools": {
+      "assetKey": "education-training--driving-schools",
+      "revision": "d2d7240c8187585d",
+      "parentId": "education-training",
+      "alt": "Illustrative driving schools cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "education-training/edtech": {
+      "assetKey": "education-training--edtech",
+      "revision": "bfa3039bd818ef6a",
+      "parentId": "education-training",
+      "alt": "Illustrative edtech cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "education-training/education-consulting": {
+      "assetKey": "education-training--education-consulting",
+      "revision": "7af5309d4cf31dbf",
+      "parentId": "education-training",
+      "alt": "Illustrative education consulting cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
     "education-training/exam-preparation": {
       "assetKey": "education-training--exam-preparation",
       "revision": "63630a692f533d1b",
       "parentId": "education-training",
       "alt": "Illustrative exam preparation cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "education-training/language-schools": {
+      "assetKey": "education-training--language-schools",
+      "revision": "37af7d08411a7c2d",
+      "parentId": "education-training",
+      "alt": "Illustrative language schools cover",
       "focalPoint": {
         "x": 0.5,
         "y": 0.5
@@ -405,6 +2125,16 @@
         "y": 0.5
       }
     },
+    "education-training/study-abroad-consulting": {
+      "assetKey": "education-training--study-abroad-consulting",
+      "revision": "1e8b6652fc8a7bbc",
+      "parentId": "education-training",
+      "alt": "Illustrative study abroad consulting cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
     "education-training/tutoring": {
       "assetKey": "education-training--tutoring",
       "revision": "212dfad5cd8b1ebc",
@@ -425,11 +2155,561 @@
         "y": 0.5
       }
     },
+    "education-training/vocational-schools": {
+      "assetKey": "education-training--vocational-schools",
+      "revision": "8be0096521b101f9",
+      "parentId": "education-training",
+      "alt": "Illustrative vocational schools cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
     "education-training": {
       "assetKey": "education-training",
       "revision": "50d5b98fc03f7f87",
       "parentId": null,
       "alt": "Illustrative education & training cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "electronics-gadgets/audio-equipment": {
+      "assetKey": "electronics-gadgets--audio-equipment",
+      "revision": "39d49066dda1f86d",
+      "parentId": "electronics-gadgets",
+      "alt": "Illustrative audio equipment cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "electronics-gadgets/cameras": {
+      "assetKey": "electronics-gadgets--cameras",
+      "revision": "3fb366483532cfe4",
+      "parentId": "electronics-gadgets",
+      "alt": "Illustrative cameras cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "electronics-gadgets/computer-repairs": {
+      "assetKey": "electronics-gadgets--computer-repairs",
+      "revision": "e4f9ec06f3029030",
+      "parentId": "electronics-gadgets",
+      "alt": "Illustrative computer repairs cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "electronics-gadgets/consumer-electronics": {
+      "assetKey": "electronics-gadgets--consumer-electronics",
+      "revision": "d70d82fd3045e782",
+      "parentId": "electronics-gadgets",
+      "alt": "Illustrative consumer electronics cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "electronics-gadgets/electronics-wholesale": {
+      "assetKey": "electronics-gadgets--electronics-wholesale",
+      "revision": "cce0d1cb14a6d932",
+      "parentId": "electronics-gadgets",
+      "alt": "Illustrative electronics wholesale cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "electronics-gadgets/gaming-consoles": {
+      "assetKey": "electronics-gadgets--gaming-consoles",
+      "revision": "63de907d6a23026d",
+      "parentId": "electronics-gadgets",
+      "alt": "Illustrative gaming consoles cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "electronics-gadgets/home-appliances": {
+      "assetKey": "electronics-gadgets--home-appliances",
+      "revision": "b44935769db36a4d",
+      "parentId": "electronics-gadgets",
+      "alt": "Illustrative home appliances cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "electronics-gadgets/laptops": {
+      "assetKey": "electronics-gadgets--laptops",
+      "revision": "ae008185f00963c3",
+      "parentId": "electronics-gadgets",
+      "alt": "Illustrative laptops cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "electronics-gadgets/mobile-phones": {
+      "assetKey": "electronics-gadgets--mobile-phones",
+      "revision": "32a3fc0999f99cd8",
+      "parentId": "electronics-gadgets",
+      "alt": "Illustrative mobile phones cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "electronics-gadgets/phone-accessories": {
+      "assetKey": "electronics-gadgets--phone-accessories",
+      "revision": "2911106b48afe40e",
+      "parentId": "electronics-gadgets",
+      "alt": "Illustrative phone accessories cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "electronics-gadgets/phone-repairs": {
+      "assetKey": "electronics-gadgets--phone-repairs",
+      "revision": "3ae898ab42fc2a6b",
+      "parentId": "electronics-gadgets",
+      "alt": "Illustrative phone repairs cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "electronics-gadgets/refurbished-devices": {
+      "assetKey": "electronics-gadgets--refurbished-devices",
+      "revision": "7164ceac0f5b7d20",
+      "parentId": "electronics-gadgets",
+      "alt": "Illustrative refurbished devices cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "electronics-gadgets/smart-watches": {
+      "assetKey": "electronics-gadgets--smart-watches",
+      "revision": "f8098d93d7145f3f",
+      "parentId": "electronics-gadgets",
+      "alt": "Illustrative smart watches cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "electronics-gadgets/televisions": {
+      "assetKey": "electronics-gadgets--televisions",
+      "revision": "565049439d6e3a4d",
+      "parentId": "electronics-gadgets",
+      "alt": "Illustrative televisions cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "electronics-gadgets/wearables": {
+      "assetKey": "electronics-gadgets--wearables",
+      "revision": "9b500cfb93f463b1",
+      "parentId": "electronics-gadgets",
+      "alt": "Illustrative wearables cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "electronics-gadgets": {
+      "assetKey": "electronics-gadgets",
+      "revision": "e3c77c7b95b21f2c",
+      "parentId": null,
+      "alt": "Illustrative electronics & gadgets cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "energy-environment/batteries-and-inverters": {
+      "assetKey": "energy-environment--batteries-and-inverters",
+      "revision": "48debc62fcc31e0c",
+      "parentId": "energy-environment",
+      "alt": "Illustrative batteries and inverters cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "energy-environment/clean-cooking": {
+      "assetKey": "energy-environment--clean-cooking",
+      "revision": "fc1daa28bdfa89b7",
+      "parentId": "energy-environment",
+      "alt": "Illustrative clean cooking cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "energy-environment/climate-technology": {
+      "assetKey": "energy-environment--climate-technology",
+      "revision": "391b1761f846781f",
+      "parentId": "energy-environment",
+      "alt": "Illustrative climate technology cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "energy-environment/electric-power": {
+      "assetKey": "energy-environment--electric-power",
+      "revision": "22ecfb8b52d6b7bf",
+      "parentId": "energy-environment",
+      "alt": "Illustrative electric power cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "energy-environment/energy-efficiency": {
+      "assetKey": "energy-environment--energy-efficiency",
+      "revision": "b0cadeb8f67fb32e",
+      "parentId": "energy-environment",
+      "alt": "Illustrative energy efficiency cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "energy-environment/environmental-consulting": {
+      "assetKey": "energy-environment--environmental-consulting",
+      "revision": "1478c9d5c8f1e013",
+      "parentId": "energy-environment",
+      "alt": "Illustrative environmental consulting cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "energy-environment/ev-charging": {
+      "assetKey": "energy-environment--ev-charging",
+      "revision": "511ef7ab229ce280",
+      "parentId": "energy-environment",
+      "alt": "Illustrative ev charging cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "energy-environment/generators": {
+      "assetKey": "energy-environment--generators",
+      "revision": "ce79ad5a086d3206",
+      "parentId": "energy-environment",
+      "alt": "Illustrative generators cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "energy-environment/oil-and-gas": {
+      "assetKey": "energy-environment--oil-and-gas",
+      "revision": "dd96f07e3e49f2fb",
+      "parentId": "energy-environment",
+      "alt": "Illustrative oil and gas cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "energy-environment/recycling": {
+      "assetKey": "energy-environment--recycling",
+      "revision": "139c28efec80cdfe",
+      "parentId": "energy-environment",
+      "alt": "Illustrative recycling cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "energy-environment/renewable-energy": {
+      "assetKey": "energy-environment--renewable-energy",
+      "revision": "42b78607025a93cf",
+      "parentId": "energy-environment",
+      "alt": "Illustrative renewable energy cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "energy-environment/solar-equipment": {
+      "assetKey": "energy-environment--solar-equipment",
+      "revision": "41887c4914c42927",
+      "parentId": "energy-environment",
+      "alt": "Illustrative solar equipment cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "energy-environment/solar-installation": {
+      "assetKey": "energy-environment--solar-installation",
+      "revision": "6fb74b198aa8ade7",
+      "parentId": "energy-environment",
+      "alt": "Illustrative solar installation cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "energy-environment/sustainability": {
+      "assetKey": "energy-environment--sustainability",
+      "revision": "efbfa87617c3b843",
+      "parentId": "energy-environment",
+      "alt": "Illustrative sustainability cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "energy-environment/waste-management": {
+      "assetKey": "energy-environment--waste-management",
+      "revision": "3c8135610751f40e",
+      "parentId": "energy-environment",
+      "alt": "Illustrative waste management cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "energy-environment/water-supply": {
+      "assetKey": "energy-environment--water-supply",
+      "revision": "eba0d3eab3039206",
+      "parentId": "energy-environment",
+      "alt": "Illustrative water supply cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "energy-environment/water-treatment": {
+      "assetKey": "energy-environment--water-treatment",
+      "revision": "4ac5cb0d8096e178",
+      "parentId": "energy-environment",
+      "alt": "Illustrative water treatment cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "energy-environment": {
+      "assetKey": "energy-environment",
+      "revision": "4814005aad59fc84",
+      "parentId": null,
+      "alt": "Illustrative energy & environment cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "events-celebrations/balloons": {
+      "assetKey": "events-celebrations--balloons",
+      "revision": "89a8b24b8f121025",
+      "parentId": "events-celebrations",
+      "alt": "Illustrative balloons cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "events-celebrations/birthday-parties": {
+      "assetKey": "events-celebrations--birthday-parties",
+      "revision": "028dcdaefdd805c6",
+      "parentId": "events-celebrations",
+      "alt": "Illustrative birthday parties cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "events-celebrations/conferences": {
+      "assetKey": "events-celebrations--conferences",
+      "revision": "0c4021711ea99774",
+      "parentId": "events-celebrations",
+      "alt": "Illustrative conferences cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "events-celebrations/corporate-events": {
+      "assetKey": "events-celebrations--corporate-events",
+      "revision": "e084b73115b4bde0",
+      "parentId": "events-celebrations",
+      "alt": "Illustrative corporate events cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "events-celebrations/djs": {
+      "assetKey": "events-celebrations--djs",
+      "revision": "6fe166bdf1eebd0a",
+      "parentId": "events-celebrations",
+      "alt": "Illustrative djs cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "events-celebrations/event-catering": {
+      "assetKey": "events-celebrations--event-catering",
+      "revision": "3dbf251a1ea6976f",
+      "parentId": "events-celebrations",
+      "alt": "Illustrative event catering cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "events-celebrations/event-decoration": {
+      "assetKey": "events-celebrations--event-decoration",
+      "revision": "55c0ea699b0b7150",
+      "parentId": "events-celebrations",
+      "alt": "Illustrative event decoration cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "events-celebrations/event-photography": {
+      "assetKey": "events-celebrations--event-photography",
+      "revision": "40ea8eb878dace57",
+      "parentId": "events-celebrations",
+      "alt": "Illustrative event photography cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "events-celebrations/event-planning": {
+      "assetKey": "events-celebrations--event-planning",
+      "revision": "4c65998848504de0",
+      "parentId": "events-celebrations",
+      "alt": "Illustrative event planning cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "events-celebrations/event-rentals": {
+      "assetKey": "events-celebrations--event-rentals",
+      "revision": "2ef01916dd6b3e82",
+      "parentId": "events-celebrations",
+      "alt": "Illustrative event rentals cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "events-celebrations/event-venues": {
+      "assetKey": "events-celebrations--event-venues",
+      "revision": "426132a064fddf7e",
+      "parentId": "events-celebrations",
+      "alt": "Illustrative event venues cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "events-celebrations/event-videography": {
+      "assetKey": "events-celebrations--event-videography",
+      "revision": "ae19f318e2920c20",
+      "parentId": "events-celebrations",
+      "alt": "Illustrative event videography cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "events-celebrations/festivals": {
+      "assetKey": "events-celebrations--festivals",
+      "revision": "e8468752177be0a6",
+      "parentId": "events-celebrations",
+      "alt": "Illustrative festivals cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "events-celebrations/florists": {
+      "assetKey": "events-celebrations--florists",
+      "revision": "17eb9a97d875f3a2",
+      "parentId": "events-celebrations",
+      "alt": "Illustrative florists cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "events-celebrations/funeral-services": {
+      "assetKey": "events-celebrations--funeral-services",
+      "revision": "7f6f245fb3e8ef86",
+      "parentId": "events-celebrations",
+      "alt": "Illustrative funeral services cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "events-celebrations/mcs": {
+      "assetKey": "events-celebrations--mcs",
+      "revision": "252e448992ea9373",
+      "parentId": "events-celebrations",
+      "alt": "Illustrative mcs cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "events-celebrations/party-supplies": {
+      "assetKey": "events-celebrations--party-supplies",
+      "revision": "32017c9be87b817e",
+      "parentId": "events-celebrations",
+      "alt": "Illustrative party supplies cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "events-celebrations/ticketing": {
+      "assetKey": "events-celebrations--ticketing",
+      "revision": "268ef6442f792df0",
+      "parentId": "events-celebrations",
+      "alt": "Illustrative ticketing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "events-celebrations/wedding-planning": {
+      "assetKey": "events-celebrations--wedding-planning",
+      "revision": "7261a8b6a23d59d3",
+      "parentId": "events-celebrations",
+      "alt": "Illustrative wedding planning cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "events-celebrations": {
+      "assetKey": "events-celebrations",
+      "revision": "20960c49b2bbf9b3",
+      "parentId": null,
+      "alt": "Illustrative events & celebrations cover",
       "focalPoint": {
         "x": 0.5,
         "y": 0.5
@@ -625,6 +2905,186 @@
         "y": 0.5
       }
     },
+    "finance-insurance/accounting-software": {
+      "assetKey": "finance-insurance--accounting-software",
+      "revision": "f30275a1e70ca4e4",
+      "parentId": "finance-insurance",
+      "alt": "Illustrative accounting software cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "finance-insurance/banking": {
+      "assetKey": "finance-insurance--banking",
+      "revision": "886ba7aa91a09fbf",
+      "parentId": "finance-insurance",
+      "alt": "Illustrative banking cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "finance-insurance/financial-advisory": {
+      "assetKey": "finance-insurance--financial-advisory",
+      "revision": "e96b2b37406fc88b",
+      "parentId": "finance-insurance",
+      "alt": "Illustrative financial advisory cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "finance-insurance/financial-planning": {
+      "assetKey": "finance-insurance--financial-planning",
+      "revision": "7e0b9a06b1ff0365",
+      "parentId": "finance-insurance",
+      "alt": "Illustrative financial planning cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "finance-insurance/fintech": {
+      "assetKey": "finance-insurance--fintech",
+      "revision": "a6de84f2cb96aa74",
+      "parentId": "finance-insurance",
+      "alt": "Illustrative fintech cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "finance-insurance/foreign-exchange": {
+      "assetKey": "finance-insurance--foreign-exchange",
+      "revision": "20a44fe74c727801",
+      "parentId": "finance-insurance",
+      "alt": "Illustrative foreign exchange cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "finance-insurance/insurance-agencies": {
+      "assetKey": "finance-insurance--insurance-agencies",
+      "revision": "87e4123e6a49d447",
+      "parentId": "finance-insurance",
+      "alt": "Illustrative insurance agencies cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "finance-insurance/insurance-brokerage": {
+      "assetKey": "finance-insurance--insurance-brokerage",
+      "revision": "8dc7559713645777",
+      "parentId": "finance-insurance",
+      "alt": "Illustrative insurance brokerage cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "finance-insurance/investment-advisory": {
+      "assetKey": "finance-insurance--investment-advisory",
+      "revision": "636e6196326c7376",
+      "parentId": "finance-insurance",
+      "alt": "Illustrative investment advisory cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "finance-insurance/lending": {
+      "assetKey": "finance-insurance--lending",
+      "revision": "60b0fb8186f5d10b",
+      "parentId": "finance-insurance",
+      "alt": "Illustrative lending cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "finance-insurance/microfinance": {
+      "assetKey": "finance-insurance--microfinance",
+      "revision": "6db3f2e8ba74548f",
+      "parentId": "finance-insurance",
+      "alt": "Illustrative microfinance cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "finance-insurance/payment-processing": {
+      "assetKey": "finance-insurance--payment-processing",
+      "revision": "ada5ea83395b40ee",
+      "parentId": "finance-insurance",
+      "alt": "Illustrative payment processing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "finance-insurance/personal-finance-education": {
+      "assetKey": "finance-insurance--personal-finance-education",
+      "revision": "75b57479d3809a63",
+      "parentId": "finance-insurance",
+      "alt": "Illustrative personal finance education cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "finance-insurance/remittances": {
+      "assetKey": "finance-insurance--remittances",
+      "revision": "fc41b9429527dad0",
+      "parentId": "finance-insurance",
+      "alt": "Illustrative remittances cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "finance-insurance/savings-cooperatives": {
+      "assetKey": "finance-insurance--savings-cooperatives",
+      "revision": "3efa47bd05b47d8a",
+      "parentId": "finance-insurance",
+      "alt": "Illustrative savings cooperatives cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "finance-insurance/tax-preparation": {
+      "assetKey": "finance-insurance--tax-preparation",
+      "revision": "50c87e32c0f77747",
+      "parentId": "finance-insurance",
+      "alt": "Illustrative tax preparation cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "finance-insurance/wealth-management": {
+      "assetKey": "finance-insurance--wealth-management",
+      "revision": "6b43c143f7b1d0dd",
+      "parentId": "finance-insurance",
+      "alt": "Illustrative wealth management cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "finance-insurance": {
+      "assetKey": "finance-insurance",
+      "revision": "af0e17e33c922522",
+      "parentId": null,
+      "alt": "Illustrative finance & insurance cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
     "fitness-wellness/boxing": {
       "assetKey": "fitness-wellness--boxing",
       "revision": "039b5cf98f1701f2",
@@ -650,6 +3110,16 @@
       "revision": "17108369027e7cc2",
       "parentId": "fitness-wellness",
       "alt": "Illustrative fitness coaching cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "fitness-wellness/fitness-equipment": {
+      "assetKey": "fitness-wellness--fitness-equipment",
+      "revision": "5d5e634b4e0d6ce1",
+      "parentId": "fitness-wellness",
+      "alt": "Illustrative fitness equipment cover",
       "focalPoint": {
         "x": 0.5,
         "y": 0.5
@@ -700,6 +3170,16 @@
       "revision": "74b98bec4dc0fd29",
       "parentId": "fitness-wellness",
       "alt": "Illustrative pilates cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "fitness-wellness/sports-academies": {
+      "assetKey": "fitness-wellness--sports-academies",
+      "revision": "9517847e3b41f4db",
+      "parentId": "fitness-wellness",
+      "alt": "Illustrative sports academies cover",
       "focalPoint": {
         "x": 0.5,
         "y": 0.5
@@ -965,6 +3445,116 @@
         "y": 0.5
       }
     },
+    "government-civic/civic-technology": {
+      "assetKey": "government-civic--civic-technology",
+      "revision": "0be93a5a59690a94",
+      "parentId": "government-civic",
+      "alt": "Illustrative civic technology cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "government-civic/community-development": {
+      "assetKey": "government-civic--community-development",
+      "revision": "51dd8810ddeaeebe",
+      "parentId": "government-civic",
+      "alt": "Illustrative community development cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "government-civic/government-agencies": {
+      "assetKey": "government-civic--government-agencies",
+      "revision": "f11d454df5ee5850",
+      "parentId": "government-civic",
+      "alt": "Illustrative government agencies cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "government-civic/government-training": {
+      "assetKey": "government-civic--government-training",
+      "revision": "37854e44f794c185",
+      "parentId": "government-civic",
+      "alt": "Illustrative government training cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "government-civic/local-government": {
+      "assetKey": "government-civic--local-government",
+      "revision": "e51ec215030b5037",
+      "parentId": "government-civic",
+      "alt": "Illustrative local government cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "government-civic/public-awareness": {
+      "assetKey": "government-civic--public-awareness",
+      "revision": "52af5edfab65707e",
+      "parentId": "government-civic",
+      "alt": "Illustrative public awareness cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "government-civic/public-information-portals": {
+      "assetKey": "government-civic--public-information-portals",
+      "revision": "3229482ccd73c91f",
+      "parentId": "government-civic",
+      "alt": "Illustrative public information portals cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "government-civic/public-procurement": {
+      "assetKey": "government-civic--public-procurement",
+      "revision": "2a90d5501bf59e49",
+      "parentId": "government-civic",
+      "alt": "Illustrative public procurement cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "government-civic/public-sector-consulting": {
+      "assetKey": "government-civic--public-sector-consulting",
+      "revision": "96ccb4779df92bf0",
+      "parentId": "government-civic",
+      "alt": "Illustrative public sector consulting cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "government-civic/public-utilities": {
+      "assetKey": "government-civic--public-utilities",
+      "revision": "1d9c3b2698316621",
+      "parentId": "government-civic",
+      "alt": "Illustrative public utilities cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "government-civic": {
+      "assetKey": "government-civic",
+      "revision": "095aa43e952f8b28",
+      "parentId": null,
+      "alt": "Illustrative government & civic cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
     "hair-grooming/barbershops": {
       "assetKey": "hair-grooming--barbershops",
       "revision": "1a5f1788759b94dd",
@@ -980,6 +3570,16 @@
       "revision": "91129189ad15deac",
       "parentId": "hair-grooming",
       "alt": "Illustrative beard grooming cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "hair-grooming/braiding": {
+      "assetKey": "hair-grooming--braiding",
+      "revision": "cfab3439678cafb1",
+      "parentId": "hair-grooming",
+      "alt": "Illustrative braiding cover",
       "focalPoint": {
         "x": 0.5,
         "y": 0.5
@@ -1165,6 +3765,16 @@
         "y": 0.5
       }
     },
+    "health-medical/medical-equipment": {
+      "assetKey": "health-medical--medical-equipment",
+      "revision": "b96938134b472cfa",
+      "parentId": "health-medical",
+      "alt": "Illustrative medical equipment cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
     "health-medical/medical-laboratories": {
       "assetKey": "health-medical--medical-laboratories",
       "revision": "ec392273a74feebd",
@@ -1190,6 +3800,16 @@
       "revision": "cfc302404f4890dc",
       "parentId": "health-medical",
       "alt": "Illustrative nutrition cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "health-medical/optometry": {
+      "assetKey": "health-medical--optometry",
+      "revision": "b4122fe1342064d9",
+      "parentId": "health-medical",
+      "alt": "Illustrative optometry cover",
       "focalPoint": {
         "x": 0.5,
         "y": 0.5
@@ -1225,11 +3845,311 @@
         "y": 0.5
       }
     },
+    "health-medical/telemedicine": {
+      "assetKey": "health-medical--telemedicine",
+      "revision": "2d4a6024532e0fd5",
+      "parentId": "health-medical",
+      "alt": "Illustrative telemedicine cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
     "health-medical": {
       "assetKey": "health-medical",
       "revision": "5e4c4f3b694cb847",
       "parentId": null,
       "alt": "Illustrative health & medical cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "home-interiors/bedding": {
+      "assetKey": "home-interiors--bedding",
+      "revision": "c383bf06d3eef99e",
+      "parentId": "home-interiors",
+      "alt": "Illustrative bedding cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "home-interiors/cabinetry": {
+      "assetKey": "home-interiors--cabinetry",
+      "revision": "69fd2c618256d493",
+      "parentId": "home-interiors",
+      "alt": "Illustrative cabinetry cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "home-interiors/carpets": {
+      "assetKey": "home-interiors--carpets",
+      "revision": "b22453830fcb2843",
+      "parentId": "home-interiors",
+      "alt": "Illustrative carpets cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "home-interiors/curtains": {
+      "assetKey": "home-interiors--curtains",
+      "revision": "5acf6e9371d6dc8a",
+      "parentId": "home-interiors",
+      "alt": "Illustrative curtains cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "home-interiors/furniture-manufacturing": {
+      "assetKey": "home-interiors--furniture-manufacturing",
+      "revision": "6892b0cfb1f85588",
+      "parentId": "home-interiors",
+      "alt": "Illustrative furniture manufacturing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "home-interiors/furniture-retail": {
+      "assetKey": "home-interiors--furniture-retail",
+      "revision": "37bd6c2c3c4186e8",
+      "parentId": "home-interiors",
+      "alt": "Illustrative furniture retail cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "home-interiors/gardening": {
+      "assetKey": "home-interiors--gardening",
+      "revision": "b42bff01bf4526d1",
+      "parentId": "home-interiors",
+      "alt": "Illustrative gardening cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "home-interiors/home-appliances": {
+      "assetKey": "home-interiors--home-appliances",
+      "revision": "6e46e30218fc033a",
+      "parentId": "home-interiors",
+      "alt": "Illustrative home appliances cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "home-interiors/home-decor": {
+      "assetKey": "home-interiors--home-decor",
+      "revision": "e43809e947e18b24",
+      "parentId": "home-interiors",
+      "alt": "Illustrative home decor cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "home-interiors/home-improvement": {
+      "assetKey": "home-interiors--home-improvement",
+      "revision": "b98db1fb7f1bba6e",
+      "parentId": "home-interiors",
+      "alt": "Illustrative home improvement cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "home-interiors/home-organization": {
+      "assetKey": "home-interiors--home-organization",
+      "revision": "7d65285b9c09bf5f",
+      "parentId": "home-interiors",
+      "alt": "Illustrative home organization cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "home-interiors/interior-design": {
+      "assetKey": "home-interiors--interior-design",
+      "revision": "2fcbd356522dbdaa",
+      "parentId": "home-interiors",
+      "alt": "Illustrative interior design cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "home-interiors/kitchenware": {
+      "assetKey": "home-interiors--kitchenware",
+      "revision": "5be44bce77ffa262",
+      "parentId": "home-interiors",
+      "alt": "Illustrative kitchenware cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "home-interiors/lighting": {
+      "assetKey": "home-interiors--lighting",
+      "revision": "a7f5b652b6ea4dcc",
+      "parentId": "home-interiors",
+      "alt": "Illustrative lighting cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "home-interiors/smart-home": {
+      "assetKey": "home-interiors--smart-home",
+      "revision": "fc9327af7d6448b2",
+      "parentId": "home-interiors",
+      "alt": "Illustrative smart home cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "home-interiors/upholstery": {
+      "assetKey": "home-interiors--upholstery",
+      "revision": "67c949a9ddd5a87f",
+      "parentId": "home-interiors",
+      "alt": "Illustrative upholstery cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "home-interiors": {
+      "assetKey": "home-interiors",
+      "revision": "a4561bc3e5b57a99",
+      "parentId": null,
+      "alt": "Illustrative home & interiors cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "import-export/commodity-trading": {
+      "assetKey": "import-export--commodity-trading",
+      "revision": "ddcbd988c022265f",
+      "parentId": "import-export",
+      "alt": "Illustrative commodity trading cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "import-export/cross-border-ecommerce": {
+      "assetKey": "import-export--cross-border-ecommerce",
+      "revision": "813a027da6ce4fc9",
+      "parentId": "import-export",
+      "alt": "Illustrative cross border ecommerce cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "import-export/customs-brokerage": {
+      "assetKey": "import-export--customs-brokerage",
+      "revision": "d0469b23ef355f4a",
+      "parentId": "import-export",
+      "alt": "Illustrative customs brokerage cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "import-export/export-businesses": {
+      "assetKey": "import-export--export-businesses",
+      "revision": "8d04cae038867e40",
+      "parentId": "import-export",
+      "alt": "Illustrative export businesses cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "import-export/export-packaging": {
+      "assetKey": "import-export--export-packaging",
+      "revision": "3c56269e1fff7e02",
+      "parentId": "import-export",
+      "alt": "Illustrative export packaging cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "import-export/import-businesses": {
+      "assetKey": "import-export--import-businesses",
+      "revision": "9d44b9c0f2d01466",
+      "parentId": "import-export",
+      "alt": "Illustrative import businesses cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "import-export/international-distribution": {
+      "assetKey": "import-export--international-distribution",
+      "revision": "38662b3c371eb67d",
+      "parentId": "import-export",
+      "alt": "Illustrative international distribution cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "import-export/international-sourcing": {
+      "assetKey": "import-export--international-sourcing",
+      "revision": "76cd995dab8d0a4e",
+      "parentId": "import-export",
+      "alt": "Illustrative international sourcing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "import-export/international-wholesale": {
+      "assetKey": "import-export--international-wholesale",
+      "revision": "1fdcd5cb1f2e43f3",
+      "parentId": "import-export",
+      "alt": "Illustrative international wholesale cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "import-export/trade-consulting": {
+      "assetKey": "import-export--trade-consulting",
+      "revision": "4247e2d5370955ed",
+      "parentId": "import-export",
+      "alt": "Illustrative trade consulting cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "import-export/trade-documentation": {
+      "assetKey": "import-export--trade-documentation",
+      "revision": "4f3869e925003fc3",
+      "parentId": "import-export",
+      "alt": "Illustrative trade documentation cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "import-export": {
+      "assetKey": "import-export",
+      "revision": "b21e2fe9de0f04a7",
+      "parentId": null,
+      "alt": "Illustrative import & export cover",
       "focalPoint": {
         "x": 0.5,
         "y": 0.5
@@ -1360,6 +4280,3076 @@
       "revision": "cc5f8460e398b64c",
       "parentId": null,
       "alt": "Illustrative jewelry & accessories cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "manufacturing-industry/chemicals": {
+      "assetKey": "manufacturing-industry--chemicals",
+      "revision": "696208750783662a",
+      "parentId": "manufacturing-industry",
+      "alt": "Illustrative chemicals cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "manufacturing-industry/cosmetics-manufacturing": {
+      "assetKey": "manufacturing-industry--cosmetics-manufacturing",
+      "revision": "f4853dfafd281ff8",
+      "parentId": "manufacturing-industry",
+      "alt": "Illustrative cosmetics manufacturing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "manufacturing-industry/electronics-assembly": {
+      "assetKey": "manufacturing-industry--electronics-assembly",
+      "revision": "e04a4c5e9afdcd40",
+      "parentId": "manufacturing-industry",
+      "alt": "Illustrative electronics assembly cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "manufacturing-industry/food-manufacturing": {
+      "assetKey": "manufacturing-industry--food-manufacturing",
+      "revision": "529c1f5701751dc8",
+      "parentId": "manufacturing-industry",
+      "alt": "Illustrative food manufacturing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "manufacturing-industry/furniture-manufacturing": {
+      "assetKey": "manufacturing-industry--furniture-manufacturing",
+      "revision": "1d77e9ad362e5881",
+      "parentId": "manufacturing-industry",
+      "alt": "Illustrative furniture manufacturing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "manufacturing-industry/garment-manufacturing": {
+      "assetKey": "manufacturing-industry--garment-manufacturing",
+      "revision": "13ac67c2f2ad96ea",
+      "parentId": "manufacturing-industry",
+      "alt": "Illustrative garment manufacturing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "manufacturing-industry/industrial-equipment": {
+      "assetKey": "manufacturing-industry--industrial-equipment",
+      "revision": "65f2397dba0e2541",
+      "parentId": "manufacturing-industry",
+      "alt": "Illustrative industrial equipment cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "manufacturing-industry/industrial-maintenance": {
+      "assetKey": "manufacturing-industry--industrial-maintenance",
+      "revision": "4f66915f6ed8e1d1",
+      "parentId": "manufacturing-industry",
+      "alt": "Illustrative industrial maintenance cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "manufacturing-industry/machinery-manufacturing": {
+      "assetKey": "manufacturing-industry--machinery-manufacturing",
+      "revision": "1606e3c06387bbfa",
+      "parentId": "manufacturing-industry",
+      "alt": "Illustrative machinery manufacturing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "manufacturing-industry/metal-fabrication": {
+      "assetKey": "manufacturing-industry--metal-fabrication",
+      "revision": "183a4eeed579dc49",
+      "parentId": "manufacturing-industry",
+      "alt": "Illustrative metal fabrication cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "manufacturing-industry/packaging-manufacturing": {
+      "assetKey": "manufacturing-industry--packaging-manufacturing",
+      "revision": "a4594a38b03321e8",
+      "parentId": "manufacturing-industry",
+      "alt": "Illustrative packaging manufacturing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "manufacturing-industry/paper-manufacturing": {
+      "assetKey": "manufacturing-industry--paper-manufacturing",
+      "revision": "8732fb5e3a68548a",
+      "parentId": "manufacturing-industry",
+      "alt": "Illustrative paper manufacturing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "manufacturing-industry/pharmaceutical-manufacturing": {
+      "assetKey": "manufacturing-industry--pharmaceutical-manufacturing",
+      "revision": "304c45eb2b686acf",
+      "parentId": "manufacturing-industry",
+      "alt": "Illustrative pharmaceutical manufacturing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "manufacturing-industry/plastics": {
+      "assetKey": "manufacturing-industry--plastics",
+      "revision": "07468913c3dc65fe",
+      "parentId": "manufacturing-industry",
+      "alt": "Illustrative plastics cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "manufacturing-industry/quality-testing": {
+      "assetKey": "manufacturing-industry--quality-testing",
+      "revision": "7bcf4cfbe9f36dc2",
+      "parentId": "manufacturing-industry",
+      "alt": "Illustrative quality testing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "manufacturing-industry/textile-manufacturing": {
+      "assetKey": "manufacturing-industry--textile-manufacturing",
+      "revision": "8db32b2ead62e70e",
+      "parentId": "manufacturing-industry",
+      "alt": "Illustrative textile manufacturing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "manufacturing-industry": {
+      "assetKey": "manufacturing-industry",
+      "revision": "d55acc0b2a2867aa",
+      "parentId": null,
+      "alt": "Illustrative manufacturing & industry cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "marketing-advertising/affiliate-marketing": {
+      "assetKey": "marketing-advertising--affiliate-marketing",
+      "revision": "2b46dc979cc5a9fd",
+      "parentId": "marketing-advertising",
+      "alt": "Illustrative affiliate marketing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "marketing-advertising/brand-strategy": {
+      "assetKey": "marketing-advertising--brand-strategy",
+      "revision": "aa971ac24e994f78",
+      "parentId": "marketing-advertising",
+      "alt": "Illustrative brand strategy cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "marketing-advertising/content-marketing": {
+      "assetKey": "marketing-advertising--content-marketing",
+      "revision": "d054f0601ee43937",
+      "parentId": "marketing-advertising",
+      "alt": "Illustrative content marketing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "marketing-advertising/copywriting": {
+      "assetKey": "marketing-advertising--copywriting",
+      "revision": "a45ab446a165849b",
+      "parentId": "marketing-advertising",
+      "alt": "Illustrative copywriting cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "marketing-advertising/digital-marketing": {
+      "assetKey": "marketing-advertising--digital-marketing",
+      "revision": "7928fa2b0717df7f",
+      "parentId": "marketing-advertising",
+      "alt": "Illustrative digital marketing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "marketing-advertising/email-marketing": {
+      "assetKey": "marketing-advertising--email-marketing",
+      "revision": "84160d0bed8532c6",
+      "parentId": "marketing-advertising",
+      "alt": "Illustrative email marketing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "marketing-advertising/facebook-ads": {
+      "assetKey": "marketing-advertising--facebook-ads",
+      "revision": "fbf18e5566f699a5",
+      "parentId": "marketing-advertising",
+      "alt": "Illustrative facebook ads cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "marketing-advertising/google-ads": {
+      "assetKey": "marketing-advertising--google-ads",
+      "revision": "a0e3fd006ec97ba2",
+      "parentId": "marketing-advertising",
+      "alt": "Illustrative google ads cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "marketing-advertising/influencer-marketing": {
+      "assetKey": "marketing-advertising--influencer-marketing",
+      "revision": "04a649deca4aa2c2",
+      "parentId": "marketing-advertising",
+      "alt": "Illustrative influencer marketing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "marketing-advertising/lead-generation": {
+      "assetKey": "marketing-advertising--lead-generation",
+      "revision": "c3c2ba2fdc85aeff",
+      "parentId": "marketing-advertising",
+      "alt": "Illustrative lead generation cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "marketing-advertising/market-research": {
+      "assetKey": "marketing-advertising--market-research",
+      "revision": "5565654298eee401",
+      "parentId": "marketing-advertising",
+      "alt": "Illustrative market research cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "marketing-advertising/media-buying": {
+      "assetKey": "marketing-advertising--media-buying",
+      "revision": "c7a3935e4419ce16",
+      "parentId": "marketing-advertising",
+      "alt": "Illustrative media buying cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "marketing-advertising/paid-advertising": {
+      "assetKey": "marketing-advertising--paid-advertising",
+      "revision": "bc057cb22285a96a",
+      "parentId": "marketing-advertising",
+      "alt": "Illustrative paid advertising cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "marketing-advertising/public-relations": {
+      "assetKey": "marketing-advertising--public-relations",
+      "revision": "94bb7125c4c6a0e4",
+      "parentId": "marketing-advertising",
+      "alt": "Illustrative public relations cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "marketing-advertising/sales-consulting": {
+      "assetKey": "marketing-advertising--sales-consulting",
+      "revision": "f5c08b28a69af4a2",
+      "parentId": "marketing-advertising",
+      "alt": "Illustrative sales consulting cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "marketing-advertising/sem": {
+      "assetKey": "marketing-advertising--sem",
+      "revision": "e9c6281493e3b834",
+      "parentId": "marketing-advertising",
+      "alt": "Illustrative sem cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "marketing-advertising/seo": {
+      "assetKey": "marketing-advertising--seo",
+      "revision": "8e4f80c0b1df3eef",
+      "parentId": "marketing-advertising",
+      "alt": "Illustrative seo cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "marketing-advertising/social-media-management": {
+      "assetKey": "marketing-advertising--social-media-management",
+      "revision": "6e9d741b27cbcdbc",
+      "parentId": "marketing-advertising",
+      "alt": "Illustrative social media management cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "marketing-advertising/social-media-marketing": {
+      "assetKey": "marketing-advertising--social-media-marketing",
+      "revision": "a0f0e8c5ff1f219a",
+      "parentId": "marketing-advertising",
+      "alt": "Illustrative social media marketing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "marketing-advertising/tiktok-ads": {
+      "assetKey": "marketing-advertising--tiktok-ads",
+      "revision": "2d57343bd2504529",
+      "parentId": "marketing-advertising",
+      "alt": "Illustrative tiktok ads cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "marketing-advertising": {
+      "assetKey": "marketing-advertising",
+      "revision": "cc874f6a229565be",
+      "parentId": null,
+      "alt": "Illustrative marketing & advertising cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "media-entertainment/animation": {
+      "assetKey": "media-entertainment--animation",
+      "revision": "2e6a439af1b29232",
+      "parentId": "media-entertainment",
+      "alt": "Illustrative animation cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "media-entertainment/authors": {
+      "assetKey": "media-entertainment--authors",
+      "revision": "d6307a1c2cf65bda",
+      "parentId": "media-entertainment",
+      "alt": "Illustrative authors cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "media-entertainment/comedy": {
+      "assetKey": "media-entertainment--comedy",
+      "revision": "c64a14ae3b7fe8a1",
+      "parentId": "media-entertainment",
+      "alt": "Illustrative comedy cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "media-entertainment/digital-publications": {
+      "assetKey": "media-entertainment--digital-publications",
+      "revision": "054c1d63a2627614",
+      "parentId": "media-entertainment",
+      "alt": "Illustrative digital publications cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "media-entertainment/djs": {
+      "assetKey": "media-entertainment--djs",
+      "revision": "fdd17be096888307",
+      "parentId": "media-entertainment",
+      "alt": "Illustrative djs cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "media-entertainment/film-production": {
+      "assetKey": "media-entertainment--film-production",
+      "revision": "2c3aa19d5593ffb7",
+      "parentId": "media-entertainment",
+      "alt": "Illustrative film production cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "media-entertainment/magazines": {
+      "assetKey": "media-entertainment--magazines",
+      "revision": "da22a52c79db6032",
+      "parentId": "media-entertainment",
+      "alt": "Illustrative magazines cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "media-entertainment/music-artists": {
+      "assetKey": "media-entertainment--music-artists",
+      "revision": "3d73ea537f915487",
+      "parentId": "media-entertainment",
+      "alt": "Illustrative music artists cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "media-entertainment/music-production": {
+      "assetKey": "media-entertainment--music-production",
+      "revision": "99c108ef29fff6c9",
+      "parentId": "media-entertainment",
+      "alt": "Illustrative music production cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "media-entertainment/news-and-blogging": {
+      "assetKey": "media-entertainment--news-and-blogging",
+      "revision": "cc85a0526758438f",
+      "parentId": "media-entertainment",
+      "alt": "Illustrative news and blogging cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "media-entertainment/newspapers": {
+      "assetKey": "media-entertainment--newspapers",
+      "revision": "c0d1a6486543ede0",
+      "parentId": "media-entertainment",
+      "alt": "Illustrative newspapers cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "media-entertainment/photo-editing": {
+      "assetKey": "media-entertainment--photo-editing",
+      "revision": "8a986960afb1785c",
+      "parentId": "media-entertainment",
+      "alt": "Illustrative photo editing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "media-entertainment/photography": {
+      "assetKey": "media-entertainment--photography",
+      "revision": "b662105a2ef9a6ac",
+      "parentId": "media-entertainment",
+      "alt": "Illustrative photography cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "media-entertainment/podcasts": {
+      "assetKey": "media-entertainment--podcasts",
+      "revision": "171b9536ca79e313",
+      "parentId": "media-entertainment",
+      "alt": "Illustrative podcasts cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "media-entertainment/publishing": {
+      "assetKey": "media-entertainment--publishing",
+      "revision": "3cfb833a36592c89",
+      "parentId": "media-entertainment",
+      "alt": "Illustrative publishing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "media-entertainment/radio": {
+      "assetKey": "media-entertainment--radio",
+      "revision": "3bd364b089fbd213",
+      "parentId": "media-entertainment",
+      "alt": "Illustrative radio cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "media-entertainment/record-labels": {
+      "assetKey": "media-entertainment--record-labels",
+      "revision": "ee8561b18a1b166e",
+      "parentId": "media-entertainment",
+      "alt": "Illustrative record labels cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "media-entertainment/streaming": {
+      "assetKey": "media-entertainment--streaming",
+      "revision": "e983177733a1d8be",
+      "parentId": "media-entertainment",
+      "alt": "Illustrative streaming cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "media-entertainment/television": {
+      "assetKey": "media-entertainment--television",
+      "revision": "51742871ca60019b",
+      "parentId": "media-entertainment",
+      "alt": "Illustrative television cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "media-entertainment/theatre": {
+      "assetKey": "media-entertainment--theatre",
+      "revision": "d58ba206852ec7b6",
+      "parentId": "media-entertainment",
+      "alt": "Illustrative theatre cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "media-entertainment/video-editing": {
+      "assetKey": "media-entertainment--video-editing",
+      "revision": "f35ed85e12ed29c7",
+      "parentId": "media-entertainment",
+      "alt": "Illustrative video editing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "media-entertainment/video-production": {
+      "assetKey": "media-entertainment--video-production",
+      "revision": "8a53d2cb33fe472c",
+      "parentId": "media-entertainment",
+      "alt": "Illustrative video production cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "media-entertainment/voice-overs": {
+      "assetKey": "media-entertainment--voice-overs",
+      "revision": "5f96fba93f96bf72",
+      "parentId": "media-entertainment",
+      "alt": "Illustrative voice overs cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "media-entertainment": {
+      "assetKey": "media-entertainment",
+      "revision": "e6dac8a100e95535",
+      "parentId": null,
+      "alt": "Illustrative media & entertainment cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "nonprofits-community/advocacy": {
+      "assetKey": "nonprofits-community--advocacy",
+      "revision": "d750cb03852d2e34",
+      "parentId": "nonprofits-community",
+      "alt": "Illustrative advocacy cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "nonprofits-community/alumni-associations": {
+      "assetKey": "nonprofits-community--alumni-associations",
+      "revision": "a182309ff41cf9d0",
+      "parentId": "nonprofits-community",
+      "alt": "Illustrative alumni associations cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "nonprofits-community/charities": {
+      "assetKey": "nonprofits-community--charities",
+      "revision": "2042d702b44b802b",
+      "parentId": "nonprofits-community",
+      "alt": "Illustrative charities cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "nonprofits-community/community-associations": {
+      "assetKey": "nonprofits-community--community-associations",
+      "revision": "ca21eb078408f225",
+      "parentId": "nonprofits-community",
+      "alt": "Illustrative community associations cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "nonprofits-community/educational-ngos": {
+      "assetKey": "nonprofits-community--educational-ngos",
+      "revision": "0811bd91bcbc66ec",
+      "parentId": "nonprofits-community",
+      "alt": "Illustrative educational ngos cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "nonprofits-community/environmental-ngos": {
+      "assetKey": "nonprofits-community--environmental-ngos",
+      "revision": "1c02f287365eff1b",
+      "parentId": "nonprofits-community",
+      "alt": "Illustrative environmental ngos cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "nonprofits-community/foundations": {
+      "assetKey": "nonprofits-community--foundations",
+      "revision": "b81ccf4657ae61bd",
+      "parentId": "nonprofits-community",
+      "alt": "Illustrative foundations cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "nonprofits-community/fundraising": {
+      "assetKey": "nonprofits-community--fundraising",
+      "revision": "34e69a22738938b6",
+      "parentId": "nonprofits-community",
+      "alt": "Illustrative fundraising cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "nonprofits-community/health-ngos": {
+      "assetKey": "nonprofits-community--health-ngos",
+      "revision": "e2c0cc30cfda17d9",
+      "parentId": "nonprofits-community",
+      "alt": "Illustrative health ngos cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "nonprofits-community/humanitarian-aid": {
+      "assetKey": "nonprofits-community--humanitarian-aid",
+      "revision": "220e5079ea1bc168",
+      "parentId": "nonprofits-community",
+      "alt": "Illustrative humanitarian aid cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "nonprofits-community/professional-associations": {
+      "assetKey": "nonprofits-community--professional-associations",
+      "revision": "f312c26dbc1a7ace",
+      "parentId": "nonprofits-community",
+      "alt": "Illustrative professional associations cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "nonprofits-community/social-enterprises": {
+      "assetKey": "nonprofits-community--social-enterprises",
+      "revision": "cfda64400d5c392b",
+      "parentId": "nonprofits-community",
+      "alt": "Illustrative social enterprises cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "nonprofits-community/volunteer-groups": {
+      "assetKey": "nonprofits-community--volunteer-groups",
+      "revision": "86cb3f5179eb8719",
+      "parentId": "nonprofits-community",
+      "alt": "Illustrative volunteer groups cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "nonprofits-community/womens-empowerment": {
+      "assetKey": "nonprofits-community--womens-empowerment",
+      "revision": "32fecad86c3f0a1b",
+      "parentId": "nonprofits-community",
+      "alt": "Illustrative womens empowerment cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "nonprofits-community/youth-organizations": {
+      "assetKey": "nonprofits-community--youth-organizations",
+      "revision": "4e40dc3162404d63",
+      "parentId": "nonprofits-community",
+      "alt": "Illustrative youth organizations cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "nonprofits-community": {
+      "assetKey": "nonprofits-community",
+      "revision": "f52c68cd965c8ea7",
+      "parentId": null,
+      "alt": "Illustrative nonprofits & community cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "other-emerging/emerging-industry": {
+      "assetKey": "other-emerging--emerging-industry",
+      "revision": "2344f1782b3d8fcd",
+      "parentId": "other-emerging",
+      "alt": "Illustrative emerging industry cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "other-emerging/general-creator": {
+      "assetKey": "other-emerging--general-creator",
+      "revision": "a2a423468d31ca41",
+      "parentId": "other-emerging",
+      "alt": "Illustrative general creator cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "other-emerging/multi-industry-business": {
+      "assetKey": "other-emerging--multi-industry-business",
+      "revision": "c31289ccc9cc34a4",
+      "parentId": "other-emerging",
+      "alt": "Illustrative multi industry business cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "other-emerging/other": {
+      "assetKey": "other-emerging--other",
+      "revision": "2da82b6ad29a963d",
+      "parentId": "other-emerging",
+      "alt": "Illustrative other cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "other-emerging/unclassified-service": {
+      "assetKey": "other-emerging--unclassified-service",
+      "revision": "0e7b048b679913d4",
+      "parentId": "other-emerging",
+      "alt": "Illustrative unclassified service cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "other-emerging": {
+      "assetKey": "other-emerging",
+      "revision": "03b6f21d52de4000",
+      "parentId": null,
+      "alt": "Illustrative other & emerging cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "pets-animals/animal-breeding": {
+      "assetKey": "pets-animals--animal-breeding",
+      "revision": "a8ce087955ba6975",
+      "parentId": "pets-animals",
+      "alt": "Illustrative animal breeding cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "pets-animals/animal-shelters": {
+      "assetKey": "pets-animals--animal-shelters",
+      "revision": "dc5a376d507b8019",
+      "parentId": "pets-animals",
+      "alt": "Illustrative animal shelters cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "pets-animals/aquariums": {
+      "assetKey": "pets-animals--aquariums",
+      "revision": "9154482591e4f054",
+      "parentId": "pets-animals",
+      "alt": "Illustrative aquariums cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "pets-animals/dog-walking": {
+      "assetKey": "pets-animals--dog-walking",
+      "revision": "241b0dc0b690acda",
+      "parentId": "pets-animals",
+      "alt": "Illustrative dog walking cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "pets-animals/pet-accessories": {
+      "assetKey": "pets-animals--pet-accessories",
+      "revision": "81835b6172becbf5",
+      "parentId": "pets-animals",
+      "alt": "Illustrative pet accessories cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "pets-animals/pet-boarding": {
+      "assetKey": "pets-animals--pet-boarding",
+      "revision": "ddf227dd8cd520f4",
+      "parentId": "pets-animals",
+      "alt": "Illustrative pet boarding cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "pets-animals/pet-food": {
+      "assetKey": "pets-animals--pet-food",
+      "revision": "391a4b60f48304c3",
+      "parentId": "pets-animals",
+      "alt": "Illustrative pet food cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "pets-animals/pet-grooming": {
+      "assetKey": "pets-animals--pet-grooming",
+      "revision": "fe58e3de9d98d723",
+      "parentId": "pets-animals",
+      "alt": "Illustrative pet grooming cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "pets-animals/pet-shops": {
+      "assetKey": "pets-animals--pet-shops",
+      "revision": "5e3fbefd3d50a21a",
+      "parentId": "pets-animals",
+      "alt": "Illustrative pet shops cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "pets-animals/pet-sitting": {
+      "assetKey": "pets-animals--pet-sitting",
+      "revision": "735fe51778c5585c",
+      "parentId": "pets-animals",
+      "alt": "Illustrative pet sitting cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "pets-animals/pet-training": {
+      "assetKey": "pets-animals--pet-training",
+      "revision": "b9fba1b15485d63c",
+      "parentId": "pets-animals",
+      "alt": "Illustrative pet training cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "pets-animals/veterinary-clinics": {
+      "assetKey": "pets-animals--veterinary-clinics",
+      "revision": "677104aabe316c2b",
+      "parentId": "pets-animals",
+      "alt": "Illustrative veterinary clinics cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "pets-animals": {
+      "assetKey": "pets-animals",
+      "revision": "bf7c1a2b7da5a376",
+      "parentId": null,
+      "alt": "Illustrative pets & animals cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "printing-packaging/book-printing": {
+      "assetKey": "printing-packaging--book-printing",
+      "revision": "51149fa0195a343c",
+      "parentId": "printing-packaging",
+      "alt": "Illustrative book printing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "printing-packaging/business-cards": {
+      "assetKey": "printing-packaging--business-cards",
+      "revision": "d648205a9abc2820",
+      "parentId": "printing-packaging",
+      "alt": "Illustrative business cards cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "printing-packaging/custom-packaging": {
+      "assetKey": "printing-packaging--custom-packaging",
+      "revision": "a96aee0cdf4409c8",
+      "parentId": "printing-packaging",
+      "alt": "Illustrative custom packaging cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "printing-packaging/digital-printing": {
+      "assetKey": "printing-packaging--digital-printing",
+      "revision": "fa95598727bd5a7b",
+      "parentId": "printing-packaging",
+      "alt": "Illustrative digital printing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "printing-packaging/embroidery": {
+      "assetKey": "printing-packaging--embroidery",
+      "revision": "f036283b1f653a7b",
+      "parentId": "printing-packaging",
+      "alt": "Illustrative embroidery cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "printing-packaging/gift-boxes": {
+      "assetKey": "printing-packaging--gift-boxes",
+      "revision": "afa369b47ea8d66e",
+      "parentId": "printing-packaging",
+      "alt": "Illustrative gift boxes cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "printing-packaging/large-format-printing": {
+      "assetKey": "printing-packaging--large-format-printing",
+      "revision": "b0edb8b65eb8dd3c",
+      "parentId": "printing-packaging",
+      "alt": "Illustrative large format printing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "printing-packaging/offset-printing": {
+      "assetKey": "printing-packaging--offset-printing",
+      "revision": "23c54c927bcc32e3",
+      "parentId": "printing-packaging",
+      "alt": "Illustrative offset printing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "printing-packaging/packaging-supplies": {
+      "assetKey": "printing-packaging--packaging-supplies",
+      "revision": "5157c878c9f825a1",
+      "parentId": "printing-packaging",
+      "alt": "Illustrative packaging supplies cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "printing-packaging/printing-services": {
+      "assetKey": "printing-packaging--printing-services",
+      "revision": "e9cfcf4554bc71b5",
+      "parentId": "printing-packaging",
+      "alt": "Illustrative printing services cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "printing-packaging/product-labeling": {
+      "assetKey": "printing-packaging--product-labeling",
+      "revision": "2260cf057748337c",
+      "parentId": "printing-packaging",
+      "alt": "Illustrative product labeling cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "printing-packaging/promotional-merchandise": {
+      "assetKey": "printing-packaging--promotional-merchandise",
+      "revision": "1fb7a1363206596e",
+      "parentId": "printing-packaging",
+      "alt": "Illustrative promotional merchandise cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "printing-packaging/screen-printing": {
+      "assetKey": "printing-packaging--screen-printing",
+      "revision": "68f1158a2234df94",
+      "parentId": "printing-packaging",
+      "alt": "Illustrative screen printing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "printing-packaging/signage": {
+      "assetKey": "printing-packaging--signage",
+      "revision": "f350be5e45e451a2",
+      "parentId": "printing-packaging",
+      "alt": "Illustrative signage cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "printing-packaging/stationery-printing": {
+      "assetKey": "printing-packaging--stationery-printing",
+      "revision": "9276f348c367b965",
+      "parentId": "printing-packaging",
+      "alt": "Illustrative stationery printing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "printing-packaging/stickers-and-labels": {
+      "assetKey": "printing-packaging--stickers-and-labels",
+      "revision": "c203787263545098",
+      "parentId": "printing-packaging",
+      "alt": "Illustrative stickers and labels cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "printing-packaging/t-shirt-printing": {
+      "assetKey": "printing-packaging--t-shirt-printing",
+      "revision": "a440bc0729e04d5b",
+      "parentId": "printing-packaging",
+      "alt": "Illustrative t shirt printing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "printing-packaging": {
+      "assetKey": "printing-packaging",
+      "revision": "80b266cbfceee50c",
+      "parentId": null,
+      "alt": "Illustrative printing & packaging cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "professional-services/accounting": {
+      "assetKey": "professional-services--accounting",
+      "revision": "03cff7955e317477",
+      "parentId": "professional-services",
+      "alt": "Illustrative accounting cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "professional-services/administrative-support": {
+      "assetKey": "professional-services--administrative-support",
+      "revision": "a54d511ad0cffbea",
+      "parentId": "professional-services",
+      "alt": "Illustrative administrative support cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "professional-services/bookkeeping": {
+      "assetKey": "professional-services--bookkeeping",
+      "revision": "8d22843f0ef5fcd4",
+      "parentId": "professional-services",
+      "alt": "Illustrative bookkeeping cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "professional-services/business-consulting": {
+      "assetKey": "professional-services--business-consulting",
+      "revision": "3b346a0237e8a05c",
+      "parentId": "professional-services",
+      "alt": "Illustrative business consulting cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "professional-services/business-registration": {
+      "assetKey": "professional-services--business-registration",
+      "revision": "d100140a3bf4d902",
+      "parentId": "professional-services",
+      "alt": "Illustrative business registration cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "professional-services/customer-support": {
+      "assetKey": "professional-services--customer-support",
+      "revision": "60ac5f72d036d477",
+      "parentId": "professional-services",
+      "alt": "Illustrative customer support cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "professional-services/document-preparation": {
+      "assetKey": "professional-services--document-preparation",
+      "revision": "3c3e3183d8a43945",
+      "parentId": "professional-services",
+      "alt": "Illustrative document preparation cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "professional-services/human-resources": {
+      "assetKey": "professional-services--human-resources",
+      "revision": "ce635c36cd464888",
+      "parentId": "professional-services",
+      "alt": "Illustrative human resources cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "professional-services/legal-services": {
+      "assetKey": "professional-services--legal-services",
+      "revision": "1ebd2ccffdc5cdd4",
+      "parentId": "professional-services",
+      "alt": "Illustrative legal services cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "professional-services/management-consulting": {
+      "assetKey": "professional-services--management-consulting",
+      "revision": "468bade33f818178",
+      "parentId": "professional-services",
+      "alt": "Illustrative management consulting cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "professional-services/notary": {
+      "assetKey": "professional-services--notary",
+      "revision": "226bac9b10c4f983",
+      "parentId": "professional-services",
+      "alt": "Illustrative notary cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "professional-services/operations-consulting": {
+      "assetKey": "professional-services--operations-consulting",
+      "revision": "d86354fcf9f13691",
+      "parentId": "professional-services",
+      "alt": "Illustrative operations consulting cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "professional-services/payroll": {
+      "assetKey": "professional-services--payroll",
+      "revision": "5296a835e0bc404a",
+      "parentId": "professional-services",
+      "alt": "Illustrative payroll cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "professional-services/procurement": {
+      "assetKey": "professional-services--procurement",
+      "revision": "686579a8c7b3f4a2",
+      "parentId": "professional-services",
+      "alt": "Illustrative procurement cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "professional-services/project-management": {
+      "assetKey": "professional-services--project-management",
+      "revision": "1689d0b713fa1f16",
+      "parentId": "professional-services",
+      "alt": "Illustrative project management cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "professional-services/recruitment": {
+      "assetKey": "professional-services--recruitment",
+      "revision": "c6e84866cff9061c",
+      "parentId": "professional-services",
+      "alt": "Illustrative recruitment cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "professional-services/strategy-consulting": {
+      "assetKey": "professional-services--strategy-consulting",
+      "revision": "82523e20404854b9",
+      "parentId": "professional-services",
+      "alt": "Illustrative strategy consulting cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "professional-services/tax-consulting": {
+      "assetKey": "professional-services--tax-consulting",
+      "revision": "e27a39d0239ab68f",
+      "parentId": "professional-services",
+      "alt": "Illustrative tax consulting cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "professional-services/translation": {
+      "assetKey": "professional-services--translation",
+      "revision": "8b778f9fe8f5399c",
+      "parentId": "professional-services",
+      "alt": "Illustrative translation cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "professional-services/virtual-assistants": {
+      "assetKey": "professional-services--virtual-assistants",
+      "revision": "9660780811212db3",
+      "parentId": "professional-services",
+      "alt": "Illustrative virtual assistants cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "professional-services": {
+      "assetKey": "professional-services",
+      "revision": "8de9111072aff11b",
+      "parentId": null,
+      "alt": "Illustrative professional services cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "real-estate-property/commercial-property": {
+      "assetKey": "real-estate-property--commercial-property",
+      "revision": "90b3217aa96dfeff",
+      "parentId": "real-estate-property",
+      "alt": "Illustrative commercial property cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "real-estate-property/facility-management": {
+      "assetKey": "real-estate-property--facility-management",
+      "revision": "a74be5838d9fc19f",
+      "parentId": "real-estate-property",
+      "alt": "Illustrative facility management cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "real-estate-property/home-staging": {
+      "assetKey": "real-estate-property--home-staging",
+      "revision": "4387c4ba6cdfcc62",
+      "parentId": "real-estate-property",
+      "alt": "Illustrative home staging cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "real-estate-property/land-sales": {
+      "assetKey": "real-estate-property--land-sales",
+      "revision": "579ad1aaf86cfd13",
+      "parentId": "real-estate-property",
+      "alt": "Illustrative land sales cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "real-estate-property/mortgages": {
+      "assetKey": "real-estate-property--mortgages",
+      "revision": "2b4e959b0a8d585b",
+      "parentId": "real-estate-property",
+      "alt": "Illustrative mortgages cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "real-estate-property/property-development": {
+      "assetKey": "real-estate-property--property-development",
+      "revision": "3711242e3080a002",
+      "parentId": "real-estate-property",
+      "alt": "Illustrative property development cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "real-estate-property/property-management": {
+      "assetKey": "real-estate-property--property-management",
+      "revision": "f855920c7cdcbad7",
+      "parentId": "real-estate-property",
+      "alt": "Illustrative property management cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "real-estate-property/property-photography": {
+      "assetKey": "real-estate-property--property-photography",
+      "revision": "d50796dd84bec14c",
+      "parentId": "real-estate-property",
+      "alt": "Illustrative property photography cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "real-estate-property/property-rentals": {
+      "assetKey": "real-estate-property--property-rentals",
+      "revision": "5864c971655b9902",
+      "parentId": "real-estate-property",
+      "alt": "Illustrative property rentals cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "real-estate-property/property-valuation": {
+      "assetKey": "real-estate-property--property-valuation",
+      "revision": "6bc64342a1f939c8",
+      "parentId": "real-estate-property",
+      "alt": "Illustrative property valuation cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "real-estate-property/real-estate-agents": {
+      "assetKey": "real-estate-property--real-estate-agents",
+      "revision": "f065f64b3d5648a0",
+      "parentId": "real-estate-property",
+      "alt": "Illustrative real estate agents cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "real-estate-property/real-estate-investment": {
+      "assetKey": "real-estate-property--real-estate-investment",
+      "revision": "2445556c49068485",
+      "parentId": "real-estate-property",
+      "alt": "Illustrative real estate investment cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "real-estate-property/residential-property": {
+      "assetKey": "real-estate-property--residential-property",
+      "revision": "2778ada1a86a1e4a",
+      "parentId": "real-estate-property",
+      "alt": "Illustrative residential property cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "real-estate-property/short-lets": {
+      "assetKey": "real-estate-property--short-lets",
+      "revision": "a108cb025ddfc22a",
+      "parentId": "real-estate-property",
+      "alt": "Illustrative short lets cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "real-estate-property/student-accommodation": {
+      "assetKey": "real-estate-property--student-accommodation",
+      "revision": "f379659be3f3fae2",
+      "parentId": "real-estate-property",
+      "alt": "Illustrative student accommodation cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "real-estate-property": {
+      "assetKey": "real-estate-property",
+      "revision": "7c449bbf91822103",
+      "parentId": null,
+      "alt": "Illustrative real estate & property cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "religion-faith/churches": {
+      "assetKey": "religion-faith--churches",
+      "revision": "d2c55235922f6f21",
+      "parentId": "religion-faith",
+      "alt": "Illustrative churches cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "religion-faith/community-fellowships": {
+      "assetKey": "religion-faith--community-fellowships",
+      "revision": "7a96f98d03ef7f08",
+      "parentId": "religion-faith",
+      "alt": "Illustrative community fellowships cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "religion-faith/faith-counseling": {
+      "assetKey": "religion-faith--faith-counseling",
+      "revision": "fcb5350050eb7f9b",
+      "parentId": "religion-faith",
+      "alt": "Illustrative faith counseling cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "religion-faith/faith-nonprofits": {
+      "assetKey": "religion-faith--faith-nonprofits",
+      "revision": "c92a785c37261f9e",
+      "parentId": "religion-faith",
+      "alt": "Illustrative faith nonprofits cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "religion-faith/mosques": {
+      "assetKey": "religion-faith--mosques",
+      "revision": "bc64b63aee7b635f",
+      "parentId": "religion-faith",
+      "alt": "Illustrative mosques cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "religion-faith/religious-bookstores": {
+      "assetKey": "religion-faith--religious-bookstores",
+      "revision": "dc185c5027eb0ca0",
+      "parentId": "religion-faith",
+      "alt": "Illustrative religious bookstores cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "religion-faith/religious-education": {
+      "assetKey": "religion-faith--religious-education",
+      "revision": "a5cd916ff43ed8d3",
+      "parentId": "religion-faith",
+      "alt": "Illustrative religious education cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "religion-faith/religious-events": {
+      "assetKey": "religion-faith--religious-events",
+      "revision": "cb968dedcd88edf1",
+      "parentId": "religion-faith",
+      "alt": "Illustrative religious events cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "religion-faith/religious-media": {
+      "assetKey": "religion-faith--religious-media",
+      "revision": "6d2561a007ec8e77",
+      "parentId": "religion-faith",
+      "alt": "Illustrative religious media cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "religion-faith/religious-ministries": {
+      "assetKey": "religion-faith--religious-ministries",
+      "revision": "84b440137e88c6fd",
+      "parentId": "religion-faith",
+      "alt": "Illustrative religious ministries cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "religion-faith": {
+      "assetKey": "religion-faith",
+      "revision": "2fcc08d1d78037fc",
+      "parentId": null,
+      "alt": "Illustrative religion & faith cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "retail-wholesale/convenience-stores": {
+      "assetKey": "retail-wholesale--convenience-stores",
+      "revision": "4355a4b45c12c603",
+      "parentId": "retail-wholesale",
+      "alt": "Illustrative convenience stores cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "retail-wholesale/department-stores": {
+      "assetKey": "retail-wholesale--department-stores",
+      "revision": "7001b0934e9488b9",
+      "parentId": "retail-wholesale",
+      "alt": "Illustrative department stores cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "retail-wholesale/discount-stores": {
+      "assetKey": "retail-wholesale--discount-stores",
+      "revision": "55845666de74534b",
+      "parentId": "retail-wholesale",
+      "alt": "Illustrative discount stores cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "retail-wholesale/dropshipping": {
+      "assetKey": "retail-wholesale--dropshipping",
+      "revision": "e527cfc52828c679",
+      "parentId": "retail-wholesale",
+      "alt": "Illustrative dropshipping cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "retail-wholesale/general-merchandise": {
+      "assetKey": "retail-wholesale--general-merchandise",
+      "revision": "6768c2bd364d5133",
+      "parentId": "retail-wholesale",
+      "alt": "Illustrative general merchandise cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "retail-wholesale/gift-shops": {
+      "assetKey": "retail-wholesale--gift-shops",
+      "revision": "edf267aac9dac248",
+      "parentId": "retail-wholesale",
+      "alt": "Illustrative gift shops cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "retail-wholesale/import-and-resale": {
+      "assetKey": "retail-wholesale--import-and-resale",
+      "revision": "22072699f8009932",
+      "parentId": "retail-wholesale",
+      "alt": "Illustrative import and resale cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "retail-wholesale/market-traders": {
+      "assetKey": "retail-wholesale--market-traders",
+      "revision": "35a9e0505df19897",
+      "parentId": "retail-wholesale",
+      "alt": "Illustrative market traders cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "retail-wholesale/mini-marts": {
+      "assetKey": "retail-wholesale--mini-marts",
+      "revision": "4b9a27cb1548b096",
+      "parentId": "retail-wholesale",
+      "alt": "Illustrative mini marts cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "retail-wholesale/online-stores": {
+      "assetKey": "retail-wholesale--online-stores",
+      "revision": "acba71c0dbd0d743",
+      "parentId": "retail-wholesale",
+      "alt": "Illustrative online stores cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "retail-wholesale/pop-up-shops": {
+      "assetKey": "retail-wholesale--pop-up-shops",
+      "revision": "4a98733cc47eb029",
+      "parentId": "retail-wholesale",
+      "alt": "Illustrative pop up shops cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "retail-wholesale/product-sourcing": {
+      "assetKey": "retail-wholesale--product-sourcing",
+      "revision": "afe990d04d57d835",
+      "parentId": "retail-wholesale",
+      "alt": "Illustrative product sourcing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "retail-wholesale/secondhand-goods": {
+      "assetKey": "retail-wholesale--secondhand-goods",
+      "revision": "d3a22da52db1b32f",
+      "parentId": "retail-wholesale",
+      "alt": "Illustrative secondhand goods cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "retail-wholesale/souvenirs": {
+      "assetKey": "retail-wholesale--souvenirs",
+      "revision": "05dccd189408f673",
+      "parentId": "retail-wholesale",
+      "alt": "Illustrative souvenirs cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "retail-wholesale/subscription-boxes": {
+      "assetKey": "retail-wholesale--subscription-boxes",
+      "revision": "163454bf6bb2c924",
+      "parentId": "retail-wholesale",
+      "alt": "Illustrative subscription boxes cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "retail-wholesale/supermarkets": {
+      "assetKey": "retail-wholesale--supermarkets",
+      "revision": "93926e427873e021",
+      "parentId": "retail-wholesale",
+      "alt": "Illustrative supermarkets cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "retail-wholesale/wholesale-distribution": {
+      "assetKey": "retail-wholesale--wholesale-distribution",
+      "revision": "107665da6df9e860",
+      "parentId": "retail-wholesale",
+      "alt": "Illustrative wholesale distribution cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "retail-wholesale": {
+      "assetKey": "retail-wholesale",
+      "revision": "e807197955e14445",
+      "parentId": null,
+      "alt": "Illustrative retail & wholesale cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "science-research/academic-research-support": {
+      "assetKey": "science-research--academic-research-support",
+      "revision": "c37310405221c5a7",
+      "parentId": "science-research",
+      "alt": "Illustrative academic research support cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "science-research/biotechnology": {
+      "assetKey": "science-research--biotechnology",
+      "revision": "f2c9b1d31cca1faa",
+      "parentId": "science-research",
+      "alt": "Illustrative biotechnology cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "science-research/data-collection": {
+      "assetKey": "science-research--data-collection",
+      "revision": "57343af028da2006",
+      "parentId": "science-research",
+      "alt": "Illustrative data collection cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "science-research/environmental-testing": {
+      "assetKey": "science-research--environmental-testing",
+      "revision": "644dce940fb99785",
+      "parentId": "science-research",
+      "alt": "Illustrative environmental testing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "science-research/laboratory-equipment": {
+      "assetKey": "science-research--laboratory-equipment",
+      "revision": "f50a828c56e9ed09",
+      "parentId": "science-research",
+      "alt": "Illustrative laboratory equipment cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "science-research/market-research": {
+      "assetKey": "science-research--market-research",
+      "revision": "f67632c07047e289",
+      "parentId": "science-research",
+      "alt": "Illustrative market research cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "science-research/materials-testing": {
+      "assetKey": "science-research--materials-testing",
+      "revision": "03d02cf91e7ec6a0",
+      "parentId": "science-research",
+      "alt": "Illustrative materials testing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "science-research/research-consulting": {
+      "assetKey": "science-research--research-consulting",
+      "revision": "3be10b70daba8adf",
+      "parentId": "science-research",
+      "alt": "Illustrative research consulting cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "science-research/research-institutes": {
+      "assetKey": "science-research--research-institutes",
+      "revision": "61854044cabd8c88",
+      "parentId": "science-research",
+      "alt": "Illustrative research institutes cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "science-research/science-communication": {
+      "assetKey": "science-research--science-communication",
+      "revision": "186e8820c949df69",
+      "parentId": "science-research",
+      "alt": "Illustrative science communication cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "science-research/scientific-research": {
+      "assetKey": "science-research--scientific-research",
+      "revision": "aadd7a5bf5bb5a58",
+      "parentId": "science-research",
+      "alt": "Illustrative scientific research cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "science-research/testing-laboratories": {
+      "assetKey": "science-research--testing-laboratories",
+      "revision": "ada4d1f6d63acda5",
+      "parentId": "science-research",
+      "alt": "Illustrative testing laboratories cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "science-research": {
+      "assetKey": "science-research",
+      "revision": "393e53298f99fedf",
+      "parentId": null,
+      "alt": "Illustrative science & research cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "security-safety/access-control": {
+      "assetKey": "security-safety--access-control",
+      "revision": "05ec9ad63aa55193",
+      "parentId": "security-safety",
+      "alt": "Illustrative access control cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "security-safety/alarm-systems": {
+      "assetKey": "security-safety--alarm-systems",
+      "revision": "6c4a3399ae3a0ee8",
+      "parentId": "security-safety",
+      "alt": "Illustrative alarm systems cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "security-safety/cctv": {
+      "assetKey": "security-safety--cctv",
+      "revision": "a13a08940bc27439",
+      "parentId": "security-safety",
+      "alt": "Illustrative cctv cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "security-safety/cybersecurity-consulting": {
+      "assetKey": "security-safety--cybersecurity-consulting",
+      "revision": "e8b2257cfc8c067d",
+      "parentId": "security-safety",
+      "alt": "Illustrative cybersecurity consulting cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "security-safety/emergency-response": {
+      "assetKey": "security-safety--emergency-response",
+      "revision": "a054eade28e053a3",
+      "parentId": "security-safety",
+      "alt": "Illustrative emergency response cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "security-safety/event-security": {
+      "assetKey": "security-safety--event-security",
+      "revision": "cbf6e57e277fcc9b",
+      "parentId": "security-safety",
+      "alt": "Illustrative event security cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "security-safety/fire-safety": {
+      "assetKey": "security-safety--fire-safety",
+      "revision": "96e774852391c868",
+      "parentId": "security-safety",
+      "alt": "Illustrative fire safety cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "security-safety/occupational-safety": {
+      "assetKey": "security-safety--occupational-safety",
+      "revision": "9724c059955c6be5",
+      "parentId": "security-safety",
+      "alt": "Illustrative occupational safety cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "security-safety/risk-assessment": {
+      "assetKey": "security-safety--risk-assessment",
+      "revision": "0ab170261e99db29",
+      "parentId": "security-safety",
+      "alt": "Illustrative risk assessment cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "security-safety/safety-training": {
+      "assetKey": "security-safety--safety-training",
+      "revision": "97ec7659a12a254e",
+      "parentId": "security-safety",
+      "alt": "Illustrative safety training cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "security-safety/security-consulting": {
+      "assetKey": "security-safety--security-consulting",
+      "revision": "ba2de9b3e5b55670",
+      "parentId": "security-safety",
+      "alt": "Illustrative security consulting cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "security-safety/security-equipment": {
+      "assetKey": "security-safety--security-equipment",
+      "revision": "452691c8c7b22a76",
+      "parentId": "security-safety",
+      "alt": "Illustrative security equipment cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "security-safety/security-guards": {
+      "assetKey": "security-safety--security-guards",
+      "revision": "b702549801a74b3a",
+      "parentId": "security-safety",
+      "alt": "Illustrative security guards cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "security-safety": {
+      "assetKey": "security-safety",
+      "revision": "63e410826570eda3",
+      "parentId": null,
+      "alt": "Illustrative security & safety cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "sports-recreation/amusement-parks": {
+      "assetKey": "sports-recreation--amusement-parks",
+      "revision": "5b75e3c3e9d655b6",
+      "parentId": "sports-recreation",
+      "alt": "Illustrative amusement parks cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "sports-recreation/arcades": {
+      "assetKey": "sports-recreation--arcades",
+      "revision": "24ddf1d11ce9070a",
+      "parentId": "sports-recreation",
+      "alt": "Illustrative arcades cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "sports-recreation/board-games": {
+      "assetKey": "sports-recreation--board-games",
+      "revision": "9e43884d9c84a236",
+      "parentId": "sports-recreation",
+      "alt": "Illustrative board games cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "sports-recreation/esports": {
+      "assetKey": "sports-recreation--esports",
+      "revision": "9e61a2bb898915be",
+      "parentId": "sports-recreation",
+      "alt": "Illustrative esports cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "sports-recreation/fitness-events": {
+      "assetKey": "sports-recreation--fitness-events",
+      "revision": "8ee839272ad52bb4",
+      "parentId": "sports-recreation",
+      "alt": "Illustrative fitness events cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "sports-recreation/game-streaming": {
+      "assetKey": "sports-recreation--game-streaming",
+      "revision": "7394eb91c4738ed1",
+      "parentId": "sports-recreation",
+      "alt": "Illustrative game streaming cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "sports-recreation/gaming-cafes": {
+      "assetKey": "sports-recreation--gaming-cafes",
+      "revision": "1d9ad5f676ef7e41",
+      "parentId": "sports-recreation",
+      "alt": "Illustrative gaming cafes cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "sports-recreation/gaming-creators": {
+      "assetKey": "sports-recreation--gaming-creators",
+      "revision": "c15bf18bfd2eda56",
+      "parentId": "sports-recreation",
+      "alt": "Illustrative gaming creators cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "sports-recreation/hobby-communities": {
+      "assetKey": "sports-recreation--hobby-communities",
+      "revision": "f724e849936f93e8",
+      "parentId": "sports-recreation",
+      "alt": "Illustrative hobby communities cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "sports-recreation/outdoor-adventures": {
+      "assetKey": "sports-recreation--outdoor-adventures",
+      "revision": "4f1ac93275b22c23",
+      "parentId": "sports-recreation",
+      "alt": "Illustrative outdoor adventures cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "sports-recreation/recreation-clubs": {
+      "assetKey": "sports-recreation--recreation-clubs",
+      "revision": "6205f4950d292170",
+      "parentId": "sports-recreation",
+      "alt": "Illustrative recreation clubs cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "sports-recreation/sports-coaching": {
+      "assetKey": "sports-recreation--sports-coaching",
+      "revision": "4f20af47d3be8a8d",
+      "parentId": "sports-recreation",
+      "alt": "Illustrative sports coaching cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "sports-recreation/sports-tournaments": {
+      "assetKey": "sports-recreation--sports-tournaments",
+      "revision": "6eb65dc298354a69",
+      "parentId": "sports-recreation",
+      "alt": "Illustrative sports tournaments cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "sports-recreation/video-game-retail": {
+      "assetKey": "sports-recreation--video-game-retail",
+      "revision": "1ada90eac09d81da",
+      "parentId": "sports-recreation",
+      "alt": "Illustrative video game retail cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "sports-recreation": {
+      "assetKey": "sports-recreation",
+      "revision": "193cccba8ba6bf67",
+      "parentId": null,
+      "alt": "Illustrative sports & recreation cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "technology-software/artificial-intelligence": {
+      "assetKey": "technology-software--artificial-intelligence",
+      "revision": "75d90d6f240eddd1",
+      "parentId": "technology-software",
+      "alt": "Illustrative artificial intelligence cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "technology-software/automation": {
+      "assetKey": "technology-software--automation",
+      "revision": "e52ee96dc3ee78fe",
+      "parentId": "technology-software",
+      "alt": "Illustrative automation cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "technology-software/blockchain": {
+      "assetKey": "technology-software--blockchain",
+      "revision": "55b735f3f69e2a40",
+      "parentId": "technology-software",
+      "alt": "Illustrative blockchain cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "technology-software/cloud-hosting": {
+      "assetKey": "technology-software--cloud-hosting",
+      "revision": "1b0359f879062b31",
+      "parentId": "technology-software",
+      "alt": "Illustrative cloud hosting cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "technology-software/computer-repairs": {
+      "assetKey": "technology-software--computer-repairs",
+      "revision": "a8487565bcdf5c61",
+      "parentId": "technology-software",
+      "alt": "Illustrative computer repairs cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "technology-software/computer-retail": {
+      "assetKey": "technology-software--computer-retail",
+      "revision": "0e81365c422d4f99",
+      "parentId": "technology-software",
+      "alt": "Illustrative computer retail cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "technology-software/cybersecurity": {
+      "assetKey": "technology-software--cybersecurity",
+      "revision": "7a442dfc4e36bbe9",
+      "parentId": "technology-software",
+      "alt": "Illustrative cybersecurity cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "technology-software/data-analytics": {
+      "assetKey": "technology-software--data-analytics",
+      "revision": "24af273d6028b331",
+      "parentId": "technology-software",
+      "alt": "Illustrative data analytics cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "technology-software/developer-tools": {
+      "assetKey": "technology-software--developer-tools",
+      "revision": "bf6e7960765facd5",
+      "parentId": "technology-software",
+      "alt": "Illustrative developer tools cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "technology-software/devops": {
+      "assetKey": "technology-software--devops",
+      "revision": "366fcfe58dfd26f8",
+      "parentId": "technology-software",
+      "alt": "Illustrative devops cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "technology-software/domain-registration": {
+      "assetKey": "technology-software--domain-registration",
+      "revision": "d33a89627314a1e7",
+      "parentId": "technology-software",
+      "alt": "Illustrative domain registration cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "technology-software/game-development": {
+      "assetKey": "technology-software--game-development",
+      "revision": "0270afa590d8937b",
+      "parentId": "technology-software",
+      "alt": "Illustrative game development cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "technology-software/it-consulting": {
+      "assetKey": "technology-software--it-consulting",
+      "revision": "b93c9ed95a61180a",
+      "parentId": "technology-software",
+      "alt": "Illustrative it consulting cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "technology-software/machine-learning": {
+      "assetKey": "technology-software--machine-learning",
+      "revision": "1ff9c2badab92cfc",
+      "parentId": "technology-software",
+      "alt": "Illustrative machine learning cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "technology-software/mobile-apps": {
+      "assetKey": "technology-software--mobile-apps",
+      "revision": "15680fe9de00eb01",
+      "parentId": "technology-software",
+      "alt": "Illustrative mobile apps cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "technology-software/networking": {
+      "assetKey": "technology-software--networking",
+      "revision": "0ca319efe5eca641",
+      "parentId": "technology-software",
+      "alt": "Illustrative networking cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "technology-software/no-code": {
+      "assetKey": "technology-software--no-code",
+      "revision": "f1a2bf219383a624",
+      "parentId": "technology-software",
+      "alt": "Illustrative no code cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "technology-software/robotics": {
+      "assetKey": "technology-software--robotics",
+      "revision": "a7fe8f2f52006ec5",
+      "parentId": "technology-software",
+      "alt": "Illustrative robotics cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "technology-software/saas": {
+      "assetKey": "technology-software--saas",
+      "revision": "576a5bd93c64c2cb",
+      "parentId": "technology-software",
+      "alt": "Illustrative saas cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "technology-software/software-development": {
+      "assetKey": "technology-software--software-development",
+      "revision": "c7b30321dfd23fe6",
+      "parentId": "technology-software",
+      "alt": "Illustrative software development cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "technology-software/ui-ux-design": {
+      "assetKey": "technology-software--ui-ux-design",
+      "revision": "872027cc244c7fd7",
+      "parentId": "technology-software",
+      "alt": "Illustrative ui ux design cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "technology-software/web-development": {
+      "assetKey": "technology-software--web-development",
+      "revision": "692b6a2898477b53",
+      "parentId": "technology-software",
+      "alt": "Illustrative web development cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "technology-software": {
+      "assetKey": "technology-software",
+      "revision": "cbbda50a9fa3bb6d",
+      "parentId": null,
+      "alt": "Illustrative technology & software cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "telecommunications/broadband-installation": {
+      "assetKey": "telecommunications--broadband-installation",
+      "revision": "5401bad47551b079",
+      "parentId": "telecommunications",
+      "alt": "Illustrative broadband installation cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "telecommunications/communications-infrastructure": {
+      "assetKey": "telecommunications--communications-infrastructure",
+      "revision": "019b364fe4794a43",
+      "parentId": "telecommunications",
+      "alt": "Illustrative communications infrastructure cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "telecommunications/data-and-airtime-reselling": {
+      "assetKey": "telecommunications--data-and-airtime-reselling",
+      "revision": "50359c6045ed9a59",
+      "parentId": "telecommunications",
+      "alt": "Illustrative data and airtime reselling cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "telecommunications/fiber-optics": {
+      "assetKey": "telecommunications--fiber-optics",
+      "revision": "d5428f7c34356e99",
+      "parentId": "telecommunications",
+      "alt": "Illustrative fiber optics cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "telecommunications/internet-providers": {
+      "assetKey": "telecommunications--internet-providers",
+      "revision": "573a41f11f2827c9",
+      "parentId": "telecommunications",
+      "alt": "Illustrative internet providers cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "telecommunications/mobile-networks": {
+      "assetKey": "telecommunications--mobile-networks",
+      "revision": "2e2db0c5762401c3",
+      "parentId": "telecommunications",
+      "alt": "Illustrative mobile networks cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "telecommunications/satellite-internet": {
+      "assetKey": "telecommunications--satellite-internet",
+      "revision": "9049ab3ab3b63b24",
+      "parentId": "telecommunications",
+      "alt": "Illustrative satellite internet cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "telecommunications/telecom-consulting": {
+      "assetKey": "telecommunications--telecom-consulting",
+      "revision": "ff4c4b35c007e55b",
+      "parentId": "telecommunications",
+      "alt": "Illustrative telecom consulting cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "telecommunications/telecom-equipment": {
+      "assetKey": "telecommunications--telecom-equipment",
+      "revision": "eb3405fb04f4ac81",
+      "parentId": "telecommunications",
+      "alt": "Illustrative telecom equipment cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "telecommunications/telecom-retail": {
+      "assetKey": "telecommunications--telecom-retail",
+      "revision": "35ecf27d1ce6046c",
+      "parentId": "telecommunications",
+      "alt": "Illustrative telecom retail cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "telecommunications/voip": {
+      "assetKey": "telecommunications--voip",
+      "revision": "6afc93b50146c8da",
+      "parentId": "telecommunications",
+      "alt": "Illustrative voip cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "telecommunications": {
+      "assetKey": "telecommunications",
+      "revision": "7de58cbd1d9e955a",
+      "parentId": null,
+      "alt": "Illustrative telecommunications cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "trades-skilled-services/bricklaying": {
+      "assetKey": "trades-skilled-services--bricklaying",
+      "revision": "17ac7f5fed137fcc",
+      "parentId": "trades-skilled-services",
+      "alt": "Illustrative bricklaying cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "trades-skilled-services/carpentry": {
+      "assetKey": "trades-skilled-services--carpentry",
+      "revision": "995da47ccf4b87c2",
+      "parentId": "trades-skilled-services",
+      "alt": "Illustrative carpentry cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "trades-skilled-services/electricians": {
+      "assetKey": "trades-skilled-services--electricians",
+      "revision": "b5b479d9bfbcd1cf",
+      "parentId": "trades-skilled-services",
+      "alt": "Illustrative electricians cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "trades-skilled-services/equipment-technicians": {
+      "assetKey": "trades-skilled-services--equipment-technicians",
+      "revision": "2a405198f0e63920",
+      "parentId": "trades-skilled-services",
+      "alt": "Illustrative equipment technicians cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "trades-skilled-services/hvac": {
+      "assetKey": "trades-skilled-services--hvac",
+      "revision": "442ed07b9958f82f",
+      "parentId": "trades-skilled-services",
+      "alt": "Illustrative hvac cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "trades-skilled-services/leather-repairs": {
+      "assetKey": "trades-skilled-services--leather-repairs",
+      "revision": "d29bff96bf9b65c6",
+      "parentId": "trades-skilled-services",
+      "alt": "Illustrative leather repairs cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "trades-skilled-services/machine-operators": {
+      "assetKey": "trades-skilled-services--machine-operators",
+      "revision": "1b991cd0f1997b6d",
+      "parentId": "trades-skilled-services",
+      "alt": "Illustrative machine operators cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "trades-skilled-services/masonry": {
+      "assetKey": "trades-skilled-services--masonry",
+      "revision": "3c0b7db516fd5c69",
+      "parentId": "trades-skilled-services",
+      "alt": "Illustrative masonry cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "trades-skilled-services/metalwork": {
+      "assetKey": "trades-skilled-services--metalwork",
+      "revision": "dabf0567ffe23ba7",
+      "parentId": "trades-skilled-services",
+      "alt": "Illustrative metalwork cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "trades-skilled-services/painting-contractors": {
+      "assetKey": "trades-skilled-services--painting-contractors",
+      "revision": "e90ce388d788c9da",
+      "parentId": "trades-skilled-services",
+      "alt": "Illustrative painting contractors cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "trades-skilled-services/plumbing": {
+      "assetKey": "trades-skilled-services--plumbing",
+      "revision": "5e81b3d0914b9082",
+      "parentId": "trades-skilled-services",
+      "alt": "Illustrative plumbing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "trades-skilled-services/roofing": {
+      "assetKey": "trades-skilled-services--roofing",
+      "revision": "9fa3898979812a9b",
+      "parentId": "trades-skilled-services",
+      "alt": "Illustrative roofing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "trades-skilled-services/shoe-making": {
+      "assetKey": "trades-skilled-services--shoe-making",
+      "revision": "775c8ee4a7e7d9e2",
+      "parentId": "trades-skilled-services",
+      "alt": "Illustrative shoe making cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "trades-skilled-services/tailoring": {
+      "assetKey": "trades-skilled-services--tailoring",
+      "revision": "aa4543c96357f7d8",
+      "parentId": "trades-skilled-services",
+      "alt": "Illustrative tailoring cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "trades-skilled-services/tile-installers": {
+      "assetKey": "trades-skilled-services--tile-installers",
+      "revision": "608e464de2e0db75",
+      "parentId": "trades-skilled-services",
+      "alt": "Illustrative tile installers cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "trades-skilled-services/welding": {
+      "assetKey": "trades-skilled-services--welding",
+      "revision": "6f2b01bfd89b7cbc",
+      "parentId": "trades-skilled-services",
+      "alt": "Illustrative welding cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "trades-skilled-services": {
+      "assetKey": "trades-skilled-services",
+      "revision": "9caa53eda3c6f6c0",
+      "parentId": null,
+      "alt": "Illustrative trades & skilled services cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "transport-logistics/buses": {
+      "assetKey": "transport-logistics--buses",
+      "revision": "b9e9cd23fab1bc0e",
+      "parentId": "transport-logistics",
+      "alt": "Illustrative buses cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "transport-logistics/cargo-shipping": {
+      "assetKey": "transport-logistics--cargo-shipping",
+      "revision": "cb10f422fc4a5da6",
+      "parentId": "transport-logistics",
+      "alt": "Illustrative cargo shipping cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "transport-logistics/cold-chain": {
+      "assetKey": "transport-logistics--cold-chain",
+      "revision": "8ed10997bb79a19a",
+      "parentId": "transport-logistics",
+      "alt": "Illustrative cold chain cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "transport-logistics/courier": {
+      "assetKey": "transport-logistics--courier",
+      "revision": "f2218fed757735f3",
+      "parentId": "transport-logistics",
+      "alt": "Illustrative courier cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "transport-logistics/customs-clearing": {
+      "assetKey": "transport-logistics--customs-clearing",
+      "revision": "8e6d87900caf0ba5",
+      "parentId": "transport-logistics",
+      "alt": "Illustrative customs clearing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "transport-logistics/dispatch-riders": {
+      "assetKey": "transport-logistics--dispatch-riders",
+      "revision": "6a8b2fe96b4833d6",
+      "parentId": "transport-logistics",
+      "alt": "Illustrative dispatch riders cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "transport-logistics/freight-forwarding": {
+      "assetKey": "transport-logistics--freight-forwarding",
+      "revision": "4edae7c73bafd513",
+      "parentId": "transport-logistics",
+      "alt": "Illustrative freight forwarding cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "transport-logistics/moving": {
+      "assetKey": "transport-logistics--moving",
+      "revision": "e521291e8ae1e4a9",
+      "parentId": "transport-logistics",
+      "alt": "Illustrative moving cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "transport-logistics/parcel-delivery": {
+      "assetKey": "transport-logistics--parcel-delivery",
+      "revision": "10ff2afaa53d1726",
+      "parentId": "transport-logistics",
+      "alt": "Illustrative parcel delivery cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "transport-logistics/passenger-transport": {
+      "assetKey": "transport-logistics--passenger-transport",
+      "revision": "b1edd94f00fccae1",
+      "parentId": "transport-logistics",
+      "alt": "Illustrative passenger transport cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "transport-logistics/ride-hailing": {
+      "assetKey": "transport-logistics--ride-hailing",
+      "revision": "cf23931d431e915e",
+      "parentId": "transport-logistics",
+      "alt": "Illustrative ride hailing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "transport-logistics/school-transport": {
+      "assetKey": "transport-logistics--school-transport",
+      "revision": "45a6c6f49a36f9b7",
+      "parentId": "transport-logistics",
+      "alt": "Illustrative school transport cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "transport-logistics/supply-chain": {
+      "assetKey": "transport-logistics--supply-chain",
+      "revision": "97ed793b0c19e18e",
+      "parentId": "transport-logistics",
+      "alt": "Illustrative supply chain cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "transport-logistics/taxis": {
+      "assetKey": "transport-logistics--taxis",
+      "revision": "29e418b6573e7df7",
+      "parentId": "transport-logistics",
+      "alt": "Illustrative taxis cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "transport-logistics/trucking": {
+      "assetKey": "transport-logistics--trucking",
+      "revision": "fef2f0ecfc44b598",
+      "parentId": "transport-logistics",
+      "alt": "Illustrative trucking cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "transport-logistics/warehousing": {
+      "assetKey": "transport-logistics--warehousing",
+      "revision": "aac230b29ae08994",
+      "parentId": "transport-logistics",
+      "alt": "Illustrative warehousing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "transport-logistics": {
+      "assetKey": "transport-logistics",
+      "revision": "6e93fd8e056bb4b7",
+      "parentId": null,
+      "alt": "Illustrative transport & logistics cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "travel-hospitality/adventure-tourism": {
+      "assetKey": "travel-hospitality--adventure-tourism",
+      "revision": "74169f5027552fe8",
+      "parentId": "travel-hospitality",
+      "alt": "Illustrative adventure tourism cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "travel-hospitality/airline-ticketing": {
+      "assetKey": "travel-hospitality--airline-ticketing",
+      "revision": "023042579d9fd8ef",
+      "parentId": "travel-hospitality",
+      "alt": "Illustrative airline ticketing cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "travel-hospitality/corporate-travel": {
+      "assetKey": "travel-hospitality--corporate-travel",
+      "revision": "6279fc4b0d07ade1",
+      "parentId": "travel-hospitality",
+      "alt": "Illustrative corporate travel cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "travel-hospitality/guesthouses": {
+      "assetKey": "travel-hospitality--guesthouses",
+      "revision": "bda976856c95a615",
+      "parentId": "travel-hospitality",
+      "alt": "Illustrative guesthouses cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "travel-hospitality/hotels": {
+      "assetKey": "travel-hospitality--hotels",
+      "revision": "9dd0ea79ce778be2",
+      "parentId": "travel-hospitality",
+      "alt": "Illustrative hotels cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "travel-hospitality/resorts": {
+      "assetKey": "travel-hospitality--resorts",
+      "revision": "4d6d2320515ff242",
+      "parentId": "travel-hospitality",
+      "alt": "Illustrative resorts cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "travel-hospitality/tour-operators": {
+      "assetKey": "travel-hospitality--tour-operators",
+      "revision": "d79510dd3e35a82a",
+      "parentId": "travel-hospitality",
+      "alt": "Illustrative tour operators cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "travel-hospitality/tourist-attractions": {
+      "assetKey": "travel-hospitality--tourist-attractions",
+      "revision": "d285c72e1330604d",
+      "parentId": "travel-hospitality",
+      "alt": "Illustrative tourist attractions cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "travel-hospitality/travel-agencies": {
+      "assetKey": "travel-hospitality--travel-agencies",
+      "revision": "e8e14e685ad6e75c",
+      "parentId": "travel-hospitality",
+      "alt": "Illustrative travel agencies cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "travel-hospitality/travel-guides": {
+      "assetKey": "travel-hospitality--travel-guides",
+      "revision": "b0d3982e1a77cfdb",
+      "parentId": "travel-hospitality",
+      "alt": "Illustrative travel guides cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "travel-hospitality/travel-insurance": {
+      "assetKey": "travel-hospitality--travel-insurance",
+      "revision": "68815f0c75802efa",
+      "parentId": "travel-hospitality",
+      "alt": "Illustrative travel insurance cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "travel-hospitality/travel-planning": {
+      "assetKey": "travel-hospitality--travel-planning",
+      "revision": "1fa1c1d950ba1d53",
+      "parentId": "travel-hospitality",
+      "alt": "Illustrative travel planning cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "travel-hospitality/vacation-rentals": {
+      "assetKey": "travel-hospitality--vacation-rentals",
+      "revision": "6b180175e4baa751",
+      "parentId": "travel-hospitality",
+      "alt": "Illustrative vacation rentals cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "travel-hospitality/visa-assistance": {
+      "assetKey": "travel-hospitality--visa-assistance",
+      "revision": "bb8036bd20a3df78",
+      "parentId": "travel-hospitality",
+      "alt": "Illustrative visa assistance cover",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "travel-hospitality": {
+      "assetKey": "travel-hospitality",
+      "revision": "0063fc19f002fa24",
+      "parentId": null,
+      "alt": "Illustrative travel & hospitality cover",
       "focalPoint": {
         "x": 0.5,
         "y": 0.5

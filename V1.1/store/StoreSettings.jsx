@@ -1,28 +1,32 @@
-import {useEffect,useState} from "react";
-
-import {apiRequest} from "../lib/api";
-
-import {Button,Field,PageHeader,LoadingState,ErrorState} from "../components/UI";
-
-import {themes,changeTheme} from "./design";
-
-import styles from "./store.module.css";
-
+import {CommerceSettingsPanel,ResourceManager} from "./CommerceSettings";
+import {useEffect,useRef,useState} from 'react';
+import {useRouter} from 'next/router';
+import Link from 'next/link';
+import {ArrowUpRight,Check,Settings2} from 'lucide-react';
+import {apiRequest} from '../lib/api';
+import {Button,Field,PageHeader,LoadingState,ErrorState} from '../components/UI';
+import {notify} from '../components/Notifications';
+import {themes,changeTheme} from './design';
+import {CategoryManager} from './StoreCategories';
+import StoreTemplateCard from './StoreTemplateCard';
+import styles from './store.module.css';
+import css from './StoreSettings.module.css';
+const tabs=['Categories','Payments','Delivery','Branding','Theme','Checkout','Inventory','Discounts','Customers','Policies','SEO','Integrations','Advanced'];
 export default function StoreSettings(){
-
- const [form,setForm]=useState(null),[error,setError]=useState(""),[busy,setBusy]=useState(false),[message,setMessage]=useState("");
-
- const [studio,setStudio]=useState(null),[template,setTemplate]=useState(""),[templateBusy,setTemplateBusy]=useState(false),[templateMessage,setTemplateMessage]=useState(""),[templateError,setTemplateError]=useState("");
-
- useEffect(()=>{apiRequest("/v1-1/store-studio").then(d=>{setForm(d.setup);setStudio(d);setTemplate(d.design.theme);}).catch(e=>setError(e.message));},[]);
-
- const save=async()=>{setBusy(true);setError("");try{await apiRequest("/v1-1/store-studio/settings",{method:"PATCH",body:JSON.stringify(form)});setMessage("Store settings saved.");}catch(e){setError(e.message);}finally{setBusy(false);}};
-
- const saveTemplate=async()=>{if(templateBusy||!studio)return;setTemplateBusy(true);setTemplateError("");setTemplateMessage("");try{const design=changeTheme(studio.design,template);const result=await apiRequest("/v1-1/store-studio/draft",{method:"PUT",body:JSON.stringify({design,setup:studio.setup,revision:studio.revision})});setStudio({...studio,design,revision:result.revision});setTemplateMessage("Template saved to your draft. Review it in Store design, then publish when ready.");}catch(e){setTemplateError(e.status===409?"Your design changed in another tab. Refresh this page before changing the template.":e.message);}finally{setTemplateBusy(false);}};
-
- if(!form)return error?<ErrorState message={error}/>:<LoadingState/>;
-
- return <main className={styles.studio}><PageHeader title="Store settings" description="Manage your business details and choose your storefront template."/><section className={styles.templateSettings} aria-labelledby="store-template-title"><h2 id="store-template-title">Store template</h2><p>Switch designs anytime. Your products and store details stay in place. Changes are saved as a draft until you publish.</p><div className={styles.templateChoices}>{Object.entries(themes).map(([id,t])=><button type="button" key={id} disabled={templateBusy} aria-pressed={template===id} onClick={()=>{setTemplate(id);setTemplateMessage("");setTemplateError("");}}><span className={styles.templateSwatch} style={{background:t.accent}} aria-hidden="true"/><strong>{t.name}</strong><small>{t.description}</small><span className={styles.templateSelection}>{template===id?"Selected":"Choose template"}</span></button>)}</div>{templateError&&<p role="alert" className={styles.error}>{templateError}</p>}{templateMessage&&<p role="status">{templateMessage}</p>}<div className={styles.row}><Button disabled={templateBusy||template===studio?.design.theme} onClick={saveTemplate}>{templateBusy?"Saving…":"Use selected template"}</Button><a href="/v1-1/store/design">Customise & preview →</a></div></section><div className={`${styles.controls} ${styles.settingsControls}`} style={{position:"static",maxHeight:"none",maxWidth:600}}>{Object.entries({name:"Store name",phone:"Phone",category:"Category",address:"Store address (optional)",description:"Short store introduction (optional)",bankName:"Bank name",accountName:"Account holder",accountNumber:"Account number"}).map(([key,label])=><Field key={key} label={label}><input value={form[key]||""} onChange={e=>{setMessage("");setForm({...form,[key]:e.target.value});}}/></Field>)}<label><input type="checkbox" checked={Boolean(form.showFeatured)} onChange={e=>setForm({...form,showFeatured:e.target.checked})}/> Show featured products</label><p>Products marked as featured appear automatically. Your store name, contact details and introduction update across every template.</p><Field label="Products"><select value={form.businessType||"physical"} onChange={e=>setForm({...form,businessType:e.target.value})}><option value="physical">Physical</option><option value="digital">Digital / services</option></select></Field>{error&&<p role="alert">{error}</p>}{message&&<p role="status">{message}</p>}<Button disabled={busy} onClick={save}>{busy?"Saving…":"Save settings"}</Button></div></main>;
-
+ const router=useRouter(),[data,setData]=useState(null),[form,setForm]=useState(null),[saved,setSaved]=useState(null),[template,setTemplate]=useState(''),[busy,setBusy]=useState(false),[error,setError]=useState(''),[commerceDirty,setCommerceDirty]=useState(false);const lock=useRef(false),nav=useRef(null);
+ const tab=tabs.find(t=>t.toLowerCase()===router.query.tab)||'Categories';
+ const dirty=commerceDirty||!!saved&&(JSON.stringify(form)!==JSON.stringify(saved)||template!==data?.design.theme);
+ const load=async()=>{const d=await apiRequest('/v1-1/store-studio');setData(d);setForm(d.setup);setSaved(d.setup);setTemplate(d.design.theme);setError('');};
+ useEffect(()=>{load().catch(e=>setError(e.message));},[]);
+ useEffect(()=>{const leave=e=>{if(dirty){e.preventDefault();e.returnValue='';}};window.addEventListener('beforeunload',leave);return()=>window.removeEventListener('beforeunload',leave);},[dirty]);
+ useEffect(()=>{if(!dirty)return;const guard=url=>{if(url.split('?')[0]===router.asPath.split('?')[0]||window.confirm('Leave without saving your store settings?'))return;router.events.emit('routeChangeError');throw 'Store settings navigation cancelled';};router.events.on('routeChangeStart',guard);return()=>router.events.off('routeChangeStart',guard);},[dirty,router]);
+ const select=name=>{if(busy)return;router.replace({pathname:router.pathname,query:{...router.query,tab:name.toLowerCase()}},undefined,{shallow:true,scroll:false}).catch(()=>{});};
+ const keyboard=e=>{const keys=['ArrowRight','ArrowLeft','Home','End'];if(!keys.includes(e.key))return;e.preventDefault();const buttons=[...nav.current.querySelectorAll('[role="tab"]')],i=buttons.indexOf(document.activeElement);const index=e.key==='Home'?0:e.key==='End'?buttons.length-1:(i+(e.key==='ArrowRight'?1:-1)+buttons.length)%buttons.length;buttons[index].focus();buttons[index].scrollIntoView({block:'nearest',inline:'nearest'});};
+ const save=async()=>{if(lock.current)return;lock.current=true;setBusy(true);setError('');try{if(template!==data.design.theme){const design=changeTheme(data.design,template);const result=await apiRequest('/v1-1/store-studio/draft',{method:'PUT',body:JSON.stringify({design,setup:form,revision:data.revision})});setData(d=>({...d,design,revision:result.revision}));notify.success('Template saved to draft');}if(JSON.stringify(form)!==JSON.stringify(saved)){await apiRequest('/v1-1/store-studio/settings',{method:'PATCH',body:JSON.stringify(form)});setSaved(form);notify.success('Store settings saved');}}catch(e){setError(e.message);}finally{lock.current=false;setBusy(false);}};
+ if(!data)return error?<ErrorState message={error} onRetry={()=>load().catch(e=>setError(e.message))}/>:<LoadingState/>;
+ return <main className={`${styles.studio} ${css.page}`}><PageHeader title="Store settings" description="The details that make your store yours."/><nav className={css.workspaceNav} aria-label="Store workspace"><Link href="/v1-1/store">Overview</Link><Link href="/v1-1/store/products">Products</Link><Link href="/v1-1/store/orders">Orders</Link><Link href="/v1-1/store/design">Store design</Link><span aria-current="page">Settings</span></nav><div className={css.tabRail}><nav ref={nav} role="tablist" aria-label="Store settings" className={css.tabs} onKeyDown={keyboard}>{tabs.map(name=><button key={name} role="tab" id={`settings-tab-${name.toLowerCase()}`} aria-controls="store-settings-panel" aria-selected={tab===name} tabIndex={tab===name?0:-1} onClick={()=>select(name)}>{name}</button>)}</nav></div><section id="store-settings-panel" role="tabpanel" aria-labelledby={`settings-tab-${tab.toLowerCase()}`} className={css.panel}>
+ {tab==='Categories'&&<><CategoryManager/><hr style={{margin:'30px 0',border:0,borderTop:'1px solid #dde6e0'}}/><ResourceManager/></>}
+ {tab==='Theme'&&<><div className={css.panelHeading}><div><h2>Your storefront style</h2><p>Choose a template, then preview and publish it in Store design.</p></div></div><div className={styles.templateChoices}>{Object.entries(themes).map(([id,t])=><button key={id} type="button" disabled={busy} aria-pressed={template===id} onClick={()=>setTemplate(id)}>{id==='atelier'?<StoreTemplateCard store={data.store||form} products={data.products||[]} accent={data.design.brand.accent}/>:<span className={styles.templateSwatch} style={{background:t.accent}}/>}<strong>{t.name}</strong><small>{t.description}</small><span className={styles.templateSelection}>{template===id?<><Check size={14}/> Selected</>:'Choose template'}</span></button>)}</div><Link className={css.textLink} href="/v1-1/store/design">Customise & preview <ArrowUpRight size={16}/></Link></>}
+ <div hidden={tab==='Categories'||tab==='Theme'}><CommerceSettingsPanel tab={tab} setup={data.setup} onDirtyChange={setCommerceDirty}/></div>
+ {error&&<p role="alert" className={css.error}>{error}</p>}{tab==='Theme'&&<footer className={css.saveBar}><span>{dirty?'Unsaved changes':'All changes saved'}</span><Button variant="secondary" disabled={busy||!dirty} onClick={()=>{setForm(saved);setTemplate(data.design.theme);setError('');}}>Cancel</Button><Button disabled={busy||!dirty} onClick={save}>{busy?'Saving…':'Save changes'}</Button></footer>}</section></main>;
 }
-

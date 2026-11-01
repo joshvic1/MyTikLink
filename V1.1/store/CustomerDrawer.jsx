@@ -1,0 +1,23 @@
+import {useEffect,useRef,useState} from 'react';
+import {Mail,ShieldCheck,LogOut,Package} from 'lucide-react';
+import {sendCode,verifyCode,getCustomerOrders} from '@/services/customerAuthService';
+import {Modal,Button,Field} from '../components/UI';
+import {storeThemeStyle} from './StoreTheme';
+import {formatMoney} from './CommercePublic';
+import css from './CommercePublic.module.css';
+
+export default function CustomerDrawer({store,design,onClose}){
+ const [step,setStep]=useState('email'),[email,setEmail]=useState(''),[code,setCode]=useState(''),[busy,setBusy]=useState(false),[error,setError]=useState(''),[orders,setOrders]=useState([]),[cooldown,setCooldown]=useState(0);
+ const lock=useRef(false),alive=useRef(true),tokenKey=`store-customer:${store.slug}`;
+ const loadOrders=async token=>{const result=await getCustomerOrders(token);if(alive.current){setOrders(Array.isArray(result)?result:[]);setStep('account');}};
+ useEffect(()=>{alive.current=true;let token;try{token=localStorage.getItem(tokenKey);}catch{}if(token){setBusy(true);loadOrders(token).catch(e=>{if(e.response?.status===401){localStorage.removeItem(tokenKey);}else if(alive.current)setError('Could not load your orders. Please try again.');}).finally(()=>{if(alive.current)setBusy(false);});}return()=>{alive.current=false;};},[tokenKey]);
+ useEffect(()=>{if(!cooldown)return;const timer=setTimeout(()=>setCooldown(v=>v-1),1000);return()=>clearTimeout(timer);},[cooldown]);
+ const submit=async e=>{e.preventDefault();if(lock.current)return;lock.current=true;setBusy(true);setError('');try{if(step==='email'){await sendCode(email.trim().toLowerCase(),store.slug);if(alive.current){setCode('');setStep('code');setCooldown(30);}}else{const result=await verifyCode(email.trim().toLowerCase(),store.slug,code);localStorage.setItem(tokenKey,result.token);await loadOrders(result.token);}}catch(e){if(alive.current)setError(e.response?.data?.message||'Something went wrong. Please try again.');}finally{lock.current=false;if(alive.current)setBusy(false);}};
+ return <Modal title={step==='account'?'Your account':'Customer account'} className={`${css.publicModal} ${css.cartDrawer}`} backdropClassName={css.drawerBackdrop} style={storeThemeStyle(design)} onClose={onClose}><div className={css.customerPanel}>
+ {step==='account'?<><div className={css.accountHeading}><h3>Your orders</h3><button onClick={()=>{localStorage.removeItem(tokenKey);setOrders([]);setStep('email');setCode('');}}><LogOut size={15}/> Sign out</button></div>{!orders.length&&<p>No orders yet.</p>}{orders.map(order=><details key={order._id} className={css.customerOrder}><summary><span><Package size={16}/> {order.orderNumber||String(order._id).slice(-8)}</span><strong>{formatMoney(order.totals?.totalMinor??Math.round(Number(order.total??order.totalAmount??order.subtotal??0)*100),order.totals?.currency||store.currency)}</strong></summary><p>{new Date(order.createdAt).toLocaleDateString()} · {order.paymentStatus||order.status||'Pending'}</p>{(order.items||[]).map((item,i)=><p key={i}>{item.quantity} × {item.name||item.productName||'Product'}</p>)}</details>)}</>:<form onSubmit={submit} className={css.form}>
+ <div className={css.customerIcon}>{step==='email'?<Mail size={26}/>:<ShieldCheck size={26}/>}</div><h3>{step==='email'?'Welcome back':'Check your email'}</h3><p>{step==='email'?'Enter the email you used at checkout to view your orders.':`Enter the four-digit code sent to ${email}.`}</p>
+ {step==='email'?<Field label="Email address"><input autoFocus required type="email" autoComplete="email" value={email} onChange={e=>setEmail(e.target.value)}/></Field>:<Field label="Verification code"><input key="code" autoFocus required inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{4}" maxLength={4} value={code} onChange={e=>setCode(e.target.value.replace(/\D/g,'').slice(0,4))}/></Field>}
+ <Button type="submit" disabled={busy||(step==='code'&&code.length!==4)}>{busy?'Please wait…':step==='email'?'Send login code':'Verify and sign in'}</Button>
+ {step==='code'&&<><button type="button" disabled={busy} onClick={()=>{setStep('email');setError('');}}>Change email</button><button type="button" disabled={busy||cooldown>0} onClick={async()=>{if(lock.current)return;lock.current=true;setBusy(true);setError('');try{await sendCode(email.trim().toLowerCase(),store.slug);setCooldown(30);}catch(e){setError(e.response?.data?.message||'Unable to resend code.');}finally{lock.current=false;setBusy(false);}}}>{cooldown?`Resend in ${cooldown}s`:'Resend code'}</button></>}
+ </form>}{error&&<p role="alert" className={css.error}>{error}</p>}</div></Modal>;
+}

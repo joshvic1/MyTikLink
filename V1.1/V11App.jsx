@@ -79,9 +79,9 @@ function V11Content() {
   const loadingLabel = preparingLabel(loadingPath || path);
   useEffect(() => { const message = sessionStorage.getItem("v11-auth-notice"); if (message) { sessionStorage.removeItem("v11-auth-notice"); notify.success(message); } }, [path]);
   useEffect(() => {
-    const start = (url) => { setLoadingPath(String(url).split("?")[0]); setNavigating(true); };
+    const start = (url, {shallow} = {}) => { if(shallow)return;setLoadingPath(String(url).split("?")[0]); setNavigating(true); };
     const finish = () => { setNavigating(false); setLoadingPath(""); };
-    const complete = () => { setNavigating(false); setLoadingPath(""); setModal(null); };
+    const complete = (url,{shallow}={}) => { if(shallow)return;setNavigating(false); setLoadingPath(""); setModal(null); };
     router.events.on("routeChangeStart", start);
     router.events.on("routeChangeComplete", complete);
     router.events.on("routeChangeError", finish);

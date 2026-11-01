@@ -1,6 +1,26 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Archive, ChevronDown, Copy, ExternalLink, ImagePlus, Loader2, Package, Pencil, Plus, Search, Trash2 } from "lucide-react";
-import { Badge, Button, EmptyState, Field, IconButton, Modal, PageHeader } from "../components/UI";
+import {
+  Archive,
+  ChevronDown,
+  Copy,
+  ExternalLink,
+  ImagePlus,
+  Loader2,
+  Package,
+  Pencil,
+  Plus,
+  Search,
+  Trash2,
+} from "lucide-react";
+import {
+  Badge,
+  Button,
+  EmptyState,
+  Field,
+  IconButton,
+  Modal,
+  PageHeader,
+} from "../components/UI";
 import { notify } from "../components/Notifications";
 import { apiRequest, v11Api } from "../lib/api";
 import ProductEditor from "./ProductEditor";
@@ -9,57 +29,783 @@ import styles from "../styles/v11.module.css";
 const ProductForm = ProductEditor;
 
 const money = (value) => `₦${Number(value || 0).toLocaleString()}`;
-const emptyForm = { name: "", description: "", category: "General", price: "", comparePrice: "", stock: "", sku: "", productType: "physical", status: "published", featured: false, images: [], deliveryMethod: "", externalUrl: "", downloadFile: "" };
+const emptyForm = {
+  name: "",
+  description: "",
+  category: "General",
+  price: "",
+  comparePrice: "",
+  stock: "",
+  sku: "",
+  productType: "physical",
+  status: "published",
+  featured: false,
+  images: [],
+  deliveryMethod: "",
+  externalUrl: "",
+  downloadFile: "",
+};
 
 function LegacyProductForm({ product, onClose, onSaved }) {
-  const [form, setForm] = useState(() => product ? { ...emptyForm, ...product, price: String(product.price ?? ""), comparePrice: product.comparePrice ?? "", stock: String(product.stock ?? ""), images: product.images || [] } : emptyForm);
+  const [form, setForm] = useState(() =>
+    product
+      ? {
+          ...emptyForm,
+          ...product,
+          price: String(product.price ?? ""),
+          comparePrice: product.comparePrice ?? "",
+          stock: String(product.stock ?? ""),
+          images: product.images || [],
+        }
+      : emptyForm,
+  );
   const [errors, setErrors] = useState({});
-  const [saving, setSaving] = useState(false), [uploading, setUploading] = useState(false);
+  const [saving, setSaving] = useState(false),
+    [uploading, setUploading] = useState(false);
   const changed = useRef(false);
-  const update = (key, value) => { changed.current = true; setForm(current => ({ ...current, [key]: value })); setErrors(current => ({ ...current, [key]: "" })); };
-  const close = () => { if (saving) return; if (!changed.current || window.confirm("Discard your unsaved product changes?")) onClose(); };
+  const update = (key, value) => {
+    changed.current = true;
+    setForm((current) => ({ ...current, [key]: value }));
+    setErrors((current) => ({ ...current, [key]: "" }));
+  };
+  const close = () => {
+    if (saving) return;
+    if (
+      !changed.current ||
+      window.confirm("Discard your unsaved product changes?")
+    )
+      onClose();
+  };
   const upload = async (event) => {
-    const file = event.target.files?.[0]; if (!file) return;
-    if (!/^image\/(png|jpe?g|webp)$/i.test(file.type)) { setErrors(current => ({ ...current, images: "Use a PNG, JPG, or WEBP image." })); return; }
-    try { setUploading(true); const body = new FormData(); body.append("image", file); const result = await apiRequest("/upload", { method: "POST", body }); update("images", [...form.images, result.url]); }
-    catch (error) { setErrors(current => ({ ...current, images: error.message || "Image upload failed." })); }
-    finally { setUploading(false); event.target.value = ""; }
+    const file = event.target.files?.[0];
+    if (!file) return;
+    if (!/^image\/(png|jpe?g|webp)$/i.test(file.type)) {
+      setErrors((current) => ({
+        ...current,
+        images: "Use a PNG, JPG, or WEBP image.",
+      }));
+      return;
+    }
+    try {
+      setUploading(true);
+      const body = new FormData();
+      body.append("image", file);
+      const result = await apiRequest("/upload", { method: "POST", body });
+      update("images", [...form.images, result.url]);
+    } catch (error) {
+      setErrors((current) => ({
+        ...current,
+        images: error.message || "Image upload failed.",
+      }));
+    } finally {
+      setUploading(false);
+      event.target.value = "";
+    }
   };
   const uploadDownload = async (event) => {
-    const file = event.target.files?.[0]; if (!file) return;
-    try { setUploading(true); const body = new FormData(); body.append("file", file); const result = await apiRequest("/upload/file", { method: "POST", body }); update("downloadFile", result.url); }
-    catch (error) { setErrors(current => ({ ...current, downloadFile: error.message || "File upload failed." })); }
-    finally { setUploading(false); event.target.value = ""; }
+    const file = event.target.files?.[0];
+    if (!file) return;
+    try {
+      setUploading(true);
+      const body = new FormData();
+      body.append("file", file);
+      const result = await apiRequest("/upload/file", { method: "POST", body });
+      update("downloadFile", result.url);
+    } catch (error) {
+      setErrors((current) => ({
+        ...current,
+        downloadFile: error.message || "File upload failed.",
+      }));
+    } finally {
+      setUploading(false);
+      event.target.value = "";
+    }
   };
   const submit = async (event) => {
     event.preventDefault();
     const nextErrors = {};
     if (!form.name.trim()) nextErrors.name = "Enter a product name.";
     if (!(Number(form.price) > 0)) nextErrors.price = "Enter a valid price.";
-    if (!form.images.length) nextErrors.images = "Add at least one product image.";
-    if (form.productType === "physical" && (form.stock === "" || Number(form.stock) < 0)) nextErrors.stock = "Enter available stock.";
-    if (form.productType === "digital" && !form.deliveryMethod) nextErrors.deliveryMethod = "Choose how customers receive it.";
-    if (form.productType === "digital" && form.deliveryMethod === "external" && !form.externalUrl.trim()) nextErrors.externalUrl = "Enter the delivery link.";
-    setErrors(nextErrors); if (Object.keys(nextErrors).length) return;
-    const payload = { ...form, name: form.name.trim(), category: form.category.trim() || "General", description: form.description.trim(), price: Number(form.price), comparePrice: form.comparePrice === "" ? null : Number(form.comparePrice), stock: form.productType === "physical" ? Number(form.stock) : 0, featured: Boolean(form.featured), deliveryMethod: form.productType === "digital" ? form.deliveryMethod : null, externalUrl: form.productType === "digital" ? form.externalUrl.trim() : "", downloadFile: form.productType === "digital" ? form.downloadFile : "" };
-    try { setSaving(true); const saved = product?._id ? await v11Api.updateProduct(product._id, payload) : await v11Api.createProduct(payload); notify.success(product ? "Product updated" : "Product added"); onSaved(saved); }
-    catch (error) { notify.error(error.message || "Couldn’t save this product."); }
-    finally { setSaving(false); }
+    if (!form.images.length)
+      nextErrors.images = "Add at least one product image.";
+    if (
+      form.productType === "physical" &&
+      (form.stock === "" || Number(form.stock) < 0)
+    )
+      nextErrors.stock = "Enter available stock.";
+    if (form.productType === "digital" && !form.deliveryMethod)
+      nextErrors.deliveryMethod = "Choose how customers receive it.";
+    if (
+      form.productType === "digital" &&
+      form.deliveryMethod === "external" &&
+      !form.externalUrl.trim()
+    )
+      nextErrors.externalUrl = "Enter the delivery link.";
+    setErrors(nextErrors);
+    if (Object.keys(nextErrors).length) return;
+    const payload = {
+      ...form,
+      name: form.name.trim(),
+      category: form.category.trim() || "General",
+      description: form.description.trim(),
+      price: Number(form.price),
+      comparePrice: form.comparePrice === "" ? null : Number(form.comparePrice),
+      stock: form.productType === "physical" ? Number(form.stock) : 0,
+      featured: Boolean(form.featured),
+      deliveryMethod:
+        form.productType === "digital" ? form.deliveryMethod : null,
+      externalUrl:
+        form.productType === "digital" ? form.externalUrl.trim() : "",
+      downloadFile: form.productType === "digital" ? form.downloadFile : "",
+    };
+    try {
+      setSaving(true);
+      const saved = product?._id
+        ? await v11Api.updateProduct(product._id, payload)
+        : await v11Api.createProduct(payload);
+      notify.success(product ? "Product updated" : "Product added");
+      onSaved(saved);
+    } catch (error) {
+      notify.error(error.message || "Couldn’t save this product.");
+    } finally {
+      setSaving(false);
+    }
   };
-  return <Modal tone="peach" wide className={styles.productModal} title={product ? "Edit product" : "Add product"} description="Keep the essentials clear for your customers." onClose={close} footer={<><Button variant="secondary" type="button" onClick={close} disabled={saving}>Cancel</Button><Button type="submit" form="v11-product-form" disabled={saving || uploading}>{saving ? "Saving…" : product ? "Save changes" : "Add product"}</Button></>}><form id="v11-product-form" className={styles.productForm} onSubmit={submit}><section className={styles.productFormSection}><div className={styles.productSectionHeading}><b>Product media</b><small>One clear image is required.</small></div><div className={styles.productMediaRow}>{form.images.map((image, index) => <div className={styles.productImagePreview} key={`${image}-${index}`}><img src={image} alt="Product"/><button type="button" aria-label="Remove image" onClick={() => update("images", form.images.filter((_, itemIndex) => itemIndex !== index))}>×</button></div>)}<label className={styles.productUpload}><input type="file" accept="image/png,image/jpeg,image/webp" onChange={upload} disabled={uploading}/>{uploading ? <Loader2 className={styles.spin}/> : <ImagePlus/>}<span>{uploading ? "Uploading" : "Add image"}</span></label></div>{errors.images && <p className={styles.fieldError}>{errors.images}</p>}</section><section className={styles.productFormSection}><div className={styles.productSectionHeading}><b>Basic information</b></div><Field label="Product name" error={errors.name}><input value={form.name} onChange={event => update("name", event.target.value)} placeholder="e.g. Everyday tote bag"/></Field><div className={styles.productFormGrid}><Field label="Category"><input value={form.category} onChange={event => update("category", event.target.value)} placeholder="e.g. Accessories"/></Field><Field label="Product type"><select value={form.productType} onChange={event => update("productType", event.target.value)}><option value="physical">Physical product</option><option value="digital">Digital product</option></select></Field></div><Field label="Description"><textarea rows="3" value={form.description} onChange={event => update("description", event.target.value)} placeholder="A short, useful description"/></Field></section><section className={styles.productFormSection}><div className={styles.productSectionHeading}><b>Price & inventory</b></div><div className={styles.productFormGrid}><Field label="Selling price (₦)" error={errors.price}><input inputMode="decimal" value={form.price} onChange={event => update("price", event.target.value)} placeholder="0"/></Field><Field label="Compare-at price (optional)"><input inputMode="decimal" value={form.comparePrice} onChange={event => update("comparePrice", event.target.value)} placeholder="0"/></Field>{form.productType === "physical" && <Field label="Available stock" error={errors.stock}><input type="number" min="0" value={form.stock} onChange={event => update("stock", event.target.value)} placeholder="0"/></Field>}<Field label="SKU (optional)"><input value={form.sku} onChange={event => update("sku", event.target.value)} placeholder="Store reference"/></Field></div></section>{form.productType === "digital" && <section className={styles.productFormSection}><div className={styles.productSectionHeading}><b>Digital delivery</b></div><Field label="Delivery method" error={errors.deliveryMethod}><select value={form.deliveryMethod} onChange={event => update("deliveryMethod", event.target.value)}><option value="">Choose a method</option><option value="external">External link</option><option value="download">Downloadable file</option></select></Field>{form.deliveryMethod === "external" && <Field label="Delivery link" error={errors.externalUrl}><input type="url" value={form.externalUrl} onChange={event => update("externalUrl", event.target.value)} placeholder="https://…"/></Field>}</section>}<section className={styles.productVisibility}><label><input type="checkbox" checked={form.status === "published"} onChange={event => update("status", event.target.checked ? "published" : "draft")}/><span><b>Publish to storefront</b><small>Customers can see and buy this product.</small></span></label><label><input type="checkbox" checked={Boolean(form.featured)} onChange={event => update("featured", event.target.checked)}/><span><b>Feature this product</b><small>Show it in your selected store areas.</small></span></label></section></form></Modal>;
+  return (
+    <Modal
+      tone="peach"
+      wide
+      className={styles.productModal}
+      title={product ? "Edit product" : "Add product"}
+      description="Keep the essentials clear for your customers."
+      onClose={close}
+      footer={
+        <>
+          <Button
+            variant="secondary"
+            type="button"
+            onClick={close}
+            disabled={saving}
+          >
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            form="v11-product-form"
+            disabled={saving || uploading}
+          >
+            {saving ? "Saving…" : product ? "Save changes" : "Add product"}
+          </Button>
+        </>
+      }
+    >
+      <form
+        id="v11-product-form"
+        className={styles.productForm}
+        onSubmit={submit}
+      >
+        <section className={styles.productFormSection}>
+          <div className={styles.productSectionHeading}>
+            <b>Product media</b>
+            <small>One clear image is required.</small>
+          </div>
+          <div className={styles.productMediaRow}>
+            {form.images.map((image, index) => (
+              <div
+                className={styles.productImagePreview}
+                key={`${image}-${index}`}
+              >
+                <img src={image} alt="Product" />
+                <button
+                  type="button"
+                  aria-label="Remove image"
+                  onClick={() =>
+                    update(
+                      "images",
+                      form.images.filter((_, itemIndex) => itemIndex !== index),
+                    )
+                  }
+                >
+                  ×
+                </button>
+              </div>
+            ))}
+            <label className={styles.productUpload}>
+              <input
+                type="file"
+                accept="image/png,image/jpeg,image/webp"
+                onChange={upload}
+                disabled={uploading}
+              />
+              {uploading ? <Loader2 className={styles.spin} /> : <ImagePlus />}
+              <span>{uploading ? "Uploading" : "Add image"}</span>
+            </label>
+          </div>
+          {errors.images && (
+            <p className={styles.fieldError}>{errors.images}</p>
+          )}
+        </section>
+        <section className={styles.productFormSection}>
+          <div className={styles.productSectionHeading}>
+            <b>Basic information</b>
+          </div>
+          <Field label="Product name" error={errors.name}>
+            <input
+              value={form.name}
+              onChange={(event) => update("name", event.target.value)}
+              placeholder="e.g. Everyday tote bag"
+            />
+          </Field>
+          <div className={styles.productFormGrid}>
+            <Field label="Category">
+              <input
+                value={form.category}
+                onChange={(event) => update("category", event.target.value)}
+                placeholder="e.g. Accessories"
+              />
+            </Field>
+            <Field label="Product type">
+              <select
+                value={form.productType}
+                onChange={(event) => update("productType", event.target.value)}
+              >
+                <option value="physical">Physical product</option>
+                <option value="digital">Digital product</option>
+              </select>
+            </Field>
+          </div>
+          <Field label="Description">
+            <textarea
+              rows="3"
+              value={form.description}
+              onChange={(event) => update("description", event.target.value)}
+              placeholder="A short, useful description"
+            />
+          </Field>
+        </section>
+        <section className={styles.productFormSection}>
+          <div className={styles.productSectionHeading}>
+            <b>Price & inventory</b>
+          </div>
+          <div className={styles.productFormGrid}>
+            <Field label="Selling price (₦)" error={errors.price}>
+              <input
+                inputMode="decimal"
+                value={form.price}
+                onChange={(event) => update("price", event.target.value)}
+                placeholder="0"
+              />
+            </Field>
+            <Field label="Compare-at price (optional)">
+              <input
+                inputMode="decimal"
+                value={form.comparePrice}
+                onChange={(event) => update("comparePrice", event.target.value)}
+                placeholder="0"
+              />
+            </Field>
+            {form.productType === "physical" && (
+              <Field label="Available stock" error={errors.stock}>
+                <input
+                  type="number"
+                  min="0"
+                  value={form.stock}
+                  onChange={(event) => update("stock", event.target.value)}
+                  placeholder="0"
+                />
+              </Field>
+            )}
+            <Field label="SKU (optional)">
+              <input
+                value={form.sku}
+                onChange={(event) => update("sku", event.target.value)}
+                placeholder="Store reference"
+              />
+            </Field>
+          </div>
+        </section>
+        {form.productType === "digital" && (
+          <section className={styles.productFormSection}>
+            <div className={styles.productSectionHeading}>
+              <b>Digital delivery</b>
+            </div>
+            <Field label="Delivery method" error={errors.deliveryMethod}>
+              <select
+                value={form.deliveryMethod}
+                onChange={(event) =>
+                  update("deliveryMethod", event.target.value)
+                }
+              >
+                <option value="">Choose a method</option>
+                <option value="external">External link</option>
+                <option value="download">Downloadable file</option>
+              </select>
+            </Field>
+            {form.deliveryMethod === "external" && (
+              <Field label="Delivery link" error={errors.externalUrl}>
+                <input
+                  type="url"
+                  value={form.externalUrl}
+                  onChange={(event) =>
+                    update("externalUrl", event.target.value)
+                  }
+                  placeholder="https://…"
+                />
+              </Field>
+            )}
+          </section>
+        )}
+        <section className={styles.productVisibility}>
+          <label>
+            <input
+              type="checkbox"
+              checked={form.status === "published"}
+              onChange={(event) =>
+                update("status", event.target.checked ? "published" : "draft")
+              }
+            />
+            <span>
+              <b>Publish to storefront</b>
+              <small>Customers can see and buy this product.</small>
+            </span>
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={Boolean(form.featured)}
+              onChange={(event) => update("featured", event.target.checked)}
+            />
+            <span>
+              <b>Feature this product</b>
+              <small>Show it in your selected store areas.</small>
+            </span>
+          </label>
+        </section>
+      </form>
+    </Modal>
+  );
 }
 
-export default function ProductsManager({ onDataChange, openRequested = false, onOpenHandled }) {
-  const [products, setProducts] = useState([]), [total, setTotal] = useState(0), [hasMore, setHasMore] = useState(false), [page, setPage] = useState(1), [store, setStore] = useState(null);
-  const [loading, setLoading] = useState(true), [error, setError] = useState(""), [search, setSearch] = useState(""), [status, setStatus] = useState("all"), [stock, setStock] = useState("all"), [sort, setSort] = useState("newest"), [editing, setEditing] = useState(null), [confirming, setConfirming] = useState(null), [deleting, setDeleting] = useState(false);
-  const load = async (nextPage = 1, append = false) => { try { setLoading(!append); setError(""); const result = await v11Api.products({ page: nextPage, search, status, stock, sort }); const rows = result.products || []; setProducts(current => append ? [...current, ...rows] : rows); setTotal(result.total ?? rows.length); setHasMore(Boolean(result.hasMore)); setPage(nextPage); } catch (requestError) { setError(requestError.message || "Couldn’t load products."); } finally { setLoading(false); } };
-  useEffect(() => { const timer = setTimeout(() => load(), search ? 220 : 0); return () => clearTimeout(timer); }, [search, status, stock, sort]);
-  useEffect(() => { v11Api.store().then(setStore).catch(() => {}); }, []);
-  useEffect(() => { if (openRequested) { setEditing({}); onOpenHandled?.(); } }, [openRequested, onOpenHandled]);
-  const metrics = useMemo(() => ({ active: products.filter(product => product.status === "published").length, drafts: products.filter(product => product.status === "draft").length, out: products.filter(product => product.productType === "physical" && Number(product.stock) <= 0).length }), [products]);
-  const saved = () => { setEditing(null); load(); onDataChange?.(); };
-  const productUrl = product => `${window.location.origin}/v1-1/s/${store?.slug || ""}/${product.slug}`;
-  const copy = async product => { if (!store?.slug) return notify.error("Your storefront link is not ready yet."); try { await navigator.clipboard.writeText(productUrl(product)); notify.success("Product link copied"); } catch { notify.error("Couldn’t copy the product link."); } };
-  const remove = async () => { try { setDeleting(true); await v11Api.deleteProduct(confirming._id); notify.success("Product deleted"); setConfirming(null); load(); onDataChange?.(); } catch (requestError) { notify.error(requestError.message || "Couldn’t delete this product."); } finally { setDeleting(false); } };
-  return <div className={styles.managementPage}><PageHeader eyebrow="STOREFRONT" title="Products" description={`${total} product${total === 1 ? "" : "s"} in your store`} actions={<Button onClick={() => setEditing({})}><Plus/> Add product</Button>}/><div className={styles.managementMetrics}><span><Package/><small>Total products</small><b>{total}</b></span><span><Archive/><small>Published</small><b>{metrics.active}</b></span><span><Archive/><small>Drafts</small><b>{metrics.drafts}</b></span><span><Archive/><small>Out of stock</small><b>{metrics.out}</b></span></div><div className={styles.managementToolbar}><label><Search/><input value={search} onChange={event => setSearch(event.target.value)} placeholder="Search products"/></label><select value={status} onChange={event => setStatus(event.target.value)}><option value="all">All statuses</option><option value="published">Published</option><option value="draft">Drafts</option></select><select value={stock} onChange={event => setStock(event.target.value)}><option value="all">All stock</option><option value="in">In stock</option><option value="out">Out of stock</option></select><select value={sort} onChange={event => setSort(event.target.value)}><option value="newest">Newest</option><option value="oldest">Oldest</option><option value="priceHigh">Highest price</option><option value="priceLow">Lowest price</option><option value="name">Name</option></select></div>{error ? <div className={styles.managementError}>{error}<Button variant="secondary" onClick={() => load()}>Try again</Button></div> : loading ? <div className={styles.managementLoading}><Loader2 className={styles.spin}/> Loading products…</div> : !products.length ? <EmptyState icon={<Package/>} title={search || status !== "all" || stock !== "all" ? "No matching products" : "Add your first product"} description={search || status !== "all" || stock !== "all" ? "Try a different search or filter." : "Create a product to start selling from your storefront."} action={!search && status === "all" && stock === "all" ? <Button onClick={() => setEditing({})}><Plus/> Add product</Button> : undefined}/> : <><div className={styles.productList}>{products.map(product => <article className={styles.productRow} key={product._id}><img src={product.images?.[0] || "/placeholder.png"} alt=""/><div className={styles.productRowMain}><b>{product.name}</b><small>{product.category || "General"}{product.sku ? ` · ${product.sku}` : ""}</small></div><div><small>Price</small><b>{money(product.price)}</b></div><div><small>Stock</small><b>{product.productType === "digital" ? "Digital" : Number(product.stock || 0)}</b></div><Badge tone={product.status === "published" ? "success" : "neutral"}>{product.status === "published" ? "Published" : "Draft"}</Badge><div className={styles.productRowActions}><IconButton label="Copy product link" onClick={() => copy(product)}><Copy/></IconButton><IconButton label="Open product" onClick={() => store?.slug ? window.open(productUrl(product), "_blank") : notify.error("Your storefront link is not ready yet.")}><ExternalLink/></IconButton><IconButton label="Edit product" onClick={() => setEditing(product)}><Pencil/></IconButton><IconButton label="Delete product" onClick={() => setConfirming(product)}><Trash2/></IconButton></div></article>)}</div>{hasMore && <Button variant="secondary" className={styles.loadMoreButton} onClick={() => load(page + 1, true)}>Load more <ChevronDown/></Button>}</>}{editing && <ProductForm product={editing._id ? editing : null} onClose={() => setEditing(null)} onSaved={saved}/>} {confirming && <Modal tone="peach" title="Delete product?" description={`“${confirming.name}” will no longer appear in your storefront. Existing order records stay intact.`} onClose={() => setConfirming(null)} footer={<><Button variant="secondary" onClick={() => setConfirming(null)}>Keep product</Button><Button className={styles.dangerButton} onClick={remove} disabled={deleting}>{deleting ? "Deleting…" : "Delete product"}</Button></>}><p className={styles.confirmCopy}>This action cannot be undone.</p></Modal>}</div>;
+export default function ProductsManager({
+  onDataChange,
+  openRequested = false,
+  onOpenHandled,
+}) {
+  const [selected, setSelected] = useState([]),
+    [bulk, setBulk] = useState(""),
+    [bulkBusy, setBulkBusy] = useState(false);
+  const [products, setProducts] = useState([]),
+    [total, setTotal] = useState(0),
+    [hasMore, setHasMore] = useState(false),
+    [page, setPage] = useState(1),
+    [store, setStore] = useState(null);
+  const [loading, setLoading] = useState(true),
+    [error, setError] = useState(""),
+    [search, setSearch] = useState(""),
+    [status, setStatus] = useState("all"),
+    [stock, setStock] = useState("all"),
+    [sort, setSort] = useState("newest"),
+    [editing, setEditing] = useState(null),
+    [confirming, setConfirming] = useState(null),
+    [deleting, setDeleting] = useState(false);
+  const load = async (nextPage = 1, append = false) => {
+    try {
+      setLoading(!append);
+      setError("");
+      const result = await v11Api.products({
+        page: nextPage,
+        search,
+        status,
+        stock,
+        sort,
+      });
+      const rows = result.products || [];
+      if (!append) setSelected([]);
+      setProducts((current) => (append ? [...current, ...rows] : rows));
+      setTotal(result.total ?? rows.length);
+      setHasMore(Boolean(result.hasMore));
+      setPage(nextPage);
+    } catch (requestError) {
+      setError(requestError.message || "Couldn’t load products.");
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    const timer = setTimeout(() => load(), search ? 220 : 0);
+    return () => clearTimeout(timer);
+  }, [search, status, stock, sort]);
+  useEffect(() => {
+    v11Api
+      .store()
+      .then(setStore)
+      .catch(() => {});
+  }, []);
+  useEffect(() => {
+    if (openRequested) {
+      setEditing({});
+      onOpenHandled?.();
+    }
+  }, [openRequested, onOpenHandled]);
+  const metrics = useMemo(
+    () => ({
+      active: products.filter((product) => product.status === "published")
+        .length,
+      drafts: products.filter((product) => product.status === "draft").length,
+      out: products.filter(
+        (product) =>
+          product.productType === "physical" && Number(product.stock) <= 0,
+      ).length,
+    }),
+    [products],
+  );
+  const saved = () => {
+    setEditing(null);
+    load();
+    onDataChange?.();
+  };
+  const productUrl = (product) =>
+    `${window.location.origin}/v1-1/s/${store?.slug || ""}/products/${encodeURIComponent(product.slug)}`;
+  const copy = async (product) => {
+    if (!store?.slug)
+      return notify.error("Your storefront link is not ready yet.");
+    try {
+      await navigator.clipboard.writeText(productUrl(product));
+      notify.success("Product link copied");
+    } catch {
+      notify.error("Couldn’t copy the product link.");
+    }
+  };
+  const remove = async () => {
+    try {
+      setDeleting(true);
+      await apiRequest(
+        `/v1-1/store-studio/commerce/products/${confirming._id}`,
+        { method: "DELETE" },
+      );
+      notify.success("Product deleted");
+      setConfirming(null);
+      load();
+      onDataChange?.();
+    } catch (requestError) {
+      notify.error(requestError.message || "Couldn’t delete this product.");
+    } finally {
+      setDeleting(false);
+    }
+  };
+  return (
+    <div className={styles.managementPage}>
+      <PageHeader
+        eyebrow="STOREFRONT"
+        title="Products"
+        description={`${total} product${total === 1 ? "" : "s"} in your store`}
+        actions={
+          <Button onClick={() => setEditing({})}>
+            <Plus /> Add product
+          </Button>
+        }
+      />
+      <div className={styles.managementMetrics}>
+        <span>
+          <Package />
+          <small>Total products</small>
+          <b>{total}</b>
+        </span>
+        <span>
+          <Archive />
+          <small>Published</small>
+          <b>{metrics.active}</b>
+        </span>
+        <span>
+          <Archive />
+          <small>Drafts</small>
+          <b>{metrics.drafts}</b>
+        </span>
+        <span>
+          <Archive />
+          <small>Out of stock</small>
+          <b>{metrics.out}</b>
+        </span>
+      </div>
+      <div className={styles.managementToolbar}>
+        <label>
+          <input
+            style={{ width: 16, flex: "0 0 16px" }}
+            type="checkbox"
+            aria-label="Select visible products"
+            checked={
+              products.length > 0 &&
+              products.slice(0, 50).every((p) => selected.includes(p._id))
+            }
+            onChange={(e) =>
+              setSelected(
+                e.target.checked ? products.slice(0, 50).map((p) => p._id) : [],
+              )
+            }
+          />
+          Select visible
+        </label>
+        {selected.length > 0 && (
+          <>
+            <span>{selected.length} selected</span>
+            <Button variant="secondary" onClick={() => setBulk("published")}>
+              Publish selected
+            </Button>
+            <Button variant="secondary" onClick={() => setBulk("draft")}>
+              Move to draft
+            </Button>
+          </>
+        )}
+      </div>
+      <div className={styles.managementToolbar}>
+        <label>
+          <Search />
+          <input
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+            placeholder="Search products"
+          />
+        </label>
+        <select
+          value={status}
+          onChange={(event) => setStatus(event.target.value)}
+        >
+          <option value="all">All statuses</option>
+          <option value="published">Published</option>
+          <option value="draft">Drafts</option>
+        </select>
+        <select
+          value={stock}
+          onChange={(event) => setStock(event.target.value)}
+        >
+          <option value="all">All stock</option>
+          <option value="in">In stock</option>
+          <option value="out">Out of stock</option>
+        </select>
+        <select value={sort} onChange={(event) => setSort(event.target.value)}>
+          <option value="newest">Newest</option>
+          <option value="oldest">Oldest</option>
+          <option value="priceHigh">Highest price</option>
+          <option value="priceLow">Lowest price</option>
+          <option value="name">Name</option>
+        </select>
+      </div>
+      {error ? (
+        <div className={styles.managementError}>
+          {error}
+          <Button variant="secondary" onClick={() => load()}>
+            Try again
+          </Button>
+        </div>
+      ) : loading ? (
+        <div className={styles.managementLoading}>
+          <Loader2 className={styles.spin} /> Loading products…
+        </div>
+      ) : !products.length ? (
+        <EmptyState
+          icon={<Package />}
+          title={
+            search || status !== "all" || stock !== "all"
+              ? "No matching products"
+              : "Add your first product"
+          }
+          description={
+            search || status !== "all" || stock !== "all"
+              ? "Try a different search or filter."
+              : "Create a product to start selling from your storefront."
+          }
+          action={
+            !search && status === "all" && stock === "all" ? (
+              <Button onClick={() => setEditing({})}>
+                <Plus /> Add product
+              </Button>
+            ) : undefined
+          }
+        />
+      ) : (
+        <>
+          <div className={styles.productList}>
+            {products.map((product) => (
+              <article
+                style={{ position: "relative" }}
+                className={styles.productRow}
+                key={product._id}
+              >
+                <input
+                  style={{
+                    position: "absolute",
+                    left: 8,
+                    top: 8,
+                    width: 16,
+                    height: 16,
+                    accentColor: "#6e47dd",
+                  }}
+                  type="checkbox"
+                  aria-label={`Select ${product.name}`}
+                  checked={selected.includes(product._id)}
+                  onChange={(e) =>
+                    setSelected((ids) =>
+                      e.target.checked
+                        ? ids.length < 50
+                          ? [...ids, product._id]
+                          : ids
+                        : ids.filter((id) => id !== product._id),
+                    )
+                  }
+                />
+                <img src={product.images?.[0] || "/placeholder.png"} alt="" />
+                <div className={styles.productRowMain}>
+                  <b>{product.name}</b>
+                  <small>
+                    {product.category || "General"}
+                    {product.sku ? ` · ${product.sku}` : ""}
+                  </small>
+                </div>
+                <div>
+                  <small>Price</small>
+                  <b>{money(product.price)}</b>
+                </div>
+                <div>
+                  <small>Stock</small>
+                  <b>
+                    {product.productType === "digital"
+                      ? "Digital"
+                      : Number(product.stock || 0)}
+                  </b>
+                </div>
+                <Badge
+                  tone={product.status === "published" ? "success" : "neutral"}
+                >
+                  {product.status === "published" ? "Published" : "Draft"}
+                </Badge>
+                <div className={styles.productRowActions}>
+                  <IconButton
+                    label="Copy product link"
+                    onClick={() => copy(product)}
+                  >
+                    <Copy />
+                  </IconButton>
+                  <IconButton
+                    label="Open product"
+                    onClick={() =>
+                      store?.slug
+                        ? window.open(productUrl(product), "_blank")
+                        : notify.error("Your storefront link is not ready yet.")
+                    }
+                  >
+                    <ExternalLink />
+                  </IconButton>
+                  <IconButton
+                    label="Edit product"
+                    onClick={() => setEditing(product)}
+                  >
+                    <Pencil />
+                  </IconButton>
+                  <IconButton
+                    label="Delete product"
+                    onClick={() => setConfirming(product)}
+                  >
+                    <Trash2 />
+                  </IconButton>
+                </div>
+              </article>
+            ))}
+          </div>
+          {hasMore && (
+            <Button
+              variant="secondary"
+              className={styles.loadMoreButton}
+              onClick={() => load(page + 1, true)}
+            >
+              Load more <ChevronDown />
+            </Button>
+          )}
+        </>
+      )}
+      {bulk && (
+        <Modal
+          tone="teal"
+          title={
+            bulk === "draft"
+              ? "Move selected products to draft?"
+              : "Publish selected products?"
+          }
+          description={`${selected.length} selected products will be updated. Prices and stock stay unchanged.`}
+          onClose={() => !bulkBusy && setBulk("")}
+          footer={
+            <>
+              <Button
+                variant="secondary"
+                disabled={bulkBusy}
+                onClick={() => setBulk("")}
+              >
+                Cancel
+              </Button>
+              <Button
+                disabled={bulkBusy}
+                onClick={async () => {
+                  setBulkBusy(true);
+                  try {
+                    await apiRequest(
+                      "/v1-1/store-studio/commerce/products/bulk",
+                      {
+                        method: "POST",
+                        body: JSON.stringify({
+                          status: bulk,
+                          items: products
+                            .filter((p) => selected.includes(p._id))
+                            .map((p) => ({ id: p._id, version: p.__v || 0 })),
+                        }),
+                      },
+                    );
+                    setBulk("");
+                    notify.success("Products updated");
+                    load();
+                    onDataChange?.();
+                  } catch (e) {
+                    notify.error(e.message);
+                  } finally {
+                    setBulkBusy(false);
+                  }
+                }}
+              >
+                {bulkBusy ? "Updating…" : "Confirm"}
+              </Button>
+            </>
+          }
+        />
+      )}{" "}
+      {editing && (
+        <ProductForm
+          product={editing._id ? editing : null}
+          onClose={() => setEditing(null)}
+          onSaved={saved}
+        />
+      )}{" "}
+      {confirming && (
+        <Modal
+          tone="peach"
+          title="Delete product?"
+          description={`“${confirming.name}” will no longer appear in your storefront. Existing order records stay intact.`}
+          onClose={() => setConfirming(null)}
+          footer={
+            <>
+              <Button variant="secondary" onClick={() => setConfirming(null)}>
+                Keep product
+              </Button>
+              <Button
+                className={styles.dangerButton}
+                onClick={remove}
+                disabled={deleting}
+              >
+                {deleting ? "Deleting…" : "Delete product"}
+              </Button>
+            </>
+          }
+        >
+          <p className={styles.confirmCopy}>This action cannot be undone.</p>
+        </Modal>
+      )}
+    </div>
+  );
 }

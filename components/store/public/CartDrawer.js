@@ -125,11 +125,12 @@ export default function CartDrawer({ open, onClose }) {
       return;
     }
 
+    let paymentProof = "";
     try {
       setSubmitting(true);
       setSubmitProgress(5);
 
-      let paymentProof = "";
+
 
       if (proof) {
         setSubmitProgress((prev) => Math.max(prev, 12));
@@ -208,20 +209,14 @@ export default function CartDrawer({ open, onClose }) {
       clearCart();
 
       setStep("success");
-      trackBoth(
-        "CompletePayment",
-        {
-          value: subtotal,
-          currency: "NGN",
-        },
-        {
-          value: subtotal,
-          currency: "NGN",
-        },
-      );
       showToast("Order submitted successfully");
     } catch (err) {
-      console.log(err);
+      const next = err?.response?.data?.url;
+      if (err?.response?.status === 409 && typeof next === "string" && /^\/v1-1\/s\/[a-zA-Z0-9-]+\?checkout=1$/.test(next)) {
+        try { sessionStorage.setItem(`store-checkout-handoff:${cart[0]?.storeSlug}`, JSON.stringify({customerName:customer.name,customerEmail:customer.email,customerPhone:customer.phone,address:{line:customer.address,country:"NG",state:"",city:"",postcode:""},paymentProof})); } catch {}
+        window.location.assign(next);
+        return;
+      }
       setSubmitProgress(0);
       showToast(
         err?.response?.data?.message ||

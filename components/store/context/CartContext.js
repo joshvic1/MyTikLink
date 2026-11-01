@@ -2,6 +2,8 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 
+import {clampCartQuantity} from "./cartLimits.mjs";
+
 const CartContext = createContext();
 
 export function CartProvider({ children }) {
@@ -66,8 +68,9 @@ export function CartProvider({ children }) {
           p.cartKey === cartKey
             ? {
                 ...p,
+                ...product,
                 quantity:
-                  product.productType === "digital" ? 1 : p.quantity + quantity,
+                  clampCartQuantity(product, p.quantity + quantity, selectedVariants),
               }
             : p,
         );
@@ -79,7 +82,7 @@ export function CartProvider({ children }) {
           ...product,
           cartKey,
           selectedVariants,
-          quantity,
+          quantity: clampCartQuantity(product, quantity, selectedVariants),
           storeSlug: product.store?.slug,
           storeBankName: product.store?.bankName,
           storeAccountName: product.store?.accountName,
@@ -110,12 +113,18 @@ export function CartProvider({ children }) {
         p.cartKey === cartKey
           ? {
               ...p,
-              quantity: qty,
+              quantity: clampCartQuantity(p, qty),
             }
           : p,
       ),
     );
   };
+  const refreshProducts = (products) => setCart(previous => previous.map(item => {
+    const fresh = products.find(p => p._id === item._id);
+    if (!fresh) return item;
+    const updated = {...item, ...fresh, selectedVariants:item.selectedVariants};
+    return {...updated, quantity:clampCartQuantity(updated,item.quantity)};
+  }));
   // CLEAR
   const clearCart = () => {
     setCart([]);
@@ -145,6 +154,7 @@ export function CartProvider({ children }) {
         addToCart,
         removeFromCart,
         updateQty,
+        refreshProducts,
         clearCart,
         getItemQty,
         totalItems,

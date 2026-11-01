@@ -1,3 +1,6 @@
+import {createPortal} from "react-dom";
+const modalStack=[];
+let modalBodyOverflow="";
 import popup from "./PopupChrome.module.css";
 import { Breadcrumbs } from "./Breadcrumbs";
 import styles from "../styles/v11.module.css";
@@ -52,20 +55,23 @@ export function Field({ label, hint, error, children }) {
   return <label className={styles.field}><span>{label}</span>{children}{hint && !error && <small>{hint}</small>}{error && <small className={styles.fieldError}>{error}</small>}</label>;
 }
 
-export function Modal({ tone = "purple", title, description, headerIcon, onClose, children, footer, wide = false, className = "" }) {
+export function Modal({ tone = "purple", title, description, headerIcon, onClose, children, footer, wide = false, className = "", style, backdropClassName = "" }) {
   const dialogRef = useRef(null);
+  const previousFocus = useRef(typeof document!=="undefined"?document.activeElement:null);
   const closeRef = useRef(onClose);
   closeRef.current = onClose;
   useEffect(() => {
-    const previous = document.activeElement;
-    const originalOverflow = document.body.style.overflow;
+    const previous = previousFocus.current;
+    if(!modalStack.length) modalBodyOverflow=document.body.style.overflow;
     document.body.style.overflow = "hidden";
     const dialog = dialogRef.current;
+    modalStack.push(dialog);
+    modalStack.forEach(item=>{item.inert=item!==dialog;});
     const focusable = () => [...(dialog?.querySelectorAll('button:not([disabled]),a[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])') || [])];
     focusable()[0]?.focus();
-    const keydown = (event) => { if (event.key === "Escape") closeRef.current(); if (event.key === "Tab") { const nodes = focusable(); if (!nodes.length) return; const first = nodes[0], last = nodes[nodes.length - 1]; if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); } else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); } } };
+    const keydown = (event) => { if(modalStack.at(-1)!==dialog)return; if (event.key === "Escape") closeRef.current(); if (event.key === "Tab") { const nodes = focusable(); if (!nodes.length) return; const first = nodes[0], last = nodes[nodes.length - 1]; if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); } else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); } } };
     document.addEventListener("keydown", keydown);
-    return () => { document.removeEventListener("keydown", keydown); document.body.style.overflow = originalOverflow; previous?.focus?.(); };
+    return () => { document.removeEventListener("keydown", keydown); const index=modalStack.indexOf(dialog);if(index>=0)modalStack.splice(index,1);modalStack.forEach(item=>{item.inert=item!==modalStack.at(-1);});if(!modalStack.length)document.body.style.overflow=modalBodyOverflow;if(previous?.isConnected)previous.focus?.({preventScroll:true}); };
   }, []);
-  return <div data-keyboard-sheet="" className={styles.modalBackdrop} onMouseDown={(event) => event.target === event.currentTarget && onClose()}><section ref={dialogRef} data-popup-tone={tone} className={`${styles.modal} ${popup.surface} ${wide ? styles.modalWide : ""} ${className}`} role="dialog" aria-modal="true" aria-label={title}><header className={popup.header}><div className={headerIcon ? styles.modalHeadingWithIcon : ""}>{headerIcon && <span className={styles.modalHeaderIcon}>{headerIcon}</span>}<div><h2>{title}</h2>{description && <p>{description}</p>}</div></div><IconButton label="Close" onClick={onClose}><X/></IconButton></header><div className={styles.modalBody}>{children}</div>{footer && <footer className={popup.footer}>{footer}</footer>}</section></div>;
+  return typeof document!=="undefined"?createPortal(<div data-keyboard-sheet="" className={`${styles.modalBackdrop} ${backdropClassName}`} onMouseDown={(event) => event.target === event.currentTarget && onClose()}><section ref={dialogRef} style={style} data-popup-tone={tone} className={`${styles.modal} ${popup.surface} ${wide ? styles.modalWide : ""} ${className}`} role="dialog" aria-modal="true" aria-label={title}><header className={popup.header}><div className={headerIcon ? styles.modalHeadingWithIcon : ""}>{headerIcon && <span className={styles.modalHeaderIcon}>{headerIcon}</span>}<div><h2>{title}</h2>{description && <p>{description}</p>}</div></div><IconButton label="Close" onClick={onClose}><X/></IconButton></header><div className={styles.modalBody}>{children}</div>{footer && <footer className={popup.footer}>{footer}</footer>}</section></div>,document.body):null;
 }

@@ -1,5 +1,4 @@
 export const V11_ROOT = "/v1-1";
-
 export const v11Routes = {
   home: `${V11_ROOT}/dashboard`,
   links: `${V11_ROOT}/links`,
@@ -22,22 +21,54 @@ export const v11Routes = {
   help: `${V11_ROOT}/help`,
   login: `${V11_ROOT}/login`,
 };
-
 export const navigation = [
   { key: "home", label: "Home", href: v11Routes.home, icon: "home" },
-  { key: "pages", label: "Landing pages", href: v11Routes.pages, icon: "pages" },
+  {
+    key: "pages",
+    label: "Landing pages",
+    href: v11Routes.pages,
+    icon: "pages",
+  },
   { key: "store", label: "Storefront", href: v11Routes.store, icon: "store" },
-  { key: "links", label: "Redirect Links", href: v11Routes.links, icon: "links" },
-  { key: "insights", label: "Insights", href: v11Routes.insights, icon: "insights" },
-  { key: "affiliate", label: "Affiliate", href: v11Routes.affiliate, icon: "affiliate", showInBottom: false },
-  { key: "integrations", label: "Integrations", href: v11Routes.integrations, icon: "integrations", showInBottom: false },
-  { key: "tracking", label: "Pixels", href: v11Routes.tracking, icon: "tracking", showInBottom: false },
+  {
+    key: "links",
+    label: "Redirect Links",
+    href: v11Routes.links,
+    icon: "links",
+  },
+  {
+    key: "insights",
+    label: "Insights",
+    href: v11Routes.insights,
+    icon: "insights",
+  },
+  {
+    key: "affiliate",
+    label: "Affiliate",
+    href: v11Routes.affiliate,
+    icon: "affiliate",
+    showInBottom: false,
+  },
+  {
+    key: "integrations",
+    label: "Integrations",
+    href: v11Routes.integrations,
+    icon: "integrations",
+    showInBottom: false,
+  },
+  {
+    key: "tracking",
+    label: "Pixels",
+    href: v11Routes.tracking,
+    icon: "tracking",
+    showInBottom: false,
+  },
 ];
-
 export function activeRoute(pathname = "") {
   if (pathname.includes("/affiliate")) return "affiliate";
   if (pathname.includes("/integrations")) return "integrations";
   if (pathname.includes("/settings/tracking")) return "tracking";
+  if (pathname.includes("/store/settings")) return "storeSettings";
   if (pathname.includes("/settings")) return "settings";
   if (pathname.includes("/store/products")) return "products";
   if (pathname.includes("/store/orders")) return "orders";
@@ -45,6 +76,7 @@ export function activeRoute(pathname = "") {
   if (pathname.includes("/store")) return "store";
   if (pathname.includes("/pages")) return "pages";
   if (pathname.includes("/links")) return "links";
-  if (pathname.includes("/analytics") || pathname.includes("/insights")) return "insights";
+  if (pathname.includes("/analytics") || pathname.includes("/insights"))
+    return "insights";
   return "home";
 }

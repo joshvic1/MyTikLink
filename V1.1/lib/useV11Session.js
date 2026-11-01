@@ -1,16 +1,17 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
 import { useRouter } from "next/router";
 import { ApiError, getToken, v11Api } from "./api";
 
 export function useV11Session({ required = true } = {}) {
   const router = useRouter();
+  const routerRef=useRef(router);routerRef.current=router;
   const [state, setState] = useState({ user: null, loading: true, error: null });
 
   const refresh = useCallback(async () => {
     const token = getToken();
     if (!token) {
       setState({ user: null, loading: false, error: null });
-      if (required) router.replace("/v1-1/login");
+      if (required) routerRef.current.replace("/v1-1/login");
       return null;
     }
     setState((current) => ({ ...current, loading: true, error: null }));
@@ -22,19 +23,19 @@ export function useV11Session({ required = true } = {}) {
     } catch (error) {
       if (error instanceof ApiError && error.status === 401) {
         window.localStorage.removeItem("token");
-        if (required) router.replace("/v1-1/login");
+        if (required) routerRef.current.replace("/v1-1/login");
       }
       setState({ user: null, loading: false, error });
       return null;
     }
-  }, [required, router]);
+  }, [required]);
 
   useEffect(() => { refresh(); }, [refresh]);
 
   const logout = useCallback(() => {
     window.localStorage.removeItem("token");
-    router.push("/v1-1/login");
-  }, [router]);
+    routerRef.current.push("/v1-1/login");
+  }, []);
 
   return { ...state, refresh, logout, authenticated: Boolean(state.user) };
 }
