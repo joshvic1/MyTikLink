@@ -91,7 +91,7 @@ export function AccountPage({ user, refreshSession }) {
   const heading=(Icon,title,copy,tone='purple')=><header className={skin.cardHeading} data-tone={tone}><span className={skin.cardIcon} data-tone={tone}><Icon size={23}/></span><div><h2>{title}</h2><p>{copy}</p></div></header>;
   return <div className={`${styles.page} ${skin.settings}`}>
     <PageHeader eyebrow="YOUR ACCOUNT" title="Account settings"/>
-    <nav className={skin.tabs} aria-label="Account settings sections">{[['Profile','profile'],['Business','business'],['Passwords','security'],['Plan','plan'],['Branding','branding'],['Integrations','integrations']].map(([label,id])=><button key={id} aria-current={activeSection===id?'location':undefined} onClick={()=>jump(id)}><span>{label}</span></button>)}</nav>
+    <nav className={skin.tabs} aria-label="Account settings sections">{[['Profile','profile'],['Billing and Payments','plan'],['Business','business'],['Passwords','security'],['Branding','branding'],['Integrations','integrations']].map(([label,id])=><button key={id} aria-current={activeSection===id?'location':undefined} onClick={()=>jump(id)}><span>{label}</span></button>)}</nav>
     <div className={skin.columns}>
       <div className={skin.column}>
         <section id="settings-profile" className={skin.card}>
@@ -100,6 +100,11 @@ export function AccountPage({ user, refreshSession }) {
           <label className={skin.field}>Email address<input type="email" className={skin.verifiedEmail} value={user.email||''} readOnly aria-readonly="true"/><small>This is your verified account email. It cannot be changed.</small></label>
           <WhatsAppField value={form.phone} disabled={saving} onChange={phone=>setForm(current=>({...current,phone}))}/>
           {saveButton('profile')}
+        </section>
+        <section id="settings-plan" className={skin.card}>
+          {heading(Crown,'Billing and Payments','Your current subscription and billing.','gold')}
+          <div className={skin.plan}><span className={skin.planIcon}><Crown size={30}/></span><div><h3>{isFree?"Free":(plan.includes("pro")?"Pro":"Standard")+" "+(plan.includes("year")?"yearly":"monthly")+" plan"}</h3>{!isFree&&<p className={skin.expiry}>{expiry?`Expires ${expiry}`:"Expiry date unavailable"}</p>}<PlanBadge plan={user.plan}/></div></div>
+          <div className={skin.planActions}><Button variant="secondary" onClick={()=>openSubscription({mode:isFree?'upgrade':'change'})}>Change plan</Button><Button disabled={isFree} onClick={()=>openSubscription({mode:'renew',preselected:plan.includes('pro')?'pro':'standard',plan})}>Renew plan</Button></div><button className={skin.historyLink} onClick={()=>setDialog('billing')}>Payment history <ChevronRight size={13}/></button>
         </section>
         <section id="settings-business" className={skin.card}>
           {heading(Store,'Business Information','Used for your stores, pages and public profile.','teal')}
@@ -123,11 +128,7 @@ export function AccountPage({ user, refreshSession }) {
           <button className={skin.actionRow} onClick={()=>setDialog('security')}><span className={skin.rowIcon}><ShieldCheck size={20}/></span><span><b>Password</b><small>Change your password securely.</small></span><ChevronRight size={18}/></button>
 
         </section>
-        <section id="settings-plan" className={skin.card}>
-          {heading(Crown,'Account Plan','Your current subscription and billing.','gold')}
-          <div className={skin.plan}><span className={skin.planIcon}><Crown size={30}/></span><div><h3>{isFree?"Free":(plan.includes("pro")?"Pro":"Standard")+" "+(plan.includes("year")?"yearly":"monthly")+" plan"}</h3>{!isFree&&<p className={skin.expiry}>{expiry?`Expires ${expiry}`:"Expiry date unavailable"}</p>}<PlanBadge plan={user.plan}/></div></div>
-          <div className={skin.planActions}><Button variant="secondary" onClick={()=>openSubscription({mode:isFree?'upgrade':'change'})}>Change plan</Button><Button disabled={isFree} onClick={()=>openSubscription({mode:'renew',preselected:plan.includes('pro')?'pro':'standard',plan})}>Renew plan</Button></div><button className={skin.historyLink} onClick={()=>setDialog('billing')}>Payment history <ChevronRight size={13}/></button>
-        </section>
+
         <section id="settings-integrations" className={skin.card}>
           {heading(Link2,'Integrations','Connect your account with other services.','teal')}
           <button className={skin.actionRow} onClick={()=>setDialog("integrations")}><span className={skin.rowIcon}><Link2 size={20}/></span><span><b>Connected services</b><small>Manage your account integrations.</small></span><ChevronRight size={18}/></button>

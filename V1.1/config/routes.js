@@ -50,15 +50,8 @@ export const navigation = [
     showInBottom: false,
   },
   {
-    key: "integrations",
-    label: "Integrations",
-    href: v11Routes.integrations,
-    icon: "integrations",
-    showInBottom: false,
-  },
-  {
     key: "tracking",
-    label: "Pixels",
+    label: "Pixel / Integrations",
     href: v11Routes.tracking,
     icon: "tracking",
     showInBottom: false,

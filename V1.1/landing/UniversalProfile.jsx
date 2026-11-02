@@ -1,3 +1,4 @@
+import {getCategoryCover} from "../media/categoryImages";
 import ActionIcon from "./ActionIcon";
 import { useState } from "react";
 import CategoryCover from "../media/CategoryCover";
@@ -14,7 +15,9 @@ export function Photo({ url, assets = [], avatar = false, name, position, fit })
   return avatar ? <span className={styles.initials}>{String(name || "?").trim().split(/\s+/).slice(0,2).map(word=>Array.from(word)[0]).join("")}</span> : <div className={styles.neutral} role="img" aria-label="Abstract brand cover"><i/><i/><i/></div>;
 }
 export default function UniversalProfile({ instance, preview = false, verified = false }) {
-  const data = instance.personalization || {};
+  const saved = instance.personalization || {};
+  const currentAsset=getCategoryCover(saved.categoryId,{allowParent:true});
+  const data={...saved,categoryAssets:currentAsset?[currentAsset,...(saved.categoryAssets||[]).filter(a=>a.categoryId!==currentAsset.categoryId)]:saved.categoryAssets};
   const spotlight=instance.templateId === "spotlight-profile" || instance.themeId === "spotlight-profile";
   const studio=instance.themeId === "studio-pass";
   const HeadlineTag=studio ? "h1" : "h2";

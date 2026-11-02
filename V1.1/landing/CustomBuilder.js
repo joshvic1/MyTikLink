@@ -148,11 +148,11 @@ export default function CustomBuilder() {
 
     const savedDrafts = getDrafts();
 
-    if (savedDrafts.length > 0) {
+    if (savedDrafts.length > 0 || router.query.drafts === "1") {
       setDrafts(savedDrafts);
       setShowDrafts(true);
     }
-  }, [pageId, themeId]);
+  }, [pageId, themeId, router.query.drafts]);
 
   useEffect(() => {
     if (sections.length === 0) return;

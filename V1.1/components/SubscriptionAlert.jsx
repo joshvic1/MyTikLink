@@ -15,7 +15,7 @@ export function SubscriptionAlert({ user, payments = [] }) {
   const expiredPaid = (isFree && Boolean(previous)) || (!isFree && days !== null && days < 0);
   const expiring = !isFree && days !== null && days >= 0 && days <= 7;
   const freeOnly = isFree && !previous;
-  if (!expiredPaid && !expiring && !freeOnly) return null;
+  if (!expiredPaid && !expiring) return null;
   const label = freeOnly ? "You’re on the Free plan" : expiring ? days === 0 ? "Your plan expires today" : days === 1 ? "Your plan expires tomorrow" : `Your plan expires in ${days} days` : "Your plan has expired";
   const previousName = String(previous?.plan || "").toLowerCase().includes("pro") ? "Pro" : "Standard";
   const activeName = plan.includes("pro") ? "Pro" : plan.includes("standard") ? "Standard" : previousName;

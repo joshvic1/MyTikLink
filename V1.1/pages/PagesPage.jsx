@@ -1,8 +1,9 @@
+import {getDrafts} from "../../components/custom/utils/draftStorage";
 import PageUpgradePrompt from "../components/PageUpgradePrompt";
 import {useSubscription} from "../components/SubscriptionModal";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { Trash2, Plus, Search } from "lucide-react";
+import { Trash2, Plus, Search, FileText, ChevronRight } from "lucide-react";
 import { SummaryMetrics } from "../components/SummaryMetrics";
 import { notify } from "../components/Notifications";
 import { Button, EmptyState, PageHeader, Modal } from "../components/UI";
@@ -16,6 +17,8 @@ import styles from "../styles/v11.module.css";
 
 export function PagesPage({ onCreate, onLeads }) {
   const router = useRouter();
+  const [draftCount,setDraftCount]=useState(0);
+  useEffect(()=>{const update=()=>{try{setDraftCount(getDrafts().length);}catch{setDraftCount(0);}};update();window.addEventListener("focus",update);window.addEventListener("storage",update);return()=>{window.removeEventListener("focus",update);window.removeEventListener("storage",update);};},[]);
   const {openSubscription}=useSubscription();
   const [activation,setActivation]=useState(null),[activationBusy,setActivationBusy]=useState(false);
   useEffect(()=>{const id=router.query.activate;if(!router.isReady||typeof id!=="string")return;let alive=true;apiRequest(`/v1-1/pages/${encodeURIComponent(id)}`).then(p=>{if(alive){setActivation(p);const {activate,...query}=router.query;router.replace({pathname:router.pathname,query},undefined,{shallow:true});}}).catch(()=>{if(alive)notify.error("This page is unavailable or belongs to another account.");});return()=>{alive=false;};},[router.isReady,router.query.activate]);
@@ -55,6 +58,7 @@ export function PagesPage({ onCreate, onLeads }) {
       <label className={styles.search}><span className={styles.searchIconChip}><Search size={16} strokeWidth={1.8} aria-hidden="true"/></span><input value={query} onChange={event => setQuery(event.target.value)} aria-label="Search landing pages" placeholder="Search your pages…"/></label>
       <Button className={styles.landingPageCreate} onClick={onCreate}><Plus size={16} aria-hidden="true"/>Create</Button>
     </div>}
+    <button type="button" className={styles.savedDraftCard} onClick={()=>router.push("/v1-1/pages/builder?drafts=1")}><span className={styles.savedDraftIcon}><FileText size={21}/></span><span><strong>Draft</strong><small>Unfinished landing page edit on this device</small></span><b>{draftCount}</b><ChevronRight size={17}/></button>
     {error && <div className={styles.dataWarning} role="alert"><span>{error}{summary ? " Previously loaded information is still shown." : ""}</span><Button onClick={refresh}>Retry</Button></div>}
     {loading && <div className={`${styles.pageListLoading} ${summary ? styles.pageListRefreshing : ""}`} role="status" aria-busy="true" aria-label={summary ? "Updating landing pages" : "Loading landing pages"}><img className={styles.loadingBrand} src="/images/mytiklink-mark-black.png" alt="" width="64" height="64"/></div>}
     {pages.length > 0 ? <div className={styles.workspaceCardGrid} aria-busy={loading}>{pages.map((page,index) => {
