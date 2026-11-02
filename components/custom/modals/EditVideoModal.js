@@ -21,7 +21,7 @@ export default function EditVideoModal({ isOpen, onClose, element, onSave }) {
   };
 
   return (
-    <BottomSheet isOpen={isOpen} onClose={onClose}>
+    <BottomSheet title="Edit Video" isOpen={isOpen} onClose={onClose}>
       <div className={styles.container}>
         {/* HEADER */}
         <div className={styles.header}>

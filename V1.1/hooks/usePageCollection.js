@@ -20,5 +20,6 @@ export function usePageCollection(search, page) {
     refresh();
     return () => { sequence.current += 1; };
   }, [refresh]);
+  useEffect(()=>{window.addEventListener("v11:plan-updated",refresh);return()=>window.removeEventListener("v11:plan-updated",refresh);},[refresh]);
   return { ...state, refresh };
 }

@@ -27,7 +27,7 @@ export default function EditImageModal({ isOpen, onClose, element, onSave }) {
   const [sourceType, setSourceType] = useState("upload");
 
   return (
-    <BottomSheet isOpen={isOpen} onClose={onClose}>
+    <BottomSheet title="Edit Image" isOpen={isOpen} onClose={onClose}>
       <div className={styles.container}>
         {/* HEADER */}
         <div className={styles.header}>

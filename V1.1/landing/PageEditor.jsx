@@ -10,7 +10,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
-import TemplateEditor from "@/components/TemplateEditor";
+import TemplateEditor from "./LandingTemplateEditor";
 import PageNameSheet from "@/V1.1/landing/PageNameSheet.js";
 import styles from "@/styles/pageEditor.module.css";
 import UpgradeModal from "./UpgradeModal";
@@ -121,28 +121,14 @@ export default function PageEditor() {
 
   return (
     <>
-      <div className={styles.editorSafeArea}>
+      <div>
         <TemplateEditor
           template={template}
           config={config}
           onChange={setConfig}
+          onBack={()=>router.push(returnPath)}
+          onContinue={()=>setShowNameSheet(true)}
         />
-      </div>
-
-      {/* 🔥 BOTTOM SHEET */}
-      <div className={styles.bottomSheet}>
-        <button className={styles.backBtn} onClick={() => router.back()}>
-          <ArrowLeft size={18} />
-          Back
-        </button>
-
-        <button
-          className={styles.nextBtn}
-          onClick={() => setShowNameSheet(true)}
-        >
-          Next
-          <ArrowRight size={18} />
-        </button>
       </div>
 
       {showNameSheet && (

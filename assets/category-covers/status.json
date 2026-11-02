@@ -1,10 +1,10 @@
 {
   "expected": 735,
-  "generated": 409,
-  "pending": 326,
-  "needsReview": 273,
-  "ready": 136,
+  "generated": 735,
+  "pending": 0,
+  "needsReview": 0,
+  "ready": 735,
   "storage": "cloudflare-r2",
-  "totalBytes": 195695824,
-  "updatedAt": "2026-10-31T09:31:14.212Z"
+  "totalBytes": 351054247,
+  "updatedAt": "2026-11-01T14:25:30.563Z"
 }

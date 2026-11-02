@@ -29,7 +29,7 @@ export default function EditStoreProductsModal({
   };
 
   return (
-    <BottomSheet isOpen={isOpen} onClose={onClose}>
+    <BottomSheet title="Edit Store Products" isOpen={isOpen} onClose={onClose}>
       <div className={styles.sheet}>
         {/* HEADER */}
 

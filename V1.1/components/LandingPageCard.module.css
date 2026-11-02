@@ -80,3 +80,5 @@
 .portalMenu button:active:not(:disabled){transform:scale(.96)}
 .portalMenu button:focus-visible{outline:2px solid #8454DF;outline-offset:-2px}
 @media(prefers-reduced-motion:reduce){.portalMenu button,.portalMenu button svg{transition:none}.portalMenu button:hover:not(:disabled),.portalMenu button:hover svg,.portalMenu button:active:not(:disabled){transform:none}}
+
+.unlockStarter{display:inline-flex;border:0;background:transparent;color:#9871b6;font:inherit;font-size:9px;font-weight:600;padding:3px 0 3px 7px;cursor:pointer;white-space:nowrap}.unlockStarter:hover{color:#714392;text-decoration:underline}

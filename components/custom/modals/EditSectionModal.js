@@ -77,7 +77,7 @@ export default function EditSectionModal({ isOpen, onClose, section, onSave }) {
     }
   };
   return (
-    <BottomSheet isOpen={isOpen} onClose={onClose}>
+    <BottomSheet title="Edit Section" isOpen={isOpen} onClose={onClose}>
       <div className={styles.container}>
         {/* HEADER */}
         <div className={styles.header}>

@@ -23,7 +23,7 @@ export default function EditMenuModal({ isOpen, onClose, element, onSave }) {
   };
 
   return (
-    <BottomSheet isOpen={isOpen} onClose={onClose}>
+    <BottomSheet title="Edit Menu" isOpen={isOpen} onClose={onClose}>
       <div className={styles.container}>
         {/* HEADER */}
         <div className={styles.header}>

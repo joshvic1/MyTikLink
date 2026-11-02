@@ -2,7 +2,7 @@
 
 import { Modal, Button } from "../components/UI";
 import { useState, useEffect } from "react";
-import styles from "@/styles/pageNameSheet.module.css";
+import styles from "./EditorDialogs.module.css";
 
 export default function PageNameSheet({
   isPro,

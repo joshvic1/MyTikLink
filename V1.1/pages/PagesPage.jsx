@@ -1,3 +1,5 @@
+import PageUpgradePrompt from "../components/PageUpgradePrompt";
+import {useSubscription} from "../components/SubscriptionModal";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Trash2, Plus, Search } from "lucide-react";
@@ -5,7 +7,7 @@ import { SummaryMetrics } from "../components/SummaryMetrics";
 import { notify } from "../components/Notifications";
 import { Button, EmptyState, PageHeader, Modal } from "../components/UI";
 import LandingPageCard from "../components/LandingPageCard";
-import { v11Api, unwrapCollection } from "../lib/api";
+import { v11Api, unwrapCollection, apiRequest } from "../lib/api";
 import { pageInitial, pageThumbnail } from "../lib/pagePresentation";
 import { pageUrl } from "../lib/pageUrl";
 import { downloadLeads } from "../lib/leadExport";
@@ -14,6 +16,10 @@ import styles from "../styles/v11.module.css";
 
 export function PagesPage({ onCreate, onLeads }) {
   const router = useRouter();
+  const {openSubscription}=useSubscription();
+  const [activation,setActivation]=useState(null),[activationBusy,setActivationBusy]=useState(false);
+  useEffect(()=>{const id=router.query.activate;if(!router.isReady||typeof id!=="string")return;let alive=true;apiRequest(`/v1-1/pages/${encodeURIComponent(id)}`).then(p=>{if(alive){setActivation(p);const {activate,...query}=router.query;router.replace({pathname:router.pathname,query},undefined,{shallow:true});}}).catch(()=>{if(alive)notify.error("This page is unavailable or belongs to another account.");});return()=>{alive=false;};},[router.isReady,router.query.activate]);
+
   const [query, setQuery] = useState(""), [search, setSearch] = useState(""), [number, setNumber] = useState(1);
   const [actionId,setActionId]=useState(""), [stats,setStats]=useState(null);
   const changePage=async(page,operation)=>{if(actionId)return;setActionId(page._id);try{await operation();await refresh()}catch(e){notify.error(e.message || "Could not update page")}finally{setActionId("")}};
@@ -64,6 +70,7 @@ export function PagesPage({ onCreate, onLeads }) {
       action={summary?.pages === 0 && !search ? <Button onClick={onCreate}><Plus size={16}/>Create landing page</Button> : <Button variant="secondary" onClick={() => setQuery("")}>Clear search</Button>}/>}
     {total > limit && <nav className={styles.pagePagination} aria-label="Landing page results"><Button variant="secondary" disabled={loading || page <= 1} onClick={() => setNumber(page - 1)}>Previous</Button><span>Page {page} of {Math.ceil(total / limit)}</span><Button variant="secondary" disabled={loading || page * limit >= total} onClick={() => setNumber(page + 1)}>Next</Button></nav>}
     {stats && <Modal tone="teal" title="Views & clicks" description={stats.title} onClose={()=>setStats(null)} footer={<Button variant="secondary" onClick={()=>setStats(null)}>Close</Button>}><SummaryMetrics items={[{label:"Views",value:stats.viewsCount || 0},{label:"Clicks",value:stats.clicksCount || 0}]}/><p>Views count once per browser session per 30 minutes. Clicks count each action once in that window. Refreshes and repeated taps are deduplicated.</p><p>Tracking starts with this update. These are session-based counts, not unique people. Blocked tracking and offline visits may not be counted.</p></Modal>}
+    {activation?.requiresUpgrade?<PageUpgradePrompt page={activation} onClose={()=>setActivation(null)} onUpgrade={()=>{setActivation(null);openSubscription({mode:"upgrade",preselected:"pro"});}}/>:activation&&<Modal title="Do you want to activate this page?" onClose={()=>!activationBusy&&setActivation(null)} footer={<><Button variant="secondary" disabled={activationBusy} onClick={()=>setActivation(null)}>No</Button><Button disabled={activationBusy} onClick={async()=>{setActivationBusy(true);try{await v11Api.setPageActive(activation._id,true);setActivation(null);await refresh();notify.success("Page activated");}catch(e){notify.error(e.message);}finally{setActivationBusy(false);}}}>{activationBusy?"Activating…":"Yes"}</Button></>}><p>{activation.title}</p></Modal>}
     {pendingDelete && <Modal className={styles.deleteConfirm} title="Delete landing page?" description="This action cannot be undone." onClose={() => { if (!deleting && !exporting) setPendingDelete(null); }}
       footer={<><Button variant="secondary" disabled={deleting || exporting} onClick={() => setPendingDelete(null)}>Keep page</Button><Button variant="danger" disabled={deleting || exporting} onClick={remove}>{deleting ? "Deleting…" : "Delete page and leads"}</Button></>}>
       <div className={styles.deleteConfirmIcon}><Trash2 size={22}/></div><h3>{pendingDelete.title || "Untitled page"}</h3><p>{pageUrl(pendingDelete)}</p>

@@ -1,10 +1,20 @@
 import {createPortal} from "react-dom";
 const modalStack=[];
-let modalBodyOverflow="";
+let restoreModalScroll=null;
+function lockModalScroll(){
+ const body=document.body,root=document.documentElement,x=window.scrollX,y=window.scrollY;
+ const properties=['position','top','left','right','width','overflow','padding-right'];
+ const saved=properties.map(name=>[name,body.style.getPropertyValue(name),body.style.getPropertyPriority(name)]);
+ const gap=Math.max(0,window.innerWidth-root.clientWidth);
+ const padding=parseFloat(getComputedStyle(body).paddingRight)||0;
+ body.style.setProperty('position','fixed','important');body.style.setProperty('top',`-${y}px`,'important');body.style.setProperty('left',`-${x}px`,'important');body.style.setProperty('right','0','important');body.style.setProperty('width','100%','important');body.style.setProperty('overflow','hidden','important');
+ if(gap)body.style.setProperty('padding-right',`${padding+gap}px`,'important');
+ return()=>{saved.forEach(([name,value,priority])=>{if(value)body.style.setProperty(name,value,priority);else body.style.removeProperty(name);});const behavior=root.style.getPropertyValue('scroll-behavior'),priority=root.style.getPropertyPriority('scroll-behavior');root.style.setProperty('scroll-behavior','auto','important');window.scrollTo(x,y);if(behavior)root.style.setProperty('scroll-behavior',behavior,priority);else root.style.removeProperty('scroll-behavior');};
+}
 import popup from "./PopupChrome.module.css";
 import { Breadcrumbs } from "./Breadcrumbs";
 import styles from "../styles/v11.module.css";
-import { AlertCircle, ArrowRight, FileText, Link2, ShoppingBag, Sparkles, X } from "lucide-react";
+import { AlertCircle, ArrowRight, FileText, Link2, ShoppingBag, Sparkles, ShieldAlert, X } from "lucide-react";
 import { forwardRef, useEffect, useRef, useState } from "react";
 
 export function Button({ variant = "primary", className = "", children, ...props }) {
@@ -62,16 +72,15 @@ export function Modal({ tone = "purple", title, description, headerIcon, onClose
   closeRef.current = onClose;
   useEffect(() => {
     const previous = previousFocus.current;
-    if(!modalStack.length) modalBodyOverflow=document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    if(!modalStack.length) restoreModalScroll=lockModalScroll();
     const dialog = dialogRef.current;
     modalStack.push(dialog);
     modalStack.forEach(item=>{item.inert=item!==dialog;});
     const focusable = () => [...(dialog?.querySelectorAll('button:not([disabled]),a[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])') || [])];
-    focusable()[0]?.focus();
+    focusable()[0]?.focus({preventScroll:true});
     const keydown = (event) => { if(modalStack.at(-1)!==dialog)return; if (event.key === "Escape") closeRef.current(); if (event.key === "Tab") { const nodes = focusable(); if (!nodes.length) return; const first = nodes[0], last = nodes[nodes.length - 1]; if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); } else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); } } };
     document.addEventListener("keydown", keydown);
-    return () => { document.removeEventListener("keydown", keydown); const index=modalStack.indexOf(dialog);if(index>=0)modalStack.splice(index,1);modalStack.forEach(item=>{item.inert=item!==modalStack.at(-1);});if(!modalStack.length)document.body.style.overflow=modalBodyOverflow;if(previous?.isConnected)previous.focus?.({preventScroll:true}); };
+    return () => { document.removeEventListener("keydown", keydown); const index=modalStack.indexOf(dialog);if(index>=0)modalStack.splice(index,1);modalStack.forEach(item=>{item.inert=item!==modalStack.at(-1);});if(!modalStack.length){restoreModalScroll?.();restoreModalScroll=null;}if(previous?.isConnected)previous.focus?.({preventScroll:true}); };
   }, []);
-  return typeof document!=="undefined"?createPortal(<div data-keyboard-sheet="" className={`${styles.modalBackdrop} ${backdropClassName}`} onMouseDown={(event) => event.target === event.currentTarget && onClose()}><section ref={dialogRef} style={style} data-popup-tone={tone} className={`${styles.modal} ${popup.surface} ${wide ? styles.modalWide : ""} ${className}`} role="dialog" aria-modal="true" aria-label={title}><header className={popup.header}><div className={headerIcon ? styles.modalHeadingWithIcon : ""}>{headerIcon && <span className={styles.modalHeaderIcon}>{headerIcon}</span>}<div><h2>{title}</h2>{description && <p>{description}</p>}</div></div><IconButton label="Close" onClick={onClose}><X/></IconButton></header><div className={styles.modalBody}>{children}</div>{footer && <footer className={popup.footer}>{footer}</footer>}</section></div>,document.body):null;
+  return typeof document!=="undefined"?createPortal(<div data-keyboard-sheet="" className={`${styles.modalBackdrop} ${backdropClassName}`} onMouseDown={(event) => event.target === event.currentTarget && onClose()}><section ref={dialogRef} style={style} data-popup-tone={tone} className={`${styles.modal} ${popup.surface} ${wide ? styles.modalWide : ""} ${className}`} role="dialog" aria-modal="true" aria-label={title}><header className={popup.header}><div className={headerIcon ? styles.modalHeadingWithIcon : ""}>{headerIcon && <span className={styles.modalHeaderIcon}>{headerIcon}</span>}<div><h2>{title}</h2>{description && <p>{description}</p>}</div></div><IconButton label="Close" onClick={onClose}><X/></IconButton></header><div className={`${styles.modalBody} ${/delete|deactivate|activate this/i.test(title)?styles.confirmationBody:""}`}>{/delete|deactivate|activate this/i.test(title)&&<div className={styles.confirmationIntro}><span><ShieldAlert size={23}/></span><div><b>{/delete/i.test(title)?"Review before deleting":"You’re in control"}</b><small>{/delete/i.test(title)?"This action cannot be undone.":"Confirm the visibility change below."}</small></div></div>}{children}</div>{footer && <footer className={popup.footer}>{footer}</footer>}</section></div>,document.body):null;
 }

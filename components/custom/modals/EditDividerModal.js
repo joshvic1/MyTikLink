@@ -18,7 +18,7 @@ export default function EditDividerModal({ isOpen, onClose, element, onSave }) {
   };
 
   return (
-    <BottomSheet isOpen={isOpen} onClose={onClose}>
+    <BottomSheet title="Edit Divider" isOpen={isOpen} onClose={onClose}>
       <div className={styles.container}>
         {/* HEADER */}
         <div className={styles.header}>

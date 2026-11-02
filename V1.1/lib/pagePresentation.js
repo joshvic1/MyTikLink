@@ -1,6 +1,6 @@
-const imageKeys = ["thumbnailUrl", "thumbnail", "coverImage", "heroImage", "backgroundImage", "imageUrl", "image", "src"];
+const imageKeys = ["coverImageUrl", "profileImageUrl", "logoUrl", "thumbnailUrl", "thumbnail", "coverImage", "heroImage", "backgroundImage", "imageUrl", "image", "src"];
 
-const usableImage = (value) => typeof value === "string" && /^(https?:\/\/|data:image\/|blob:\/)/i.test(value.trim()) ? value.trim() : "";
+const usableImage = (value) => typeof value === "string" && /^(https?:\/\/|data:image\/|blob:\/|\/(?!\/))/i.test(value.trim()) ? value.trim() : "";
 
 export function findFirstPageImage(value, seen = new Set()) {
   if (!value || typeof value !== "object" || seen.has(value)) return "";
@@ -10,9 +10,10 @@ export function findFirstPageImage(value, seen = new Set()) {
     return "";
   }
   for (const key of imageKeys) {
-    const candidate = usableImage(value[key]);
+    const candidate = usableImage(value[key]) || usableImage(value[key]?.url);
     if (candidate) return candidate;
   }
+  if(value.format&&value.width&&usableImage(value.url))return usableImage(value.url);
   for (const nested of Object.values(value)) {
     const found = findFirstPageImage(nested, seen);
     if (found) return found;
@@ -21,7 +22,7 @@ export function findFirstPageImage(value, seen = new Set()) {
 }
 
 export function pageThumbnail(page) {
-  return usableImage(page?.thumbnailUrl) || usableImage(page?.template?.thumbnailUrl) || usableImage(page?.templateId?.thumbnailUrl) || findFirstPageImage(page?.customContent) || findFirstPageImage(page?.config);
+  return findFirstPageImage(page?.customContent) || findFirstPageImage(page?.config) || usableImage(page?.thumbnailUrl) || usableImage(page?.template?.thumbnailUrl) || usableImage(page?.templateId?.thumbnailUrl);
 }
 
 export function pageInitial(page) {

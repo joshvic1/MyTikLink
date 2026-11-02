@@ -12,7 +12,7 @@ import TextStyleControl from "../controls/TextStyleControl";
 
 export default function EditTextModal({ isOpen, onClose, element, onSave }) {
   return (
-    <BottomSheet isOpen={isOpen} onClose={onClose}>
+    <BottomSheet title="Edit Text" isOpen={isOpen} onClose={onClose}>
       <div className={styles.container}>
         {/* HEADER */}
         <div className={styles.header}>

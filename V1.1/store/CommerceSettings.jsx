@@ -1,3 +1,4 @@
+import SettingsHelp from "./SettingsHelp";
 import { useEffect, useRef, useState } from "react";
 import {
   Plus,
@@ -167,7 +168,7 @@ export function CommerceSettingsPanel({ tab, setup = {}, onDirtyChange }) {
     <>
       <div className={css.panelHeading}>
         <div>
-          <h2>{tab}</h2>
+          <h2>{tab} <SettingsHelp topic={tab}/></h2>
           <p>Save a draft, then publish when you’re ready.</p>
         </div>
       </div>
@@ -215,7 +216,7 @@ export function CommerceSettingsPanel({ tab, setup = {}, onDirtyChange }) {
           ].map(([kind, label]) => (
             <section key={kind}>
               <div className={css.panelHeading}>
-                <h3>{label}</h3>
+                <h3>{label} <SettingsHelp topic={label}/></h3>
                 <Button
                   variant="secondary"
                   onClick={() =>
@@ -484,7 +485,7 @@ export function CommerceSettingsPanel({ tab, setup = {}, onDirtyChange }) {
           </Field>
           <MediaInfrastructure />
           <Analytics />
-          <h3>Published settings history</h3>
+          <h3>Published settings history <SettingsHelp topic="Published settings history"/></h3>
           {history.map((h) => (
             <Button
               variant="secondary"
@@ -795,7 +796,7 @@ export function ResourceManager({ kind = "collections" }) {
   return (
     <>
       <div className={css.panelHeading}>
-        <h3>{kind === "collections" ? "Collections" : "Discount codes"}</h3>
+        <h3>{kind === "collections" ? "Collections" : "Discount codes"} <SettingsHelp topic={kind === "collections" ? "Collections" : "Discount codes"}/></h3>
         <Button onClick={() => setEdit(fresh)}>
           <Plus size={14} /> Add
         </Button>
@@ -1343,7 +1344,7 @@ function ReviewManager() {
   };
   return (
     <section>
-      <h3>Customer reviews</h3>
+      <h3>Customer reviews <SettingsHelp topic="Customer reviews"/></h3>
       {error && <p role="alert">{error}</p>}
       {rows.map((r) => (
         <article key={r._id} className={css.note}>
@@ -1406,7 +1407,7 @@ function Analytics() {
   );
   return (
     <section>
-      <h3>Last 30 days</h3>
+      <h3>Last 30 days <SettingsHelp topic="Last 30 days"/></h3>
       <div className={css.note}>
         {Object.entries(totals).map(([k, v]) => (
           <p key={k}>
@@ -1514,7 +1515,7 @@ function MediaInfrastructure() {
   }, []);
   return (
     <section>
-      <h3>Image processing</h3>
+      <h3>Image processing <SettingsHelp topic="Image processing"/></h3>
       <p>
         Images are compressed in the background. Refresh to check progress or
         recover a completed image. No automatic polling runs on this page.

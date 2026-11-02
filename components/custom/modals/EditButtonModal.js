@@ -13,7 +13,7 @@ import styles from "./editButton.module.css";
 
 export default function EditButtonModal({ isOpen, onClose, element, onSave }) {
   return (
-    <BottomSheet isOpen={isOpen} onClose={onClose}>
+    <BottomSheet title="Edit Button" isOpen={isOpen} onClose={onClose}>
       <div className={styles.container}>
         {/* HEADER */}
         <div className={styles.header}>

@@ -659,4 +659,4 @@ export function ReviewForm({ slug, onClose }) {
   );
 }
 
-export function QuickProductDialog({product,store,design,onClose,onAdded}){return <Modal title="Choose options" className={`${css.publicModal} ${css.quickModal}`} style={storeThemeStyle(design)} onClose={onClose}><ProductDetails quick product={product} store={store} design={design} onAdded={onAdded}/></Modal>;}
+export function QuickProductDialog({product,store,design,onClose,onAdded}){return <Modal title="Choose options" backdropClassName={css.optionsBackdrop} className={`${css.publicModal} ${css.quickModal}`} style={storeThemeStyle(design)} onClose={onClose}><ProductDetails quick product={product} store={store} design={design} onAdded={onAdded}/></Modal>;}

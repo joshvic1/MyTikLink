@@ -348,3 +348,26 @@
 .reviewPanel:focus,.proofPanel:focus{outline:none}.reviewPanel>.transferCard{margin-bottom:14px}.proofPanel{padding:20px 0}.proofPanel h3{font:400 23px/1.25 var(--store-heading);margin:0 0 10px}.proofPanel p{font-size:12px;line-height:1.5}.proofPicker{position:relative;display:grid;justify-items:center;gap:10px;padding:28px 14px;border:1px dashed var(--store-accent);background:color-mix(in srgb,var(--store-accent) 5%,var(--store-paper));text-align:center;cursor:pointer;margin:18px 0}.proofPicker strong{font-size:13px;overflow-wrap:anywhere}.proofPicker span{font-size:11px;opacity:.7}.proofPicker input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}.proofPicker:focus-within{outline:2px solid var(--store-accent);outline-offset:3px}.proofUploadButton{position:relative;overflow:hidden}.proofUploadButton>span{position:relative;z-index:1}.proofUploadButton .uploadFill{position:absolute;inset:0 auto 0 0;background:rgba(255,255,255,.22);z-index:0;transition:width .2s}
 
 .confirmationCard{text-align:center;padding:28px 4px 12px;display:grid;justify-items:center;gap:14px}.confirmationIcon{width:64px;height:64px;display:grid;place-items:center;border-radius:50%;color:var(--store-accent);background:color-mix(in srgb,var(--store-accent) 9%,var(--store-paper))}.pendingBadge{padding:5px 9px;background:#fff4d8;color:#765519;font:700 10px/1.3 var(--store-body);letter-spacing:.04em}.cartDrawer .confirmationCard h2{font:400 25px/1.2 var(--store-heading);margin:0}.cartDrawer .confirmationCard p{font-size:12px;line-height:1.6;margin:0;max-width:290px}.confirmationDetails{width:100%;margin:0;padding:12px;border:1px solid var(--store-line);box-sizing:border-box}.confirmationDetails>div{display:flex;justify-content:space-between;gap:10px;text-align:left;font-size:12px;padding:6px 0}.confirmationDetails dd{margin:0;font-weight:700;overflow-wrap:anywhere}.confirmationCard>[data-popup-action]{width:100%;justify-content:center;border-radius:0!important;font-size:12px!important}.trackOrder{font-size:11px;text-underline-offset:3px}.proofSuccessTick{animation:proofTick .45s cubic-bezier(.2,.8,.2,1)}@keyframes proofTick{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}@media(prefers-reduced-motion:reduce){.proofSuccessTick{animation:none}}
+
+/* Text actions retain native keyboard and disabled semantics. */
+.customerCodeActions{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;flex-wrap:wrap}
+.cartDrawer .customerCodeActions button{display:inline-flex;align-items:center;justify-content:center;width:auto!important;min-height:36px!important;padding:6px 0!important;margin:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;color:var(--store-accent)!important;font:400 12px/1.4 var(--store-body)!important;text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px;cursor:pointer;transform:none!important}
+.cartDrawer .customerCodeActions button:disabled{opacity:.45;cursor:default}.customerCodeActions button:hover:not(:disabled){text-decoration-thickness:2px}
+/* A single viewport-aware backdrop owns positioning; dialogs scroll internally. */
+.drawerBackdrop,.optionsBackdrop{overflow:hidden!important;overscroll-behavior:none}
+.drawerBackdrop .cartDrawer[role=dialog][data-popup-tone]{position:relative!important;inset:auto!important;height:100%!important;max-height:100%!important;flex:none;align-self:stretch}
+.optionsBackdrop{display:flex!important;align-items:center!important;justify-content:center!important;padding:12px!important;box-sizing:border-box}
+.optionsBackdrop .quickModal[role=dialog][data-popup-tone]{position:relative!important;inset:auto!important;margin:0!important;transform:none!important;max-height:100%!important;width:min(420px,100%)!important;display:flex!important;flex-direction:column!important;overflow:hidden!important}
+.optionsBackdrop .quickModal>header{flex-shrink:0}.optionsBackdrop .quickModal>div,.drawerBackdrop .cartDrawer>div{min-height:0;overflow-y:auto;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch}
+@media(max-width:700px){.drawerBackdrop .cartDrawer[role=dialog][data-popup-tone]{width:100%!important;max-width:100%!important;border:0!important}.cartDrawer[role=dialog]>header{padding-top:max(17px,env(safe-area-inset-top))!important}.cartDrawer[role=dialog]>div:last-child{padding-bottom:max(16px,env(safe-area-inset-bottom))!important}}
+/* Layered !important rules must override the shared mobile sheet safety layer. */
+@layer keyboard-sheet-safety {
+@media(any-pointer:coarse){
+.drawerBackdrop[data-keyboard-sheet]>.cartDrawer[role=dialog]{height:100%!important;max-height:100%!important;min-height:0!important}
+.optionsBackdrop[data-keyboard-sheet]>.quickModal[role=dialog]{max-height:100%!important;min-height:0!important}
+}
+}
+
+/* The body is locked while dialogs are open; this is the checkout scroll surface. */
+.drawerBackdrop .cartDrawer[role=dialog]>div,.optionsBackdrop .quickModal[role=dialog]>div{flex:1 1 auto!important;min-height:0!important;overflow-y:auto!important;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;touch-action:pan-y pinch-zoom}
+.drawerBackdrop .cartDrawer[role=dialog]{overflow:hidden!important}

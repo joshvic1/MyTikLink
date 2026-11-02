@@ -11,7 +11,7 @@ export function useV11Session({ required = true } = {}) {
     const token = getToken();
     if (!token) {
       setState({ user: null, loading: false, error: null });
-      if (required) routerRef.current.replace("/v1-1/login");
+      if (required) routerRef.current.replace(`/v1-1/login?next=${encodeURIComponent(routerRef.current.asPath)}`);
       return null;
     }
     setState((current) => ({ ...current, loading: true, error: null }));
@@ -23,7 +23,7 @@ export function useV11Session({ required = true } = {}) {
     } catch (error) {
       if (error instanceof ApiError && error.status === 401) {
         window.localStorage.removeItem("token");
-        if (required) routerRef.current.replace("/v1-1/login");
+        if (required) routerRef.current.replace(`/v1-1/login?next=${encodeURIComponent(routerRef.current.asPath)}`);
       }
       setState({ user: null, loading: false, error });
       return null;

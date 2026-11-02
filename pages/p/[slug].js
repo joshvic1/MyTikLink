@@ -1,4 +1,5 @@
 "use client";
+import InactivePublicPage from "@/V1.1/components/InactivePublicPage";
 // hey
 function loadTikTokPixel(pixelId) {
   if (!pixelId) {
@@ -403,12 +404,13 @@ function LoadingScreen() {
   );
 }
 
-export default function PublicPage() {
+export default function PublicPage({initialPage=null,initialInactive=null,initialError=false}) {
   const router = useRouter();
   const { slug } = router.query;
 
-  const [page, setPage] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(initialPage);
+  const [inactive,setInactive]=useState(initialInactive);
+  const [loading, setLoading] = useState(!initialPage&&!initialInactive&&!initialError);
   const COOLDOWN_MS = 2 * 60 * 1000; // 2 minutes
   const [cooldownActive, setCooldownActive] = useState(false);
   // =========================
@@ -430,8 +432,9 @@ export default function PublicPage() {
     if (!slug) return;
 
     const fetchPage = async () => {
+      if(initialInactive||initialError){setLoading(false);return;}
       try {
-        const res = await axios.get(
+        const res = initialPage&&initialPage.slug===slug?{data:initialPage}:await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}/pages/public/${slug}`,
         );
 
@@ -458,7 +461,8 @@ export default function PublicPage() {
           loadMetaPixel(res.data.metaPixelId);
         }
       } catch (err) {
-        // 🔥 EXPIRED → REDIRECT
+        if(err.response?.data?.code==="PAGE_INACTIVE"){setInactive(err.response.data.pageId);return;}
+        // EXPIRED → REDIRECT
         if (err.response?.status === 403) {
           router.replace("/expired");
           return;
@@ -728,7 +732,9 @@ export default function PublicPage() {
     };
   }, [page]);
 
-  if (loading) return <LoadingScreen />;
+  if(inactive)return <InactivePublicPage pageId={inactive}/>;
+  if (loading) return <div aria-busy="true" aria-label="Loading page" style={{minHeight:"100dvh",background:"white"}}/>;
+  if(initialError)return <main style={{padding:40,textAlign:"center"}}><h1>Temporarily unavailable</h1><p>Please refresh to try again.</p></main>;
 
   if (!page) {
     return (
@@ -786,3 +792,5 @@ export default function PublicPage() {
     </>
   );
 }
+
+export async function getServerSideProps(context){const {loadPublicLandingPage}=await import("@/V1.1/lib/publicPageSSR");return loadPublicLandingPage(context);}

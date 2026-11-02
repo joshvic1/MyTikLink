@@ -182,7 +182,7 @@ export default function EditHtmlModal({ isOpen, onClose, element, onSave }) {
   };
 
   return (
-    <BottomSheet isOpen={isOpen} onClose={onClose}>
+    <BottomSheet title="Edit Html" isOpen={isOpen} onClose={onClose}>
       <div className={styles.container}>
         <div className={styles.header}>
           <span>Edit HTML</span>

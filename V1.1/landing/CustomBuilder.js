@@ -1,3 +1,5 @@
+
+import CustomPageRenderer from "@/components/custom/renderer/CustomPageRenderer";
 import ThemeEditor from "./ThemeEditor";
 import { createThemeInstance, getThemeBlock } from "./themeModel";
 import { allThemes } from "./themeLibrary";
@@ -5,13 +7,13 @@ import { v11Api } from "../lib/api";
 import { v11ApiBase } from "../lib/apiBase";
 // builder/customBuilder.js
 import { canUseLandingPages } from "@/V1.1/lib/pageAccess.js";
-import styles from "@/components/custom/styles/builder.module.css";
+import styles from "./MobileBuilder.module.css";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import AddElementModal from "@/components/custom/modals/AddElementModal";
 import { createElement } from "@/components/custom/utils/elementFactory";
 import Section from "@/components/custom/builder/Section";
-import { Plus, ArrowLeft, Check, Rocket, Loader2, Save } from "lucide-react";
+import { Plus, ArrowLeft, Check, Rocket, Loader2, Save, Eye, Pencil } from "lucide-react";
 import DraftsModal from "@/components/custom/modals/DraftsModal";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -32,6 +34,7 @@ export default function CustomBuilder() {
   const returnPath = router.asPath.startsWith("/v1-1") ? "/v1-1/pages" : "/dashboard/page";
 
   const { pageId, themeId } = router.query;
+  const [editorMode,setEditorMode]=useState("edit");
   const [sections, setSections] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [addTarget, setAddTarget] = useState(null);
@@ -424,11 +427,14 @@ export default function CustomBuilder() {
   }
   return (
     <div className={styles.container}>
+
+      {editorMode==="preview"&&<div className={styles.preview}><div className={styles.previewLabel}>Mobile preview</div><div inert="" className={styles.previewPage}>{sections.length?<CustomPageRenderer sections={sections}/>:<p>Add your first element to see a preview.</p>}</div></div>}
       {/* MAIN CANVAS */}
-      <div className={styles.canvas}>
+      <div className={styles.canvas} hidden={editorMode!=="edit"}>
         {sections.length === 0 ? (
           <div
             className={styles.emptyBox}
+            role="button" tabIndex={0} onKeyDown={e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openAddElement("outside");}}}
             onClick={() => openAddElement("outside")}
           >
             <Plus size={40} className={styles.plus} />
@@ -436,8 +442,8 @@ export default function CustomBuilder() {
             <span className={styles.subtitle}>your first element</span>
           </div>
         ) : (
-          sections.map((section) => (
-            <Section
+          sections.map((section,index) => (
+            <div key={section.id} className={styles.blockCard}><div className={styles.blockHeading}><strong>Section {index+1}</strong><div><button aria-label={`Move section ${index+1} up`} disabled={index===0} onClick={()=>{const next=[...sections];[next[index-1],next[index]]=[next[index],next[index-1]];setSections(next);setHasChanges(true);}}>↑</button><button aria-label={`Move section ${index+1} down`} disabled={index===sections.length-1} onClick={()=>{const next=[...sections];[next[index+1],next[index]]=[next[index],next[index+1]];setSections(next);setHasChanges(true);}}>↓</button></div></div><Section
               key={section.id}
               section={section}
               openAddElement={openAddElement}
@@ -445,12 +451,13 @@ export default function CustomBuilder() {
               onDeleteSection={deleteSection}
               onUpdateElement={updateElement}
               onUpdateSection={updateSection}
-            />
+            /></div>
           ))
         )}
         {sections.length > 0 && (
           <div
             className={styles.addOutside}
+            role="button" tabIndex={0} onKeyDown={e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openAddElement("outside");}}}
             onClick={() => openAddElement("outside")}
           >
             + Add element
@@ -461,29 +468,11 @@ export default function CustomBuilder() {
       {/* FOOTER */}
       <div className={styles.footer}>
         {/* BACK */}
-        <button className={styles.iconBtn} onClick={() => router.back()}>
+        <button className={styles.iconBtn} aria-label="Back to pages" onClick={() => router.push(returnPath)}>
           <ArrowLeft size={20} />
         </button>
 
-        {/* SAVE DRAFT */}
-        <button className={styles.saveDraft} onClick={handleSaveDraft}>
-          {isSaving ? (
-            <>
-              <Loader2 size={18} className={styles.spin} />
-              Saving...
-            </>
-          ) : isSaved && !hasChanges ? (
-            <>
-              <Check size={18} />
-              Saved
-            </>
-          ) : (
-            <>
-              <Save size={18} />
-              Save Draft
-            </>
-          )}
-        </button>
+        <button className={styles.saveDraft} aria-pressed={editorMode==="preview"} onClick={()=>setEditorMode(editorMode==="preview"?"edit":"preview")}>{editorMode==="preview"?<><Pencil size={18}/>Back to canvas</>:<><Eye size={18}/>Preview</>}</button>
 
         {/* PUBLISH */}
         <button className={styles.publish} onClick={handlePublish}>

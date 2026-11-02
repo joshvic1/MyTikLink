@@ -1,3 +1,4 @@
+import SettingsHelp from "./SettingsHelp";
 import { useEffect, useRef, useState } from "react";
 import { Plus, Search, X, Pencil, Archive, ChevronRight } from "lucide-react";
 import { apiRequest, v11Api } from "../lib/api";
@@ -224,7 +225,7 @@ export function CategoryManager() {
     <>
       <div className={css.panelHeading}>
         <div>
-          <h2>Product categories</h2>
+          <h2>Product categories <SettingsHelp topic="Product categories"/></h2>
           <p>Give every collection a clear place in your store.</p>
         </div>
         <Button onClick={() => setEditing({})}>

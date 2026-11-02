@@ -1,3 +1,4 @@
+import SecurityPage from "./pages/SecurityPage";
 import PublicStore from "./store/PublicStore";
 import RedirectAdminPage from "./pages/RedirectAdminPage";
 import RedirectPage from "./pages/RedirectPage";
@@ -46,7 +47,6 @@ const OrdersManager = dynamic(() => import("./store/OrdersManager"), { ssr: fals
 const StoreSettings = dynamic(() => import("./store/StoreSettings"), { ssr: false, loading: () => <LoadingState label="Opening store settings…"/> });
 const StoreDesign = dynamic(() => import("./store/StoreStudio"), { ssr: false, loading: () => <LoadingState label="Opening store designer…"/> });
 const StoreSetup = dynamic(() => import("./pages/StoreSetupPage"), { ssr: false, loading: () => <LoadingState label="Opening storefront setup…"/> });
-const SecurityAndPlan = dynamic(() => import("@/pages/dashboard/settings"), { ssr: false, loading: () => <LoadingState label="Opening secure account controls…"/> });
 const dmSans = DM_Sans({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-v11-body" });
 const manrope = Manrope({ subsets: ["latin"], weight: ["600", "700", "800"], variable: "--font-v11-heading" });
 const preparingLabel = (path) => {
@@ -109,7 +109,7 @@ function V11Content() {
   if (!publicRoute && onboarding.required) return <><div className={styles.onboardingWorkspaceBackdrop} aria-hidden="true"><SubscriptionProvider user={session.user} refreshSession={session.refresh}><Shell user={session.user} onLogout={session.logout} onCreate={() => {}}><HomePage user={session.user} data={workspace} onCreate={() => {}}/></Shell></SubscriptionProvider></div><OnboardingWizard state={onboarding.data} onLogout={session.logout} onComplete={async () => { await router.replace("/v1-1/dashboard"); await onboarding.refresh(); await session.refresh(); await workspace.refresh(); }}/></>
   if (editor) return <div className={styles.editorIsolation}><div className={styles.editorBreadcrumbBar}><Breadcrumbs/></div><TemplateEditor/></div>;
   if (builder) return <div className={styles.editorIsolation}><div className={styles.editorBreadcrumbBar}><Breadcrumbs/></div><CustomBuilder/></div>;
-  if (path.endsWith("/settings/security") || path.endsWith("/settings/plan")) return <div className={styles.editorIsolation}><div className={styles.editorBreadcrumbBar}><Breadcrumbs/></div><SecurityAndPlan/></div>;
+
   if (!isPagesList && !isLinksList && workspace.loading) return <LoadingState label={loadingLabel} progress={82}/>;
   if (!isPagesList && !isLinksList && workspace.error) return <div className={styles.standaloneState}><ErrorState message={workspace.error.message} onRetry={workspace.refresh}/></div>;
   const choose = (type) => { setModal(null); if (type === "store") router.push(v11Routes.store); else setModal(type); };
@@ -125,7 +125,9 @@ function V11Content() {
   else if (path.endsWith("/store")) content = <StorePage data={workspace}/>;
   else if (path.endsWith("/settings/tracking")) content = <TrackingPage user={session.user} refreshSession={session.refresh}/>;
   else if (path.endsWith("/settings/billing")) content = <BillingPage user={session.user}/>;
-  else if (path.endsWith("/settings/profile")) content = <AccountPage user={session.user} refreshSession={session.refresh}/>;
+  else if (path.endsWith("/settings/security")) content = <SecurityPage user={session.user}/>;
+  else if (path.endsWith("/settings/plan")) content = <BillingPage user={session.user}/>;
+  else if (path.endsWith("/settings/profile") || path.endsWith("/settings")) content = <AccountPage user={session.user} refreshSession={session.refresh}/>;
   else if (path.endsWith("/affiliate")) content = <InProgressPage title="Affiliate"/>;
   else if (path.endsWith("/integrations")) content = <InProgressPage title="Integrations"/>;
   else if (path.endsWith("/help")) content = <HelpPage/>;

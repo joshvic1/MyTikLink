@@ -10,7 +10,7 @@ import ColorPicker from "../controls/ColorPicker";
 
 export default function EditSpacerModal({ isOpen, onClose, element, onSave }) {
   return (
-    <BottomSheet isOpen={isOpen} onClose={onClose}>
+    <BottomSheet title="Edit Spacer" isOpen={isOpen} onClose={onClose}>
       <div className={styles.container}>
         {/* HEADER */}
         <div className={styles.header}>
