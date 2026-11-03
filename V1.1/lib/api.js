@@ -94,7 +94,7 @@ export const v11Api = {
   duplicatePage: (id) => apiRequest(`/v1-1/pages/${id}/duplicate`,{method:"POST",body:"{}"}),
   deletePage: (id) => apiRequest(`/v1-1/pages/${id}`, { method: "DELETE" }),
   paymentHistory: () => apiRequest("/payments/history"),
-  initiatePayment: (plan, cycle, keepExpiry = false) => apiRequest("/payments/initiate", { method: "POST", body: JSON.stringify({ plan, cycle, keepExpiry }) }),
+  initiatePayment: (plan, cycle, keepExpiry = false, sourceRedirectSlug) => apiRequest("/payments/initiate", { method: "POST", body: JSON.stringify({ plan, cycle, keepExpiry, ...(sourceRedirectSlug ? {sourceRedirectSlug} : {}) }) }),
   verifyPayment: (reference) => apiRequest(`/payments/verify/${encodeURIComponent(reference)}`),
   updateName: (name) => apiRequest("/users/update-name", { method: "PUT", body: JSON.stringify({ name }) }),
   updatePhone: (whatsappNumber) => apiRequest("/auth/update-whatsapp", { method: "PUT", body: JSON.stringify({ whatsappNumber }) }),

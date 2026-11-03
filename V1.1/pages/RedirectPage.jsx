@@ -1,3 +1,4 @@
+import RedirectLimit from '../components/RedirectLimit';
 import RedirectExperience from '../components/RedirectExperience';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Head from 'next/head';
@@ -27,13 +28,14 @@ export default function RedirectPage({linkId}) {
    const safe={...data,deepLink:verified.deepLink,fallback:verified.fallbackUrl};
    setState({loading:false,data:safe,error:''});loadTikTokPixel(data.tiktokPixelId);
    timer.current=setTimeout(()=>{if(active&&!opened.current&&!left.current&&document.visibilityState==='visible')open(safe);},data.redirectDelay||500);
-  }).catch(error=>{if(active)setState({loading:false,data:null,error:error.name==='AbortError'?'The connection took too long. Please try again.':error.message});});
+  }).catch(error=>{if(active)setState({loading:false,data:null,code:error.details?.code,error:error.name==='AbortError'?'The connection took too long. Please try again.':error.message});});
   const hide=()=>{if(document.visibilityState==='hidden'){left.current=true;clearTimeout(timer.current);}};
   const pagehide=()=>{left.current=true;clearTimeout(timer.current);};
   document.addEventListener('visibilitychange',hide);window.addEventListener('pagehide',pagehide);
   return()=>{active=false;controller.abort();clearTimeout(timer.current);document.removeEventListener('visibilitychange',hide);window.removeEventListener('pagehide',pagehide);};
  },[linkId,retry,open]);
  if(state.loading)return <LoadingState label="Opening destination"/>;
+ if(state.code==='LINK_LIMIT_REACHED')return <RedirectLimit linkId={linkId}/>;
  if(state.error)return <main className={styles.redirectVisitor}><ErrorState title="Could not open this link" message={state.error} onRetry={()=>setRetry(n=>n+1)}/></main>;
  const data=state.data,hasApp=data.deepLink!==data.fallback||!/^https?:/i.test(data.deepLink),srcDoc=redirectFrame(data);
  return <><Head><title>{data.title||'Redirect Link'}</title><meta name="robots" content="noindex,nofollow"/></Head><RedirectExperience data={data} legacyFrame={srcDoc} onOpen={()=>open(data)} onBrowser={()=>open(data,true)}/></>;

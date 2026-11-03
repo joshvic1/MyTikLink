@@ -32,10 +32,10 @@ export function SubscriptionModal({ state, user, refreshSession, close, update }
     if (status.loading || (mode === "change" && samePlan)) return;
     setStatus({ loading: true, error: "" });
     try {
-      const initiated = await v11Api.initiatePayment(selected, cycle, mode === "renew");
+      const initiated = await v11Api.initiatePayment(selected, cycle, mode === "renew", state.sourceRedirectSlug);
       await loadPaystack();
       const config = plan.cycles[cycle];
-      const handler = window.PaystackPop.setup({ key: process.env.NEXT_PUBLIC_PAYSTACK_KEY, email: initiated.email, ...checkoutPricing(initiated, config), ref: initiated.paymentId, callback: async (response) => { try { const verified = await v11Api.verifyPayment(response.reference); if (!verified?.success) throw new Error("Payment verification failed."); if (verified.token) localStorage.setItem("token", verified.token); await refreshSession(); window.dispatchEvent(new Event("v11:plan-updated")); notify.success("Your plan is active"); close(); } catch (error) { setStatus({ loading: false, error: error.message }); notify.error(error.message); } }, onClose: () => setStatus({ loading: false, error: "" }) });
+      const handler = window.PaystackPop.setup({ key: process.env.NEXT_PUBLIC_PAYSTACK_KEY, email: initiated.email, ...checkoutPricing(initiated, config), ref: initiated.paymentId, callback: async (response) => { try { const verified = await v11Api.verifyPayment(response.reference); if (!verified?.success) throw new Error("Payment verification failed."); if (verified.token) localStorage.setItem("token", verified.token); await refreshSession(); window.dispatchEvent(new Event("v11:plan-updated")); notify.success("Your plan is active"); close(); state.onSuccess?.(); } catch (error) { setStatus({ loading: false, error: error.message }); notify.error(error.message); } }, onClose: () => setStatus({ loading: false, error: "" }) });
       handler.openIframe();
     } catch (error) { setStatus({ loading: false, error: error.message || "Unable to start payment." }); notify.error(error.message || "Unable to start payment."); }
   };
