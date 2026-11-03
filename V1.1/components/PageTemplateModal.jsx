@@ -1,3 +1,5 @@
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import picker from "./PageTemplateModal.module.css";
 import { Notice } from "./Notifications";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/router";
@@ -20,16 +22,18 @@ function categoryOf(t) {
 }
 export function PageTemplateModal({ onClose, user }) {
  const router = useRouter();
+ const reducedMotion=useReducedMotion();
+ const resultsHeading=useRef(null);
  const [registry,setRegistry]=useState([]);
  useEffect(()=>{v11Api.onboardingCategories().then(result=>setRegistry(result.categories || [])).catch(()=>{});},[]);
  const pilotTemplates=useMemo(()=>allThemes.map(theme=>({...theme,_id:`phase-one:${theme.id}`,name:theme.title,description:theme.copy,category:registry.find(c=>c.id===theme.categoryIds[0])?.label || theme.tags[0],pilot:true})),[registry]);
  const [templates,setTemplates]=useState([]), [selected,setSelected]=useState(""), [error,setError]=useState(""), [loading,setLoading]=useState(true);
- const [search,setSearch]=useState(""), [category,setCategory]=useState("all"), [form,setForm]=useState("all");
+ const [search,setSearch]=useState(""), [category,setCategory]=useState("all"), [form,setForm]=useState(null);
  const [toast,setToast]=useState(false), [aiOpen,setAiOpen]=useState(false), [navigating,setNavigating]=useState(false);
  const [filtersOpen,setFiltersOpen]=useState(false), [pilotNotice,setPilotNotice]=useState("");
  const timer=useRef(null);
  useEffect(()=>{let active=true; v11Api.pageTemplates().then(data=>{if(active)setTemplates(Array.isArray(data)?data:[]);}).catch(e=>{if(active)setError(e.message);}).finally(()=>{if(active)setLoading(false);});return()=>{active=false;clearTimeout(timer.current);};},[]);
- const availableTemplates=useMemo(()=>[...pilotTemplates,...templates],[templates,pilotTemplates]);
+ const availableTemplates=useMemo(()=>[...pilotTemplates.filter(t=>t.batch==="universal"),...templates,...pilotTemplates.filter(t=>t.batch!=="universal")],[templates,pilotTemplates]);
  const options=useMemo(()=>[...new Set([...categories,...availableTemplates.map(categoryOf)])],[availableTemplates]);
  const visible=useMemo(()=>availableTemplates.filter(t=>`${t.name || ""} ${t.description || ""} ${categoryOf(t)} ${(t.tags || []).join(" ")}`.toLowerCase().includes(search.trim().toLowerCase())&&(category==="all"||categoryOf(t)===category)&&(form==="all"||(form==="yes"?t.hasForm===true:t.hasForm===false))),[availableTemplates,search,category,form]);
  const selectedPilot=useMemo(()=>pilotTemplates.find(theme=>theme._id===selected),[selected,pilotTemplates]);
@@ -42,19 +46,29 @@ export function PageTemplateModal({ onClose, user }) {
   setNavigating(true);try{await router.push(selected==="scratch"?"/v1-1/pages/builder":`/v1-1/pages/editor?templateId=${encodeURIComponent(selected)}`);}catch{setError("Could not open the editor. Please try again.");}finally{setNavigating(false);}
  };
  if(aiOpen)return <AIPageBuilderModal open variant="v11" token={getToken()} builderPath="/v1-1/pages/builder" onClose={()=>setAiOpen(false)}/>;
- return <Modal tone="lime" wide className={styles.templatePicker} title="Select a Page template" description="Pick any design you'd love to use for your page, you can also build from scratch or build with AI as well." onClose={onClose} footer={<><Button variant="secondary" onClick={onClose}>Cancel</Button><Button disabled={navigating} onClick={proceed}>{navigating?"Opening…":selected==="scratch"?"Continue (Build from scratch)":selected==="ai"?"Continue (Build with AI)":selectedPilot?"Use theme":"Use this template"}</Button></>}>
+ return <Modal tone="lime" wide className={styles.templatePicker} title="Select a Page template" description="Choose a design and make it yours." onClose={onClose} footer={<><Button variant="secondary" onClick={onClose}>Cancel</Button><Button disabled={navigating || !form} onClick={proceed}>{navigating?"Opening…":selected==="scratch"?"Continue (Build from scratch)":selected==="ai"?"Continue (Build with AI)":selectedPilot?"Use theme":"Use this template"}</Button></>}>
 
  <div className={styles.templateTools}>
-  <div className={styles.templateSearch}><Search size={16}/><input aria-label="Search templates" placeholder="Search templates…" value={search} onChange={e=>filter(setSearch,e.target.value)}/><button type="button" className={styles.templateFilterToggle} aria-label="Filter templates" aria-expanded={filtersOpen} aria-controls="page-template-filters" onClick={()=>setFiltersOpen(value=>!value)}><SlidersHorizontal size={17}/>{(category!=="all"||form!=="all")&&<span/>}</button></div>
+  <div className={styles.templateSearch}><Search size={16}/><input aria-label="Search templates" placeholder="Search templates…" value={search} onChange={e=>filter(setSearch,e.target.value)}/><button type="button" className={styles.templateFilterToggle} aria-label="Filter templates" aria-expanded={filtersOpen} aria-controls="page-template-filters" onClick={()=>setFiltersOpen(value=>!value)}><SlidersHorizontal size={17}/>{(category!=="all")&&<span/>}</button></div>
   {filtersOpen&&<div id="page-template-filters" className={styles.templateFilterPanel} onKeyDown={e=>{if(e.key==="Escape"){e.stopPropagation();setFiltersOpen(false);}}}>
-   <div className={styles.templateFilterHeading}><b>Find your template</b><small>{visible.length} matching designs</small></div><div className={styles.templateFilters}><label>Category<select value={category} onChange={e=>filter(setCategory,e.target.value)}><option value="all">All categories</option>{options.map(item=><option key={item}>{item}</option>)}</select></label><label>Form<select value={form} onChange={e=>filter(setForm,e.target.value)}><option value="all">All templates</option><option value="yes">With form</option><option value="no">No form</option></select></label></div>
-   <div className={styles.templateFilterActions}><Button variant="ghost" onClick={()=>{filter(setCategory,"all");filter(setForm,"all");}}>Clear filters</Button><Button variant="secondary" onClick={()=>setFiltersOpen(false)}>Done</Button></div>
+   <div className={styles.templateFilterHeading}><b>Find your template</b><small>{visible.length} matching designs</small></div><div className={styles.templateFilters}><label>Category<select value={category} onChange={e=>filter(setCategory,e.target.value)}><option value="all">All categories</option>{options.map(item=><option key={item}>{item}</option>)}</select></label></div>
+   <div className={styles.templateFilterActions}><Button variant="ghost" onClick={()=>{filter(setCategory,"all");}}>Clear filters</Button><Button variant="secondary" onClick={()=>setFiltersOpen(false)}>Done</Button></div>
   </div>}
  </div>
+ <AnimatePresence mode="wait" initial={false}>
+ {!form ? <motion.section key="question" className={picker.question} initial={{opacity:0,y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-12}} transition={{duration:reducedMotion?0:0.2}}>
+
+ <h3>Do you want to collect user details on your landing page?</h3>
+ <p>(Such as name, WhatsApp number, email, etc.)</p>
+ <fieldset><legend className={picker.srOnly}>Collect user details?</legend>{["yes","no"].map(answer=><label key={answer}><input type="radio" name="collect-details" value={answer} checked={form===answer} onChange={()=>{setSelected("");setForm(answer);setFiltersOpen(false);}}/><span>{answer==="yes"?"Yes":"No"}</span></label>)}</fieldset>
+ </motion.section> : <motion.section key="templates" initial={{opacity:0,y:12}} animate={{opacity:1,y:0}} exit={{opacity:0,y:8}} transition={{duration:reducedMotion?0:0.22}} onAnimationComplete={()=>resultsHeading.current?.focus({preventScroll:true})}>
+ <div className={picker.summary}><span ref={resultsHeading} tabIndex={-1}>{form==="yes"?"Templates with a form":"Templates without a form"}</span><button type="button" onClick={()=>{setForm(null);setSelected("");setToast(false);}}>Change answer</button></div>
  <div className={styles.templateBuildOptions}>{[{id:"scratch",title:"Build from scratch",copy:"Start with a blank canvas",Icon:Plus},{id:"ai",title:"Build with AI",copy:"Let AI build for you",Icon:Sparkles}].map(({id,title,copy,Icon})=><button type="button" key={id} aria-pressed={selected===id} className={`${styles.templateBuildOption} ${selected===id?styles.pickerSelected:""}`} onClick={()=>choose(id)}><span><Icon/></span><div><b>{title}</b><small>{copy}</small></div>{selected===id&&<span className={styles.buildSelectionMark}><Check size={14}/></span>}</button>)}</div>
- <div className={styles.pageTemplateGrid}>{visible.map(t=><div role="button" tabIndex={0} onKeyDown={event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();choose(t._id);}}} key={t._id} aria-pressed={selected===t._id} className={`${selected===t._id?styles.templateSelected:""} ${t.pilot?styles.pilotTemplateCard:""}`} onClick={()=>choose(t._id)}>{t.thumbnailUrl?<img src={t.thumbnailUrl} alt="" loading="lazy"/>:t.pilot?<ThemePreview theme={t} compact asButtonContent/>:<span><Sparkles/></span>}<b>{t.name}</b><small>{categoryOf(t)}{typeof t.hasForm==="boolean"?` · ${t.hasForm?"With form":"No form"}`:""}</small>{t.pilot&&<span className={styles.pilotThemeBadge}>{t.batch === "1b" ? "Phase 1B · Short form" : "Phase 1"}</span>}{selected===t._id&&<span className={styles.templateSelectionMark}><Check aria-hidden="true"/></span>}</div>)}</div>
+ <div className={styles.pageTemplateGrid}>{visible.map(t=><div role="button" tabIndex={0} onKeyDown={event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();choose(t._id);}}} key={t._id} aria-pressed={selected===t._id} className={`${selected===t._id?styles.templateSelected:""} ${t.pilot?styles.pilotTemplateCard:""}`} onClick={()=>choose(t._id)}>{t.pilot?<ThemePreview theme={t} profile={user || {}} registry={registry} compact asButtonContent/>:t.thumbnailUrl?<img src={t.thumbnailUrl} alt="" loading="lazy"/>:<span><Sparkles/></span>}<b>{t.name}</b><small>{categoryOf(t)}{typeof t.hasForm==="boolean"?` · ${t.hasForm?"With form":"No form"}`:""}</small>{t.pilot&&<span className={styles.pilotThemeBadge}>{t.batch === "1b" ? "Phase 1B · Short form" : "Phase 1"}</span>}{selected===t._id&&<span className={styles.templateSelectionMark}><Check aria-hidden="true"/></span>}</div>)}</div>
  {loading&&<p className={styles.templateLoadingMore}>Loading more templates…</p>}
- {!loading&&!visible.length&&<div className={styles.templateEmpty}><Search size={22}/><b>No matching templates</b><p>Try another search or reset your filters.</p><Button variant="secondary" onClick={()=>{setSearch("");setCategory("all");setForm("all");}}>Reset filters</Button></div>}
+ {!loading&&!visible.length&&<div className={styles.templateEmpty}><Search size={22}/><b>No matching templates</b><p>Try another search or reset your filters.</p><Button variant="secondary" onClick={()=>{setSearch("");setCategory("all");}}>Reset filters</Button></div>}
+ </motion.section>}
+ </AnimatePresence>
  {pilotNotice&&<Notice tone="info" onClose={()=>setPilotNotice("")}>{pilotNotice}</Notice>}{error&&<p className={styles.inlineError} role="alert">{error}</p>}{toast&&<div role="alert" className={styles.templateToast}><Notice tone="error">Select any of the templates or options to continue</Notice></div>}
  </Modal>;
 }

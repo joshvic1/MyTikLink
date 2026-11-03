@@ -31,12 +31,12 @@ export default function ShortThemeRenderer({instance,page,preview=false}) {
  const tokens=shortThemeTokens(instance.colorOverride||instance.profileColor),family=instance.family;
  const url=shortActionDestination(instance,section,preview);
  return <article className={styles.page} data-short-family={family} data-rounded={instance.layout?.rounded||false} style={{'--primary':tokens.primary,'--cta':tokens.cta,'--accent':tokens.accent,'--on-accent':tokens.onAccent,'--soft':tokens.subtleSurface,'--focus':tokens.focus,'--hover':tokens.hover}}>
-   <header className={styles.header}><span>{safeUrl(instance.logo,true)&&<img src={safeUrl(instance.logo,true)} alt="" width="28" height="28"/>}{instance.name}</span><small>{instance.categoryLabel || (instance.variant==='lead'?'LET’S CONNECT':'EXPLORE THE EDIT')}</small></header>
+   <header className={styles.header}><span>{safeUrl(instance.logo,true)&&<img src={safeUrl(instance.logo,true)} alt="" width="28" height="28"/>}{instance.name}</span><small>{instance._hidden?.categoryLabel ? '' : instance.categoryLabel || (instance.variant==='lead'?'LET’S CONNECT':'EXPLORE THE EDIT')}</small></header>
    <section className={styles.stage}>
     <div className={styles.visual}>{family==='short-digital'&&!section.image?<WorkspaceGraphic/>:<Photo section={section} position={instance.layout?.imagePosition} className={styles.photo}/>}{family==='short-footwear'&&<div className={styles.detailCrop} aria-hidden="true"><Photo section={{...section,imageAlt:''}} position="bottom" className={styles.photo}/></div>}{family==='short-photography'&&<div className={styles.filmStrip} aria-hidden="true"><Photo section={{...section,imageAlt:''}} position="top" className={styles.photo}/><Photo section={{...section,imageAlt:''}} position="bottom" className={styles.photo}/></div>}</div>
     <div className={styles.content}><span className={styles.eyebrow}>{section.eyebrow}</span><h1>{section.title}</h1><p className={styles.description}>{section.description}</p>
       {!!section.facts?.length&&<dl className={styles.facts}>{section.facts.map((fact,i)=><div key={i}><dt>{fact.label}</dt><dd>{fact.value}</dd></div>)}</dl>}
-      {instance.variant==='lead'?<ThemeLeadForm section={section} page={page} preview={preview}/>:url?<a className={styles.action} href={url} target={preview?'_blank':undefined} rel={preview?'noopener noreferrer':undefined}>{section.primary}<span aria-hidden="true">↗</span></a>:<p className={styles.unavailable}>Contact details coming soon.</p>}
+      {instance.variant==='lead'?<ThemeLeadForm section={section} page={page} preview={preview}/>:!section.primary?null:url?<a className={styles.action} href={url} target={preview?'_blank':undefined} rel={preview?'noopener noreferrer':undefined}>{section.primary}<span aria-hidden="true">↗</span></a>:<p className={styles.unavailable}>Contact details coming soon.</p>}
     </div>
    </section>
  </article>;

@@ -1,0 +1,3 @@
+import {Eye,EyeOff} from 'lucide-react';
+import styles from './ThemeStudio.module.css';
+export default function EditableText({label,value,onChange,multiline=false,hidden=false,onToggle}){const Tag=multiline?'textarea':'input';return <label className={hidden?styles.hiddenField:undefined}><span className={styles.fieldHeading}>{label}{onToggle&&<button type="button" aria-label={`${hidden?'Show':'Hide'} ${label}`} aria-pressed={hidden} title={hidden?'Show text':'Hide text'} onClick={onToggle}>{hidden?<EyeOff size={14}/>:<Eye size={14}/>}</button>}</span><Tag disabled={hidden} value={value||''} onChange={e=>onChange(e.target.value)}/></label>;}

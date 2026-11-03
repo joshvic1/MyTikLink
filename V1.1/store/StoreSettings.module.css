@@ -22,3 +22,5 @@
 .helpDialog>footer{display:flex!important}.helpDialog>footer>button{width:100%!important;flex:1 1 100%;justify-content:center}
 
 .lockedSection{position:relative;isolation:isolate;min-height:165px;margin-bottom:14px;border-radius:18px;overflow:hidden}.blurredSection{filter:blur(5px);opacity:.45;pointer-events:none;user-select:none}.unlockSection{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;width:100%;border:1px solid #e8dcfa;border-radius:18px;background:linear-gradient(135deg,#faf5ffc9,#ffffffb8);color:#7041c5;cursor:pointer;transition:background .2s,box-shadow .2s}.unlockSection strong{font-size:13px}.unlockSection span{display:flex;align-items:center;gap:6px;font-size:11px}.unlockSection:hover{background:#f2e9ffd9;box-shadow:inset 0 0 0 1px #bc9cf2}.unlockSection:active{background:#e8d9ff}
+
+.unlockSection{justify-content:flex-start;padding:26px 16px;box-sizing:border-box}

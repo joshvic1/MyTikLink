@@ -1,4 +1,5 @@
 "use client";
+import {trackingData,announceTracking} from "../../../V1.1/tracking/browser";
 
 import { normalizeHtml } from "../utils/htmlSanitizer";
 
@@ -246,6 +247,7 @@ export default function RenderHtml({ element, page }) {
             name,
             whatsapp,
             company,
+            tracking:trackingData("page",page.slug),
           }),
         },
       );
@@ -256,7 +258,7 @@ export default function RenderHtml({ element, page }) {
         throw new Error(data?.message || "Failed to submit");
       }
 
-      trackHtmlFormSubmit(whatsapp);
+      announceTracking("page",page.slug,"lead",data.eventId);
 
       if (data.redirectUrl) {
         setTimeout(() => {

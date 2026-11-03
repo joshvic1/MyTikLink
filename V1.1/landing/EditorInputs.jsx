@@ -1,0 +1,16 @@
+import {useState,useRef,useEffect} from 'react';
+import {ImagePlus,LoaderCircle,Check} from 'lucide-react';
+import {v11Api} from '../lib/api';
+import styles from './EditorInputs.module.css';
+export function ImageUpload({value,onChange,label='Image',imageKey}){
+ const [method,setMethod]=useState('upload');
+ const input=useRef(null);const [busy,setBusy]=useState(false),[error,setError]=useState('');
+ const upload=async event=>{const file=event.target.files?.[0];if(!file)return;if(!['image/png','image/jpeg','image/webp'].includes(file.type)){setError('Choose a JPG, PNG or WebP image.');return;}setBusy(true);setError('');try{const result=await v11Api.uploadImage(file);const url=result.url||result.imageUrl;if(!url)throw Error('Upload failed. Please try again.');onChange(url);}catch(e){setError(e.message);}finally{setBusy(false);event.target.value='';}};
+ return <div className={styles.upload} data-image-editor={imageKey || label} data-image-value={value || ""}><div className={styles.uploadRow}><span className={styles.thumbnail}>{value?<img src={value} alt=""/>:<ImagePlus size={23}/>}</span><div><b>{label}</b><small>JPG, PNG or WebP</small></div><button type="button" data-image-focus style={{display:method==='url'?'none':undefined}} disabled={busy} onClick={()=>input.current?.click()}>{busy?<><LoaderCircle className={styles.spin} size={16}/> Uploading…</>:'Choose image'}</button><input ref={input} hidden type="file" accept="image/png,image/jpeg,image/webp" onChange={upload}/></div><div className={styles.methods}><button type="button" aria-pressed={method==='upload'} onClick={()=>setMethod('upload')}>Upload image</button><button type="button" aria-pressed={method==='url'} onClick={()=>setMethod('url')}>Paste URL</button></div>{method==='url'&&<label className={styles.url}>Image URL<input type="url" value={value||''} placeholder="https://…" onChange={e=>onChange(e.target.value)}/></label>}{error&&<small className={styles.error} role="alert">{error}</small>}</div>;
+}
+const palette=['#6336ff','#a855f7','#ec4899','#ef4444','#f97316','#f59e0b','#eab308','#84cc16','#22c55e','#14b8a6','#06b6d4','#3b82f6','#1e3a8a','#78350f','#111827','#ffffff'];
+export function ColorPicker({value,onChange}){
+ const [hex,setHex]=useState(value);useEffect(()=>setHex(value),[value]);
+ const valid=/^#[0-9a-f]{6}$/i.test(hex||'');
+ return <div className={styles.colors}><span className={styles.label}>Page brand colour</span><div className={styles.swatches}>{palette.map(color=><button type="button" key={color} aria-label={'Choose '+color} aria-pressed={value?.toLowerCase()===color} style={{background:color}} onClick={()=>onChange(color)}>{value?.toLowerCase()===color&&<Check size={15} style={{color:color==='#ffffff'?'#111':'white'}}/>}</button>)}</div><label>Custom colour<div className={styles.hex}><span style={{background:value}}/><input aria-label="Custom hex colour" value={hex||''} maxLength={7} spellCheck={false} onChange={e=>{setHex(e.target.value);if(/^#[0-9a-f]{6}$/i.test(e.target.value))onChange(e.target.value);}} placeholder="#6336ff"/><input aria-label="Open custom colour picker" type="color" value={value} onChange={e=>onChange(e.target.value)}/></div></label>{!valid&&<small className={styles.error}>Use # followed by six letters or numbers, like #6336FF.</small>}</div>;
+}

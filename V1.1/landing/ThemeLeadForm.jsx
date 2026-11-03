@@ -1,3 +1,4 @@
+import {trackingData,announceTracking} from "../tracking/browser";
 import { Send } from "lucide-react";
 import { useId, useState, useRef } from "react";
 import { normalizeLeadPhone } from "../lib/leadPhone";
@@ -18,9 +19,10 @@ export default function ThemeLeadForm({ section, page, preview, name, className 
     inFlight.current = true;
     setBusy(true);setStatus("");
     try {
-      const result = await apiRequest(`/v1-1/pages/public/${encodeURIComponent(page.slug)}/lead`, {token:null, method:"POST",body:JSON.stringify({name:String(values.get("name")).trim(),whatsapp,company:values.get("company") || ""})});
+      const result = await apiRequest(`/v1-1/pages/public/${encodeURIComponent(page.slug)}/lead`, {token:null, method:"POST",body:JSON.stringify({tracking:trackingData("page",page.slug),name:String(values.get("name")).trim(),whatsapp,company:values.get("company") || ""})});
       if (result?.success !== true) throw new Error("Your enquiry was not confirmed. Please try again.");
       try { if (typeof document !== "undefined") document.dispatchEvent(new Event("v11:lead-success")); } catch {}
+      announceTracking("page",page.slug,"lead",result.eventId);
       setDone(true);setStatus(section.successMessage || "Thank you. Your enquiry has been received.");
     } catch(error) {setStatus(error.message || "Unable to send. Please try again.");} finally {inFlight.current = false;setBusy(false);}
   };
@@ -29,7 +31,7 @@ export default function ThemeLeadForm({ section, page, preview, name, className 
     <label htmlFor={`${id}-phone`}>WhatsApp number<input id={`${id}-phone`} name="whatsapp" type="tel" autoComplete="tel" placeholder="+2348012345678" required maxLength={30} disabled={done || (preview && !interactivePreview)}/></label>
     <div className={styles.honeypot} aria-hidden="true"><label>Company<input name="company" tabIndex={-1} autoComplete="off"/></label></div>
     {section.showConsent !== false && <label className={styles.consent}><input type="checkbox" required disabled={done || (preview && !interactivePreview)}/><span>{section.consent}</span></label>}
-    <button type="submit" className={styles.action} disabled={busy || done || (preview && !interactivePreview)}>{compact ? <><Send size={18} aria-hidden="true"/>{buttonLabel}</> : buttonLabel}</button>
+    <button data-editor-button={buttonLabel} type={preview && !interactivePreview ? "button" : "submit"} className={styles.action} disabled={busy || done} aria-disabled={preview && !interactivePreview || undefined}>{compact ? <><Send size={18} aria-hidden="true"/>{buttonLabel}</> : buttonLabel}</button>
     <p role={done ? "status" : "alert"} aria-live="polite">{status}</p>
   </></>;
   return <form className={`${styles.form} ${className}`} id={preview ? undefined : "enquiry"} onSubmit={submit}>{body}</form>;

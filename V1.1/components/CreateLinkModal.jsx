@@ -1,3 +1,4 @@
+import {useSubscription} from "./SubscriptionModal";
 import {destinationLabels,designsForDestination} from "../config/redirectDesigns";
 import { linkUrl } from "../lib/linkPresentation";
 import { normalizeDestination, detectPlatform, validateRedirectDestination } from "../lib/redirectDestination";
@@ -11,6 +12,7 @@ import { Sparkles, Search, Check, ArrowRight, LockKeyhole, LoaderCircle, Externa
 
 export function CreateLinkModal({ link, onClose, onSaved }) {
  const editing=Boolean(link);
+ const {openSubscription}=useSubscription();
  const [saved,setSaved]=useState(null),[copied,setCopied]=useState(false);
  const [step,setStep]=useState(0),[search,setSearch]=useState(""),[page,setPage]=useState(1);
  const [catalog,setCatalog]=useState({templates:[],total:0,totalPages:1});
@@ -99,7 +101,7 @@ export function CreateLinkModal({ link, onClose, onSaved }) {
   setAttempted(false);
   setStep(s=>Math.min(2,s+1));
  };
- const submit=async()=>{
+ const submit=async(afterUpgrade=false)=>{
   if(submitting.current)return;
   if(Object.keys(fieldErrors).length){const target=Object.keys(fieldErrors).some(key=>key!=="design")?0:1;setStep(target);validateStep(target);return;}
   submitting.current=true;setState(s=>({...s,saving:true}));
@@ -111,7 +113,7 @@ export function CreateLinkModal({ link, onClose, onSaved }) {
    notify.success(editing?"Redirect link updated":"Redirect link created");
    try{await onSaved();}catch{notify.warning("Your link was saved. Refresh the page to see it.");}
 
-  }catch(error){notify.error(error.message);}finally{submitting.current=false;setState(s=>({...s,saving:false}));}
+  }catch(error){notify.error(error.message);if(!editing&&afterUpgrade!==true&&(error.details?.code==='LINK_PLAN_LIMIT'||(error.status===403&&/create more redirect links/i.test(error.message))))openSubscription({mode:'upgrade',preselected:'pro',onSuccess:()=>submit(true)});}finally{submitting.current=false;setState(s=>({...s,saving:false}));}
  };
  if(saved)return <Modal tone="peach" className={styles.redirectWizard} title={editing?"Redirect link updated":"Your redirect link is ready"} onClose={onClose} footer={<Button className={styles.redirectDone} onClick={onClose}>Done</Button>}><div className={styles.redirectSaved}><span className={styles.redirectSuccessSeal}><Check size={24}/></span><small>READY TO SHARE</small><h3>{saved.title}</h3><p className={styles.redirectSavedAddress}>{linkUrl(saved)}</p><small>Your destination and design are connected. Share your link anywhere.</small><Button onClick={async()=>{try{await navigator.clipboard.writeText(linkUrl(saved));setCopied(true);}catch{notify.error("Could not copy. Select and copy the address above.");}}}>{copied?"Copied":"Copy link"}</Button></div></Modal>;
  return <Modal tone="peach" wide className={styles.redirectWizard} title={editing?"Edit redirect link":"Create a redirect link"} description="Send people to any link as fast as possible." onClose={()=>{if(!state.saving)onClose();}} footer={<><Button variant="secondary" disabled={state.saving} onClick={()=>step?setStep(s=>s-1):onClose()}>{step?"Back":"Cancel"}</Button><Button disabled={state.saving} onClick={step===2?submit:next}>{state.saving?<span className={styles.creationProgress} role="status"><LoaderCircle size={16}/>{["Preparing your link…","Applying your design…","Finishing up…"][creationStage]}</span>:step===2?(editing?"Save changes":"Confirm and create page"):<>Next <ArrowRight size={15}/></>}</Button></>}>

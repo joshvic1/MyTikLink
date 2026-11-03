@@ -1,3 +1,5 @@
+import {categoryAssets} from "./personalization";
+import {coverSources} from "../media/categoryImages";
 import { resolvePersonalization } from "./personalization";
 export const THEME_BLOCK = "phase-one-theme";
 export function safeUrl(value, image = false) {
@@ -16,6 +18,9 @@ export function brandTokens(input = "#715047") {
 export function createThemeInstance(theme, profile = {}, registry = []) {
   if (theme.renderer === "universal-profile") return {id:"phase-one",type:THEME_BLOCK,version:1,themeId:theme.id,renderer:theme.renderer,batch:theme.batch,variant:theme.variant || "action",family:theme.family,sections:[],layout:{},colorOverride:null,personalization:resolvePersonalization({template:theme,profile,registry})};
   const data = profile.data || profile.onboarding || profile;
+  const asset=categoryAssets(data.category || {},registry)[0];
+  const categoryImage=coverSources(asset)?.src || "";
+  const fillImage=section=>({...section,...(!section.image && categoryImage?{image:categoryImage,imageAlt:asset.alt || `${data.publicName || "Business"} — ${data.category?.label || "category"}`,categoryCover:asset}:{}),...(section.items?{items:section.items.map(fillImage)}:{})});
   return JSON.parse(JSON.stringify({
     id: "phase-one", type: THEME_BLOCK, version: 1, themeId: theme.id,
     ...(theme.renderer ? {renderer:theme.renderer,batch:theme.batch} : {}),
@@ -26,7 +31,7 @@ export function createThemeInstance(theme, profile = {}, registry = []) {
     name: data.publicName || "Your brand", logo: data.brand?.imageUrl || "",
     ownerWhatsapp: data.whatsappNumber || profile.whatsappNumber || "",
     layout: { imagePosition: theme.imagePosition || "center", rounded: false },
-    sections: theme.sectionRecipe.map(section => section.type === "hero" ? { ...section, description: data.brand?.description || section.description } : section),
+    sections: theme.sectionRecipe.map(section => fillImage(section.type === "hero" ? { ...section, description: data.brand?.description || section.description } : section)),
   }));
 }
 export const getThemeBlock = sections => Array.isArray(sections) ? sections.find(section => section?.type === THEME_BLOCK) : undefined;

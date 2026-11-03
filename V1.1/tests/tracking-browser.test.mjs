@@ -1,0 +1,5 @@
+import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';
+const source=fs.readFileSync(new URL('../tracking/browser.js',import.meta.url),'utf8');
+const {browserEvent,trackingData}=await import('data:text/javascript;base64,'+Buffer.from(source).toString('base64'));
+test('browser skips API-backed events and targets the exact OpenAI pixel',()=>{const calls=[];global.window={oaiq:(...a)=>calls.push(a)};global.document={querySelector:()=>true};browserEvent({openai:{pixelId:'owner-a',server:true}},'view','event1');assert.equal(calls.length,0);browserEvent({openai:{pixelId:'owner-b',server:false}},'view','event2');const event=calls.find(a=>a[0]==='measureSingle');assert.equal(event[1],'owner-b');assert.equal(event[2],'page_viewed');assert.equal(event[4].event_id,'event2');delete global.window;delete global.document;});
+test('no visitor identifier is created without consent',()=>{global.localStorage={getItem:()=>null};global.sessionStorage={getItem(){throw Error('must not read')}};assert.equal(trackingData('page','test'),null);delete global.localStorage;delete global.sessionStorage;});

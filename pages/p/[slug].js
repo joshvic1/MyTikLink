@@ -1,4 +1,6 @@
 "use client";
+import PublicTracking from "../../V1.1/tracking/PublicTracking";
+import {trackingData,announceTracking} from "../../V1.1/tracking/browser";
 import InactivePublicPage from "@/V1.1/components/InactivePublicPage";
 // hey
 function loadTikTokPixel(pixelId) {
@@ -442,24 +444,6 @@ export default function PublicPage({initialPage=null,initialInactive=null,initia
 
         setPage(pageData);
 
-        if (pageData.tiktokPixelId) {
-          loadTikTokPixel(pageData.tiktokPixelId);
-
-          setTimeout(() => {
-            if (window.ttq) {
-              console.log("🚀 Sending ViewContent");
-
-              window.ttq.track("ViewContent", {
-                content_id: pageData.slug,
-                content_name: pageData.title,
-              });
-            }
-          }, 1000);
-        }
-
-        if (res.data.metaPixelId) {
-          loadMetaPixel(res.data.metaPixelId);
-        }
       } catch (err) {
         if(err.response?.data?.code==="PAGE_INACTIVE"){setInactive(err.response.data.pageId);return;}
         // EXPIRED → REDIRECT
@@ -555,68 +539,15 @@ export default function PublicPage({initialPage=null,initialInactive=null,initia
       try {
         const res = await axios.post(
           `${process.env.NEXT_PUBLIC_API_URL}/pages/public/${slug}/lead`,
-          { name, whatsapp, company },
+          { name, whatsapp, company, tracking:trackingData("page",slug) },
         );
 
+        announceTracking("page",slug,"lead",res.data.eventId);
         // ✅ SAVE COOLDOWN
         localStorage.setItem("submitted_" + slug, Date.now());
         setCooldownActive(true);
 
         if (res.data.redirectUrl) {
-          if (window.ttq) {
-            console.log("🚀 Sending TikTok Lead Event");
-
-            const cleanPhone = whatsapp.replace(/\D/g, "").replace(/^0/, "234");
-
-            const leadEventId = Date.now().toString();
-
-            window.ttq.track(
-              "Lead",
-              {
-                content_type: "product",
-
-                content_id: page.slug,
-
-                content_name: page.title,
-
-                contents: [
-                  {
-                    content_id: page.slug,
-                    content_name: page.title,
-                  },
-                ],
-
-                phone_number: cleanPhone,
-              },
-
-              {
-                event_id: leadEventId,
-              },
-            );
-            setTimeout(() => {
-              window.ttq.track(
-                "CompleteRegistration",
-                {
-                  content_type: "product",
-
-                  content_id: page.slug,
-
-                  content_name: page.title,
-
-                  contents: [
-                    {
-                      content_id: page.slug,
-                      content_name: page.title,
-                    },
-                  ],
-                },
-                {
-                  event_id: Date.now().toString(),
-                },
-              );
-            }, 400);
-          }
-          if (window.fbq) window.fbq("track", "Lead");
           const redirectUrl = res.data.redirectUrl;
 
           // If NOT TikTok → auto redirect
@@ -663,58 +594,7 @@ export default function PublicPage({initialPage=null,initialInactive=null,initia
         return;
       }
 
-      if (window.ttq) {
-        console.log("🚀 Sending TikTok Lead Event");
-
-        const leadEventId = Date.now().toString();
-
-        window.ttq.track(
-          "Lead",
-          {
-            content_type: "product",
-
-            content_id: page.slug,
-
-            content_name: page.title,
-
-            contents: [
-              {
-                content_id: page.slug,
-                content_name: page.title,
-              },
-            ],
-          },
-          {
-            event_id: leadEventId,
-          },
-        );
-        setTimeout(() => {
-          window.ttq.track(
-            "CompleteRegistration",
-            {
-              content_type: "product",
-
-              content_id: page.slug,
-
-              content_name: page.title,
-
-              contents: [
-                {
-                  content_id: page.slug,
-                  content_name: page.title,
-                },
-              ],
-            },
-            {
-              event_id: Date.now().toString(),
-            },
-          );
-        }, 400);
-      }
-
-      if (window.fbq) {
-        window.fbq("track", "Lead");
-      }
+      announceTracking("page",slug,"contact");
 
       // ✅ FIX: TikTok handling
       if (isTikTokBrowser()) {
@@ -750,10 +630,11 @@ export default function PublicPage({initialPage=null,initialInactive=null,initia
           <title>{page.title}</title>
         </Head>
 
+        <PublicTracking kind="page" slug={page.slug}/>
         <CustomPageRenderer
           sections={page.customContent}
-          tiktokPixelId={page.tiktokPixelId}
-          metaPixelId={page.metaPixelId}
+          tiktokPixelId={null}
+          metaPixelId={null}
           page={page}
         />
       </>
@@ -788,6 +669,7 @@ export default function PublicPage({initialPage=null,initialInactive=null,initia
         <style dangerouslySetInnerHTML={{ __html: template.css }} />
       )}
 
+      <PublicTracking kind="page" slug={page.slug}/>
       <div dangerouslySetInnerHTML={{ __html: renderedHTML }} />
     </>
   );

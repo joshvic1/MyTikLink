@@ -1,3 +1,4 @@
+import {trackingData} from "../tracking/browser";
 import {uploadPaymentProof} from "@/services/uploadService";
 import {cartQuantityLimit} from "@/components/store/context/cartLimits.mjs";
 import {storeThemeStyle,productHref} from "./StoreTheme";
@@ -225,6 +226,7 @@ export function CommerceCheckout({ store, config, design, onClose, onEvent, onAc
   const physical = items.some((p) => p.productType === "physical"),
     payload = () => ({
       ...form,
+      tracking:trackingData("store",store.slug),
       items: items.map((p) => ({
         productId: p._id,
         quantity: p.quantity,

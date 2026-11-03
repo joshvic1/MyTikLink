@@ -9,3 +9,5 @@
 
 .page[data-product-layout=shelf] .details button:before{inset:9px}
 .page[data-product-layout=shelf] .details button>svg{width:14px;height:14px;stroke-width:1.5}
+
+.page :is(h1,h2,h3,p,span,strong,small):empty{display:none}

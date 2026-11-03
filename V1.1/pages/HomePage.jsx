@@ -29,7 +29,7 @@ export function HomePage({ user, data, onCreate }) {
   const [starterPreview,setStarterPreview]=useState(null);
   const [storePreview,setStorePreview]=useState(false),[storeDetail,setStoreDetail]=useState(null);
   const storeReady=Boolean(data.store && !canUseLandingPages(user) && (user?.onboarding?.intent==="storefront" || user?.onboarding?.firstResource?.type==="storefront"));
-  useEffect(()=>{if(!storeReady)return;let active=true;setStoreDetail(null);apiRequest('/v1-1/store-studio').then(result=>{if(active)setStoreDetail(result);}).catch(()=>{});return()=>{active=false;};},[storeReady,data.store?._id]);
+  useEffect(()=>{if(!storeReady)return;let active=true;setStoreDetail(null);apiRequest('/v1-1/store-studio').then(result=>{if(active)setStoreDetail(result);}).catch(()=>{});return()=>{active=false;};},[storeReady,data.store?._id,user?.onboarding?.brand?.preferredColor]);
   const starter=data.pages.find(p=>p.onboardingStarter || String(p._id)===String(user?.onboarding?.firstResource?.id));
   const publishing=canUseLandingPages(user);
   const lockedStarter=starter && (starter.requiresUpgrade ?? !publishing);

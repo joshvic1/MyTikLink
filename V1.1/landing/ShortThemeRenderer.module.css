@@ -26,3 +26,7 @@
 }
 .page form{padding:0!important;width:100%}.page form label:has(input[type=checkbox]){margin:0;padding:0;background:transparent}.page[data-short-family=short-consultant] form{padding:18px!important}
 @media(prefers-reduced-motion:reduce){.page *{scroll-behavior:auto}}
+
+.page :is(h1,h2,h3,p,span,strong,small):empty{display:none}
+
+.page :is(dt,dd):empty{display:none}.facts>div:not(:has(dt:not(:empty),dd:not(:empty))){display:none}

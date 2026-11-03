@@ -1,0 +1,1 @@
+export function visibleText(value){if(Array.isArray(value))return value.map(visibleText);if(!value||typeof value!=='object')return value;const copy={};for(const [key,item] of Object.entries(value))copy[key]=key==='_hidden'?item:visibleText(item);for(const [key,hidden] of Object.entries(value._hidden||{}))if(hidden)copy[key]='';return copy;}
