@@ -1,3 +1,4 @@
+import StoreSetupPage from "./StoreSetupPage";
 import StoreReadyPreview,{StoreReadyThumbnail} from "../components/StoreReadyPreview";
 import {useSubscription} from "../components/SubscriptionModal";
 import {canUseLandingPages} from "../lib/pageAccess";
@@ -38,12 +39,13 @@ function StoreStatusCard({ live, url, onCopy, onDesign, onVisit }) {
 
 export function StorePage({ data,user }) {
   const router = useRouter();
+  const [choosing,setChoosing]=useState(false);
   const {openSubscription}=useSubscription();
   const [preview,setPreview]=useState(false);
   const upgrade=()=>openSubscription({mode:"upgrade",preselected:"pro"});
   const [publication, setPublication] = useState(null);
   useEffect(() => { let active = true; apiRequest("/v1-1/store-studio").then(result => active && setPublication(result)).catch(() => {}); return () => { active = false; }; }, [data.products]);
-  if (!data.store) return <div className={styles.page}><PageHeader title="Storefront"/><section className={ready.createCard}><span className={ready.createIcon}><ShoppingBag size={26}/></span><h2>Create an online store</h2><p>Choose a template, and we’ll build your storefront where you can upload products and start {user?.onboarding?.businessFocus==="physical_products"?"getting orders":"making sales"}.</p><Button onClick={()=>router.push("/v1-1/store/setup")}>Select a template <ArrowRight size={16}/></Button></section></div>;
+  if (!data.store) return <div className={`${styles.page} ${ready.emptyStorePage}`}><PageHeader title="Storefront"/><section className={ready.createCard}><div className={ready.createArt} aria-hidden="true"><i/><i/><i/></div><h2>Create an online store{user?.onboarding?.publicName ? ` for ${user.onboarding.publicName}` : " for your brand"}</h2><p>Choose a template, and we’ll build {user?.onboarding?.publicName ? `${user.onboarding.publicName}’s storefront` : "your storefront"} so you can upload products and start {user?.onboarding?.businessFocus==="physical_products"?"getting orders":"making sales"}.</p><Button onClick={()=>setChoosing(true)}>Select a template <ArrowRight size={16}/></Button></section>{choosing&&<StoreSetupPage user={user} onClose={()=>setChoosing(false)} onCreated={data.refresh}/>}</div>;
 
   const store = data.store, stats = data.storeStats || {};
   const pending = data.orders.filter(order => ["new", "pending"].includes(String(order.status).toLowerCase()));

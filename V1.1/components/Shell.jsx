@@ -55,6 +55,7 @@ function NavItems({
   items = navigation,
   storeExpanded,
   onToggleStore,
+  hasStore = false,
 }) {
   return (
     <>
@@ -123,7 +124,7 @@ function NavItems({
                       <ShoppingBag />
                       Orders
                     </Link>
-                    <Link
+                    {hasStore && (<Link
                       href={v11Routes.storeDesign}
                       onClick={close}
                       className={
@@ -132,7 +133,7 @@ function NavItems({
                     >
                       <Palette />
                       Store design
-                    </Link>
+                    </Link>)}
                     <Link
                       href={v11Routes.storeSettings}
                       onClick={close}
@@ -250,7 +251,7 @@ const helpChannels = [
     soon: true,
   },
 ];
-export function Shell({ user, onLogout, children, onCreate, onAddProduct }) {
+export function Shell({ user, onLogout, children, onCreate, onAddProduct, hasStore = false }) {
   const router = useRouter();
   const current = activeRoute(router.asPath);
   const activePath = router.asPath.split("?")[0].replace(/\/+$/, "");
@@ -345,7 +346,7 @@ export function Shell({ user, onLogout, children, onCreate, onAddProduct }) {
           />
         </Link>
         <nav>
-          <NavItems
+          <NavItems hasStore={hasStore}
             current={current}
             storeExpanded={
               storeExpanded ||
@@ -431,9 +432,9 @@ export function Shell({ user, onLogout, children, onCreate, onAddProduct }) {
             isStoreManagement ? "Storefront navigation" : "MyTikLink navigation"
           }
         >
-          <NavItems compact current={current} items={dockItems.slice(0, 2)} />
+          <NavItems hasStore={hasStore} compact current={current} items={dockItems.slice(0, 2)} />
           <span className={styles.mobileNavCenter} aria-hidden="true" />
-          <NavItems compact current={current} items={dockItems.slice(2)} />
+          <NavItems hasStore={hasStore} compact current={current} items={dockItems.slice(2)} />
         </nav>
         <button
           type="button"
@@ -484,7 +485,7 @@ export function Shell({ user, onLogout, children, onCreate, onAddProduct }) {
               </IconButton>
             </header>
             <nav className={styles.drawerNavigation}>
-              <NavItems
+              <NavItems hasStore={hasStore}
                 current={current}
                 close={closeMenu}
                 storeExpanded={

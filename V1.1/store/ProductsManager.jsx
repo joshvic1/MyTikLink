@@ -1,3 +1,4 @@
+import CompactLoading from "../components/CompactLoading";
 import {useSubscription} from "../components/SubscriptionModal";
 import {canUseLandingPages} from "../lib/pageAccess";
 import ProductActions from "./ProductActions";
@@ -397,7 +398,10 @@ export default function ProductsManager({
   onOpenHandled,
 }) {
   const {openSubscription}=useSubscription();
-  const openNew=async(draft={})=>{try{const result=await v11Api.products({page:1});if(!canUseLandingPages(user)&&(result.summary?.total??result.total??0)>=2){notify.error("Upgrade to Pro to add more products.");openSubscription({mode:"upgrade",preselected:"pro"});return;}setEditing(draft);}catch(e){notify.error(e.message||"Could not check your products. Please try again.");}};
+  const openingRef=useRef(false);
+  const [openingNew,setOpeningNew]=useState(false);
+  const openNew=async(draft={})=>{if(openingRef.current)return;if(canUseLandingPages(user)){setEditing(draft);return;}openingRef.current=true;setOpeningNew(true);try{const result=await v11Api.products({page:1});if((result.summary?.total??result.total??0)>=2){notify.error("Upgrade to Pro to add more products.");openSubscription({mode:"upgrade",preselected:"pro"});return;}setEditing(draft);}catch(e){notify.error(e.message||"Could not check your products. Please try again.");}finally{openingRef.current=false;setOpeningNew(false);}};
+
   const [selected, setSelected] = useState([]),
     [bulk, setBulk] = useState(""),
     [bulkBusy, setBulkBusy] = useState(false);
@@ -617,6 +621,7 @@ export default function ProductsManager({
           }
         />
       )}{" "}
+      {openingNew&&<Modal title="Add product" onClose={()=>{}}><CompactLoading label="Opening your product editor…"/></Modal>}
       {editing && (
         <ProductForm
           product={editing.name ? editing : null}

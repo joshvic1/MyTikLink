@@ -1,4 +1,5 @@
 const visuals = {
+ "store-ready": {image:"/v1-1/up-next/up-next-storefront-draft.webp",tone:"store",productType:"storefront",dismissalType:"suggestion"},
  "redirect-upgrade": {image:"/v1-1/up-next/up-next-smartlink-draft.webp",tone:"link",productType:"smart-link",dismissalType:"suggestion"},
   "store-upgrade": { image: "/v1-1/up-next/up-next-storefront-draft.webp", tone: "store", productType: "storefront", dismissalType: "suggestion" },
   leads: { image: "/v1-1/up-next/up-next-leads.webp", tone: "leads", productType: "leads", dismissalType: "attention" },

@@ -67,7 +67,7 @@ export function AccountPage({ user, refreshSession }) {
         if(phone!==workspace.whatsappNumber)await v11Api.saveOnboardingStage('whatsapp',{whatsappNumber:phone});
         setForm(current=>({...current,phone}));setWorkspace(current=>({...current,whatsappNumber:phone}));
       }
-      if(scope==='business'){
+      if(scope==='business'&&(workspaceDraft.publicName.trim()!==workspace.publicName||workspaceDraft.categoryId!==workspace.category?.id||(workspaceDraft.customCategory||'')!==(workspace.category?.customLabel||'')||(workspaceDraft.accountType||'business')!==workspace.accountType)){
         await v11Api.saveOnboardingStage('identity',{accountType:workspaceDraft.accountType||'business',publicName:workspaceDraft.publicName.trim(),categoryId:workspaceDraft.categoryId,customCategory:workspaceDraft.customCategory||''});
         setWorkspace(current=>({...current,publicName:workspaceDraft.publicName.trim(),accountType:workspaceDraft.accountType||'business',category:{id:workspaceDraft.categoryId,label:workspaceDraft.categoryLabel,customLabel:workspaceDraft.customCategory||''}}));
       }

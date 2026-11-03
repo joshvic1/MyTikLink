@@ -25,6 +25,22 @@ export default function StoreSettings(){
  const [headerHeight,setHeaderHeight]=useState(54);
  useEffect(()=>{const header=document.querySelector('.'+workspaceStyles.topbar);if(!header)return;const measure=()=>setHeaderHeight(header.getBoundingClientRect().height);measure();const observer=new ResizeObserver(measure);observer.observe(header);return()=>observer.disconnect();},[]);
  const tab=tabs.find(t=>t.toLowerCase()===router.query.tab)||'Categories';
+ // Scroll only the horizontal tab rail, keeping the page position unchanged.
+ useEffect(()=>{
+   const rail=nav.current;
+   if(!rail)return;
+   const center=()=>{
+     const active=rail.querySelector('[aria-selected="true"]');
+     if(!active)return;
+     const bounds=rail.getBoundingClientRect(),item=active.getBoundingClientRect();
+     const target=rail.scrollLeft+item.left-bounds.left+(item.width-rail.clientWidth)/2;
+     rail.scrollTo({left:Math.max(0,Math.min(target,rail.scrollWidth-rail.clientWidth)),behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+   };
+   const frame=requestAnimationFrame(center);
+   const observer=new ResizeObserver(center);
+   observer.observe(rail);
+   return()=>{cancelAnimationFrame(frame);observer.disconnect();};
+ },[tab,Boolean(data)]);
  const dirty=commerceDirty||!!saved&&(JSON.stringify(form)!==JSON.stringify(saved)||template!==data?.design.theme);
  const load=async()=>{const d=await apiRequest('/v1-1/store-studio');setData(d);setForm(d.setup);setSaved(d.setup);setTemplate(d.design.theme);setError('');};
  useEffect(()=>{const refresh=()=>load().catch(e=>setError(e.message));refresh();window.addEventListener('v11:plan-updated',refresh);return()=>window.removeEventListener('v11:plan-updated',refresh);},[]);
