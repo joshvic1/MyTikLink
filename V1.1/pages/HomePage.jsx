@@ -1,3 +1,5 @@
+import {apiRequest} from "../lib/api";
+import StoreReadyPreview, {StoreReadyThumbnail} from "../components/StoreReadyPreview";
 import {dashboardSuggestions} from "../lib/dashboardAccess";
 import StarterPagePreview from "../components/StarterPagePreview";
 import {useSubscription} from "../components/SubscriptionModal";
@@ -25,6 +27,9 @@ export function HomePage({ user, data, onCreate }) {
   const router = useRouter();
   const {openSubscription}=useSubscription();
   const [starterPreview,setStarterPreview]=useState(null);
+  const [storePreview,setStorePreview]=useState(false),[storeDetail,setStoreDetail]=useState(null);
+  const storeReady=Boolean(data.store && !canUseLandingPages(user) && (user?.onboarding?.intent==="storefront" || user?.onboarding?.firstResource?.type==="storefront"));
+  useEffect(()=>{if(!storeReady)return;let active=true;setStoreDetail(null);apiRequest('/v1-1/store-studio').then(result=>{if(active)setStoreDetail(result);}).catch(()=>{});return()=>{active=false;};},[storeReady,data.store?._id]);
   const starter=data.pages.find(p=>p.onboardingStarter || String(p._id)===String(user?.onboarding?.firstResource?.id));
   const publishing=canUseLandingPages(user);
   const lockedStarter=starter && (starter.requiresUpgrade ?? !publishing);
@@ -70,7 +75,7 @@ export function HomePage({ user, data, onCreate }) {
   const remainingAttention = attention.filter((item) => item.kind !== nextAction.kind);
   const hasPixel=[user.tiktokPixelId,user.metaPixelId,user.snapchatPixelId,user.googlePixelId,user.openaiPixelId].some(Boolean);
   const pixelSuggestion=!publishing||hasPixel?[]:[decorateUpNext({kind:"tracking",title:"Connect your tracking pixel",description:"Connect TikTok, Meta or another platform to measure visits and conversions from your ads.",action:"Connect a pixel",href:"/v1-1/settings/tracking"})];
-  const upNextActions = dashboardSuggestions(user,starter,[nextAction, ...pixelSuggestion, ...(publishing?remainingAttention:[]).map(({ tone: _tone, ...item }) => decorateUpNext({ ...item, description: item.copy, ctaLabel: item.action }))]).map(decorateUpNext)
+  const upNextActions = dashboardSuggestions(user,starter,[nextAction, ...pixelSuggestion, ...(publishing?remainingAttention:[]).map(({ tone: _tone, ...item }) => decorateUpNext({ ...item, description: item.copy, ctaLabel: item.action }))],data.store,data.links).map(decorateUpNext)
     .filter((item, index, items) => items.findIndex((candidate) => candidate.kind === item.kind) === index)
     .map((item) => ({ ...item, key: `${item.kind}|${item.title}` }))
     .filter((item) => !dismissedUpNext.some((dismissal) => dismissal.key === item.key && dismissal.expiresAt > Date.now()));
@@ -80,9 +85,10 @@ export function HomePage({ user, data, onCreate }) {
   return <div className={`${styles.page} ${styles.dashboardPage}`}>
     <section className={`${styles.homeHero} ${!isNewWorkspace ? styles.homeHeroReturning : ""}`}><div className={styles.workspaceKicker}><span className={styles.eyebrow}>Welcome back{firstName ? `, ${firstName}` : ""}</span><PlanBadge plan={plan}/></div></section>
     <SubscriptionAlert user={user} payments={data.payments}/>
-    {upNextActions.length > 0 && <section className={styles.upNextRail} aria-label="Up next suggestions">{upNextActions.map((action) => <div className={styles.upNextSlide} key={action.key}><UpNext page={action.kind==="starter-upgrade"?starter:null} action={action} onDismiss={() => dismissUpNext(action, action.key)} onSecondary={action.kind==="starter-upgrade"&&starter?()=>setStarterPreview(starter):undefined} onAction={() => action.kind==="starter-upgrade"?openSubscription({mode:"upgrade",preselected:"pro"}):action.kind === "create" ? onCreate("chooser") : router.push(action.href)}/></div>)}</section>}
+    {upNextActions.length > 0 && <section className={styles.upNextRail} aria-label="Up next suggestions">{upNextActions.map((action) => <div className={styles.upNextSlide} key={action.key}><UpNext thumbnail={action.kind==="store-upgrade"?<StoreReadyThumbnail detail={storeDetail} store={data.store}/>:undefined} secondaryLabel={action.kind==="store-upgrade"?"Preview your store":"Preview landing page"} page={action.kind==="starter-upgrade"?starter:null} action={action} onDismiss={() => dismissUpNext(action, action.key)} onSecondary={action.kind==="store-upgrade"?()=>setStorePreview(true):action.kind==="starter-upgrade"&&starter?()=>setStarterPreview(starter):undefined} onAction={() => ["starter-upgrade","store-upgrade","redirect-upgrade"].includes(action.kind)?openSubscription({mode:"upgrade",preselected:"pro"}):action.kind === "create" ? onCreate("chooser") : router.push(action.href)}/></div>)}</section>}
     {isNewWorkspace ? <>{createSection}{isFree && <OnboardingPanel user={user} data={data} chooseFeature={chooseFeature}/>}</> : <>{recentSection}{createSection}{isFree && <OnboardingPanel user={user} data={data} chooseFeature={chooseFeature}/>}</>}
     {!recent.length && !isNewWorkspace && !isFree && <EmptyState title="Your workspace is ready" description="Create your first customer journey." action={<Button onClick={() => onCreate("page")}>Create a landing page</Button>}/>} 
+    {storePreview&&<StoreReadyPreview detail={storeDetail} onClose={()=>setStorePreview(false)} onUpgrade={()=>{setStorePreview(false);openSubscription({mode:"upgrade",preselected:"pro"});}}/>}
     {starterPreview&&<StarterPagePreview page={starterPreview} onClose={()=>setStarterPreview(null)} onUpgrade={()=>{setStarterPreview(null);openSubscription({mode:"upgrade",preselected:"pro"});}}/>}
     {featureInfo && <FeatureHelp feature={featureInfo} onClose={()=>setFeatureInfo(null)} onStart={()=>{const action=featureInfo.action;setFeatureInfo(null);chooseFeature(action);}}/>}
   </div>;

@@ -1,3 +1,7 @@
+import StoreReadyPreview,{StoreReadyThumbnail} from "../components/StoreReadyPreview";
+import {useSubscription} from "../components/SubscriptionModal";
+import {canUseLandingPages} from "../lib/pageAccess";
+import ready from "../components/StoreReadyPreview.module.css";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { ArrowRight, BadgeCheck, Copy, ExternalLink, Package, Palette, ShoppingBag, WalletCards } from "lucide-react";
@@ -32,10 +36,13 @@ function StoreStatusCard({ live, url, onCopy, onDesign, onVisit }) {
   </section>;
 }
 
-export function StorePage({ data }) {
+export function StorePage({ data,user }) {
   const router = useRouter();
+  const {openSubscription}=useSubscription();
+  const [preview,setPreview]=useState(false);
+  const upgrade=()=>openSubscription({mode:"upgrade",preselected:"pro"});
   const [publication, setPublication] = useState(null);
-  useEffect(() => { let active = true; apiRequest("/v1-1/store-studio").then(result => active && setPublication(result)).catch(() => {}); return () => { active = false; }; }, []);
+  useEffect(() => { let active = true; apiRequest("/v1-1/store-studio").then(result => active && setPublication(result)).catch(() => {}); return () => { active = false; }; }, [data.products]);
   if (!data.store) return <div className={styles.page}><PageHeader eyebrow="STOREFRONT" title="Start selling online." description="Create a store where customers can browse your products and place orders—even while you’re offline."/><EmptyState icon="◇" title="Your details are already saved" description="Choose a template and we’ll build your storefront using your account details." action={<Button onClick={() => router.push("/v1-1/store/setup")}>Choose a template</Button>}/></div>;
 
   const store = data.store, stats = data.storeStats || {};
@@ -51,7 +58,8 @@ export function StorePage({ data }) {
 
   return <div className={`${styles.page} ${styles.storefrontOverview}`}>
     <StorefrontHeader name={storeName}/>
-    <StoreStatusCard live={live} url={storeUrl} onCopy={copyStoreUrl} onDesign={() => router.push(v11Routes.storeDesign)} onVisit={() => window.open(storePath, "_blank")}/>
+    {!canUseLandingPages(user)?<section className={ready.readyCard}><div className={ready.thumb}><StoreReadyThumbnail detail={publication} store={store}/></div><div><Badge tone="warning">Preview only</Badge><h2>Your storefront is ready</h2><p>Add up to two products and try your store. Upgrade to Pro to publish it and start getting orders.</p><div className={ready.actions}><Button variant="secondary" onClick={()=>setPreview(true)}>Preview your store</Button><Button onClick={upgrade}>Upgrade to Pro</Button></div></div></section>:<StoreStatusCard live={live} url={storeUrl} onCopy={copyStoreUrl} onDesign={() => router.push(v11Routes.storeDesign)} onVisit={() => window.open(storePath, "_blank")}/>}
+    {preview&&<StoreReadyPreview detail={publication} onClose={()=>setPreview(false)} onUpgrade={()=>{setPreview(false);upgrade();}}/>}
     <section className={styles.storeOverviewMetrics}>
       <article><span><WalletCards/></span><div><small>Confirmed sales</small><b>₦{Number(stats.totalRevenue || stats.orderValue || 0).toLocaleString()}</b></div></article>
       <article><span><ShoppingBag/></span><div><small>Total orders</small><b>{stats.totalOrders ?? data.orders.length}</b></div></article>

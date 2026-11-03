@@ -127,9 +127,9 @@ function V11Content() {
   else if (path.endsWith("/links")) content = <LinksPage revision={linkRevision} onCreate={() => setModal("link")} onEdit={setEditingLink}/>;
   else if (path.endsWith("/pages") || path.endsWith("/pages/create")) content = <PagesPage onCreate={() => setModal("page")} onLeads={(page, refresh) => setLeadPage({ ...page, refresh })}/>;
   else if (path.endsWith("/analytics") || path.endsWith("/insights")) content = <AnalyticsPage links={workspace.links} history={workspace.clickHistory}/>;
-  else if (path.endsWith("/store/products")) content = <ProductsManager onDataChange={workspace.refresh} openRequested={productComposer} onOpenHandled={() => setProductComposer(false)}/>;
+  else if (path.endsWith("/store/products")) content = <ProductsManager user={session.user} onDataChange={workspace.refresh} openRequested={productComposer} onOpenHandled={() => setProductComposer(false)}/>;
   else if (path.endsWith("/store/orders")) content = <OrdersManager onDataChange={workspace.refresh}/>;
-  else if (path.endsWith("/store")) content = <StorePage data={workspace}/>;
+  else if (path.endsWith("/store")) content = <StorePage data={workspace} user={session.user}/>;
   else if (path.endsWith("/settings/tracking")) content = <TrackingPage user={session.user} refreshSession={session.refresh}/>;
   else if (path.endsWith("/settings/billing")) content = <BillingPage user={session.user}/>;
   else if (path.endsWith("/settings/security")) content = <SecurityPage user={session.user}/>;

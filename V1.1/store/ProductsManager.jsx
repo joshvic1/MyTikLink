@@ -1,3 +1,5 @@
+import {useSubscription} from "../components/SubscriptionModal";
+import {canUseLandingPages} from "../lib/pageAccess";
 import ProductActions from "./ProductActions";
 import ui from "./ProductsManager.module.css";
 import {X,FileText,TriangleAlert,SlidersHorizontal,LayoutGrid,List,MoreHorizontal,Share2,BarChart3} from "lucide-react";
@@ -390,10 +392,12 @@ function LegacyProductForm({ product, onClose, onSaved }) {
 }
 
 export default function ProductsManager({
-  onDataChange,
+  user, onDataChange,
   openRequested = false,
   onOpenHandled,
 }) {
+  const {openSubscription}=useSubscription();
+  const openNew=async(draft={})=>{try{const result=await v11Api.products({page:1});if(!canUseLandingPages(user)&&(result.summary?.total??result.total??0)>=2){notify.error("Upgrade to Pro to add more products.");openSubscription({mode:"upgrade",preselected:"pro"});return;}setEditing(draft);}catch(e){notify.error(e.message||"Could not check your products. Please try again.");}};
   const [selected, setSelected] = useState([]),
     [bulk, setBulk] = useState(""),
     [bulkBusy, setBulkBusy] = useState(false);
@@ -449,7 +453,7 @@ export default function ProductsManager({
   }, []);
   useEffect(() => {
     if (openRequested) {
-      setEditing({});
+      openNew();
       onOpenHandled?.();
     }
   }, [openRequested, onOpenHandled]);
@@ -520,7 +524,7 @@ export default function ProductsManager({
           }
           action={
             !search && status === "all" && stock === "all" ? (
-              <Button onClick={() => setEditing({})}>
+              <Button onClick={() => openNew()}>
                 <Plus /> Add product
               </Button>
             ) : undefined
@@ -534,7 +538,7 @@ export default function ProductsManager({
               <div className={ui.info}><button className={ui.title} title={product.name} onClick={()=>setEditing(product)}>{product.name}</button><div className={ui.price}>{money(product.price)}{Number(product.comparePrice)>Number(product.price)&&<del>{money(product.comparePrice)}</del>}</div><div className={ui.meta}><span className={product.status==='published'?ui.active:ui.draft}><i/>{product.status==='published'?'Active':'Draft'}</span><small>{product.productType==='digital'?'Digital':product.trackStock===false?'Stock not tracked':Number(product.stock)>0?`In stock: ${product.stock}`:'Out of stock'}</small></div></div>
               <ProductActions name={product.name} items={[
  {label:'Edit product',Icon:Pencil,run:()=>setEditing(product)},
- {label:'Duplicate product',Icon:Copy,run:()=>{const {_id,slug,__v,createdAt,updatedAt,...draft}=product;setEditing({...draft,name:product.name+' (copy)',status:'draft',sku:''});}},
+ {label:'Duplicate product',Icon:Copy,run:()=>{const {_id,slug,__v,createdAt,updatedAt,...draft}=product;openNew({...draft,name:product.name+' (copy)',status:'draft',sku:''});}},
  {label:'Copy link',Icon:Share2,run:()=>copy(product)},
  {label:'View product',Icon:ExternalLink,run:()=>store?.slug?window.open(productUrl(product),'_blank','noopener,noreferrer'):notify.error('Your storefront link is not ready yet.')},
  {label:'Delete product',Icon:Trash2,danger:true,run:()=>setConfirming(product)}
@@ -583,7 +587,7 @@ export default function ProductsManager({
                         if(bulk==='delete') await apiRequest(`/v1-1/store-studio/commerce/products/${product._id}`,{method:'DELETE'});
                         else {const {_id,slug,__v,store,createdAt,updatedAt,...fields}=product;await v11Api.createProduct({...fields,name:product.name+' (copy)',status:'draft',sku:''});}
                         completed++;
-                      }} catch(e){throw new Error(`${completed} completed. ${e.message}`);} finally {setBulk('');load();onDataChange?.();}
+                      }} catch(e){if(e.details?.code==="PRODUCT_LIMIT_REACHED")openSubscription({mode:"upgrade",preselected:"pro"});throw new Error(`${completed} completed. ${e.message}`);} finally {setBulk('');load();onDataChange?.();}
                     } else await apiRequest(
                       "/v1-1/store-studio/commerce/products/bulk",
                       {

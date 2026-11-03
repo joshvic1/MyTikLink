@@ -15,7 +15,7 @@ export function CreateLinkModal({ link, onClose, onSaved }) {
  const [step,setStep]=useState(0),[search,setSearch]=useState(""),[page,setPage]=useState(1);
  const [catalog,setCatalog]=useState({templates:[],total:0,totalPages:1});
  const [form,setForm]=useState({title:link?.title||"",linkType:link?.linkType||"dm",whatsappCode:link?.destinationUrl||link?.whatsappCode||"",prefill:link?.prefill||"",templateId:link?.design?._id||"default"});
- const [templateName,setTemplateName]=useState(link?.design?.name||"Default design");
+ const [templateName,setTemplateName]=useState(link?.design?.name||((!link||link.platform==="whatsapp"||link.linkType!=="url")?"TikLink 1":"Default design"));
  const [state,setState]=useState({loading:false,saving:false,error:""});
  const [retry,setRetry]=useState(0);
  const submitting=useRef(false);
@@ -27,7 +27,7 @@ export function CreateLinkModal({ link, onClose, onSaved }) {
  const [attempted,setAttempted]=useState(false);
  const [platform,setPlatform]=useState(link?.platform || (link?.linkType==="url"?detectPlatform(link.destinationUrl||link.whatsappCode):"whatsapp"));
  const previousPlatform=useRef(platform);
- useEffect(()=>{if(previousPlatform.current!==platform){previousPlatform.current=platform;setForm(f=>({...f,templateId:'default'}));setTemplateName('Default design');setPage(1);}},[platform]);
+ useEffect(()=>{if(previousPlatform.current!==platform){previousPlatform.current=platform;setForm(f=>({...f,templateId:'default'}));setTemplateName(platform==='whatsapp'?'TikLink 1':'Default design');setPage(1);}},[platform]);
  const [purpose,setPurpose]=useState("url");
  const [country,setCountry]=useState("NG"),[fallbackUrl,setFallbackUrl]=useState(link?.fallbackUrl||"");
  const parsed=useMemo(()=>{
@@ -132,8 +132,8 @@ export function CreateLinkModal({ link, onClose, onSaved }) {
    <div className={styles.redirectTemplateSearch}><label className={styles.templateSearch}><Search size={16}/><input aria-label="Search link templates" placeholder="Search link templates…" value={search} onChange={e=>{setSearch(e.target.value);setPage(1);}}/></label></div>
    {errorFor("design")&&<p className={styles.fieldError}>{errorFor("design")}</p>}
    <div className={styles.templateGrid}>
-    <button {...fieldProps("design")} type="button" className={form.templateId==="default"?styles.templateSelected:""} aria-pressed={form.templateId==="default"} onClick={()=>{setForm({...form,templateId:"default"});setTemplateName("Default design");}}><span className={styles.defaultRedirectCover} style={{"--destination-color":designsForDestination(platform)[0]?.accent||"#7651ac","--destination-ink":platform==="snapchat"?"#171717":"white"}}><ExternalLink/><strong>Opening<br/>{destinationLabels[platform]||"your destination"}</strong><i/><em>Continue →</em></span><b>Default design</b><small>Fast and simple · All plans</small></button>
-    {!state.loading&&!state.error&&catalog.templates.map(t=><button type="button" aria-disabled={!t.available} key={t._id} aria-pressed={form.templateId===t._id} className={form.templateId===t._id?styles.templateSelected:""} onClick={()=>{if(!t.available){notify.warning("Upgrade to Pro to use this template");return;}setForm({...form,templateId:t._id});setTemplateName(t.name);}}>{t.thumbnailUrl?<img src={t.thumbnailUrl} alt="" loading="lazy"/>:<span><Sparkles/></span>}{!t.available&&<i className={styles.templateLock}><LockKeyhole size={13}/>Pro</i>}<b>{t.name}</b><small>{[...new Set((t.allowedPlans||[]).map(p=>p.split("_")[0]))].map(p=>p.charAt(0).toUpperCase()+p.slice(1)).join(" · ")||"No eligible plans"}{!t.available?" · Upgrade required":""}</small></button>)}
+    {platform!=="whatsapp"&&<button {...fieldProps("design")} type="button" className={form.templateId==="default"?styles.templateSelected:""} aria-pressed={form.templateId==="default"} onClick={()=>{setForm({...form,templateId:"default"});setTemplateName(platform==="whatsapp"?"TikLink 1":"Default design");}}><span className={styles.defaultRedirectCover} style={{"--destination-color":designsForDestination(platform)[0]?.accent||"#7651ac","--destination-ink":platform==="snapchat"?"#171717":"white"}}><ExternalLink/><strong>Opening<br/>{destinationLabels[platform]||"your destination"}</strong><i/><em>Continue →</em></span><b>{platform==="whatsapp"?"TikLink 1":"Default design"}</b><small>Fast and simple · All plans</small></button>}
+    {!state.loading&&!state.error&&catalog.templates.map(t=><button type="button" aria-disabled={!t.available} key={t._id} aria-pressed={form.templateId===t._id||(form.templateId==="default"&&/^tik(?:ket)?\s*link\s*1$/i.test(t.name))} className={form.templateId===t._id||(form.templateId==="default"&&/^tik(?:ket)?\s*link\s*1$/i.test(t.name))?styles.templateSelected:""} onClick={()=>{if(!t.available){notify.warning("Upgrade to Pro to use this template");return;}setForm({...form,templateId:t._id});setTemplateName(t.name);}}>{t.thumbnailUrl?<img src={t.thumbnailUrl} alt="" loading="lazy"/>:<span><Sparkles/></span>}{!t.available&&<i className={styles.templateLock}><LockKeyhole size={13}/>Pro</i>}<b>{t.name}</b><small>{[...new Set((t.allowedPlans||[]).map(p=>p.split("_")[0]))].map(p=>p.charAt(0).toUpperCase()+p.slice(1)).join(" · ")||"No eligible plans"}{!t.available?" · Upgrade required":""}</small></button>)}
    </div>
    {state.loading&&<div className={styles.templateLoading}><LoadingState label="Loading designs"/></div>}
    {state.error&&<div className={styles.wizardHint}><p>{state.error}</p><Button variant="secondary" onClick={()=>setRetry(n=>n+1)}>Try again</Button></div>}
