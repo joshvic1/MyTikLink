@@ -23,3 +23,6 @@
 .form button.action:hover{text-decoration:none}
 
 .page :is(h1,h2,h3,p,span,strong,small):empty{display:none}
+
+/* Keep CTA labels balanced without decorative arrows. */
+.page .action{justify-content:center;text-align:center}

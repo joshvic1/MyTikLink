@@ -20,8 +20,8 @@ function Art({ section, family, position, eager = false }) {
 function Action({ url, children, secondary, preview }) {
   if(!children)return null;
   const destination = safeUrl(url);
-  if (!destination || preview) return <span data-editor-button={typeof children === "string" ? children : undefined} className={secondary ? styles.secondary : styles.action}>{children} <span aria-hidden="true">↗</span></span>;
-  return <a className={secondary ? styles.secondary : styles.action} href={destination}>{children}<span aria-hidden="true">↗</span></a>;
+  if (!destination || preview) return <span data-editor-button={typeof children === "string" ? children : undefined} className={secondary ? styles.secondary : styles.action}>{children} </span>;
+  return <a className={secondary ? styles.secondary : styles.action} href={destination}>{children}</a>;
 }
 export default function ThemeRenderer({ instance, page, preview = false }) {
   instance=visibleText(instance);
