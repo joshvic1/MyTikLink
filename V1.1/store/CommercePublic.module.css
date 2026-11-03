@@ -371,3 +371,21 @@
 /* The body is locked while dialogs are open; this is the checkout scroll surface. */
 .drawerBackdrop .cartDrawer[role=dialog]>div,.optionsBackdrop .quickModal[role=dialog]>div{flex:1 1 auto!important;min-height:0!important;overflow-y:auto!important;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;touch-action:pan-y pinch-zoom}
 .drawerBackdrop .cartDrawer[role=dialog]{overflow:hidden!important}
+
+/* Shared product, options, checkout and customer drawers follow Streetline. */
+.streetline.streetline{--store-line:var(--store-theme-border,#171717);--store-radius:0px;font-family:var(--store-body,system-ui,sans-serif);border-radius:0}
+.streetline.streetline h1,.streetline.streetline h2,.streetline.streetline h3{font-family:var(--store-heading,system-ui,sans-serif);font-weight:800;letter-spacing:-.035em}
+.streetline.streetline button{border-radius:0!important}
+.streetline.streetline button[data-popup-action=primary],.streetline.streetline .product button[type=submit]{border:2px solid #171717!important;box-shadow:4px 4px 0 #171717!important;background:var(--store-accent)!important;color:var(--store-on-accent)!important;font-weight:800!important}
+.streetline.streetline>header{border-bottom:2px solid #171717!important;background:var(--store-paper)!important}
+.streetline.streetline>footer{border-top:2px solid #171717!important}
+.streetline.streetline input,.streetline.streetline select,.streetline.streetline textarea{border-radius:0!important;border-color:#777}
+.streetline .mainImage{border-radius:0}
+.streetline .productPrice{font-weight:850}
+.streetline .optionGroup button{border:1.5px solid #171717}
+.streetline .optionGroup button[aria-pressed=true]{background:var(--store-accent);color:var(--store-on-accent);box-shadow:3px 3px 0 #171717}
+.streetline .cartItem{border-bottom:1px solid #171717}
+.streetline .quantity button{border:1px solid #171717}
+@media(max-width:700px){.streetline.productPage{padding:0}.streetline .product{gap:0}.streetline .product>div:last-child{padding:18px}.streetline .product h1{font-size:23px;text-transform:uppercase}.streetline .mainImage{max-height:70dvh;object-fit:contain;background:#f1f1ef}}
+.streetUtility{margin:0!important;padding:16px 20px calc(16px + env(safe-area-inset-bottom))!important;background:#171717!important;color:#ccc;border:0!important}.streetUtility button{color:inherit!important;font-size:11px}
+.optionError.optionError{display:block;color:#bc243a!important;font-size:12px!important;line-height:1.5;margin-top:7px;font-weight:600}.needsOptions.needsOptions{opacity:.48!important;cursor:pointer!important}.optionToast{position:fixed;z-index:15000;right:16px;top:max(18px,env(safe-area-inset-top));display:flex;align-items:center;gap:9px;max-width:calc(100vw - 32px);padding:13px 14px;background:var(--store-paper,#fff);color:var(--store-ink,#222);border:1px solid #dfabb1;border-left:4px solid #bc243a;border-radius:var(--store-radius,8px);box-shadow:0 8px 28px #0002;font-family:var(--store-body,inherit);font-size:12px}.optionToast>svg{color:#bc243a;flex-shrink:0}.optionToast strong{color:inherit!important}.optionToast button{display:grid;place-items:center;padding:2px;border:0;background:transparent;color:inherit}.streetline .optionToast{border:2px solid #171717;border-left:4px solid #bc243a;box-shadow:4px 4px 0 #171717}.optionGroup[aria-invalid=true]{border-color:#bc243a}

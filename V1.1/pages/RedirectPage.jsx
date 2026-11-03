@@ -1,3 +1,4 @@
+import RedirectExperience from '../components/RedirectExperience';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Head from 'next/head';
 import { apiRequest } from '../lib/api';
@@ -35,5 +36,5 @@ export default function RedirectPage({linkId}) {
  if(state.loading)return <LoadingState label="Opening destination"/>;
  if(state.error)return <main className={styles.redirectVisitor}><ErrorState title="Could not open this link" message={state.error} onRetry={()=>setRetry(n=>n+1)}/></main>;
  const data=state.data,hasApp=data.deepLink!==data.fallback||!/^https?:/i.test(data.deepLink),srcDoc=redirectFrame(data);
- return <main className={styles.redirectVisitor}><Head><title>{data.title||'Redirect Link'}</title><meta name="robots" content="noindex,nofollow"/></Head>{srcDoc&&<iframe title="Redirect design" sandbox="" referrerPolicy="no-referrer" srcDoc={srcDoc} className={styles.redirectTemplateFrame}/>}<section className={styles.redirectVisitorCard}><img src="/images/mytiklink-mark-black.png" width="40" height="40" alt="MyTikLink"/><h1>{data.title||'Your destination is ready'}</h1><p>If your destination has not opened, tap below. Some browsers need your permission to open an app.</p><Button onClick={()=>open(data)}>{hasApp?`Open ${data.platform==='website'?'app':data.platform}`:'Open destination'}</Button>{data.deepLink!==data.fallback&&<Button variant="secondary" onClick={()=>open(data,true)}>Continue in browser</Button>}<small>{data.fallback}</small></section></main>;
+ return <><Head><title>{data.title||'Redirect Link'}</title><meta name="robots" content="noindex,nofollow"/></Head><RedirectExperience data={data} legacyFrame={srcDoc} onOpen={()=>open(data)} onBrowser={()=>open(data,true)}/></>;
 }

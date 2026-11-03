@@ -1,3 +1,4 @@
+import {getCategoryCover,coverSources} from "../media/categoryImages";
 import { storeImageSrcSet } from "./storeMedia";
 import { useState } from "react";
 import {
@@ -28,6 +29,7 @@ const icons = {
 };
 export default function AtelierSection({
   section: s,
+  theme,
   store,
   content,
   whatsapp,
@@ -71,6 +73,17 @@ export default function AtelierSection({
         {v.ctaLabel}
       </a>
     ) : null;
+  if(s.type==='hero'&&theme==='dataflow'){const category=coverSources(getCategoryCover(store.categoryId||store.category,{allowParent:true}));const heroImage=s.image||category?.src;return <section className={styles.dataHero} data-store-section={s.id}>{heroImage&&<picture>{!s.image&&category?.avif&&<source type="image/avif" srcSet={category.avif}/>}<img src={heroImage} srcSet={s.image?storeImageSrcSet(s.image):category?.webp} sizes="100vw" alt={v.alt||''} fetchPriority="high" style={{objectPosition:`${v.focalX??50}% ${v.focalY??50}%`}}/></picture>}<div className={styles.dataHeroContent}><span>{store.name||'WELCOME'}</span><h1>{content(s.title)}</h1><p>{content(s.text)}</p>{cta}</div><div className={styles.dataHeroFoot}><span>YOUR NEXT STEP STARTS HERE</span><ArrowUpRight size={22}/></div></section>;}
+  if(s.type==='hero'&&theme==='signal-studio')return <section className={styles.signalHero} data-store-section={s.id}><div className={styles.signalIntro}><span>{store.name||'YOUR STUDIO'} · DIGITAL SERVICES</span><h1>{content(s.title)||'Good work starts here.'}</h1><div className={styles.signalHeroBottom}><p>{content(s.text)}</p>{cta}</div></div><div className={styles.signalArt}>{s.image?<img src={v.mobileImage||s.image} alt={v.alt||''}/>:<><div className={styles.signalOrb}/><span>Ideas meet<br/><i>expertise.</i></span><ArrowUpRight size={30} strokeWidth={1}/></>}</div></section>;
+  if(s.type==='hero'&&theme==='launchpad')return <section className={styles.launchHero} data-store-section={s.id}><div className={styles.launchEyebrow}><span>{store.name||'YOUR NEXT CHAPTER'}</span><span>DIGITAL GOODS / REAL POSSIBILITIES</span></div><div className={styles.launchHeroBody}><div><h1>{content(s.title)||'Make your next move.'}</h1><p>{content(s.text)}</p>{cta}</div><div className={styles.launchVisual}>{s.image?<img src={v.mobileImage||s.image} alt={v.alt||''}/>:<><ArrowUpRight size={100} strokeWidth={1}/><span>IDEAS.<br/>TOOLS.<br/>MOMENTUM.</span><small>Made to move you forward.</small></>}</div></div></section>;
+  if(s.type==='hero'&&theme==='digital-library')return <section className={styles.libraryHero} data-store-section={s.id}><div className={styles.libraryHeroCopy}><span>{store.name||'THE LIBRARY'} / SMALL IDEAS, EVERYDAY HELP</span><h1>{content(s.title)||'A little help for everyday parenting.'}</h1><p>{content(s.text)}</p>{cta}</div>{s.image&&<div className={styles.libraryArtwork}><img src={v.mobileImage||s.image} alt={v.alt||''}/></div>}<span className={styles.libraryHeroAccent} aria-hidden="true">✳</span></section>;
+  if(s.type === "hero" && theme === "atelier-services") return <section data-store-section={s.id} className={styles.serviceHero}>
+ <div className={styles.serviceHeroCopy}><span>{store.name||'WELCOME'}</span><h1>{content(s.title)||'A little time. Just for you.'}</h1><p>{content(s.text)||'Explore our services and tell us what you have in mind.'}</p><div>{cta}{whatsapp&&<a className={styles.serviceEnquiry} href={whatsapp} target="_blank" rel="noreferrer">Let’s talk <ArrowUpRight size={16}/></a>}</div><small>Choose a service. Ask a question. We’ll take it from there.</small></div>
+ <div className={styles.serviceHeroImage}>{v.video?<video src={v.video} poster={s.image||undefined} controls playsInline preload="none"/>:s.image?<img src={v.mobileImage||s.image} alt={v.alt||''} fetchPriority="high" style={{objectPosition:`${v.focalX??50}% ${v.focalY??50}%`}}/>:<div className={styles.serviceMonogram}>{(store.name||'A').slice(0,1)}</div>}<span>Thoughtful service.<br/>A personal touch.</span></div></section>;
+  if(s.type === "hero" && ["streetline","streetline-services"].includes(theme)) return <section className={styles.streetHero} data-store-section={s.id} style={{"--hero-focus":`${v.focalX??50}% ${v.focalY??50}%`}}>
+    <div className={styles.streetHeroPhoto}>{v.video?<video src={v.video} poster={s.image||undefined} controls playsInline preload="none"/>:s.image?<picture><source media="(max-width:700px)" srcSet={storeImageSrcSet(v.mobileImage||s.image)||v.mobileImage||s.image}/><img src={s.image} srcSet={storeImageSrcSet(s.image)} sizes="(max-width:700px) 100vw, 60vw" alt={v.alt||""} fetchPriority="high"/></picture>:<div className={styles.streetHeroMonogram}>{(store.name||'S').slice(0,1)}</div>}<span className={styles.streetHeroStamp}>{theme==="streetline-services"?"AT YOUR SERVICE":"THE COLLECTION"} <ArrowUpRight size={16}/></span></div>
+    <div className={styles.streetHeroCopy}><span className={styles.streetHeroEyebrow}>{theme==="streetline-services"?"REAL PEOPLE. SKILLED HANDS.":"DISCOVER YOUR NEXT FAVOURITE"}</span><h1>{content(s.title)||store.name}</h1>{content(s.text)&&<p>{content(s.text)}</p>}<div className={styles.streetHeroAction}>{cta}<ArrowUpRight size={28} aria-hidden="true"/></div></div>
+  </section>;
   if (s.type === "hero")
     return (
       <section

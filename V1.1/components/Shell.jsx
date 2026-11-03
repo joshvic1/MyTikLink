@@ -20,6 +20,7 @@ import {
   MessageCircle,
   MessagesSquare,
   Package,
+  PackagePlus,
   Palette,
   Plus,
   Route,
@@ -405,13 +406,13 @@ export function Shell({ user, onLogout, children, onCreate, onAddProduct }) {
           </div>
           <div />
           <div className={styles.topbarActions}>
-            {onAddProduct && (
+            {onAddProduct && (activePath === v11Routes.store || activePath === v11Routes.products || activePath.startsWith(`${v11Routes.products}/`)) && (
               <Button
                 variant="secondary"
                 className={styles.topbarCreate}
                 onClick={onAddProduct}
               >
-                <Package /> Add product
+                <PackagePlus /> Add product
               </Button>
             )}
             <Button className={styles.topbarCreate} onClick={onCreate}>

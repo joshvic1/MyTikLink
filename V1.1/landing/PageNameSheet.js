@@ -1,5 +1,6 @@
 "use client";
 
+import {notify} from "../components/Notifications";
 import { Modal, Button } from "../components/UI";
 import { useState, useEffect } from "react";
 import styles from "./EditorDialogs.module.css";
@@ -92,7 +93,7 @@ export default function PageNameSheet({
   };
 
   return (
-    <Modal tone="lime" title="Name Your Page" description="Give your page a title and add a redirect URL for after the form is filled." onClose={onClose} footer={<><Button variant="secondary" onClick={onClose} disabled={saving}>Back</Button><Button onClick={()=>isPro?handleSave():onUpgrade?.()} disabled={saving}>{saving ? "Saving..." : "Save Page"}</Button></>}>
+    <Modal tone="lime" title="Name Your Page" description="Give your page a title and add a redirect URL for after the form is filled." onClose={onClose} footer={<><Button variant="secondary" onClick={onClose} disabled={saving}>Back</Button><Button onClick={()=>isPro?handleSave():(notify.warning("Upgrade your account first to publish this page"),onUpgrade?.())} disabled={saving}>{saving ? "Saving..." : "Save Page"}</Button></>}>
         {/* TITLE */}
         <div className={styles.field}>
           <label className={styles.label}>Page title</label>
@@ -123,19 +124,7 @@ export default function PageNameSheet({
           />
         </div>
 
-        {!isPro && (
-          <p className={styles.upgradeText}>
-            Publishing requires an active Pro plan.
-            <span
-              className={styles.upgradeLink}
-              onClick={() => {
-                if (onUpgrade) onUpgrade();
-              }}
-            >
-              Upgrade
-            </span>
-          </p>
-        )}
+
     </Modal>
   );
 }

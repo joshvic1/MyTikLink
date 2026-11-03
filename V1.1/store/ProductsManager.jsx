@@ -1,3 +1,6 @@
+import ProductActions from "./ProductActions";
+import ui from "./ProductsManager.module.css";
+import {X,FileText,TriangleAlert,SlidersHorizontal,LayoutGrid,List,MoreHorizontal,Share2,BarChart3} from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Archive,
@@ -408,6 +411,8 @@ export default function ProductsManager({
     [editing, setEditing] = useState(null),
     [confirming, setConfirming] = useState(null),
     [deleting, setDeleting] = useState(false);
+  const [summary,setSummary]=useState({total:0,active:0,drafts:0,out:0});
+  const [filters,setFilters]=useState(false);
   const load = async (nextPage = 1, append = false) => {
     try {
       setLoading(!append);
@@ -423,6 +428,7 @@ export default function ProductsManager({
       if (!append) setSelected([]);
       setProducts((current) => (append ? [...current, ...rows] : rows));
       setTotal(result.total ?? rows.length);
+      if(result.summary)setSummary(result.summary);
       setHasMore(Boolean(result.hasMore));
       setPage(nextPage);
     } catch (requestError) {
@@ -447,18 +453,7 @@ export default function ProductsManager({
       onOpenHandled?.();
     }
   }, [openRequested, onOpenHandled]);
-  const metrics = useMemo(
-    () => ({
-      active: products.filter((product) => product.status === "published")
-        .length,
-      drafts: products.filter((product) => product.status === "draft").length,
-      out: products.filter(
-        (product) =>
-          product.productType === "physical" && Number(product.stock) <= 0,
-      ).length,
-    }),
-    [products],
-  );
+  const metrics = summary;
   const saved = () => {
     setEditing(null);
     load();
@@ -494,102 +489,11 @@ export default function ProductsManager({
     }
   };
   return (
-    <div className={styles.managementPage}>
-      <PageHeader
-        eyebrow="STOREFRONT"
-        title="Products"
-        description={`${total} product${total === 1 ? "" : "s"} in your store`}
-        actions={
-          <Button onClick={() => setEditing({})}>
-            <Plus /> Add product
-          </Button>
-        }
-      />
-      <div className={styles.managementMetrics}>
-        <span>
-          <Package />
-          <small>Total products</small>
-          <b>{total}</b>
-        </span>
-        <span>
-          <Archive />
-          <small>Published</small>
-          <b>{metrics.active}</b>
-        </span>
-        <span>
-          <Archive />
-          <small>Drafts</small>
-          <b>{metrics.drafts}</b>
-        </span>
-        <span>
-          <Archive />
-          <small>Out of stock</small>
-          <b>{metrics.out}</b>
-        </span>
-      </div>
-      <div className={styles.managementToolbar}>
-        <label>
-          <input
-            style={{ width: 16, flex: "0 0 16px" }}
-            type="checkbox"
-            aria-label="Select visible products"
-            checked={
-              products.length > 0 &&
-              products.slice(0, 50).every((p) => selected.includes(p._id))
-            }
-            onChange={(e) =>
-              setSelected(
-                e.target.checked ? products.slice(0, 50).map((p) => p._id) : [],
-              )
-            }
-          />
-          Select visible
-        </label>
-        {selected.length > 0 && (
-          <>
-            <span>{selected.length} selected</span>
-            <Button variant="secondary" onClick={() => setBulk("published")}>
-              Publish selected
-            </Button>
-            <Button variant="secondary" onClick={() => setBulk("draft")}>
-              Move to draft
-            </Button>
-          </>
-        )}
-      </div>
-      <div className={styles.managementToolbar}>
-        <label>
-          <Search />
-          <input
-            value={search}
-            onChange={(event) => setSearch(event.target.value)}
-            placeholder="Search products"
-          />
-        </label>
-        <select
-          value={status}
-          onChange={(event) => setStatus(event.target.value)}
-        >
-          <option value="all">All statuses</option>
-          <option value="published">Published</option>
-          <option value="draft">Drafts</option>
-        </select>
-        <select
-          value={stock}
-          onChange={(event) => setStock(event.target.value)}
-        >
-          <option value="all">All stock</option>
-          <option value="in">In stock</option>
-          <option value="out">Out of stock</option>
-        </select>
-        <select value={sort} onChange={(event) => setSort(event.target.value)}>
-          <option value="newest">Newest</option>
-          <option value="oldest">Oldest</option>
-          <option value="priceHigh">Highest price</option>
-          <option value="priceLow">Lowest price</option>
-          <option value="name">Name</option>
-        </select>
-      </div>
+    <div className={`${styles.managementPage} ${ui.page}`}>
+      <PageHeader title="Products"/>
+      <div className={ui.toolbar}><label className={ui.search}><Search size={18}/><input aria-label="Search products" value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search products…"/></label><button aria-label="Filter products" aria-expanded={filters} className={filters?ui.chosen:''} onClick={()=>setFilters(!filters)}><SlidersHorizontal size={18}/></button></div>
+      {filters&&<div className={ui.filters}><label>Stock<select value={stock} onChange={e=>setStock(e.target.value)}><option value="all">All stock</option><option value="in">In stock</option><option value="out">Out of stock</option></select></label><label>Sort by<select value={sort} onChange={e=>setSort(e.target.value)}><option value="newest">Newest</option><option value="oldest">Oldest</option><option value="priceHigh">Highest price</option><option value="priceLow">Lowest price</option><option value="name">Name</option></select></label></div>}
+      <div className={ui.tabs} aria-label="Product status">{[['All',summary.total,'all','all'],['Active',metrics.active,'published','all'],['Draft',metrics.drafts,'draft','all'],['Out of stock',metrics.out,'all','out']].map(([label,count,state,inventory])=><button key={label} aria-pressed={status===state&&stock===inventory} className={status===state&&stock===inventory?ui.tabActive:''} onClick={()=>{setStatus(state);setStock(inventory);}}>{label} ({count})</button>)}</div>
       {error ? (
         <div className={styles.managementError}>
           {error}
@@ -624,92 +528,18 @@ export default function ProductsManager({
         />
       ) : (
         <>
-          <div className={styles.productList}>
-            {products.map((product) => (
-              <article
-                style={{ position: "relative" }}
-                className={styles.productRow}
-                key={product._id}
-              >
-                <input
-                  style={{
-                    position: "absolute",
-                    left: 8,
-                    top: 8,
-                    width: 16,
-                    height: 16,
-                    accentColor: "#6e47dd",
-                  }}
-                  type="checkbox"
-                  aria-label={`Select ${product.name}`}
-                  checked={selected.includes(product._id)}
-                  onChange={(e) =>
-                    setSelected((ids) =>
-                      e.target.checked
-                        ? ids.length < 50
-                          ? [...ids, product._id]
-                          : ids
-                        : ids.filter((id) => id !== product._id),
-                    )
-                  }
-                />
-                <img src={product.images?.[0] || "/placeholder.png"} alt="" />
-                <div className={styles.productRowMain}>
-                  <b>{product.name}</b>
-                  <small>
-                    {product.category || "General"}
-                    {product.sku ? ` · ${product.sku}` : ""}
-                  </small>
-                </div>
-                <div>
-                  <small>Price</small>
-                  <b>{money(product.price)}</b>
-                </div>
-                <div>
-                  <small>Stock</small>
-                  <b>
-                    {product.productType === "digital"
-                      ? "Digital"
-                      : Number(product.stock || 0)}
-                  </b>
-                </div>
-                <Badge
-                  tone={product.status === "published" ? "success" : "neutral"}
-                >
-                  {product.status === "published" ? "Published" : "Draft"}
-                </Badge>
-                <div className={styles.productRowActions}>
-                  <IconButton
-                    label="Copy product link"
-                    onClick={() => copy(product)}
-                  >
-                    <Copy />
-                  </IconButton>
-                  <IconButton
-                    label="Open product"
-                    onClick={() =>
-                      store?.slug
-                        ? window.open(productUrl(product), "_blank")
-                        : notify.error("Your storefront link is not ready yet.")
-                    }
-                  >
-                    <ExternalLink />
-                  </IconButton>
-                  <IconButton
-                    label="Edit product"
-                    onClick={() => setEditing(product)}
-                  >
-                    <Pencil />
-                  </IconButton>
-                  <IconButton
-                    label="Delete product"
-                    onClick={() => setConfirming(product)}
-                  >
-                    <Trash2 />
-                  </IconButton>
-                </div>
-              </article>
-            ))}
+          <div className={ui.products}>
+            {products.map(product=><article className={`${ui.card} ${selected.includes(product._id)?ui.selected:''}`} key={product._id}>
+              <div className={ui.image}><img src={product.images?.[0]||'/placeholder.png'} alt=""/><input type="checkbox" aria-label={`Select ${product.name}`} checked={selected.includes(product._id)} onChange={e=>setSelected(ids=>e.target.checked?(ids.length<50?[...ids,product._id]:ids):ids.filter(id=>id!==product._id))}/></div>
+              <div className={ui.info}><button className={ui.title} title={product.name} onClick={()=>setEditing(product)}>{product.name}</button><div className={ui.price}>{money(product.price)}{Number(product.comparePrice)>Number(product.price)&&<del>{money(product.comparePrice)}</del>}</div><div className={ui.meta}><span className={product.status==='published'?ui.active:ui.draft}><i/>{product.status==='published'?'Active':'Draft'}</span><small>{product.productType==='digital'?'Digital':product.trackStock===false?'Stock not tracked':Number(product.stock)>0?`In stock: ${product.stock}`:'Out of stock'}</small></div></div>
+              <ProductActions name={product.name} items={[
+ {label:'Edit product',Icon:Pencil,run:()=>setEditing(product)},
+ {label:'Duplicate product',Icon:Copy,run:()=>{const {_id,slug,__v,createdAt,updatedAt,...draft}=product;setEditing({...draft,name:product.name+' (copy)',status:'draft',sku:''});}},
+ {label:'Copy link',Icon:Share2,run:()=>copy(product)},
+ {label:'View product',Icon:ExternalLink,run:()=>store?.slug?window.open(productUrl(product),'_blank','noopener,noreferrer'):notify.error('Your storefront link is not ready yet.')},
+ {label:'Delete product',Icon:Trash2,danger:true,run:()=>setConfirming(product)}
+ ]}/><div className={ui.actions}><button aria-label={`Edit ${product.name}`} onClick={()=>setEditing(product)}><Pencil size={14}/></button><button aria-label={`View ${product.name}`} onClick={()=>store?.slug?window.open(productUrl(product),"_blank","noopener,noreferrer"):notify.error("Your storefront link is not ready yet.")}><ExternalLink size={14}/></button><button aria-label={`Copy link for ${product.name}`} onClick={()=>copy(product)}><Share2 size={14}/></button></div>
+            </article>)}
           </div>
           {hasMore && (
             <Button
@@ -722,15 +552,16 @@ export default function ProductsManager({
           )}
         </>
       )}
+      {selected.length>0&&<div className={ui.bulk} role="region" aria-label="Selected product actions"><label><input type="checkbox" aria-label="Select visible products" checked={products.length>0&&products.slice(0,50).every(p=>selected.includes(p._id))} onChange={e=>setSelected(e.target.checked?products.slice(0,50).map(p=>p._id):[])}/><span>{selected.length} selected</span></label><button className={ui.clearSelection} aria-label="Clear selection" onClick={()=>setSelected([])}><X size={14}/></button><button disabled={!selected.length} onClick={()=>setBulk('published')}><Archive size={13}/>Publish</button><button disabled={!selected.length} onClick={()=>setBulk('draft')}><FileText size={13}/>Unpublish</button><button disabled={!selected.length} onClick={()=>setBulk('duplicate')}><Copy size={13}/>Duplicate</button><button disabled={!selected.length} onClick={()=>setBulk('delete')}><Trash2 size={13}/>Delete</button></div>}
       {bulk && (
         <Modal
           tone="teal"
           title={
-            bulk === "draft"
+            bulk === "delete" ? "Delete selected products?" : bulk === "duplicate" ? "Duplicate selected products?" : bulk === "draft"
               ? "Move selected products to draft?"
               : "Publish selected products?"
           }
-          description={`${selected.length} selected products will be updated. Prices and stock stay unchanged.`}
+          description={bulk === "delete" ? `${selected.length} products will be deleted. Existing orders stay intact. This cannot be undone.` : bulk === "duplicate" ? `${selected.length} products will be copied as drafts.` : `${selected.length} selected products will be updated. Prices and stock stay unchanged.`}
           onClose={() => !bulkBusy && setBulk("")}
           footer={
             <>
@@ -746,7 +577,14 @@ export default function ProductsManager({
                 onClick={async () => {
                   setBulkBusy(true);
                   try {
-                    await apiRequest(
+                    if (bulk==='delete'||bulk==='duplicate') {
+                      let completed=0;
+                      try {for(const product of products.filter(p=>selected.includes(p._id))){
+                        if(bulk==='delete') await apiRequest(`/v1-1/store-studio/commerce/products/${product._id}`,{method:'DELETE'});
+                        else {const {_id,slug,__v,store,createdAt,updatedAt,...fields}=product;await v11Api.createProduct({...fields,name:product.name+' (copy)',status:'draft',sku:''});}
+                        completed++;
+                      }} catch(e){throw new Error(`${completed} completed. ${e.message}`);} finally {setBulk('');load();onDataChange?.();}
+                    } else await apiRequest(
                       "/v1-1/store-studio/commerce/products/bulk",
                       {
                         method: "POST",
@@ -777,7 +615,7 @@ export default function ProductsManager({
       )}{" "}
       {editing && (
         <ProductForm
-          product={editing._id ? editing : null}
+          product={editing.name ? editing : null}
           onClose={() => setEditing(null)}
           onSaved={saved}
         />

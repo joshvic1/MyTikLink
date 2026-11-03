@@ -1,3 +1,4 @@
+import {destinationLabels,designsForDestination} from "../config/redirectDesigns";
 import { linkUrl } from "../lib/linkPresentation";
 import { normalizeDestination, detectPlatform, validateRedirectDestination } from "../lib/redirectDestination";
 import { parsePhoneNumberFromString, getCountries, getCountryCallingCode } from "libphonenumber-js";
@@ -6,7 +7,7 @@ import { Button, Field, Modal, LoadingState } from "./UI";
 import { notify } from "./Notifications";
 import { v11Api } from "../lib/api";
 import styles from "../styles/v11.module.css";
-import { Sparkles, Search, Check, ArrowRight } from "lucide-react";
+import { Sparkles, Search, Check, ArrowRight, LockKeyhole, LoaderCircle, ExternalLink } from "lucide-react";
 
 export function CreateLinkModal({ link, onClose, onSaved }) {
  const editing=Boolean(link);
@@ -18,9 +19,15 @@ export function CreateLinkModal({ link, onClose, onSaved }) {
  const [state,setState]=useState({loading:false,saving:false,error:""});
  const [retry,setRetry]=useState(0);
  const submitting=useRef(false);
+ const [creationStage,setCreationStage]=useState(0);
+ useEffect(()=>{if(!state.saving){setCreationStage(0);return;}const timer=setInterval(()=>setCreationStage(n=>Math.min(n+1,2)),1100);return()=>clearInterval(timer);},[state.saving]);
+
+
  const fieldRefs=useRef({}),lastInvalid=useRef(null);
  const [attempted,setAttempted]=useState(false);
  const [platform,setPlatform]=useState(link?.platform || (link?.linkType==="url"?detectPlatform(link.destinationUrl||link.whatsappCode):"whatsapp"));
+ const previousPlatform=useRef(platform);
+ useEffect(()=>{if(previousPlatform.current!==platform){previousPlatform.current=platform;setForm(f=>({...f,templateId:'default'}));setTemplateName('Default design');setPage(1);}},[platform]);
  const [purpose,setPurpose]=useState("url");
  const [country,setCountry]=useState("NG"),[fallbackUrl,setFallbackUrl]=useState(link?.fallbackUrl||"");
  const parsed=useMemo(()=>{
@@ -54,13 +61,13 @@ export function CreateLinkModal({ link, onClose, onSaved }) {
  useEffect(()=>{
   if(step!==1)return;
   let active=true;setState(s=>({...s,loading:true,error:""}));
-  const timer=setTimeout(()=>{v11Api.linkTemplates({page,search}).then(data=>{
+  const timer=setTimeout(()=>{v11Api.linkTemplates({page,search,platform}).then(data=>{
    if(!active)return;
    if(!Array.isArray(data?.templates))throw new Error("Template search is unavailable. Please try again after the server update.");
    setCatalog(data);
   }).catch(error=>{if(active){setState(s=>({...s,error:error.message}));notify.error(error.message);}}).finally(()=>{if(active)setState(s=>({...s,loading:false}));});},250);
   return()=>{active=false;clearTimeout(timer);};
- },[step,page,search,retry]);
+ },[step,page,search,retry,platform]);
  const fieldErrors={};
  if(!form.title.trim())fieldErrors.title="Enter a name for your redirect link.";
  const hasAppLink=/^[a-z][a-z\d+.-]*:/i.test(form.whatsappCode)&&!/^https?:/i.test(form.whatsappCode);
@@ -106,8 +113,8 @@ export function CreateLinkModal({ link, onClose, onSaved }) {
 
   }catch(error){notify.error(error.message);}finally{submitting.current=false;setState(s=>({...s,saving:false}));}
  };
- if(saved)return <Modal tone="peach" className={styles.redirectWizard} title={editing?"Redirect link updated":"Your redirect link is ready"} onClose={onClose} footer={<Button className={styles.redirectDone} onClick={onClose}>Done</Button>}><div className={styles.redirectSaved}><Check size={28}/><h3>{saved.title}</h3><p>{linkUrl(saved)}</p><Button onClick={async()=>{try{await navigator.clipboard.writeText(linkUrl(saved));setCopied(true);}catch{notify.error("Could not copy. Select and copy the address above.");}}}>{copied?"Copied":"Copy link"}</Button></div></Modal>;
- return <Modal tone="peach" wide className={styles.redirectWizard} title={editing?"Edit redirect link":"Create a redirect link"} description="Send people to any link as fast as possible." onClose={()=>{if(!state.saving)onClose();}} footer={<><Button variant="secondary" disabled={state.saving} onClick={()=>step?setStep(s=>s-1):onClose()}>{step?"Back":"Cancel"}</Button><Button disabled={state.saving} onClick={step===2?submit:next}>{state.saving?"Saving…":step===2?(editing?"Save changes":"Create redirect link"):<>Next <ArrowRight size={15}/></>}</Button></>}>
+ if(saved)return <Modal tone="peach" className={styles.redirectWizard} title={editing?"Redirect link updated":"Your redirect link is ready"} onClose={onClose} footer={<Button className={styles.redirectDone} onClick={onClose}>Done</Button>}><div className={styles.redirectSaved}><span className={styles.redirectSuccessSeal}><Check size={24}/></span><small>READY TO SHARE</small><h3>{saved.title}</h3><p className={styles.redirectSavedAddress}>{linkUrl(saved)}</p><small>Your destination and design are connected. Share your link anywhere.</small><Button onClick={async()=>{try{await navigator.clipboard.writeText(linkUrl(saved));setCopied(true);}catch{notify.error("Could not copy. Select and copy the address above.");}}}>{copied?"Copied":"Copy link"}</Button></div></Modal>;
+ return <Modal tone="peach" wide className={styles.redirectWizard} title={editing?"Edit redirect link":"Create a redirect link"} description="Send people to any link as fast as possible." onClose={()=>{if(!state.saving)onClose();}} footer={<><Button variant="secondary" disabled={state.saving} onClick={()=>step?setStep(s=>s-1):onClose()}>{step?"Back":"Cancel"}</Button><Button disabled={state.saving} onClick={step===2?submit:next}>{state.saving?<span className={styles.creationProgress} role="status"><LoaderCircle size={16}/>{["Preparing your link…","Applying your design…","Finishing up…"][creationStage]}</span>:step===2?(editing?"Save changes":"Confirm and create page"):<>Next <ArrowRight size={15}/></>}</Button></>}>
   <div key={step} className={styles.wizardStep}>{step===2&&<h3>{steps[step]}</h3>}
   {step===0&&<div className={styles.formGrid}>
    <Field label="Link name" error={errorFor("title")}><input {...fieldProps("title")} autoComplete="off" value={form.title} onChange={e=>setForm({...form,title:e.target.value})} placeholder="e.g. Customer enquiries"/></Field>
@@ -125,15 +132,15 @@ export function CreateLinkModal({ link, onClose, onSaved }) {
    <div className={styles.redirectTemplateSearch}><label className={styles.templateSearch}><Search size={16}/><input aria-label="Search link templates" placeholder="Search link templates…" value={search} onChange={e=>{setSearch(e.target.value);setPage(1);}}/></label></div>
    {errorFor("design")&&<p className={styles.fieldError}>{errorFor("design")}</p>}
    <div className={styles.templateGrid}>
-    <button {...fieldProps("design")} type="button" className={form.templateId==="default"?styles.templateSelected:""} aria-pressed={form.templateId==="default"} onClick={()=>{setForm({...form,templateId:"default"});setTemplateName("Default design");}}><span><Check/></span><b>Default design</b><small>Fast and simple · All plans</small></button>
-    {!state.loading&&!state.error&&catalog.templates.map(t=><button type="button" disabled={!t.available} key={t._id} aria-pressed={form.templateId===t._id} className={form.templateId===t._id?styles.templateSelected:""} onClick={()=>{setForm({...form,templateId:t._id});setTemplateName(t.name);}}>{t.thumbnailUrl?<img src={t.thumbnailUrl} alt="" loading="lazy"/>:<span><Sparkles/></span>}<b>{t.name}</b><small>{[...new Set((t.allowedPlans||[]).map(p=>p.split("_")[0]))].map(p=>p.charAt(0).toUpperCase()+p.slice(1)).join(" · ")||"No eligible plans"}{!t.available?" · Upgrade required":""}</small></button>)}
+    <button {...fieldProps("design")} type="button" className={form.templateId==="default"?styles.templateSelected:""} aria-pressed={form.templateId==="default"} onClick={()=>{setForm({...form,templateId:"default"});setTemplateName("Default design");}}><span className={styles.defaultRedirectCover} style={{"--destination-color":designsForDestination(platform)[0]?.accent||"#7651ac","--destination-ink":platform==="snapchat"?"#171717":"white"}}><ExternalLink/><strong>Opening<br/>{destinationLabels[platform]||"your destination"}</strong><i/><em>Continue →</em></span><b>Default design</b><small>Fast and simple · All plans</small></button>
+    {!state.loading&&!state.error&&catalog.templates.map(t=><button type="button" aria-disabled={!t.available} key={t._id} aria-pressed={form.templateId===t._id} className={form.templateId===t._id?styles.templateSelected:""} onClick={()=>{if(!t.available){notify.warning("Upgrade to Pro to use this template");return;}setForm({...form,templateId:t._id});setTemplateName(t.name);}}>{t.thumbnailUrl?<img src={t.thumbnailUrl} alt="" loading="lazy"/>:<span><Sparkles/></span>}{!t.available&&<i className={styles.templateLock}><LockKeyhole size={13}/>Pro</i>}<b>{t.name}</b><small>{[...new Set((t.allowedPlans||[]).map(p=>p.split("_")[0]))].map(p=>p.charAt(0).toUpperCase()+p.slice(1)).join(" · ")||"No eligible plans"}{!t.available?" · Upgrade required":""}</small></button>)}
    </div>
    {state.loading&&<div className={styles.templateLoading}><LoadingState label="Loading designs"/></div>}
    {state.error&&<div className={styles.wizardHint}><p>{state.error}</p><Button variant="secondary" onClick={()=>setRetry(n=>n+1)}>Try again</Button></div>}
    {!state.loading&&!state.error&&!catalog.templates.length&&<p className={styles.wizardHint}>{search?"No designs match your search.":"No other designs are available yet."}</p>}
    {catalog.totalPages>1&&<div className={styles.templatePagination}><Button variant="secondary" disabled={page===1||state.loading} onClick={()=>setPage(p=>p-1)}>Previous</Button><span aria-live="polite">Page {page} of {catalog.totalPages}</span><Button variant="secondary" disabled={page>=catalog.totalPages||state.loading} onClick={()=>setPage(p=>p+1)}>Next page</Button></div>}
   </>}
-  {step===2&&<dl className={styles.wizardReview}><div><dt>Link name</dt><dd>{form.title}</dd></div><div><dt>Destination</dt><dd>{form.whatsappCode}</dd></div><div><dt>Type</dt><dd>{parsed.platform} · {parsed.linkType}</dd></div>{parsed.linkType==="dm"&&form.prefill&&<div><dt>Ready message</dt><dd>{form.prefill}</dd></div>}<div><dt>Design</dt><dd>{templateName}</dd></div></dl>}
+  {step===2&&<><div className={styles.redirectReviewHero}>{catalog.templates.find(t=>t._id===form.templateId)?.thumbnailUrl?<img src={catalog.templates.find(t=>t._id===form.templateId).thumbnailUrl} alt=""/>:<span><ExternalLink size={22}/></span>}<div><small>YOUR REDIRECT</small><strong>{form.title}</strong><p>{templateName} · {destinationLabels[platform]}</p></div><Check size={18}/></div><dl className={styles.wizardReview}><div><dt>Link name</dt><dd>{form.title}</dd></div><div><dt>Destination</dt><dd>{form.whatsappCode}</dd></div><div><dt>Type</dt><dd>{parsed.platform} · {parsed.linkType}</dd></div>{parsed.linkType==="dm"&&form.prefill&&<div><dt>Ready message</dt><dd>{form.prefill}</dd></div>}<div><dt>Design</dt><dd>{templateName}</dd></div></dl></>}
   </div>
  </Modal>;
 }

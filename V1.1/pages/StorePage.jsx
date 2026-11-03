@@ -36,7 +36,7 @@ export function StorePage({ data }) {
   const router = useRouter();
   const [publication, setPublication] = useState(null);
   useEffect(() => { let active = true; apiRequest("/v1-1/store-studio").then(result => active && setPublication(result)).catch(() => {}); return () => { active = false; }; }, []);
-  if (!data.store) return <div className={styles.page}><PageHeader eyebrow="STOREFRONT" title="Start selling online." description="Create a store where customers can browse your products and place orders—even while you’re offline."/><EmptyState icon="◇" title="Set up your storefront" description="Your Storefront is an independent product. You do not need a Landing Page or Redirect Link to use it." action={<Button onClick={() => router.push("/v1-1/store/setup")}>Set up storefront</Button>}/></div>;
+  if (!data.store) return <div className={styles.page}><PageHeader eyebrow="STOREFRONT" title="Start selling online." description="Create a store where customers can browse your products and place orders—even while you’re offline."/><EmptyState icon="◇" title="Your details are already saved" description="Choose a template and we’ll build your storefront using your account details." action={<Button onClick={() => router.push("/v1-1/store/setup")}>Choose a template</Button>}/></div>;
 
   const store = data.store, stats = data.storeStats || {};
   const pending = data.orders.filter(order => ["new", "pending"].includes(String(order.status).toLowerCase()));
@@ -44,7 +44,7 @@ export function StorePage({ data }) {
   const storePath = `/v1-1/s/${store.slug}`;
   const storeUrl = `https://mytiklink.com${storePath}`;
   const hasStudioStatus = publication && (typeof publication.published === "boolean" || typeof publication.enabled === "boolean");
-  const live = hasStudioStatus ? Boolean(publication.published && publication.enabled) : store.isPublished !== false;
+  const live = hasStudioStatus ? Boolean(publication.published && publication.enabled && publication.available!==false) : store.isPublished !== false;
   const recentOrders = [...data.orders].slice(0, 4);
   const copyStoreUrl = async () => { try { await navigator.clipboard.writeText(storeUrl); notify.success("Link copied"); } catch { notify.error("Couldn’t copy link"); } };
   const storeName = store.businessName || store.name || "Your storefront";

@@ -35,4 +35,4 @@ function StandardStoreRenderer({detail,design,store={},products=[],preview=false
  </div>;
 }
 
-export default function StoreRenderer(props){return props.design.theme === "atelier" ? <AtelierStore {...props}/> : <StandardStoreRenderer {...props}/>;}
+export default function StoreRenderer(props){return ["atelier","streetline","atelier-services","streetline-services","digital-library","launchpad","signal-studio","dataflow"].includes(props.design.theme) ? <AtelierStore {...props}/> : <StandardStoreRenderer {...props}/>;}

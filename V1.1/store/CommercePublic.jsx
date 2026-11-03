@@ -3,7 +3,7 @@ import {cartQuantityLimit} from "@/components/store/context/cartLimits.mjs";
 import {storeThemeStyle,productHref} from "./StoreTheme";
 import {storeImageSrcSet} from "./storeMedia";
 import { useEffect, useRef, useState } from "react";
-import { X, Minus, Plus, ShoppingCart, Copy, Check, CheckCircle2 } from "lucide-react";
+import { AlertCircle, X, Minus, Plus, ShoppingCart, Copy, Check, CheckCircle2 } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import { useCart } from "@/components/store/context/CartContext";
 import { apiRequest } from "../lib/api";
@@ -41,6 +41,9 @@ export function ProductDetails({
     [quantity, setQuantity] = useState(1),
     [variants, setVariants] = useState({}),
     [error, setError] = useState("");
+  const [attempted,setAttempted]=useState(false),[optionToast,setOptionToast]=useState(0);
+  const optionsRef=useRef(null);
+  useEffect(()=>{if(!optionToast)return;const timer=setTimeout(()=>setOptionToast(0),4000);return()=>clearTimeout(timer);},[optionToast]);
   const groups = product.variantGroups || [],
     row = product.inventory?.find((r) =>
       groups.every((g) => r.values?.[g.name] === variants[g.name]),
@@ -48,8 +51,9 @@ export function ProductDetails({
     stock = groups.length ? row?.stock || 0 : product.stock,
     ready = groups.every((g) => variants[g.name]);
   return (
-    <article className={`${css.productPage} ${quick?css.quickProduct:""}`} style={storeThemeStyle(design)}>
-      {!quick&&<nav className={css.productBreadcrumb} aria-label="Product breadcrumb"><a href={`/v1-1/s/${encodeURIComponent(store.slug)}`}>Shop</a><span>/</span><span>{product.name}</span></nav>}
+    <article className={`${css.productPage} ${["streetline","streetline-services"].includes(design?.theme)?css.streetline:""} ${quick?css.quickProduct:""}`} style={storeThemeStyle(design)}>
+      {optionToast>0&&<div className={css.optionToast} role="alert"><AlertCircle size={18}/><strong>Select an option, please.</strong><button type="button" onClick={()=>setOptionToast(0)} aria-label="Dismiss option reminder"><X size={15}/></button></div>}
+      {!quick&&<nav className={css.productBreadcrumb} aria-label="Product breadcrumb"><a href={`/v1-1/s/${encodeURIComponent(store.slug)}`}>{['atelier-services','streetline-services'].includes(design?.theme)?'Services':'Shop'}</a><span>/</span><span>{product.name}</span></nav>}
       <div className={css.product}>
         <div>
           {product.images?.[image] && (
@@ -88,9 +92,10 @@ export function ProductDetails({
             </del>
           )}
 
-          {groups.map((g) => quick?<fieldset className={css.optionGroup} key={g.name}><legend>{g.name}</legend><div>{g.options.map(v=><button type="button" key={v} aria-pressed={variants[g.name]===v} onClick={()=>setVariants(previous=>({...previous,[g.name]:v}))}>{v}</button>)}</div></fieldset>:(
+          <div ref={optionsRef}>{groups.map((g) => quick?<fieldset className={css.optionGroup} key={g.name} aria-invalid={attempted&&!variants[g.name]||undefined}><legend>{g.name}</legend><div>{g.options.map(v=><button type="button" key={v} aria-pressed={variants[g.name]===v} onClick={()=>setVariants(previous=>({...previous,[g.name]:v}))}>{v}</button>)}</div>{attempted&&!variants[g.name]&&<small className={css.optionError}>Please select {g.name}.</small>}</fieldset>:(
             <Field key={g.name} label={g.name}>
               <select
+                aria-invalid={attempted&&!variants[g.name]||undefined}
                 value={variants[g.name] || ""}
                 onChange={(e) =>
                   setVariants((v) => ({ ...v, [g.name]: e.target.value }))
@@ -101,8 +106,9 @@ export function ProductDetails({
                   <option key={v}>{v}</option>
                 ))}
               </select>
+              {attempted&&!variants[g.name]&&<small className={css.optionError}>Please select {g.name}.</small>}
             </Field>
-          ))}
+          ))}</div>
           {product.productType === "physical" && (
             <>
               <Field label="Quantity">
@@ -127,13 +133,16 @@ export function ProductDetails({
           )}
           {error && <p role="alert">{error}</p>}
           <Button
+            aria-disabled={!ready||undefined}
+            className={!ready?css.needsOptions:undefined}
             disabled={
-              !ready ||
-              (product.productType === "physical" &&
+              ready && (product.productType === "physical" &&
                 product.trackStock !== false &&
                 stock < 1)
             }
             onClick={() => {
+              if(!ready){setAttempted(true);setOptionToast(Date.now());optionsRef.current?.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'});return;}
+              setError('');
               if (
                 !Number.isInteger(quantity) ||
                 quantity < 1 ||
@@ -156,7 +165,7 @@ export function ProductDetails({
               onAdded();
             }}
           >
-            <ShoppingCart size={17} /> Add to cart
+            <ShoppingCart size={17} /> {['atelier-services','streetline-services'].includes(design?.theme)?'Add service to cart':'Add to cart'}
           </Button>
           {!quick&&product.description&&<details className={css.productDescription} open><summary>Product details</summary><p className={css.description}>{product.description}</p></details>}
         </div>
@@ -320,7 +329,7 @@ export function CommerceCheckout({ store, config, design, onClose, onEvent, onAc
   return (
     <Modal
       wide
-      className={`${css.publicModal} ${css.cartDrawer}`}
+      className={`${css.publicModal} ${["streetline","streetline-services"].includes(design?.theme)?css.streetline:""} ${css.cartDrawer}`}
       backdropClassName={css.drawerBackdrop}
       style={storeThemeStyle(design)}
       title={title}
@@ -659,4 +668,4 @@ export function ReviewForm({ slug, onClose }) {
   );
 }
 
-export function QuickProductDialog({product,store,design,onClose,onAdded}){return <Modal title="Choose options" backdropClassName={css.optionsBackdrop} className={`${css.publicModal} ${css.quickModal}`} style={storeThemeStyle(design)} onClose={onClose}><ProductDetails quick product={product} store={store} design={design} onAdded={onAdded}/></Modal>;}
+export function QuickProductDialog({product,store,design,onClose,onAdded}){return <Modal title="Choose options" backdropClassName={css.optionsBackdrop} className={`${css.publicModal} ${["streetline","streetline-services"].includes(design?.theme)?css.streetline:""} ${css.quickModal}`} style={storeThemeStyle(design)} onClose={onClose}><ProductDetails quick product={product} store={store} design={design} onAdded={onAdded}/></Modal>;}

@@ -1,3 +1,4 @@
+import {dashboardSuggestions} from "../lib/dashboardAccess";
 import StarterPagePreview from "../components/StarterPagePreview";
 import {useSubscription} from "../components/SubscriptionModal";
 import {canUseLandingPages} from "../lib/pageAccess";
@@ -50,7 +51,7 @@ export function HomePage({ user, data, onCreate }) {
   const isNewWorkspace = data.dashboard?.adaptive?.isNewWorkspace ?? recent.length === 0;
   const visibleRecent = showAllRecent ? recent : recent.slice(0, 4);
   const fallbackNextAction = getFallbackUpNext({ pendingOrders, drafts, store: data.store, products: data.products, links: data.links, publishedPages: published, routes: v11Routes });
-  const backendNextAction = lockedStarter ? {kind:"starter-upgrade",title:"Your landing page is ready",description:"Upgrade to the Pro plan and above to activate your page, share it with your audience and start connecting with customers.",action:"Upgrade to Pro",href:"/v1-1/pages"} : starter && publishing && starter.isActive!==false ? {kind:"share",title:"Your landing page is ready to share",description:"Copy your link and start sharing it with your audience.",action:"Get page link",href:"/v1-1/pages"} : data.dashboard?.nextBestAction;
+  const backendNextAction = !publishing ? {kind:"starter-upgrade",title:starter?"Your landing page is ready":"Ready for your next step?",description:"Upgrade to Pro or above to go live and start getting leads.",action:"Upgrade to Pro",href:"/v1-1/pages"} : starter && publishing && starter.isActive!==false ? {kind:"share",title:"Your landing page is ready to share",description:"Copy your link and start sharing it with your audience.",action:"Get page link",href:"/v1-1/pages"} : data.dashboard?.nextBestAction;
   const nextAction = decorateUpNext(backendNextAction?.kind !== "leads" || backendNextAction?.attentionVerified === true ? backendNextAction || fallbackNextAction : fallbackNextAction);
   useEffect(() => {
     const cookieValue = document.cookie.split("; ").find((entry) => entry.startsWith("mytiklink_v11_dismissed_up_next="))?.split("=")[1];
@@ -68,8 +69,8 @@ export function HomePage({ user, data, onCreate }) {
   };
   const remainingAttention = attention.filter((item) => item.kind !== nextAction.kind);
   const hasPixel=[user.tiktokPixelId,user.metaPixelId,user.snapchatPixelId,user.googlePixelId,user.openaiPixelId].some(Boolean);
-  const pixelSuggestion=hasPixel?[]:[decorateUpNext({kind:"tracking",title:"Connect your tracking pixel",description:"Connect TikTok, Meta or another platform to measure visits and conversions from your ads.",action:"Connect a pixel",href:"/v1-1/settings/tracking"})];
-  const upNextActions = [nextAction, ...pixelSuggestion, ...remainingAttention.map(({ tone: _tone, ...item }) => decorateUpNext({ ...item, description: item.copy, ctaLabel: item.action }))]
+  const pixelSuggestion=!publishing||hasPixel?[]:[decorateUpNext({kind:"tracking",title:"Connect your tracking pixel",description:"Connect TikTok, Meta or another platform to measure visits and conversions from your ads.",action:"Connect a pixel",href:"/v1-1/settings/tracking"})];
+  const upNextActions = dashboardSuggestions(user,starter,[nextAction, ...pixelSuggestion, ...(publishing?remainingAttention:[]).map(({ tone: _tone, ...item }) => decorateUpNext({ ...item, description: item.copy, ctaLabel: item.action }))]).map(decorateUpNext)
     .filter((item, index, items) => items.findIndex((candidate) => candidate.kind === item.kind) === index)
     .map((item) => ({ ...item, key: `${item.kind}|${item.title}` }))
     .filter((item) => !dismissedUpNext.some((dismissal) => dismissal.key === item.key && dismissal.expiresAt > Date.now()));
@@ -79,7 +80,7 @@ export function HomePage({ user, data, onCreate }) {
   return <div className={`${styles.page} ${styles.dashboardPage}`}>
     <section className={`${styles.homeHero} ${!isNewWorkspace ? styles.homeHeroReturning : ""}`}><div className={styles.workspaceKicker}><span className={styles.eyebrow}>Welcome back{firstName ? `, ${firstName}` : ""}</span><PlanBadge plan={plan}/></div></section>
     <SubscriptionAlert user={user} payments={data.payments}/>
-    {upNextActions.length > 0 && <section className={styles.upNextRail} aria-label="Up next suggestions">{upNextActions.map((action) => <div className={styles.upNextSlide} key={action.key}><UpNext action={action} onDismiss={() => dismissUpNext(action, action.key)} onSecondary={action.kind==="starter-upgrade"?()=>setStarterPreview(starter):undefined} onAction={() => action.kind==="starter-upgrade"?openSubscription({mode:"upgrade",preselected:"pro"}):action.kind === "create" ? onCreate("chooser") : router.push(action.href)}/></div>)}</section>}
+    {upNextActions.length > 0 && <section className={styles.upNextRail} aria-label="Up next suggestions">{upNextActions.map((action) => <div className={styles.upNextSlide} key={action.key}><UpNext page={action.kind==="starter-upgrade"?starter:null} action={action} onDismiss={() => dismissUpNext(action, action.key)} onSecondary={action.kind==="starter-upgrade"&&starter?()=>setStarterPreview(starter):undefined} onAction={() => action.kind==="starter-upgrade"?openSubscription({mode:"upgrade",preselected:"pro"}):action.kind === "create" ? onCreate("chooser") : router.push(action.href)}/></div>)}</section>}
     {isNewWorkspace ? <>{createSection}{isFree && <OnboardingPanel user={user} data={data} chooseFeature={chooseFeature}/>}</> : <>{recentSection}{createSection}{isFree && <OnboardingPanel user={user} data={data} chooseFeature={chooseFeature}/>}</>}
     {!recent.length && !isNewWorkspace && !isFree && <EmptyState title="Your workspace is ready" description="Create your first customer journey." action={<Button onClick={() => onCreate("page")}>Create a landing page</Button>}/>} 
     {starterPreview&&<StarterPagePreview page={starterPreview} onClose={()=>setStarterPreview(null)} onUpgrade={()=>{setStarterPreview(null);openSubscription({mode:"upgrade",preselected:"pro"});}}/>}

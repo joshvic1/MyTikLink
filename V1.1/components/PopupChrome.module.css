@@ -29,3 +29,9 @@
 .surface[data-popup-tone="peach"]{--popup-start:#FFE0C8;--popup-mid:#FFF0D8;--popup-end:#FFF9EB;--popup-accent:#AE441A;--popup-accent-end:#C45A22;--popup-ink:#612D13;--popup-muted:#9A542F}
 .surface[data-popup-tone="teal"]{--popup-start:#CFF7EB;--popup-mid:#E5FBF4;--popup-end:#E8FAFF;--popup-accent:#087B68;--popup-accent-end:#11836F;--popup-ink:#075C50;--popup-muted:#28786D}
 .surface[data-popup-tone="pink"]{--popup-start:#FFD6EA;--popup-mid:#FFF0F8;--popup-end:#F6E8FF;--popup-accent:#B52472;--popup-accent-end:#C13580;--popup-ink:#751B4E;--popup-muted:#A9507B}
+
+.surface[data-popup-tone="tiktok"]{--popup-start:#17151e;--popup-mid:#252732;--popup-end:#163d40;--popup-accent:#15151c;--popup-accent-end:#34313e;--popup-ink:#fff;--popup-muted:#bcecef}.surface[data-popup-tone="snapchat"]{--popup-start:#fffc00;--popup-mid:#fffd89;--popup-end:#fffecb;--popup-accent:#202020;--popup-accent-end:#373737;--popup-ink:#171717;--popup-muted:#555128}.surface[data-popup-tone="tiktok"] header a{color:#a8f6f2!important}
+
+.surface[data-popup-tone="snapchat"] header a{color:#171717!important}.surface[data-popup-tone="blue"] header a{color:#1769df!important}.surface header img{filter:none!important;opacity:1!important}
+
+.surface[data-popup-tone="google"]{--popup-start:#dceaff;--popup-mid:#fff3d2;--popup-end:#e3f6eb;--popup-accent:#2769d8;--popup-accent-end:#4285f4;--popup-ink:#174d94;--popup-muted:#557696}
