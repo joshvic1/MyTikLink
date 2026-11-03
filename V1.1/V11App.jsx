@@ -73,7 +73,9 @@ function V11Content() {
   const path = router.asPath.split("?")[0].replace(/\/$/, "");
   const authRoute = ["/v1-1/login", "/v1-1/register", "/v1-1/forgot-password", "/v1-1/reset-password"].includes(path);
   const publicRoute = authRoute || path === "/v1-1/admin/redirect-links" || /^\/v1-1\/(p|s|r)\//.test(path);
-  const session = useV11Session({ required: !publicRoute, enabled: !authRoute });
+  // Catch-all routes initially expose /v1-1/[[...slug]]. Wait for the real URL
+  // before checking authentication, and never load an owner session for visitors.
+  const session = useV11Session({ required: !publicRoute, enabled: router.isReady && !publicRoute });
   const onboarding = useOnboarding(session.authenticated && !publicRoute);
   const isPagesList = path.endsWith("/pages") || path.endsWith("/pages/create");
   const isLinksList = path.endsWith("/links") || path.endsWith("/analytics") || path.endsWith("/insights");
