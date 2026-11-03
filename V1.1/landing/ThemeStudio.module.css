@@ -50,13 +50,15 @@
 
 .editSheet .editorDone{display:inline-flex;align-items:center;justify-content:center;gap:5px;min-height:28px;height:28px;padding:4px 10px;font-size:11px;border-radius:8px;line-height:1}.editSheet .editorDone svg{flex:none}
 
-/* Editor popup: compact header, action flush to the available right edge. */
-.studio.editSheet>header{display:flex!important;align-items:center!important;justify-content:space-between!important;padding:12px 14px!important;gap:10px!important}
+/* Editor popup: comfortable header, action flush to the available right edge. */
+.studio.editSheet>header{display:flex!important;align-items:center!important;justify-content:space-between!important;padding:22px 14px!important;min-height:76px;gap:10px!important}
 .studio.editSheet>header>div:first-child{flex:1;min-width:0}
 .studio.editSheet>header>div:last-child{flex:0 0 auto;margin-left:auto}
 .studio.editSheet>header h2{font-size:16px!important;line-height:1.3!important}
 .studio.editSheet>header .editorDone{height:29px!important;min-height:29px!important;padding:5px 10px!important;font-size:11px!important}
-.editSheet .controls summary{padding-top:10px;padding-bottom:10px;font-size:11px}
+.editSheet .controls summary{min-height:58px;padding-top:18px;padding-bottom:18px;font-size:11px}
+.editSheet .controls details{margin-bottom:14px}
+.editSheet .controls details[open]{padding-bottom:12px}
 .editSheet .controls label{margin:9px 0;font-size:11px}
 .editSheet .controls input:not([type=checkbox]):not([type=color]),.editSheet .controls select{min-height:38px;padding:7px 9px}
 .editSheet .controls textarea{min-height:70px;padding:8px 9px;line-height:1.4}

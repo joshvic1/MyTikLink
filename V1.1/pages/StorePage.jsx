@@ -43,7 +43,7 @@ export function StorePage({ data,user }) {
   const upgrade=()=>openSubscription({mode:"upgrade",preselected:"pro"});
   const [publication, setPublication] = useState(null);
   useEffect(() => { let active = true; apiRequest("/v1-1/store-studio").then(result => active && setPublication(result)).catch(() => {}); return () => { active = false; }; }, [data.products]);
-  if (!data.store) return <div className={styles.page}><PageHeader eyebrow="STOREFRONT" title="Start selling online." description="Create a store where customers can browse your products and place orders—even while you’re offline."/><EmptyState icon="◇" title="Your details are already saved" description="Choose a template and we’ll build your storefront using your account details." action={<Button onClick={() => router.push("/v1-1/store/setup")}>Choose a template</Button>}/></div>;
+  if (!data.store) return <div className={styles.page}><PageHeader title="Storefront"/><section className={ready.createCard}><span className={ready.createIcon}><ShoppingBag size={26}/></span><h2>Create an online store</h2><p>Choose a template, and we’ll build your storefront where you can upload products and start {user?.onboarding?.businessFocus==="physical_products"?"getting orders":"making sales"}.</p><Button onClick={()=>router.push("/v1-1/store/setup")}>Select a template <ArrowRight size={16}/></Button></section></div>;
 
   const store = data.store, stats = data.storeStats || {};
   const pending = data.orders.filter(order => ["new", "pending"].includes(String(order.status).toLowerCase()));
@@ -54,11 +54,13 @@ export function StorePage({ data,user }) {
   const live = hasStudioStatus ? Boolean(publication.published && publication.enabled && publication.available!==false) : store.isPublished !== false;
   const recentOrders = [...data.orders].slice(0, 4);
   const copyStoreUrl = async () => { try { await navigator.clipboard.writeText(storeUrl); notify.success("Link copied"); } catch { notify.error("Couldn’t copy link"); } };
+  const sellsPhysicalProducts = user?.onboarding?.businessFocus === "physical_products";
+  const salesOutcome = sellsPhysicalProducts ? "getting orders" : "making sales";
   const storeName = store.businessName || store.name || "Your storefront";
 
   return <div className={`${styles.page} ${styles.storefrontOverview}`}>
     <StorefrontHeader name={storeName}/>
-    {!canUseLandingPages(user)?<section className={ready.readyCard}><div className={ready.thumb}><StoreReadyThumbnail detail={publication} store={store}/></div><div><Badge tone="warning">Preview only</Badge><h2>Your storefront is ready</h2><p>Add up to two products and try your store. Upgrade to Pro to publish it and start getting orders.</p><div className={ready.actions}><Button variant="secondary" onClick={()=>setPreview(true)}>Preview your store</Button><Button onClick={upgrade}>Upgrade to Pro</Button></div></div></section>:<StoreStatusCard live={live} url={storeUrl} onCopy={copyStoreUrl} onDesign={() => router.push(v11Routes.storeDesign)} onVisit={() => window.open(storePath, "_blank")}/>}
+    {!canUseLandingPages(user)?<section className={ready.readyCard}><div className={ready.thumb}><StoreReadyThumbnail detail={publication} store={store}/></div><div><Badge tone="warning">Start {salesOutcome}</Badge><h2>Your storefront is ready</h2><p>Upgrade to Pro to publish your store, add products and start {salesOutcome}.</p><div className={ready.actions}><Button variant="secondary" onClick={()=>setPreview(true)}>Preview your store</Button><Button onClick={upgrade}>Upgrade to Pro</Button></div></div></section>:<StoreStatusCard live={live} url={storeUrl} onCopy={copyStoreUrl} onDesign={() => router.push(v11Routes.storeDesign)} onVisit={() => window.open(storePath, "_blank")}/>}
     {preview&&<StoreReadyPreview detail={publication} onClose={()=>setPreview(false)} onUpgrade={()=>{setPreview(false);upgrade();}}/>}
     <section className={styles.storeOverviewMetrics}>
       <article><span><WalletCards/></span><div><small>Confirmed sales</small><b>₦{Number(stats.totalRevenue || stats.orderValue || 0).toLocaleString()}</b></div></article>

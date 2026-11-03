@@ -1,6 +1,6 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import picker from "./PageTemplateModal.module.css";
-import { Notice } from "./Notifications";
+import { Notice, notify } from "./Notifications";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { Button, Modal } from "./UI";
@@ -24,6 +24,8 @@ export function PageTemplateModal({ onClose, user }) {
  const router = useRouter();
  const reducedMotion=useReducedMotion();
  const resultsHeading=useRef(null);
+ const questionRef=useRef(null);
+ const [questionError,setQuestionError]=useState("");
  const [registry,setRegistry]=useState([]);
  useEffect(()=>{v11Api.onboardingCategories().then(result=>setRegistry(result.categories || [])).catch(()=>{});},[]);
  const pilotTemplates=useMemo(()=>allThemes.map(theme=>({...theme,_id:`phase-one:${theme.id}`,name:theme.title,description:theme.copy,category:registry.find(c=>c.id===theme.categoryIds[0])?.label || theme.tags[0],pilot:true})),[registry]);
@@ -40,13 +42,14 @@ export function PageTemplateModal({ onClose, user }) {
  const choose=value=>{setSelected(value);setToast(false);setPilotNotice("");};
  const filter=(setter,value)=>{setter(value);setPilotNotice("");if(!["scratch","ai"].includes(selected))setSelected("");};
  const proceed=async()=>{
+  if(!form){const message="Please choose Yes or No: do you want to collect user details on your landing page?";setQuestionError(message);notify.error(message);requestAnimationFrame(()=>{questionRef.current?.scrollIntoView({block:"center",behavior:reducedMotion?"instant":"smooth"});questionRef.current?.focus({preventScroll:true});});return;}
   if(!selected){clearTimeout(timer.current);setToast(true);timer.current=setTimeout(()=>setToast(false),4500);return;}
   if(selected==="ai"){setAiOpen(true);return;}
   if(selectedPilot){setNavigating(true);try{await router.push(`/v1-1/pages/builder?themeId=${encodeURIComponent(selectedPilot.id)}`);}catch{setError("Could not open theme editor.");}finally{setNavigating(false);}return;}
   setNavigating(true);try{await router.push(selected==="scratch"?"/v1-1/pages/builder":`/v1-1/pages/editor?templateId=${encodeURIComponent(selected)}`);}catch{setError("Could not open the editor. Please try again.");}finally{setNavigating(false);}
  };
  if(aiOpen)return <AIPageBuilderModal open variant="v11" token={getToken()} builderPath="/v1-1/pages/builder" onClose={()=>setAiOpen(false)}/>;
- return <Modal tone="lime" wide className={styles.templatePicker} title="Select a Page template" description="Choose a design and make it yours." onClose={onClose} footer={<><Button variant="secondary" onClick={onClose}>Cancel</Button><Button disabled={navigating || !form} onClick={proceed}>{navigating?"Opening…":selected==="scratch"?"Continue (Build from scratch)":selected==="ai"?"Continue (Build with AI)":selectedPilot?"Use theme":"Use this template"}</Button></>}>
+ return <Modal tone="lime" wide className={styles.templatePicker} title="Select a Page template" description="Choose a design and make it yours." onClose={onClose} footer={<><Button variant="secondary" onClick={onClose}>Cancel</Button><Button disabled={navigating} onClick={proceed}>{navigating?"Opening…":selected==="scratch"?"Continue (Build from scratch)":selected==="ai"?"Continue (Build with AI)":selectedPilot?"Use theme":"Use this template"}</Button></>}>
 
  <div className={styles.templateTools}>
   <div className={styles.templateSearch}><Search size={16}/><input aria-label="Search templates" placeholder="Search templates…" value={search} onChange={e=>filter(setSearch,e.target.value)}/><button type="button" className={styles.templateFilterToggle} aria-label="Filter templates" aria-expanded={filtersOpen} aria-controls="page-template-filters" onClick={()=>setFiltersOpen(value=>!value)}><SlidersHorizontal size={17}/>{(category!=="all")&&<span/>}</button></div>
@@ -56,11 +59,12 @@ export function PageTemplateModal({ onClose, user }) {
   </div>}
  </div>
  <AnimatePresence mode="wait" initial={false}>
- {!form ? <motion.section key="question" className={picker.question} initial={{opacity:0,y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-12}} transition={{duration:reducedMotion?0:0.2}}>
+ {!form ? <motion.section key="question" ref={questionRef} tabIndex={-1} aria-describedby={questionError?"collect-details-error":undefined} className={picker.question} initial={{opacity:0,y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-12}} transition={{duration:reducedMotion?0:0.2}}>
 
  <h3>Do you want to collect user details on your landing page?</h3>
  <p>(Such as name, WhatsApp number, email, etc.)</p>
- <fieldset><legend className={picker.srOnly}>Collect user details?</legend>{["yes","no"].map(answer=><label key={answer}><input type="radio" name="collect-details" value={answer} checked={form===answer} onChange={()=>{setSelected("");setForm(answer);setFiltersOpen(false);}}/><span>{answer==="yes"?"Yes":"No"}</span></label>)}</fieldset>
+ <fieldset><legend className={picker.srOnly}>Collect user details?</legend>{["yes","no"].map(answer=><label key={answer}><input type="radio" name="collect-details" value={answer} checked={form===answer} onChange={()=>{setSelected("");setForm(answer);setQuestionError("");setFiltersOpen(false);}}/><span>{answer==="yes"?"Yes":"No"}</span></label>)}</fieldset>
+ {questionError&&<p id="collect-details-error" className={picker.questionError} role="alert">{questionError}</p>}
  </motion.section> : <motion.section key="templates" initial={{opacity:0,y:12}} animate={{opacity:1,y:0}} exit={{opacity:0,y:8}} transition={{duration:reducedMotion?0:0.22}} onAnimationComplete={()=>resultsHeading.current?.focus({preventScroll:true})}>
  <div className={picker.summary}><span ref={resultsHeading} tabIndex={-1}>{form==="yes"?"Templates with a form":"Templates without a form"}</span><button type="button" onClick={()=>{setForm(null);setSelected("");setToast(false);}}>Change answer</button></div>
  <div className={styles.templateBuildOptions}>{[{id:"scratch",title:"Build from scratch",copy:"Start with a blank canvas",Icon:Plus},{id:"ai",title:"Build with AI",copy:"Let AI build for you",Icon:Sparkles}].map(({id,title,copy,Icon})=><button type="button" key={id} aria-pressed={selected===id} className={`${styles.templateBuildOption} ${selected===id?styles.pickerSelected:""}`} onClick={()=>choose(id)}><span><Icon/></span><div><b>{title}</b><small>{copy}</small></div>{selected===id&&<span className={styles.buildSelectionMark}><Check size={14}/></span>}</button>)}</div>
