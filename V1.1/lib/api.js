@@ -39,7 +39,9 @@ export async function apiRequest(path, options = {}) {
       : await response.text().catch(() => "");
 
     if (!response.ok) {
-      const message = typeof data === "object" ? data.message || data.error : data;
+      const rawMessage = data && typeof data === "object" ? data.message || data.error : data;
+      const message = typeof rawMessage === "string" && !/<(?:!doctype|html|head|body|pre|title)\b/i.test(rawMessage) && !contentType.includes("text/html")
+        ? rawMessage : "We could not complete your request. Please try again in a moment.";
       throw new ApiError(message || "Something went wrong. Please try again.", response.status, data);
     }
     return data;
