@@ -34,3 +34,5 @@
 .back:hover{transform:translateX(-2px)}
 .back:focus-visible{outline:2px solid var(--auth-accent);outline-offset:4px;border-radius:4px}
 @media(prefers-reduced-motion:reduce){.card .back{transition:none}.back:hover{transform:none}}
+
+.screen .preference{display:flex;align-items:flex-start;gap:8px;font-family:var(--font-v11-body),Inter,Arial,sans-serif!important;font-size:10px!important;font-weight:400!important;line-height:1.5!important;color:#6d6778;letter-spacing:0;text-align:left;cursor:pointer}.screen .preference span,.screen .preference a{font-family:inherit!important;font-size:inherit!important;font-weight:inherit!important;line-height:inherit!important}.screen .preference a{color:var(--auth-accent);text-decoration:underline;text-underline-offset:2px}.screen .preference input{margin:1px 0 0;accent-color:var(--auth-accent)}
