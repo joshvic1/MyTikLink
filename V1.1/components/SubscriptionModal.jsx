@@ -1,3 +1,4 @@
+import {apiRequest} from "../lib/api";
 import {planType,planCycle,isCurrentSubscription,checkoutPricing} from "../lib/subscriptionSelection";
 import { notify } from "./Notifications";
 import { createContext, useContext, useMemo, useState } from "react";
@@ -45,6 +46,6 @@ export function SubscriptionModal({ state, user, refreshSession, close, update }
 
 export function SubscriptionProvider({ user, refreshSession, children }) {
   const [state, setState] = useState(null);
-  const value = useMemo(() => ({ openSubscription: (options = {}) => setState({ mode: "upgrade", ...options }), closeSubscription: () => setState(null) }), []);
+  const value = useMemo(() => ({ openSubscription: (options = {}) => {const path=window.location.pathname;const feature=options.feature||(path.includes('tracking')?'tracking':path.includes('/store/products')?'product':path.includes('/store')?'storefront':path.includes('/pages')?'landing_page':path.includes('/links')?'redirect_link':null);if(feature)apiRequest('/email/intent',{method:'POST',body:JSON.stringify({feature})}).catch(()=>{});setState({ mode: "upgrade", ...options });}, closeSubscription: () => setState(null) }), []);
   return <SubscriptionContext.Provider value={value}>{children}{state && <SubscriptionModal state={state} user={user} refreshSession={refreshSession} close={() => setState(null)} update={setState}/>}</SubscriptionContext.Provider>;
 }

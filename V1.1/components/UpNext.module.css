@@ -16,3 +16,18 @@
 @media(prefers-reduced-motion:reduce){.card.card,.card.card button{transition:none!important}.card.card:hover,.card.card button:hover{transform:none!important}}
 
 .card.card:hover>div:first-child>img{transform:scale(1.16)}
+
+/* Miniatures must not set the row height: match the compact action cards. */
+.previewMiniature{position:absolute;inset:0;display:grid;place-items:center;z-index:2;pointer-events:none}
+.previewMiniature>div{width:144px!important;max-width:none!important;margin:0!important;transform:rotate(-4deg) scale(.78)!important;transform-origin:center}
+.card.card>div:last-child{padding:12px!important}
+.card.card h2{margin-top:6px!important;margin-bottom:5px!important}
+.card.card p{margin-top:0!important;margin-bottom:9px!important;line-height:1.45!important}
+.card.card>div:last-child>span{margin-bottom:0}
+.card.card>div:last-child>div{flex-wrap:nowrap;gap:5px}
+.card.card>div:last-child>div>button{padding:7px 5px!important}
+@media(max-width:420px){
+ .card.card>div:last-child{padding:11px 9px!important}
+ .previewMiniature>div{transform:rotate(-4deg) scale(.65)!important}
+ .card.card>div:last-child>div>button svg{width:10px;height:10px}
+}

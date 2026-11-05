@@ -19,18 +19,23 @@ const visuals = {
 };
 
 export const upNextStateCatalog = Object.freeze(visuals);
-export const UP_NEXT_DISMISSAL_TTL = Object.freeze({ attention: 24 * 60 * 60 * 1000, suggestion: 30 * 24 * 60 * 60 * 1000 });
+export const UP_NEXT_DISMISSAL_TTL = Object.freeze({ upgrade: 24 * 60 * 60 * 1000, attention: 24 * 60 * 60 * 1000, suggestion: 30 * 24 * 60 * 60 * 1000 });
 
 export function normalizeUpNextDismissals(raw, now = Date.now()) {
   if (!raw) return [];
   let parsed;
   try { parsed = JSON.parse(raw); } catch { parsed = []; }
   if (!Array.isArray(parsed)) return [];
-  return parsed.filter((item) => item && typeof item === "object" && typeof item.key === "string" && Number(item.expiresAt) > now);
+  return parsed.filter(item => item && typeof item === "object" && typeof item.key === "string").map(item => {
+    if (item.dismissalType !== "upgrade" && !/upgrade/i.test(item.key)) return item;
+    const start = Number.isFinite(item.dismissedAt) ? item.dismissedAt : Number(item.expiresAt) - UP_NEXT_DISMISSAL_TTL.suggestion;
+    return {...item, dismissalType:"upgrade", expiresAt:Math.min(Number(item.expiresAt), start + UP_NEXT_DISMISSAL_TTL.upgrade)};
+  }).filter(item => Number(item.expiresAt) > now);
 }
 
 export function createUpNextDismissal(action, key, now = Date.now()) {
-  const dismissalType = action?.dismissalType === "attention" ? "attention" : "suggestion";
+  const upgrade = action?.dismissalType === "upgrade" || /upgrade/i.test([action?.kind, action?.action, action?.ctaLabel, key].filter(Boolean).join(" "));
+  const dismissalType = upgrade ? "upgrade" : action?.dismissalType === "attention" ? "attention" : "suggestion";
   return { key, dismissalType, dismissedAt: now, expiresAt: now + UP_NEXT_DISMISSAL_TTL[dismissalType] };
 }
 

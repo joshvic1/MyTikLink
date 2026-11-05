@@ -37,3 +37,17 @@ test("a changed recommendation key is not hidden by an older dismissal", () => {
   );
   assert.equal(dismissals.some((item) => item.key === "orders:3"), false);
 });
+
+test("all upgrade suggestions expire after 24 hours",()=>{
+ for(const kind of ['starter-upgrade','store-upgrade','redirect-upgrade']){
+ const record=createUpNextDismissal(decorateUpNext({kind}),kind+'|Ready',1000);
+ assert.equal(record.expiresAt,1000+86400000);
+ assert.equal(record.dismissalType,'upgrade');
+ }
+ assert.equal(createUpNextDismissal({kind:'future-plan',ctaLabel:'Upgrade to Pro'},'future',1000).expiresAt,86401000);
+});
+test("old upgrade dismissals are shortened without changing other suggestions",()=>{
+ const records=[{key:'starter-upgrade|Ready',dismissedAt:1000,expiresAt:1000+30*86400000,dismissalType:'suggestion'},{key:'product|Add product',dismissedAt:1000,expiresAt:1000+30*86400000,dismissalType:'suggestion'}];
+ assert.equal(normalizeUpNextDismissals(JSON.stringify(records),2000)[0].expiresAt,86401000);
+ assert.deepEqual(normalizeUpNextDismissals(JSON.stringify(records),86401000),[records[1]]);
+});

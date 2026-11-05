@@ -1,3 +1,4 @@
+import PaletteInput from "../components/PaletteInput";
 import { useEffect, useState } from "react";
 import {
   ArrowUp,
@@ -237,7 +238,7 @@ export default function SectionEditor({ design, onChange, products = [] }) {
                   </Field>
                 ))}
                 <Field label="Hero text colour">
-                  <input
+                  <PaletteInput
                     type="color"
                     value={settings.textColour || "#ffffff"}
                     onChange={(e) => set("textColour", e.target.value)}

@@ -1,3 +1,5 @@
+import EmailPreferences from "../components/EmailPreferences";
+import {ColorPicker} from "../landing/EditorInputs";
 import {PasswordDialog} from "./SecurityPage";
 import {WhatsAppField,CategoryPicker} from "./SettingsPickers";
 import {isValidPhoneNumber,parsePhoneNumberFromString} from "libphonenumber-js";
@@ -87,11 +89,12 @@ export function AccountPage({ user, refreshSession }) {
     setActiveSection(id);
     document.getElementById(`settings-${id}`)?.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
   };
+  useEffect(()=>{const section=router.query.section;if(!router.isReady||typeof section!=="string"||!['profile','plan','business','security','branding','integrations','email'].includes(section))return;const frame=requestAnimationFrame(()=>jump(section));return()=>cancelAnimationFrame(frame);},[router.isReady,router.query.section]);
   const saveButton=(scope)=><Button className={skin.primary} disabled={saving||generating||workspaceLoading||!workspace} onClick={()=>save(scope)}>{saving?'Saving…':'Save changes'}</Button>;
   const heading=(Icon,title,copy,tone='purple')=><header className={skin.cardHeading} data-tone={tone}><span className={skin.cardIcon} data-tone={tone}><Icon size={23}/></span><div><h2>{title}</h2><p>{copy}</p></div></header>;
   return <div className={`${styles.page} ${skin.settings}`}>
     <PageHeader eyebrow="YOUR ACCOUNT" title="Account settings"/>
-    <nav className={skin.tabs} aria-label="Account settings sections">{[['Profile','profile'],['Billing and Payments','plan'],['Business','business'],['Passwords','security'],['Branding','branding'],['Integrations','integrations']].map(([label,id])=><button key={id} aria-current={activeSection===id?'location':undefined} onClick={()=>jump(id)}><span>{label}</span></button>)}</nav>
+    <nav className={skin.tabs} aria-label="Account settings sections">{[['Profile','profile'],['Billing and Payments','plan'],['Business','business'],['Passwords','security'],['Branding','branding'],['Integrations','integrations'],['Email','email']].map(([label,id])=><button key={id} aria-current={activeSection===id?'location':undefined} onClick={()=>jump(id)}><span>{label}</span></button>)}</nav>
     <div className={skin.columns}>
       <div className={skin.column}>
         <section id="settings-profile" className={skin.card}>
@@ -118,7 +121,7 @@ export function AccountPage({ user, refreshSession }) {
         </section>
         <section id="settings-branding" className={skin.card}>
           {heading(Palette,'Appearance & Branding','Customize your brand color.','pink')}
-          <p className={skin.label}>Brand color</p><div className={skin.swatches}>{['#6336ff','#ff628f','#388dff','#25c5b4','#ffa640'].map(color=><button key={color} style={{background:color}} aria-label={`Use brand color ${color}`} aria-pressed={workspaceDraft.preferredColor?.toLowerCase()===color} disabled={!workspace||saving} onClick={()=>setWorkspaceDraft({...workspaceDraft,preferredColor:color})}>{workspaceDraft.preferredColor?.toLowerCase()===color&&<Check size={17}/>}</button>)}<label className={skin.customColor}><Plus size={19}/><input type="color" aria-label="Choose a custom brand color" disabled={!workspace||saving} value={workspaceDraft.preferredColor||'#6336ff'} onChange={e=>setWorkspaceDraft({...workspaceDraft,preferredColor:e.target.value})}/></label></div>
+          <ColorPicker label="Brand color" value={workspaceDraft.preferredColor||'#6336ff'} disabled={!workspace||saving} onChange={color=>setWorkspaceDraft({...workspaceDraft,preferredColor:color})}/>
           <div className={skin.colorValue}><span style={{background:workspaceDraft.preferredColor||'#6336ff'}}/>{workspaceDraft.preferredColor||'#6336ff'}</div>{saveButton('branding')}
         </section>
       </div>
@@ -133,6 +136,7 @@ export function AccountPage({ user, refreshSession }) {
           {heading(Link2,'Integrations','Connect your account with other services.','teal')}
           <button className={skin.actionRow} onClick={()=>setDialog("integrations")}><span className={skin.rowIcon}><Link2 size={20}/></span><span><b>Connected services</b><small>Manage your account integrations.</small></span><ChevronRight size={18}/></button>
         </section>
+        <section id="settings-email" className={skin.card}>{heading(Sparkles,'Email preferences','Personalized guidance for your business.','teal')}<EmailPreferences/></section>
       </div>
     </div>
     {categoryOpen&&<CategoryPicker selected={workspaceDraft.categoryId} onClose={()=>setCategoryOpen(false)} onSelect={c=>setWorkspaceDraft(current=>({...current,categoryId:c.id,categoryLabel:c.label,customCategory:""}))}/>}

@@ -50,7 +50,7 @@ export function useWorkspaceData(enabled = true) {
       pages,
       links: linksResult.status === "fulfilled" ? unwrapCollection(linksResult.value, "links") : [],
       store: storeResult.status === "fulfilled" ? storeResult.value : null,
-      products: productsResult.status === "fulfilled" ? unwrapCollection(productsResult.value, "products") : [],
+      products: productsResult.status === "fulfilled" ? unwrapCollection(productsResult.value, "products").filter(p=>!p.isDemo) : [],
       orders: ordersResult.status === "fulfilled" ? unwrapCollection(ordersResult.value, "orders") : [],
       clickHistory: historyResult.status === "fulfilled" ? unwrapCollection(historyResult.value, "history") : [],
       payments: paymentsResult.status === "fulfilled" ? unwrapCollection(paymentsResult.value, "payments") : [],

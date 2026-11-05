@@ -5,6 +5,7 @@ import { activeRoute, navigation, v11Routes } from "../config/routes";
 import { Button, IconButton, Modal } from "./UI";
 import {
   UsersRound,
+  Sparkles,
   Plug,
   BarChart3,
   BookOpen,
@@ -31,6 +32,7 @@ import {
   Target,
   X,
 } from "lucide-react";
+import { useSubscription } from "./SubscriptionModal";
 import { PlanBadge } from "./PlanBadge";
 import { FaWhatsapp } from "react-icons/fa";
 import styles from "../styles/v11.module.css";
@@ -251,8 +253,14 @@ const helpChannels = [
     soon: true,
   },
 ];
-export function Shell({ user, onLogout, children, onCreate, onAddProduct, hasStore = false }) {
+export function Shell({ user, onLogout, children, onCreate, onAddProduct, hasStore = false, payments = [] }) {
   const router = useRouter();
+  const { openSubscription } = useSubscription();
+  const isFreePlan = String(user?.plan || "free").toLowerCase().startsWith("free");
+  const expiredDate = Boolean(user?.planExpiry && new Date(user.planExpiry).getTime() <= Date.now());
+  const hasPaidBefore = payments.some(payment => String(payment.status || "").toLowerCase() === "successful" && /^(pro|standard)(_|$)/i.test(payment.plan || ""));
+  const expiredPlan = expiredDate || (isFreePlan && hasPaidBefore);
+  const showUpgrade = Boolean(user) && (isFreePlan || expiredPlan);
   const current = activeRoute(router.asPath);
   const activePath = router.asPath.split("?")[0].replace(/\/+$/, "");
   const isStoreManagement =
@@ -410,12 +418,15 @@ export function Shell({ user, onLogout, children, onCreate, onAddProduct, hasSto
             {onAddProduct && (activePath === v11Routes.store || activePath === v11Routes.products || activePath.startsWith(`${v11Routes.products}/`)) && (
               <Button
                 variant="secondary"
-                className={styles.topbarCreate}
+                className={`${styles.topbarCreate} ${showUpgrade ? styles.topbarProductCompact : ""}`}
+                aria-label="Add product"
+                title="Add product"
                 onClick={onAddProduct}
               >
-                <PackagePlus /> Add product
+                <PackagePlus /><span>Add product</span>
               </Button>
             )}
+            {showUpgrade && <Button className={`${styles.topbarUpgrade} ${expiredPlan ? styles.topbarUpgradeExpired : ""}`} onClick={() => openSubscription({ mode: "upgrade", preselected: "pro" })}><Sparkles aria-hidden="true" />Upgrade</Button>}
             <Button className={styles.topbarCreate} onClick={onCreate}>
               <Plus /> Create
             </Button>

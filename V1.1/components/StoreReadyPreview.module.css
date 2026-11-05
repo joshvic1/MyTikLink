@@ -10,3 +10,14 @@
 @media(max-width:480px){.readyCard{grid-template-columns:126px minmax(0,1fr);gap:12px;padding:16px 12px}.readyCard .thumb{width:126px}.readyCard .thumb .frame{transform:rotate(-4deg) scale(.82);transform-origin:center;width:144px!important;margin-left:-9px;margin-top:-8px;margin-bottom:-8px}.readyCard>div:last-child{display:contents}.readyCard .thumb{grid-row:1/4}.readyCard h2{font-size:14px;margin:0}.readyCard .actions{grid-column:1/-1;margin-top:12px}.readyCard p{line-height:1.5}.readyCard>div:last-child>span{align-self:end}.createCard{padding:22px}}
 
 .emptyStorePage>header{margin-bottom:14px!important;padding-bottom:0!important}.emptyStorePage .createCard{text-align:center;margin-top:0;padding-top:20px}.createCard .createArt{justify-content:center;margin:0 0 16px}.createCard h2{overflow-wrap:anywhere;line-height:1.35;margin-top:0}.createCard p{margin-left:auto;margin-right:auto}.createCard button{justify-content:center}
+
+/* Keep copy together rather than stretching each line across the thumbnail's rows. */
+.readyCopy{display:flex;flex-direction:column;align-items:flex-start;gap:8px;min-width:0}
+.readyCard .readyCopy h2,.readyCard .readyCopy p{margin:0}
+.readyCard .readyCopy h2{line-height:1.35}
+@media(max-width:480px){
+ .readyCard{row-gap:8px;padding-top:12px;padding-bottom:12px}
+ .readyCard .thumb{grid-row:1;grid-column:1}
+ .readyCopy{grid-row:1;grid-column:2;align-self:center;gap:8px}
+ .readyCard .actions{grid-row:2;margin-top:0}
+}

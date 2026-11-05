@@ -855,3 +855,34 @@
 .templatePicker .pageTemplateGrid{align-items:start;gap:10px}.templatePicker .pageTemplateGrid>[role="button"]{display:flex;flex-direction:column;min-width:0}.templatePicker .pageTemplateGrid>[role="button"]>img{width:100%;height:auto;aspect-ratio:4/5;max-height:240px;object-fit:cover;border-radius:8px}.templatePicker .pageTemplateGrid b{font-size:11px;line-height:1.35;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;width:100%}.templatePicker .pageTemplateGrid small{font-size:9px}.templatePicker .templateBuildOptions{grid-template-columns:1fr 1fr}
 
 @media(max-width:640px){.templatePicker>header{padding:16px!important;min-height:0!important}.templatePicker>header h2{font-size:18px!important;line-height:1.25}.templatePicker>header p{font-size:12px!important;line-height:1.4;margin-top:5px!important}.templatePicker .templateSearch{height:40px}.templatePicker .templateSearch input{font-size:16px}.templatePicker .modalBody{padding:0 14px 14px}.templatePicker .templateBuildOption{padding:9px 7px;gap:6px}.templatePicker .templateBuildOption>div{min-width:0}.templatePicker .templateBuildOption b{font-size:10px}}
+
+/* A visible upgrade action alongside Create, without crowding mobile navigation. */
+.topbarActions .topbarUpgrade{min-height:36px;padding:8px 13px;gap:6px;border:1px solid #9256ed;border-radius:10px;background:linear-gradient(120deg,#7131e8,#a04eea);color:#fff;font-size:11px;font-weight:750;white-space:nowrap;box-shadow:0 4px 12px #7839d733,inset 0 1px 0 #ffffff38;transition:transform .18s ease,box-shadow .18s ease}
+.topbarActions .topbarUpgrade svg{width:14px;height:14px;flex-shrink:0}
+.topbarActions .topbarUpgrade:hover{transform:translateY(-2px);box-shadow:0 7px 17px #7839d749;background:linear-gradient(120deg,#6522dd,#9742e4)}
+.topbarActions .topbarUpgrade:active{transform:translateY(0) scale(.97)}
+.topbarActions .topbarUpgrade:focus-visible{outline:2px solid #7131e8;outline-offset:3px}
+@media(max-width:480px){.topbarActions .topbarUpgrade{min-height:34px;padding:7px 10px;font-size:10px}.topbarActions .topbarProductCompact{width:32px;padding:7px;justify-content:center}.topbarProductCompact>span{display:none}.topbarActions{gap:5px}}
+@media(prefers-reduced-motion:reduce){.topbarActions .topbarUpgrade{transition:none}.topbarActions .topbarUpgrade:hover,.topbarActions .topbarUpgrade:active{transform:none}}
+
+/* Match the classic store dock geometry while retaining the V1.1 navy palette. */
+.floatingNavAssembly{width:min(520px,calc(100vw - 24px));height:64px;bottom:max(18px,env(safe-area-inset-bottom))}
+.floatingNavAssembly .mobileNav{height:64px;min-height:64px;padding:0 14px;grid-template-columns:minmax(0,1fr) minmax(0,1fr) 66px minmax(0,1fr) minmax(0,1fr);border-radius:30px;backdrop-filter:blur(20px);background:linear-gradient(135deg,#0B192A,#071220 58%,#0A1727);box-shadow:0 10px 30px #02080f33,0 2px 10px #02080f22}
+.floatingNavAssembly .mobileNav>a{height:48px;min-height:48px;border-radius:22px;gap:4px;font-size:11px;font-weight:700;letter-spacing:-.01em;color:#aab7c8}
+.floatingNavAssembly .mobileNav>a>span{height:22px}
+.floatingNavAssembly .mobileNav>a svg{width:22px;height:22px;stroke-width:2.1}
+.floatingNavAssembly .mobileNav>a[aria-current=page]{color:#d8cbff;background:linear-gradient(180deg,#8b5cf62b,#8b5cf610);box-shadow:none}
+.floatingNavAssembly .mobileNav>a[aria-current=page] svg{transform:translateY(-1px);color:#c3a7ff}
+.floatingNavAssembly .mobileNav>a:hover{color:#fff;background:#ffffff0e}
+.floatingNavAssembly .mobileHelpButton{width:66px;height:66px;top:17px;border:0;border-radius:24px;background:linear-gradient(135deg,#6366f1,#8b5cf6);box-shadow:0 18px 34px #6366f142;animation:none;gap:3px}
+.floatingNavAssembly .mobileHelpButton:before{content:"";position:absolute;inset:-6px;border-radius:30px;border:1px solid #a78bfa38;pointer-events:none}
+.floatingNavAssembly .mobileHelpButton svg{width:28px;height:28px;stroke-width:2.4}
+.floatingNavAssembly .mobileHelpButton span{font-size:9px}
+.floatingNavAssembly .mobileHelpButton:hover{transform:translate(-50%,calc(-50% - 2px)) scale(1.02);box-shadow:0 24px 40px #6366f14d}
+.floatingNavAssembly .mobileHelpButton:active{transform:translate(-50%,-50%) scale(.96)}
+@media(max-width:480px){.floatingNavAssembly{height:60px}.floatingNavAssembly .mobileNav{height:60px;min-height:60px;padding:0 10px;border-radius:26px;grid-template-columns:minmax(0,1fr) minmax(0,1fr) 60px minmax(0,1fr) minmax(0,1fr)}.floatingNavAssembly .mobileNav>a{height:46px;min-height:46px;border-radius:18px;font-size:10px}.floatingNavAssembly .mobileNav>a>span{height:20px}.floatingNavAssembly .mobileNav>a svg{width:20px;height:20px}.floatingNavAssembly .mobileHelpButton{width:60px;height:60px;top:17px;border-radius:22px}.floatingNavAssembly .mobileHelpButton svg{width:25px;height:25px}}
+@media(prefers-reduced-motion:reduce){.floatingNavAssembly .mobileHelpButton:hover,.floatingNavAssembly .mobileHelpButton:active{transform:translate(-50%,-50%)}}
+
+.topbarActions .topbarUpgradeExpired{background:linear-gradient(120deg,#d92d40,#ed4b56);border-color:#dc3547;box-shadow:0 4px 12px #d92d4033,inset 0 1px 0 #ffffff38}
+.topbarActions .topbarUpgradeExpired:hover{background:linear-gradient(120deg,#bf2034,#df3949);box-shadow:0 7px 17px #d92d4049}
+.topbarActions .topbarUpgradeExpired:focus-visible{outline-color:#d92d40}

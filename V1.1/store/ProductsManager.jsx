@@ -400,7 +400,7 @@ export default function ProductsManager({
   const {openSubscription}=useSubscription();
   const openingRef=useRef(false);
   const [openingNew,setOpeningNew]=useState(false);
-  const openNew=async(draft={})=>{if(openingRef.current)return;if(canUseLandingPages(user)){setEditing(draft);return;}openingRef.current=true;setOpeningNew(true);try{const result=await v11Api.products({page:1});if((result.summary?.total??result.total??0)>=2){notify.error("Upgrade to Pro to add more products.");openSubscription({mode:"upgrade",preselected:"pro"});return;}setEditing(draft);}catch(e){notify.error(e.message||"Could not check your products. Please try again.");}finally{openingRef.current=false;setOpeningNew(false);}};
+  const openNew=async(draft={})=>{if(openingRef.current)return;if(canUseLandingPages(user)){setEditing(draft);return;}openingRef.current=true;setOpeningNew(true);try{const result=await v11Api.products({page:1});if((result.realProductCount??result.summary?.total??result.total??0)>=2){notify.error("Upgrade to Pro to add more products.");openSubscription({mode:"upgrade",preselected:"pro"});return;}setEditing(draft);}catch(e){notify.error(e.message||"Could not check your products. Please try again.");}finally{openingRef.current=false;setOpeningNew(false);}};
 
   const [selected, setSelected] = useState([]),
     [bulk, setBulk] = useState(""),
@@ -537,7 +537,11 @@ export default function ProductsManager({
       ) : (
         <>
           <div className={ui.products}>
-            {products.map(product=><article className={`${ui.card} ${selected.includes(product._id)?ui.selected:''}`} key={product._id}>
+            {products.map(product=>product.isDemo?<article className={ui.card} key={product._id}>
+ <div className={ui.image}><img src={product.images?.[0]||'/placeholder.png'} alt=""/></div>
+ <div className={ui.info}><strong className={ui.title}>{product.name}</strong><div className={ui.price}>{money(product.price)}</div><div className={ui.meta}><span className={ui.draft}>Demo</span><small>Preview only · removed on upgrade</small></div></div>
+ <ProductActions name={product.name} items={[{label:'Delete demo',Icon:Trash2,danger:true,run:()=>setConfirming(product)}]}/>
+ </article>:<article className={`${ui.card} ${selected.includes(product._id)?ui.selected:''}`} key={product._id}>
               <div className={ui.image}><img src={product.images?.[0]||'/placeholder.png'} alt=""/><input type="checkbox" aria-label={`Select ${product.name}`} checked={selected.includes(product._id)} onChange={e=>setSelected(ids=>e.target.checked?(ids.length<50?[...ids,product._id]:ids):ids.filter(id=>id!==product._id))}/></div>
               <div className={ui.info}><button className={ui.title} title={product.name} onClick={()=>setEditing(product)}>{product.name}</button><div className={ui.price}>{money(product.price)}{Number(product.comparePrice)>Number(product.price)&&<del>{money(product.comparePrice)}</del>}</div><div className={ui.meta}><span className={product.status==='published'?ui.active:ui.draft}><i/>{product.status==='published'?'Active':'Draft'}</span><small>{product.productType==='digital'?'Digital':product.trackStock===false?'Stock not tracked':Number(product.stock)>0?`In stock: ${product.stock}`:'Out of stock'}</small></div></div>
               <ProductActions name={product.name} items={[
@@ -560,7 +564,7 @@ export default function ProductsManager({
           )}
         </>
       )}
-      {selected.length>0&&<div className={ui.bulk} role="region" aria-label="Selected product actions"><label><input type="checkbox" aria-label="Select visible products" checked={products.length>0&&products.slice(0,50).every(p=>selected.includes(p._id))} onChange={e=>setSelected(e.target.checked?products.slice(0,50).map(p=>p._id):[])}/><span>{selected.length} selected</span></label><button className={ui.clearSelection} aria-label="Clear selection" onClick={()=>setSelected([])}><X size={14}/></button><button disabled={!selected.length} onClick={()=>setBulk('published')}><Archive size={13}/>Publish</button><button disabled={!selected.length} onClick={()=>setBulk('draft')}><FileText size={13}/>Unpublish</button><button disabled={!selected.length} onClick={()=>setBulk('duplicate')}><Copy size={13}/>Duplicate</button><button disabled={!selected.length} onClick={()=>setBulk('delete')}><Trash2 size={13}/>Delete</button></div>}
+      {selected.length>0&&<div className={ui.bulk} role="region" aria-label="Selected product actions"><label><input type="checkbox" aria-label="Select visible products" checked={products.length>0&&products.filter(p=>!p.isDemo).slice(0,50).every(p=>selected.includes(p._id))} onChange={e=>setSelected(e.target.checked?products.filter(p=>!p.isDemo).slice(0,50).map(p=>p._id):[])}/><span>{selected.length} selected</span></label><button className={ui.clearSelection} aria-label="Clear selection" onClick={()=>setSelected([])}><X size={14}/></button><button disabled={!selected.length} onClick={()=>setBulk('published')}><Archive size={13}/>Publish</button><button disabled={!selected.length} onClick={()=>setBulk('draft')}><FileText size={13}/>Unpublish</button><button disabled={!selected.length} onClick={()=>setBulk('duplicate')}><Copy size={13}/>Duplicate</button><button disabled={!selected.length} onClick={()=>setBulk('delete')}><Trash2 size={13}/>Delete</button></div>}
       {bulk && (
         <Modal
           tone="teal"

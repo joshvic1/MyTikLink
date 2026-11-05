@@ -69,6 +69,10 @@ export default function App({ Component, pageProps }) {
     </main>;
   }
 
+  if (router.pathname.startsWith("/staff") || router.pathname === "/crm-inbox") {
+    return <main className={plusJakarta.className}><Component {...pageProps}/><V11Toaster/></main>;
+  }
+
   // Public pages, dashboards, admin pages, stores, and custom domains
   // should render without the global marketing Layout/menu.
   if (

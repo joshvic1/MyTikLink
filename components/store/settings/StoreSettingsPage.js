@@ -1,4 +1,5 @@
 "use client";
+import PaletteInput from "../../../V1.1/components/PaletteInput";
 
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
@@ -626,7 +627,7 @@ export default function StoreSettingsPage() {
                     <span>Used for highlights and buttons.</span>
                   </div>
 
-                  <input
+                  <PaletteInput
                     type="color"
                     value={form.primaryColor || "#7c3aed"}
                     onChange={(e) => update("primaryColor", e.target.value)}

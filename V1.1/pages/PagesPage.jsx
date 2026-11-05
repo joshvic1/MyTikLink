@@ -1,3 +1,4 @@
+import StarterPagePreview from "../components/StarterPagePreview";
 import {findFirstPageImage} from "../lib/pagePresentation";
 import {getThemeBlock} from "../landing/themeModel";
 import {getDrafts} from "../../components/custom/utils/draftStorage";
@@ -19,6 +20,14 @@ import styles from "../styles/v11.module.css";
 
 export function PagesPage({ onCreate, onLeads }) {
   const router = useRouter();
+  useEffect(()=>{
+    if(!router.isReady||router.query.action!=="choose-template")return;
+    onCreate();
+    const {action,...query}=router.query;
+    router.replace({pathname:router.pathname,query},undefined,{shallow:true});
+  },[router.isReady,router.query.action]);
+  const [emailPreview,setEmailPreview]=useState(null);
+  useEffect(()=>{const id=router.query.preview;if(!router.isReady||typeof id!=="string")return;let active=true;apiRequest(`/v1-1/pages/${encodeURIComponent(id)}`).then(page=>{if(active)setEmailPreview(page);}).catch(()=>{if(active)notify.error("This page is unavailable or belongs to another account.");}).finally(()=>{if(active){const {preview,...query}=router.query;router.replace({pathname:router.pathname,query},undefined,{shallow:true});}});return()=>{active=false;};},[router.isReady,router.query.preview]);
   const [draftCount,setDraftCount]=useState(0),[draftCover,setDraftCover]=useState("");
   useEffect(()=>{const update=()=>{try{const drafts=getDrafts();setDraftCount(drafts.length);setDraftCover(getThemeBlock(drafts[0]?.content)?findFirstPageImage(drafts[0].content):"");}catch{setDraftCount(0);}};update();window.addEventListener("focus",update);window.addEventListener("storage",update);return()=>{window.removeEventListener("focus",update);window.removeEventListener("storage",update);};},[]);
   const {openSubscription}=useSubscription();
@@ -53,7 +62,7 @@ export function PagesPage({ onCreate, onLeads }) {
     catch { notify.error("Could not copy the page link."); }
   };
   useEffect(() => { if (!copiedId) return; const timer = setTimeout(() => setCopiedId(""), 1800); return () => clearTimeout(timer); }, [copiedId]);
-  return <div className={`${styles.page} ${styles.landingPagesView}`}>
+  return <div className={`${styles.page} ${styles.landingPagesView}`}>{emailPreview&&<StarterPagePreview page={emailPreview} onClose={()=>setEmailPreview(null)} onUpgrade={()=>{setEmailPreview(null);openSubscription({mode:"upgrade",preselected:"pro"});}}/>}
     <PageHeader title="Landing pages"/>
     <SummaryMetrics label="Landing page statistics" items={[{ label: "Pages", value: summary?.pages ?? null }, { label: "Leads", value: summary?.leads ?? null }]}/>
     {(summary?.pages > 0 || query) && <div className={styles.landingPageToolbar}>

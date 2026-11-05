@@ -45,11 +45,12 @@ export function StorePage({ data,user }) {
   const upgrade=()=>openSubscription({mode:"upgrade",preselected:"pro"});
   const [publication, setPublication] = useState(null);
   useEffect(() => { let active = true; apiRequest("/v1-1/store-studio").then(result => active && setPublication(result)).catch(() => {}); return () => { active = false; }; }, [data.products]);
+  useEffect(()=>{if(!router.isReady||router.query.action!=="preview-store"||!publication||!data.store)return;setPreview(true);const {action,...query}=router.query;router.replace({pathname:router.pathname,query},undefined,{shallow:true});},[router.isReady,router.query.action,publication,data.store]);
   if (!data.store) return <div className={`${styles.page} ${ready.emptyStorePage}`}><PageHeader title="Storefront"/><section className={ready.createCard}><div className={ready.createArt} aria-hidden="true"><i/><i/><i/></div><h2>Create an online store{user?.onboarding?.publicName ? ` for ${user.onboarding.publicName}` : " for your brand"}</h2><p>Choose a template, and we’ll build {user?.onboarding?.publicName ? `${user.onboarding.publicName}’s storefront` : "your storefront"} so you can upload products and start {user?.onboarding?.businessFocus==="physical_products"?"getting orders":"making sales"}.</p><Button onClick={()=>setChoosing(true)}>Select a template <ArrowRight size={16}/></Button></section>{choosing&&<StoreSetupPage user={user} onClose={()=>setChoosing(false)} onCreated={data.refresh}/>}</div>;
 
   const store = data.store, stats = data.storeStats || {};
   const pending = data.orders.filter(order => ["new", "pending"].includes(String(order.status).toLowerCase()));
-  const lowStock = data.products.filter(product => Number(product.stock ?? product.quantity ?? 99) <= 3);
+  const lowStock = data.products.filter(product => !product.isDemo && product.trackStock !== false && Number(product.stock ?? product.quantity ?? 99) <= 3);
   const storePath = `/v1-1/s/${store.slug}`;
   const storeUrl = `https://mytiklink.com${storePath}`;
   const hasStudioStatus = publication && (typeof publication.published === "boolean" || typeof publication.enabled === "boolean");
@@ -62,12 +63,12 @@ export function StorePage({ data,user }) {
 
   return <div className={`${styles.page} ${styles.storefrontOverview}`}>
     <StorefrontHeader name={storeName}/>
-    {!canUseLandingPages(user)?<section className={ready.readyCard}><div className={ready.thumb}><StoreReadyThumbnail detail={publication} store={store}/></div><div><Badge tone="warning">Start {salesOutcome}</Badge><h2>Your storefront is ready</h2><p>Upgrade to Pro to publish your store, add products and start {salesOutcome}.</p><div className={ready.actions}><Button variant="secondary" onClick={()=>setPreview(true)}>Preview your store</Button><Button onClick={upgrade}>Upgrade to Pro</Button></div></div></section>:<StoreStatusCard live={live} url={storeUrl} onCopy={copyStoreUrl} onDesign={() => router.push(v11Routes.storeDesign)} onVisit={() => window.open(storePath, "_blank")}/>}
+    {!canUseLandingPages(user)?<section className={ready.readyCard}><div className={ready.thumb}><StoreReadyThumbnail detail={publication} store={store}/></div><div><div className={ready.readyCopy}><Badge tone="warning">Start {salesOutcome}</Badge><h2>Your storefront is ready</h2><p>Upgrade to Pro to publish your store, add products and start {salesOutcome}.</p></div><div className={ready.actions}><Button variant="secondary" onClick={()=>setPreview(true)}>Preview your store</Button><Button onClick={upgrade}>Upgrade to Pro</Button></div></div></section>:<StoreStatusCard live={live} url={storeUrl} onCopy={copyStoreUrl} onDesign={() => router.push(v11Routes.storeDesign)} onVisit={() => window.open(storePath, "_blank")}/>}
     {preview&&<StoreReadyPreview detail={publication} onClose={()=>setPreview(false)} onUpgrade={()=>{setPreview(false);upgrade();}}/>}
     <section className={styles.storeOverviewMetrics}>
       <article><span><WalletCards/></span><div><small>Confirmed sales</small><b>₦{Number(stats.totalRevenue || stats.orderValue || 0).toLocaleString()}</b></div></article>
       <article><span><ShoppingBag/></span><div><small>Total orders</small><b>{stats.totalOrders ?? data.orders.length}</b></div></article>
-      <article><span><Package/></span><div><small>Products</small><b>{data.products.length}</b></div></article>
+      <article><span><Package/></span><div><small>Products</small><b>{data.products.filter(p=>!p.isDemo).length}</b></div></article>
       <article><span><ArrowRight/></span><div><small>Pending orders</small><b>{pending.length}</b></div></article>
     </section>
     <div className={styles.storeOverviewGrid}>
