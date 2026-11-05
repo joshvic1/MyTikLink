@@ -7,6 +7,12 @@ import {
   RefreshCw,
   Download,
   Check,
+  ChevronDown,
+  MapPin,
+  MoreHorizontal,
+  Pencil,
+  Store,
+  Truck,
 } from "lucide-react";
 import { apiRequest } from "../lib/api";
 import { Button, Field, Modal } from "../components/UI";
@@ -23,11 +29,128 @@ const localDate = (v) => {
 };
 const money = (v) => (Number(v || 0) / 100).toFixed(2);
 const minor = (v) => Math.round(Number(v || 0) * 100);
-const split = (v) =>
-  v
-    .split(",")
-    .map((s) => s.trim())
-    .filter(Boolean);
+
+// The API is the source of truth. These fallbacks only keep an existing draft
+// usable while a merchant is offline or before the location service responds.
+const NIGERIA = { id: "NG", code: "NG", name: "Nigeria", currency: "NGN" };
+const NIGERIA_REGIONS = [
+  ["ng-abia", "Abia"], ["ng-adamawa", "Adamawa"], ["ng-akwa-ibom", "Akwa Ibom"],
+  ["ng-anambra", "Anambra"], ["ng-bauchi", "Bauchi"], ["ng-bayelsa", "Bayelsa"],
+  ["ng-benue", "Benue"], ["ng-borno", "Borno"], ["ng-cross-river", "Cross River"],
+  ["ng-delta", "Delta"], ["ng-ebonyi", "Ebonyi"], ["ng-edo", "Edo"],
+  ["ng-ekiti", "Ekiti"], ["ng-enugu", "Enugu"], ["ng-federal-capital-territory", "Federal Capital Territory (FCT)"],
+  ["ng-gombe", "Gombe"], ["ng-imo", "Imo"], ["ng-jigawa", "Jigawa"],
+  ["ng-kaduna", "Kaduna"], ["ng-kano", "Kano"], ["ng-katsina", "Katsina"],
+  ["ng-kebbi", "Kebbi"], ["ng-kogi", "Kogi"], ["ng-kwara", "Kwara"],
+  ["ng-lagos", "Lagos"], ["ng-nasarawa", "Nasarawa"], ["ng-niger", "Niger"],
+  ["ng-ogun", "Ogun"], ["ng-ondo", "Ondo"], ["ng-osun", "Osun"], ["ng-oyo", "Oyo"],
+  ["ng-plateau", "Plateau"], ["ng-rivers", "Rivers"], ["ng-sokoto", "Sokoto"],
+  ["ng-taraba", "Taraba"], ["ng-yobe", "Yobe"], ["ng-zamfara", "Zamfara"],
+].map(([id, name]) => ({
+  id,
+  name,
+  countryCode: "NG",
+  aliases: id === "ng-federal-capital-territory" ? ["FCT", "Abuja", "Federal Capital Territory"] : [],
+}));
+const ESTIMATE_PRESETS = [
+  { id: "same-day", label: "Same day", min: 0, max: 0, unit: "day", businessDays: false, text: "Same day" },
+  { id: "next-day", label: "Next day", min: 1, max: 1, unit: "day", businessDays: false, text: "Next day" },
+  { id: "one-two", label: "1–2 business days", min: 1, max: 2, unit: "day", businessDays: true, text: "1–2 business days" },
+  { id: "two-four", label: "2–4 business days", min: 2, max: 4, unit: "day", businessDays: true, text: "2–4 business days" },
+  { id: "three-seven", label: "3–7 business days", min: 3, max: 7, unit: "day", businessDays: true, text: "3–7 business days" },
+];
+const createId = () =>
+  typeof crypto !== "undefined" && crypto.randomUUID
+    ? crypto.randomUUID()
+    : `delivery-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+const formatMoney = (value, currency = "NGN") => {
+  try {
+    return new Intl.NumberFormat("en-NG", {
+      style: "currency",
+      currency: currency || "NGN",
+      maximumFractionDigits: 0,
+    }).format(Number(value || 0) / 100);
+  } catch {
+    return money(value);
+  }
+};
+const deliveryEnabled = (delivery = {}) =>
+  delivery.enabled !== undefined
+    ? delivery.enabled === true
+    : (delivery.rules || delivery.zones || []).some((zone) => zone.enabled !== false);
+// `zones` is the persisted v1.1 shape. `rules` existed briefly in an earlier
+// draft, so keep reading it only when a merchant has not yet got zones.
+const deliveryRules = (delivery = {}) => {
+  if (Array.isArray(delivery.zones) && delivery.zones.length) return delivery.zones;
+  if (Array.isArray(delivery.rules) && delivery.rules.length) return delivery.rules;
+  if (Array.isArray(delivery.zones)) return delivery.zones;
+  return Array.isArray(delivery.rules) ? delivery.rules : [];
+};
+const nigeriaCountryCode = (value) => {
+  const code = String(value || "").trim().toUpperCase();
+  return ["NG", "NGA", "NIGERIA", "234", "+234"].includes(code) ? "NG" : code;
+};
+const zoneCountryCode = (zone = {}) =>
+  nigeriaCountryCode(zone.countryCode || zone.countries?.[0]) || "NG";
+const zoneCoverage = (zone = {}) =>
+  zone.coverage || (zone.areaIds?.length || zone.cities?.length ? "areas" : zone.regionId || zone.states?.length ? "state" : "country");
+// Only legacy zones that cannot be mapped safely are kept read-only. Raw
+// Nigerian state names can migrate into the Nigeria-only editor instead.
+const legacyDeliveryZone = (zone = {}) => {
+  const countries = [...new Set([
+    ...(Array.isArray(zone.countries) ? zone.countries : []),
+    ...(zone.countryCode ? [zone.countryCode] : []),
+  ].map(nigeriaCountryCode).filter(Boolean))];
+  const hasForeignCountry = countries.some((country) => country !== "NG");
+  const hasMultipleCountries = countries.length > 1;
+  const legacyState = zone.states?.[0] || "";
+  const matchedRegion = matchLocation(NIGERIA_REGIONS, zone.regionId, legacyState);
+  const coverage = zoneCoverage(zone);
+  const hasKnownNigeriaRegion = Boolean(matchedRegion);
+  const isNigerianLegacy =
+    countries.every((country) => country === "NG") &&
+    (countries.length > 0 || hasKnownNigeriaRegion);
+  const canMigrate =
+    isNigerianLegacy &&
+    ["country", "state", "areas"].includes(coverage) &&
+    (coverage === "country" || hasKnownNigeriaRegion);
+  if (canMigrate) return null;
+  if (hasMultipleCountries)
+    return "This older rule covers more than one country. It remains unchanged and read-only.";
+  if (hasForeignCountry)
+    return "This older rule uses a country not supported by the new delivery editor. It remains unchanged and read-only.";
+  return "This older rule does not use the new verified-location format. It remains unchanged and read-only.";
+};
+const estimateText = (zone = {}) => {
+  if (zone.estimate) return zone.estimate;
+  const range = zone.estimateRange;
+  if (!range) return "Delivery time not set";
+  const days = range.unit === "hour" ? "hours" : range.businessDays ? "business days" : "days";
+  return range.min === range.max ? `${range.min} ${days}` : `${range.min}–${range.max} ${days}`;
+};
+const locationName = (zone = {}, regions = []) => {
+  if (zone.name) return zone.name;
+  if (zoneCoverage(zone) === "country") return zoneCountryCode(zone) === "NG" ? "Nigeria" : zoneCountryCode(zone);
+  const region = regions.find((item) => item.id === zone.regionId);
+  return region?.name || zone.states?.[0] || "Delivery location";
+};
+const normaliseDeliveryConfig = (config = {}) => {
+  const delivery = config.delivery || {};
+  const zones = deliveryRules(delivery);
+  const { rules: _legacyRules, ...deliveryWithoutLegacyRules } = delivery;
+  return {
+    ...config,
+    delivery: {
+      ...deliveryWithoutLegacyRules,
+      // `rules` from an early draft has now been migrated into `zones`.
+      // Only `zones` is sent back to the current API.
+      zones,
+      pickups: Array.isArray(delivery.pickups) ? delivery.pickups : [],
+      instructions: delivery.instructions || "",
+      enabled: deliveryEnabled(delivery),
+    },
+  };
+};
 export function CommerceSettingsPanel({ tab, setup = {}, onDirtyChange }) {
   const [config, setConfig] = useState(null),
     [saved, setSaved] = useState(null),
@@ -37,11 +160,12 @@ export function CommerceSettingsPanel({ tab, setup = {}, onDirtyChange }) {
     [busy, setBusy] = useState(false),
     [error, setError] = useState(""),
     [entry, setEntry] = useState(null),
+    [deleteEntry, setDeleteEntry] = useState(null),
     [discard, setDiscard] = useState(false);
   const lock = useRef(false);
   const load = async () => {
     const d = await apiRequest(`${root}/config`);
-    const loadedConfig={...d.config,identity:{showFloatingWhatsapp:true,showRecommendations:true,...d.config.identity}};
+    const loadedConfig=normaliseDeliveryConfig({...d.config,identity:{showFloatingWhatsapp:true,showRecommendations:true,...d.config.identity}});
     setConfig(loadedConfig);
     setSaved(loadedConfig);
     setRevision(d.revision);
@@ -72,11 +196,29 @@ export function CommerceSettingsPanel({ tab, setup = {}, onDirtyChange }) {
       method: "PUT",
       body: JSON.stringify({ config, revision }),
     });
-    const loadedConfig={...d.config,identity:{showFloatingWhatsapp:true,showRecommendations:true,...d.config.identity}};
+    const loadedConfig=normaliseDeliveryConfig({...d.config,identity:{showFloatingWhatsapp:true,showRecommendations:true,...d.config.identity}});
     setConfig(loadedConfig);
     setSaved(loadedConfig);
     setRevision(d.revision);
     return d.revision;
+  };
+  const updateDeliveryDraft = (nextDelivery, successMessage) => {
+    setConfig((current) => {
+      const { rules: legacyRules, ...deliveryChanges } = nextDelivery;
+      const providedZones = Array.isArray(nextDelivery.zones)
+        ? nextDelivery.zones
+        : Array.isArray(legacyRules)
+          ? legacyRules
+          : null;
+      const mergedDelivery = {
+        ...current.delivery,
+        ...deliveryChanges,
+        // All old rule edits are promoted to the canonical `zones` field.
+        ...(providedZones ? { zones: providedZones } : {}),
+      };
+      return normaliseDeliveryConfig({ ...current, delivery: mergedDelivery });
+    });
+    notify.success(successMessage || "Delivery change added to your draft");
   };
   const action = async (publish) => {
     if (lock.current) return;
@@ -158,12 +300,58 @@ export function CommerceSettingsPanel({ tab, setup = {}, onDirtyChange }) {
       {label}
     </label>
   );
-  const remove = (kind, index) =>
-    set(
-      "delivery",
-      kind,
-      config.delivery[kind].filter((_, i) => i !== index),
+  const saveDeliveryEntry = async (kind, index, value) => {
+    const source = kind === "rules" ? deliveryRules(config.delivery) : (config.delivery[kind] || []);
+    const nextItems = index < 0
+      ? [...source, value]
+      : source.map((item, itemIndex) =>
+          itemIndex === index ? value : item,
+        );
+    updateDeliveryDraft(
+      { [kind]: nextItems },
+      index < 0 ? "Added to your delivery draft" : "Delivery draft updated",
     );
+  };
+  const removeDeliveryEntry = async (kind, index) =>
+    updateDeliveryDraft(
+      {
+        [kind]: (kind === "rules" ? deliveryRules(config.delivery) : (config.delivery[kind] || [])).filter(
+          (_, itemIndex) => itemIndex !== index,
+        ),
+      },
+      "Removed from your delivery draft",
+    );
+  const newZone = () => ({
+    id: createId(),
+    name: "",
+    countryCode: "NG",
+    countries: ["NG"],
+    regionId: "",
+    states: [],
+    coverage: "state",
+    areaIds: [],
+    cities: [],
+    postcodes: [],
+    feeMinor: 0,
+    freeAboveMinor: null,
+    estimate: "2–4 business days",
+    estimateRange: { min: 2, max: 4, unit: "day", businessDays: true },
+    enabled: true,
+    excluded: false,
+  });
+  const newPickup = () => ({
+    id: createId(),
+    name: "",
+    countryCode: "NG",
+    regionId: "",
+    areaId: "",
+    address: "",
+    phone: "",
+    hours: "",
+    readiness: "",
+    instructions: "",
+    enabled: true,
+  });
   return (
     <>
       <div className={css.panelHeading}>
@@ -205,87 +393,120 @@ export function CommerceSettingsPanel({ tab, setup = {}, onDirtyChange }) {
         </div>
       )}
       {tab === "Delivery" && (
-        <>
-          <p>
-            Add specific zones before broader ones by giving them a higher
-            priority. Country values use two-letter codes, for example NG.
-          </p>
-          {[
-            ["zones", "Delivery zones"],
-            ["pickups", "Pickup locations"],
-          ].map(([kind, label]) => (
-            <section key={kind}>
-              <div className={css.panelHeading}>
-                <h3>{label} <SettingsHelp topic={label}/></h3>
-                <Button
-                  variant="secondary"
-                  onClick={() =>
-                    setEntry({
-                      kind,
-                      index: -1,
-                      value:
-                        kind === "zones"
-                          ? {
-                              id: crypto.randomUUID(),
-                              name: "",
-                              countries: ["NG"],
-                              states: [],
-                              cities: [],
-                              postcodes: [],
-                              priority: 0,
-                              feeMinor: 0,
-                              freeAboveMinor: null,
-                              estimate: "",
-                              enabled: true,
-                              excluded: false,
-                            }
-                          : {
-                              id: crypto.randomUUID(),
-                              name: "",
-                              address: "",
-                              hours: "",
-                              instructions: "",
-                              enabled: true,
-                            },
-                    })
+        <div className={css.deliverySettings}>
+          <section className={css.deliveryHero}>
+            <span className={css.deliveryHeroIcon}><Truck size={18} /></span>
+            <div>
+              <h3>Delivery</h3>
+              <p>Choose where you deliver and what customers pay.</p>
+            </div>
+            <label className={css.deliveryToggle}>
+              <span>Offer delivery</span>
+              <input
+                type="checkbox"
+                checked={deliveryEnabled(config.delivery)}
+                onChange={async (event) => {
+                  try {
+                    updateDeliveryDraft(
+                      { enabled: event.target.checked },
+                      event.target.checked ? "Delivery enabled in your draft" : "Delivery disabled in your draft",
+                    );
+                  } catch (saveError) {
+                    setError(saveError.message);
                   }
-                >
-                  <Plus size={14} /> Add
-                </Button>
+                }}
+              />
+              <i aria-hidden="true" />
+            </label>
+          </section>
+          <p className={css.deliveryHint}>
+            Pickup stays available separately. Save your draft, then publish it
+            when you are ready for customers to use the changes.
+          </p>
+
+          <section className={css.deliverySection}>
+            <div className={css.deliverySectionHeading}>
+              <div>
+                <h3>Delivery locations</h3>
+                <p>Set a fee and delivery time for each place you serve.</p>
               </div>
-              <div className={css.categoryList}>
-                {config.delivery[kind].map((v, index) => (
-                  <article key={v.id}>
-                    <div>
-                      <strong>{v.name}</strong>
-                      <small>
-                        {kind === "zones"
-                          ? `${v.excluded ? "Excluded" : money(v.feeMinor)} · ${v.countries.join(", ")}`
-                          : v.address}
-                      </small>
-                    </div>
-                    <Button
-                      variant="secondary"
-                      onClick={() => setEntry({ kind, index, value: v })}
-                    >
-                      Edit
-                    </Button>
-                    <button
-                      aria-label={`Remove ${v.name}`}
-                      onClick={() => remove(kind, index)}
-                    >
-                      <Trash2 size={15} />
-                    </button>
-                  </article>
-                ))}
-              </div>
-              {!config.delivery[kind].length && (
-                <p>No {label.toLowerCase()} yet.</p>
+              <Button
+                variant="secondary"
+                onClick={() => setEntry({ kind: "zones", index: -1, value: newZone() })}
+              >
+                <Plus size={14} /> Add
+              </Button>
+            </div>
+            <div className={css.deliveryRows}>
+              {deliveryRules(config.delivery).map((zone, index) => (
+                <DeliveryRow
+                  key={zone.id || index}
+                  zone={zone}
+                  legacyNotice={legacyDeliveryZone(zone)}
+                  currency={config.checkout.currency}
+                  onEdit={() => setEntry({ kind: "zones", index, value: zone })}
+                  onDelete={() => setDeleteEntry({ kind: "zones", index, value: zone })}
+                  onToggle={async (enabled) => {
+                    try {
+                      await saveDeliveryEntry("zones", index, { ...zone, enabled });
+                    } catch (saveError) {
+                      setError(saveError.message);
+                    }
+                  }}
+                />
+              ))}
+              {!deliveryRules(config.delivery).length && (
+                <DeliveryEmpty
+                  icon={<MapPin />}
+                  title="No delivery locations yet"
+                  description="Add the states or areas you can deliver to."
+                  action={() => setEntry({ kind: "zones", index: -1, value: newZone() })}
+                />
               )}
-            </section>
-          ))}
-          {text("delivery", "instructions", "Delivery information", "textarea")}
-        </>
+            </div>
+          </section>
+
+          <section className={css.deliverySection}>
+            <div className={css.deliverySectionHeading}>
+              <div>
+                <h3>Pickup locations</h3>
+                <p>Let customers collect an order instead of choosing delivery.</p>
+              </div>
+              <Button
+                variant="secondary"
+                onClick={() => setEntry({ kind: "pickups", index: -1, value: newPickup() })}
+              >
+                <Plus size={14} /> Add
+              </Button>
+            </div>
+            <div className={css.deliveryRows}>
+              {(config.delivery.pickups || []).map((pickup, index) => (
+                <PickupRow
+                  key={pickup.id || index}
+                  pickup={pickup}
+                  onEdit={() => setEntry({ kind: "pickups", index, value: pickup })}
+                  onDelete={() => setDeleteEntry({ kind: "pickups", index, value: pickup })}
+                  onToggle={async (enabled) => {
+                    try {
+                      await saveDeliveryEntry("pickups", index, { ...pickup, enabled });
+                    } catch (saveError) {
+                      setError(saveError.message);
+                    }
+                  }}
+                />
+              ))}
+              {!(config.delivery.pickups || []).length && (
+                <DeliveryEmpty
+                  icon={<Store />}
+                  title="No pickup locations yet"
+                  description="Add one if customers can collect their orders."
+                  action={() => setEntry({ kind: "pickups", index: -1, value: newPickup() })}
+                />
+              )}
+            </div>
+          </section>
+          {text("delivery", "instructions", "Delivery note for customers", "textarea")}
+        </div>
       )}
       {tab === "Payments" && (
         <div className={css.form}>
@@ -497,7 +718,7 @@ export function CommerceSettingsPanel({ tab, setup = {}, onDirtyChange }) {
                     method: "POST",
                     body: JSON.stringify({ revision, id: h.id }),
                   });
-                  const loadedConfig={...d.config,identity:{showFloatingWhatsapp:true,showRecommendations:true,...d.config.identity}};
+                  const loadedConfig=normaliseDeliveryConfig({...d.config,identity:{showFloatingWhatsapp:true,showRecommendations:true,...d.config.identity}});
     setConfig(loadedConfig);
                   setSaved(loadedConfig);
                   setRevision(d.revision);
@@ -566,175 +787,469 @@ export function CommerceSettingsPanel({ tab, setup = {}, onDirtyChange }) {
           }
         />
       )}
-      {entry && (
-        <EntryEditor
+      {entry && (entry.kind === "rules" || entry.kind === "zones" || entry.kind === "pickups") && (
+        <DeliveryEntryEditor
           entry={entry}
+          currency={config.checkout.currency}
           onClose={() => setEntry(null)}
           onSave={async (value) => {
-            if (entry.kind === "bank") {
-              await apiRequest("/v1-1/store-studio/settings", {
-                method: "PATCH",
-                body: JSON.stringify(value),
-              });
-              notify.success("Bank details saved");
-            } else
-              set(
-                "delivery",
-                entry.kind,
-                entry.index < 0
-                  ? [...config.delivery[entry.kind], value]
-                  : config.delivery[entry.kind].map((v, i) =>
-                      i === entry.index ? value : v,
-                    ),
-              );
+            await saveDeliveryEntry(entry.kind, entry.index, value);
             setEntry(null);
           }}
         />
       )}
+      {entry?.kind === "bank" && (
+        <EntryEditor
+          entry={entry}
+          onClose={() => setEntry(null)}
+          onSave={async (value) => {
+            await apiRequest("/v1-1/store-studio/settings", {
+              method: "PATCH",
+              body: JSON.stringify(value),
+            });
+            notify.success("Bank details saved");
+            setEntry(null);
+          }}
+        />
+      )}
+      {deleteEntry && (
+        <Modal
+          tone="orange"
+          title={`Remove ${deleteEntry.kind === "rules" || deleteEntry.kind === "zones" ? "delivery location" : "pickup location"}?`}
+          description="This only changes your draft. Publish settings when you are ready for customers to see it."
+          onClose={() => setDeleteEntry(null)}
+          footer={
+            <>
+              <Button variant="secondary" onClick={() => setDeleteEntry(null)}>Keep it</Button>
+              <Button
+                onClick={async () => {
+                  try {
+                    await removeDeliveryEntry(deleteEntry.kind, deleteEntry.index);
+                    setDeleteEntry(null);
+                  } catch (saveError) {
+                    setError(saveError.message);
+                    setDeleteEntry(null);
+                  }
+                }}
+              >
+                Remove
+              </Button>
+            </>
+          }
+        >
+          <p className={css.deleteDeliveryCopy}>
+            {deleteEntry.value.name || "This location"} will no longer be used after the next publish.
+          </p>
+        </Modal>
+      )}
     </>
   );
 }
-function EntryEditor({ entry, onClose, onSave }) {
-  const [value, setValue] = useState(entry.value),
-    [busy, setBusy] = useState(false),
-    [error, setError] = useState("");
-  const set = (k, v) => setValue((s) => ({ ...s, [k]: v }));
-  const field = (key, label, type = "text") => (
-    <Field label={label} key={key}>
-      <input
-        type={type}
-        value={value[key] ?? ""}
-        onChange={(e) =>
-          set(key, type === "number" ? Number(e.target.value) : e.target.value)
-        }
-      />
+
+function DeliveryEmpty({ icon, title, description, action }) {
+  return (
+    <div className={css.deliveryEmpty}>
+      <span>{icon}</span>
+      <div>
+        <strong>{title}</strong>
+        <small>{description}</small>
+      </div>
+      <button type="button" onClick={action}>Add</button>
+    </div>
+  );
+}
+
+function DeliveryRow({ zone, currency, onEdit, onDelete, onToggle, legacyNotice }) {
+  const [actionsOpen, setActionsOpen] = useState(false);
+  const enabled = zone.enabled !== false;
+  return (
+    <article className={`${css.deliveryRow} ${legacyNotice ? css.deliveryLegacyRow : ""}`} aria-disabled={legacyNotice ? "true" : undefined}>
+      <span className={css.deliveryRowIcon}><MapPin size={16} /></span>
+      <div className={css.deliveryRowCopy}>
+        <div>
+          <strong>{locationName(zone)}</strong>
+          {legacyNotice ? <span className={css.deliveryLegacyStatus}>Legacy</span> : !enabled && <span className={css.deliveryStatus}>Paused</span>}
+        </div>
+        <small>
+          {formatMoney(zone.feeMinor, currency)} · {estimateText(zone)}
+        </small>
+      </div>
+      {legacyNotice ? (
+        <button type="button" className={css.deliveryLegacyRemove} onClick={onDelete}>
+          <Trash2 size={13} /> Remove
+        </button>
+      ) : (
+        <div className={css.deliveryRowActions}>
+          <button type="button" onClick={onEdit}><Pencil size={13} /> Edit</button>
+          <button
+            type="button"
+            aria-expanded={actionsOpen}
+            aria-label={`More options for ${locationName(zone)}`}
+            onClick={() => setActionsOpen((open) => !open)}
+          >
+            <MoreHorizontal size={16} />
+          </button>
+          {actionsOpen && (
+            <div className={css.deliveryMoreMenu}>
+              <button type="button" onClick={() => { setActionsOpen(false); onToggle(!enabled); }}>
+                {enabled ? "Disable location" : "Enable location"}
+              </button>
+              <button type="button" className={css.deliveryDanger} onClick={() => { setActionsOpen(false); onDelete(); }}>
+                Remove location
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+      {legacyNotice && (
+        <p className={css.deliveryLegacyNotice}>
+          {legacyNotice} Add a new Nigeria location, then remove this record when ready.
+        </p>
+      )}
+    </article>
+  );
+}
+
+function PickupRow({ pickup, onEdit, onDelete, onToggle }) {
+  const [actionsOpen, setActionsOpen] = useState(false);
+  const enabled = pickup.enabled !== false;
+  return (
+    <article className={css.deliveryRow}>
+      <span className={`${css.deliveryRowIcon} ${css.pickupRowIcon}`}><Store size={15} /></span>
+      <div className={css.deliveryRowCopy}>
+        <div>
+          <strong>{pickup.name || "Pickup location"}</strong>
+          {!enabled && <span className={css.deliveryStatus}>Paused</span>}
+        </div>
+        <small>{pickup.address || "Address not set"}{pickup.readiness ? ` · ${pickup.readiness}` : ""}</small>
+      </div>
+      <div className={css.deliveryRowActions}>
+        <button type="button" onClick={onEdit}><Pencil size={13} /> Edit</button>
+        <button
+          type="button"
+          aria-expanded={actionsOpen}
+          aria-label={`More options for ${pickup.name || "pickup location"}`}
+          onClick={() => setActionsOpen((open) => !open)}
+        >
+          <MoreHorizontal size={16} />
+        </button>
+        {actionsOpen && (
+          <div className={css.deliveryMoreMenu}>
+            <button type="button" onClick={() => { setActionsOpen(false); onToggle(!enabled); }}>
+              {enabled ? "Disable location" : "Enable location"}
+            </button>
+            <button type="button" className={css.deliveryDanger} onClick={() => { setActionsOpen(false); onDelete(); }}>
+              Remove location
+            </button>
+          </div>
+        )}
+      </div>
+    </article>
+  );
+}
+
+function matchLocation(items, id, fallbackName = "") {
+  const normaliseName = (value) => String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+  const normalized = normaliseName(fallbackName);
+  return items.find((item) => item.id === id) || items.find((item) =>
+    [item.name, ...(item.aliases || [])]
+      .filter(Boolean)
+      .some((name) => normaliseName(name) === normalized),
+  );
+}
+
+function useDeliveryLocations(countryCode, regionId) {
+  const [countries, setCountries] = useState([NIGERIA]);
+  const [regions, setRegions] = useState(NIGERIA_REGIONS);
+  const [areas, setAreas] = useState([]);
+  useEffect(() => {
+    let active = true;
+    apiRequest(`${root}/locations/countries`)
+      .then((data) => {
+        if (!active || !Array.isArray(data.items)) return;
+        // New locations are intentionally Nigeria-only. Existing foreign
+        // rules are shown separately as read-only legacy records.
+        const nigeria = data.items.find((item) => item.id === "NG" || item.code === "NG");
+        setCountries([nigeria || NIGERIA]);
+      })
+      .catch(() => undefined);
+    return () => { active = false; };
+  }, []);
+  useEffect(() => {
+    let active = true;
+    const country = countryCode || "NG";
+    apiRequest(`${root}/locations/regions?country=${encodeURIComponent(country)}`)
+      .then((data) => {
+        if (!active) return;
+        if (Array.isArray(data.items) && data.items.length) setRegions(data.items);
+        else if (country === "NG") setRegions(NIGERIA_REGIONS);
+        else setRegions([]);
+      })
+      .catch(() => active && setRegions(country === "NG" ? NIGERIA_REGIONS : []));
+    return () => { active = false; };
+  }, [countryCode]);
+  useEffect(() => {
+    let active = true;
+    if (!regionId) {
+      setAreas([]);
+      return undefined;
+    }
+    apiRequest(`${root}/locations/areas?region=${encodeURIComponent(regionId)}`)
+      .then((data) => active && setAreas(Array.isArray(data.items) ? data.items : []))
+      .catch(() => active && setAreas([]));
+    return () => { active = false; };
+  }, [regionId]);
+  return { countries, regions, areas };
+}
+
+function LocationPicker({ label, value, onChange, items, placeholder, disabled, error, searchable = true }) {
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const selected = items.find((item) => item.id === value || item.code === value);
+  const normalized = query.trim().toLowerCase();
+  const visible = items.filter((item) => !normalized || [item.name, item.code, ...(item.aliases || [])]
+    .filter(Boolean).some((part) => String(part).toLowerCase().includes(normalized)));
+  return (
+    <Field label={label} error={error}>
+      <div className={css.deliveryPicker}>
+        <button
+          type="button"
+          className={css.deliveryPickerTrigger}
+          disabled={disabled}
+          aria-expanded={open}
+          onClick={() => { setOpen((shown) => !shown); setQuery(""); }}
+        >
+          <span>{selected?.name || placeholder}</span><ChevronDown size={15} />
+        </button>
+        {open && (
+          <div className={css.deliveryPickerMenu}>
+            {searchable && <input autoFocus value={query} onChange={(event) => setQuery(event.target.value)} placeholder={`Search ${label.toLowerCase()}`} />}
+            <div>
+              {visible.map((item) => (
+                <button key={item.id || item.code} type="button" onClick={() => { onChange(item); setOpen(false); }}>
+                  <strong>{item.name}</strong>{item.code && <small>{item.code}</small>}
+                </button>
+              ))}
+              {!visible.length && <p>No verified options found. Choose a broader location instead.</p>}
+            </div>
+          </div>
+        )}
+      </div>
     </Field>
   );
+}
+
+function AreaPicker({ value = [], onChange, items, disabled, error }) {
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const selected = items.filter((item) => value.includes(item.id));
+  const normalized = query.trim().toLowerCase();
+  const visible = items.filter((item) => !normalized || [item.name, ...(item.aliases || [])]
+    .filter(Boolean).some((part) => String(part).toLowerCase().includes(normalized)));
+  const toggle = (id) => onChange(value.includes(id) ? value.filter((item) => item !== id) : [...value, id]);
+  return (
+    <Field label="Cities or areas" hint="Only choose verified areas you serve." error={error}>
+      <div className={css.deliveryPicker}>
+        <button type="button" className={css.deliveryPickerTrigger} disabled={disabled} aria-expanded={open} onClick={() => { setOpen((shown) => !shown); setQuery(""); }}>
+          <span>{selected.length ? `${selected.length} area${selected.length === 1 ? "" : "s"} selected` : "Select cities or areas"}</span><ChevronDown size={15} />
+        </button>
+        {selected.length > 0 && <div className={css.selectedAreaChips}>{selected.map((item) => <button type="button" key={item.id} onClick={() => toggle(item.id)}>{item.name} ×</button>)}</div>}
+        {open && (
+          <div className={css.deliveryPickerMenu}>
+            <input autoFocus value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search cities or areas" />
+            <div>
+              {visible.map((item) => (
+                <button className={value.includes(item.id) ? css.deliveryPickerSelected : ""} key={item.id} type="button" onClick={() => toggle(item.id)}>
+                  <strong>{item.name}</strong><small>{value.includes(item.id) ? "Selected" : "Add area"}</small>
+                </button>
+              ))}
+              {!visible.length && <p>No verified areas are available yet. Choose Entire state instead.</p>}
+            </div>
+          </div>
+        )}
+      </div>
+    </Field>
+  );
+}
+
+function DeliveryEntryEditor({ entry, currency, onClose, onSave }) {
+  const isZone = entry.kind === "rules" || entry.kind === "zones";
+  const [value, setValue] = useState(() => {
+    const initial = entry.value || {};
+    const initialRange = initial.estimateRange || ESTIMATE_PRESETS[3];
+    return {
+      ...initial,
+      countryCode: zoneCountryCode(initial),
+      coverage: isZone ? zoneCoverage(initial) : undefined,
+      areaIds: initial.areaIds || [],
+      estimateRange: initialRange,
+      enabled: initial.enabled !== false,
+    };
+  });
+  const [fee, setFee] = useState(money(entry.value?.feeMinor || 0));
+  const [freeAbove, setFreeAbove] = useState(entry.value?.freeAboveMinor === null || entry.value?.freeAboveMinor === undefined ? "" : money(entry.value.freeAboveMinor));
+  const [preset, setPreset] = useState(() => {
+    const range = entry.value?.estimateRange;
+    return ESTIMATE_PRESETS.find((item) => range && item.min === range.min && item.max === range.max && item.unit === range.unit && item.businessDays === range.businessDays)?.id || "custom";
+  });
+  const [errors, setErrors] = useState({});
+  const [busy, setBusy] = useState(false);
+  const { countries, regions, areas } = useDeliveryLocations(value.countryCode, value.regionId);
+  const set = (key, next) => setValue((current) => ({ ...current, [key]: next }));
+
+  // Existing merchants may have legacy text locations. Resolve those to IDs as
+  // soon as the shared location library is available, without discarding them.
+  useEffect(() => {
+    if (!isZone || !regions.length) return;
+    const existingRegion = regions.find((region) => region.id === value.regionId);
+    if (existingRegion) return;
+    const region = matchLocation(regions, value.regionId, value.states?.[0]);
+    if (region && region.id !== value.regionId) set("regionId", region.id);
+  }, [isZone, regions, value.regionId, value.states]);
+  useEffect(() => {
+    if (!isZone || !value.cities?.length || value.areaIds?.length || !areas.length) return;
+    const ids = value.cities.map((city) => matchLocation(areas, "", city)?.id).filter(Boolean);
+    if (ids.length) set("areaIds", ids);
+  }, [areas, isZone, value.areaIds, value.cities]);
+
+  const selectedCountry = matchLocation(countries, value.countryCode) || NIGERIA;
+  const selectedRegion = matchLocation(regions, value.regionId, value.states?.[0]);
+  const selectPreset = (id) => {
+    setPreset(id);
+    const item = ESTIMATE_PRESETS.find((option) => option.id === id);
+    if (item) set("estimateRange", { min: item.min, max: item.max, unit: item.unit, businessDays: item.businessDays });
+  };
+  const validateAmount = (raw) => /^\d{1,10}(\.\d{1,2})?$/.test(String(raw).trim());
+  const submit = async (event) => {
+    event.preventDefault();
+    const nextErrors = {};
+    if (!value.countryCode) nextErrors.country = "Choose a country.";
+    if (isZone && value.coverage !== "country" && !value.regionId) nextErrors.region = "Choose a state or region.";
+    if (isZone && value.coverage === "areas" && !value.areaIds?.length) nextErrors.areas = "Choose at least one area or use Entire state.";
+    if (isZone && !validateAmount(fee)) nextErrors.fee = "Enter a valid delivery fee.";
+    if (isZone && freeAbove && !validateAmount(freeAbove)) nextErrors.freeAbove = "Enter a valid free-delivery threshold.";
+    if (isZone && (!Number.isInteger(Number(value.estimateRange?.min)) || !Number.isInteger(Number(value.estimateRange?.max)) || Number(value.estimateRange.min) < 0 || Number(value.estimateRange.max) < Number(value.estimateRange.min))) nextErrors.estimate = "Enter a valid delivery time range.";
+    if (!isZone && !String(value.name || "").trim()) nextErrors.name = "Name this pickup location.";
+    if (!isZone && !value.regionId) nextErrors.region = "Choose a state or region.";
+    if (!isZone && !String(value.address || "").trim()) nextErrors.address = "Enter the pickup address.";
+    setErrors(nextErrors);
+    if (Object.keys(nextErrors).length) return;
+    const selectedAreas = areas.filter((item) => value.areaIds?.includes(item.id));
+    const range = value.estimateRange;
+    const presetText = ESTIMATE_PRESETS.find((item) => item.id === preset)?.text;
+    const fallbackEstimate = range.min === range.max
+      ? `${range.min} ${range.unit === "hour" ? "hours" : range.businessDays ? "business days" : "days"}`
+      : `${range.min}–${range.max} ${range.unit === "hour" ? "hours" : range.businessDays ? "business days" : "days"}`;
+    const next = isZone
+      ? {
+          ...value,
+          id: value.id || createId(),
+          countryCode: value.countryCode,
+          countries: [value.countryCode],
+          regionId: value.coverage === "country" ? "" : value.regionId,
+          states: value.coverage === "country" || !selectedRegion ? [] : [selectedRegion.name],
+          coverage: value.coverage,
+          areaIds: value.coverage === "areas" ? value.areaIds : [],
+          cities: value.coverage === "areas" ? selectedAreas.map((item) => item.name) : [],
+          postcodes: [],
+          name: value.coverage === "country"
+            ? selectedCountry.name
+            : value.coverage === "areas" && selectedAreas.length
+              ? selectedAreas.map((item) => item.name).join(", ")
+              : selectedRegion?.name || value.name || "Delivery location",
+          feeMinor: minor(fee),
+          freeAboveMinor: freeAbove ? minor(freeAbove) : null,
+          estimate: presetText || fallbackEstimate,
+          estimateRange: { min: Number(range.min), max: Number(range.max), unit: range.unit === "hour" ? "hour" : "day", businessDays: Boolean(range.businessDays) },
+          priority: 0,
+          excluded: false,
+        }
+      : {
+          ...value,
+          id: value.id || createId(),
+          countryCode: value.countryCode,
+          regionId: value.regionId,
+          state: selectedRegion?.name || "",
+          areaId: value.areaId || "",
+          enabled: value.enabled !== false,
+        };
+    setBusy(true);
+    try {
+      await onSave(next);
+    } finally {
+      setBusy(false);
+    }
+  };
   return (
     <Modal
-      title={
-        entry.kind === "zones"
-          ? "Delivery zone"
-          : entry.kind === "bank"
-            ? "Bank transfer details"
-            : "Pickup location"
-      }
+      wide
+      tone={isZone ? "purple" : "teal"}
+      className={css.deliveryEditor}
+      headerIcon={isZone ? <Truck /> : <Store />}
+      title={isZone ? (entry.index < 0 ? "Add delivery location" : "Edit delivery location") : (entry.index < 0 ? "Add pickup location" : "Edit pickup location")}
+      description={isZone ? "Choose where you deliver, the fee, and the delivery time." : "Customers can select an active pickup location at checkout."}
       onClose={() => !busy && onClose()}
-      footer={
-        <>
-          <Button variant="secondary" disabled={busy} onClick={onClose}>
-            Cancel
-          </Button>
-          <Button type="submit" form="store-entry" disabled={busy}>
-            {busy ? "Saving…" : "Save"}
-          </Button>
-        </>
-      }
+      footer={<><Button variant="secondary" disabled={busy} onClick={onClose}>Cancel</Button><Button type="submit" form="delivery-entry" disabled={busy}>{busy ? "Saving…" : "Save location"}</Button></>}
     >
-      <form
-        id="store-entry"
-        className={css.form}
-        onSubmit={async (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          setBusy(true);
-          try {
-            await onSave(value);
-          } catch (e) {
-            setError(e.message);
-          } finally {
-            setBusy(false);
-          }
-        }}
-      >
-        {entry.kind === "bank" ? (
-          ["bankName", "accountName", "accountNumber"].map((k) =>
-            field(
-              k,
-              {
-                bankName: "Bank name",
-                accountName: "Account holder",
-                accountNumber: "Account number",
-              }[k],
-            ),
-          )
-        ) : (
-          <>
-            {field("name", "Name")}
-            {entry.kind === "zones" ? (
-              <>
-                {["countries", "states", "cities", "postcodes"].map((k) => (
-                  <Field label={`${k} (comma-separated)`} key={k}>
-                    <input
-                      defaultValue={value[k].join(", ")}
-                      onBlur={(e) => set(k, split(e.target.value))}
-                    />
-                  </Field>
-                ))}
-                {field("priority", "Priority", "number")}
-                <Field label="Delivery fee">
-                  <input
-                    type="number"
-                    min={0}
-                    step="0.01"
-                    value={money(value.feeMinor)}
-                    onChange={(e) => set("feeMinor", minor(e.target.value))}
-                  />
-                </Field>
-                <Field label="Free delivery above (optional)">
-                  <input
-                    type="number"
-                    min={0}
-                    step="0.01"
-                    value={
-                      value.freeAboveMinor === null
-                        ? ""
-                        : money(value.freeAboveMinor)
-                    }
-                    onChange={(e) =>
-                      set(
-                        "freeAboveMinor",
-                        e.target.value === "" ? null : minor(e.target.value),
-                      )
-                    }
-                  />
-                </Field>
-                {field("estimate", "Delivery estimate")}
-                <label className={css.check}>
-                  <input
-                    type="checkbox"
-                    checked={value.excluded}
-                    onChange={(e) => set("excluded", e.target.checked)}
-                  />{" "}
-                  Exclude this zone
-                </label>
-              </>
-            ) : (
-              <>
-                {field("address", "Address")}
-                {field("hours", "Opening hours")}
-                {field("instructions", "Pickup instructions")}
-              </>
-            )}
-            <label className={css.check}>
-              <input
-                type="checkbox"
-                checked={value.enabled}
-                onChange={(e) => set("enabled", e.target.checked)}
-              />{" "}
-              Enabled
-            </label>
-          </>
-        )}
-        {error && (
-          <p role="alert" className={css.error}>
-            {error}
-          </p>
-        )}
+      <form id="delivery-entry" className={`${css.form} ${css.deliveryForm}`} onSubmit={submit}>
+        {!isZone && <Field label="Location name" error={errors.name}><input value={value.name || ""} onChange={(event) => set("name", event.target.value)} placeholder="e.g. Lekki pickup desk" /></Field>}
+        <LocationPicker
+          label="Country"
+          value={value.countryCode}
+          items={countries}
+          error={errors.country}
+          placeholder="Choose a country"
+          onChange={(country) => setValue((current) => ({ ...current, countryCode: country.code || country.id, regionId: "", areaIds: [] }))}
+        />
+        <LocationPicker
+          label="State / region"
+          value={value.regionId}
+          items={regions}
+          disabled={!value.countryCode}
+          error={errors.region}
+          placeholder="Choose a state or region"
+          onChange={(region) => setValue((current) => ({ ...current, regionId: region.id, areaIds: [], areaId: "" }))}
+        />
+        {isZone ? <>
+          <section className={css.deliveryFormBlock}>
+            <div><b>Where do you deliver?</b><small>Choose the broadest area that matches this fee.</small></div>
+            <div className={css.coverageCards}>
+              {[ ["state", "Entire state", "Serve anywhere in this state"], ["areas", "Specific cities or areas", "Set a different rate for selected areas"], ["country", "Countrywide fallback", "Use this when no state rule matches"] ].map(([id, title, description]) => (
+                <button key={id} type="button" className={value.coverage === id ? css.coverageCardActive : ""} onClick={() => set("coverage", id)}>
+                  <strong>{title}</strong><small>{description}</small><Check size={15} />
+                </button>
+              ))}
+            </div>
+          </section>
+          {value.coverage === "areas" && <AreaPicker value={value.areaIds || []} onChange={(areaIds) => set("areaIds", areaIds)} items={areas} disabled={!value.regionId} error={errors.areas} />}
+          <Field label={`Delivery fee (${currency || "NGN"})`} error={errors.fee} hint="Use 0 for free delivery."><input inputMode="decimal" value={fee} onChange={(event) => setFee(event.target.value)} placeholder="0.00" /></Field>
+          <Field label="Free delivery threshold (optional)" error={errors.freeAbove} hint="Orders at or above this total get free delivery."><input inputMode="decimal" value={freeAbove} onChange={(event) => setFreeAbove(event.target.value)} placeholder="e.g. 50000" /></Field>
+          <section className={css.deliveryFormBlock}>
+            <div><b>Estimated delivery time</b><small>Show customers a clear, realistic range.</small></div>
+            <div className={css.estimateChoices}>
+              {ESTIMATE_PRESETS.map((item) => <button key={item.id} type="button" className={preset === item.id ? css.estimateChoiceActive : ""} onClick={() => selectPreset(item.id)}>{item.label}</button>)}
+              <button type="button" className={preset === "custom" ? css.estimateChoiceActive : ""} onClick={() => setPreset("custom")}>Custom range</button>
+            </div>
+            {preset === "custom" && <div className={css.estimateCustom}><Field label="From" error={errors.estimate}><input type="number" min="0" value={value.estimateRange?.min ?? ""} onChange={(event) => set("estimateRange", { ...value.estimateRange, min: Number(event.target.value) })} /></Field><Field label="To"><input type="number" min="0" value={value.estimateRange?.max ?? ""} onChange={(event) => set("estimateRange", { ...value.estimateRange, max: Number(event.target.value) })} /></Field><Field label="Unit"><select value={value.estimateRange?.unit || "day"} onChange={(event) => set("estimateRange", { ...value.estimateRange, unit: event.target.value })}><option value="day">Days</option><option value="hour">Hours</option></select></Field><label className={css.businessDaysCheck}><input type="checkbox" checked={Boolean(value.estimateRange?.businessDays)} onChange={(event) => set("estimateRange", { ...value.estimateRange, businessDays: event.target.checked })} /> Business days</label></div>}
+          </section>
+        </> : <>
+          <LocationPicker label="City / area (optional)" value={value.areaId || ""} items={areas} disabled={!value.regionId} placeholder="Choose a city or area" onChange={(area) => set("areaId", area.id)} />
+          <Field label="Full pickup address" error={errors.address}><textarea rows={3} value={value.address || ""} onChange={(event) => set("address", event.target.value)} placeholder="Enter the full address customers should visit" /></Field>
+          <Field label="Collection hours (optional)"><input value={value.hours || ""} onChange={(event) => set("hours", event.target.value)} placeholder="e.g. Mon–Sat, 9am–5pm" /></Field>
+          <Field label="Estimated readiness (optional)"><input value={value.readiness || ""} onChange={(event) => set("readiness", event.target.value)} placeholder="e.g. Ready within 2 hours" /></Field>
+          <Field label="Contact number (optional)"><input inputMode="tel" value={value.phone || ""} onChange={(event) => set("phone", event.target.value)} placeholder="For collection questions" /></Field>
+          <Field label="Pickup instructions (optional)"><textarea rows={3} value={value.instructions || ""} onChange={(event) => set("instructions", event.target.value)} placeholder="Anything customers should know before collecting" /></Field>
+        </>}
+        <label className={css.entryEnabled}><input type="checkbox" checked={value.enabled !== false} onChange={(event) => set("enabled", event.target.checked)} /> <span><b>Available to customers</b><small>Turn this off without deleting the location.</small></span></label>
       </form>
     </Modal>
   );
 }
+
 export function ResourceManager({ kind = "collections" }) {
   const [items, setItems] = useState([]),
     [page, setPage] = useState(1),

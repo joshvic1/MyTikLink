@@ -1,0 +1,148 @@
+
+> frontend@0.1.0 build
+> next build
+
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+ ⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of C:\Users\pc\package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * C:\Users\pc\Desktop\tikLink\frontend\package-lock.json
+
+   ▲ Next.js 16.0.10 (Turbopack)
+   - Environments: .env
+
+   Running TypeScript ...
+   Creating an optimized production build ...
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+ ✓ Compiled successfully in 27.4s
+   Collecting page data using 7 workers ...
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+   Generating static pages using 7 workers (0/88) ...
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+   Generating static pages using 7 workers (22/88) 
+   Generating static pages using 7 workers (44/88) 
+   Generating static pages using 7 workers (66/88) 
+ ✓ Generating static pages using 7 workers (88/88) in 6.0s
+   Finalizing page optimization ...
+
+Route (pages)
+┌ ○ / (466 ms)
+├   /_app
+├ ○ /404
+├ ○ /admin (2843 ms)
+├ ○ /admin/agents
+├ ○ /admin/analytics (2845 ms)
+├ ○ /admin/blog (2844 ms)
+├ ○ /admin/email (2851 ms)
+├ ○ /admin/email/log/[id]
+├ ○ /admin/email/logs (2835 ms)
+├ ○ /admin/email/segment (2911 ms)
+├ ○ /admin/email/segments/[segmentKey] (2847 ms)
+├ ○ /admin/email/segments/[segmentKey]/logs (2845 ms)
+├ ○ /admin/email/send
+├ ○ /admin/links (2845 ms)
+├ ○ /admin/login
+├ ○ /admin/pages
+├ ○ /admin/payment
+├ ○ /admin/users
+├ ○ /agent
+├ ƒ /api/ai
+├ ƒ /api/ai-page-builder
+├ ƒ /api/brand-description
+├ ƒ /api/hello
+├ ƒ /api/staff/[...path]
+├ ○ /blog
+├ ƒ /blog/[slug]
+├ ○ /checkout
+├ ○ /course
+├ ○ /course-1
+├ ○ /course-2
+├ ○ /course-success
+├ ƒ /crm-inbox
+├ ○ /dashboard (3548 ms)
+├ ○ /dashboard-preview (2924 ms)
+├ ○ /dashboard/analytics (466 ms)
+├ ○ /dashboard/links
+├ ○ /dashboard/page
+├ ○ /dashboard/page/create (2916 ms)
+├ ○ /dashboard/page/create/custom (466 ms)
+├ ○ /dashboard/page/create/edit (2914 ms)
+├ ○ /dashboard/page/p/[pageId] (2910 ms)
+├ ○ /dashboard/settings
+├ ○ /dashboard/tiktok-pixel (2917 ms)
+├ ○ /expired (2914 ms)
+├ ○ /FAQ (2918 ms)
+├ ○ /get-a-landing-page
+├ ○ /home
+├ ○ /limit-reached
+├ ○ /login
+├ ƒ /p/[slug]
+├ ○ /payment-history
+├ ○ /privacy (467 ms)
+├ ○ /prototype-1/[[...slug]] (2940 ms)
+├ ○ /r/[linkId]
+├ ○ /register (467 ms)
+├ ○ /reset-password (2944 ms)
+├ ƒ /robots.txt
+├ ○ /s/[slug] (2943 ms)
+├ ○ /s/[slug]/[product] (466 ms)
+├ ○ /s/[slug]/account (2949 ms)
+├ ƒ /sitemap.xml
+├ ○ /staff (2941 ms)
+├ ○ /staff/preview (2942 ms)
+├ ○ /store (3255 ms)
+├ ○ /store-tutorial (2942 ms)
+├ ○ /store/editTemplate (323 ms)
+├ ○ /store/orders (326 ms)
+├ ○ /store/products (325 ms)
+├ ○ /store/settings (325 ms)
+├ ○ /terms (2940 ms)
+├ ○ /v1-1/[[...slug]]
+├ ○ /v1-1/atelier-preview (324 ms)
+├ ○ /v1-1/category-covers (323 ms)
+├ ○ /v1-1/dataflow-preview
+├ ○ /v1-1/digital-library-preview (324 ms)
+├ ○ /v1-1/launchpad-preview (323 ms)
+├ ○ /v1-1/links/upgrade
+├ ƒ /v1-1/p/[slug]
+├ ○ /v1-1/redirect-design-preview
+├ ƒ /v1-1/s/[slug]
+├ ƒ /v1-1/s/[slug]/categories
+├ ƒ /v1-1/s/[slug]/categories/[category]
+├ ƒ /v1-1/s/[slug]/products/[product]
+├ ƒ /v1-1/s/[slug]/shop
+├ ƒ /v1-1/s/[slug]/sitemap.xml
+├ ○ /v1-1/services-preview
+├ ○ /v1-1/signal-studio-preview (3259 ms)
+├ ○ /v1-1/store-cover-preview
+├ ○ /v1-1/store-receipt/[slug]
+├ ○ /v1-1/store-unsubscribe/[token] (3258 ms)
+├ ○ /v1-1/streetline-preview (3557 ms)
+├ ○ /v1-1/streetline-services-preview (3264 ms)
+├ ○ /v1-1/themes (3261 ms)
+├ ○ /v1-1/themes/action-demo (3258 ms)
+├ ○ /v1-1/themes/agriculture-picker-demo
+├ ○ /v1-1/themes/music-picker-demo
+├ ○ /v1-1/themes/my-preview
+├ ○ /v1-1/themes/preview
+├ ○ /v2.1/[[...slug]]
+├ ○ /v2.2/[[...slug]]
+├ ○ /v2.3/[[...slug]]
+├ ○ /v2/[[...slug]]
+├ ○ /verify-payment
+└ ○ /youtube
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

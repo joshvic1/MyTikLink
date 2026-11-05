@@ -4,7 +4,7 @@ import {cartQuantityLimit} from "@/components/store/context/cartLimits.mjs";
 import {storeThemeStyle,productHref} from "./StoreTheme";
 import {storeImageSrcSet} from "./storeMedia";
 import { useEffect, useRef, useState } from "react";
-import { AlertCircle, X, Minus, Plus, ShoppingCart, Copy, Check, CheckCircle2 } from "lucide-react";
+import { AlertCircle, X, Minus, Plus, ShoppingCart, Copy, Check, CheckCircle2, MapPin, Store, Truck } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import { useCart } from "@/components/store/context/CartContext";
 import { apiRequest } from "../lib/api";
@@ -27,6 +27,76 @@ export const formatMoney = (minor, currency = "NGN") =>
   new Intl.NumberFormat("en-NG", { style: "currency", currency }).format(
     Number(minor || 0) / 100,
   );
+
+const activeRows = (rows) => (Array.isArray(rows) ? rows : []).filter((row) => row?.enabled !== false);
+const locationId = (item = {}) => String(item.id || item.code || "");
+const locationLabel = (item = {}) => String(item.name || item.label || item.code || "");
+const sameLocation = (one, two) => String(one || "").trim().toLowerCase() === String(two || "").trim().toLowerCase();
+const estimateLabel = (estimate, fallback = "") => {
+  if (!estimate) return fallback || "";
+  if (typeof estimate === "string") return estimate;
+  const min = Number(estimate.min), max = Number(estimate.max);
+  if (!Number.isFinite(min) || min < 0) return fallback || "";
+  const range = Number.isFinite(max) && max >= min && max !== min ? `${min}–${max}` : String(min);
+  const unit = estimate.unit === "calendar_days" ? "days" : "business days";
+  return `${range} ${unit}`;
+};
+const zoneCountryValue = (zone = {}) => String(zone.countryCode || zone.countries?.[0] || "").trim();
+const zoneRegion = (zone = {}) => String(zone.regionName || zone.stateName || zone.states?.[0] || "");
+const zoneAreas = (zone = {}) => Array.isArray(zone.areaNames) ? zone.areaNames : Array.isArray(zone.cities) ? zone.cities : [];
+const countryMatchesZone = (country, zone) => {
+  const configured = zoneCountryValue(zone);
+  return Boolean(configured) && [
+    country?.code,
+    country?.id,
+    country?.name,
+    locationId(country),
+    locationLabel(country),
+  ].some((value) => sameLocation(value, configured));
+};
+const countrywideZone = (zone = {}) => {
+  const coverage = String(zone.coverage || "").trim().toLowerCase();
+  if (coverage) return coverage === "country";
+  // Legacy zones did not carry coverage. With no state/area constraint, they
+  // have always meant countrywide delivery.
+  return !zone.regionId && !zone.states?.length && !zone.areaIds?.length && !zone.cities?.length;
+};
+
+function LocationSelect({ label, items = [], value = "", onChange, placeholder, disabled = false, required = false, searchLabel }) {
+  const [query, setQuery] = useState("");
+  const normalized = query.trim().toLowerCase();
+  const visible = normalized
+    ? items.filter((item) => `${locationLabel(item)} ${item.aliases?.join(" ") || ""} ${item.code || ""}`.toLowerCase().includes(normalized))
+    : items;
+  return (
+    <Field label={label}>
+      <div className={css.locationSelect}>
+        {items.length > 7 && (
+          <input
+            type="search"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder={searchLabel || `Search ${label.toLowerCase()}`}
+            aria-label={searchLabel || `Search ${label.toLowerCase()}`}
+            disabled={disabled}
+          />
+        )}
+        <select
+          required={required}
+          value={value}
+          disabled={disabled}
+          onChange={(event) => onChange(items.find((item) => locationId(item) === event.target.value) || null)}
+        >
+          <option value="">{placeholder || `Choose ${label.toLowerCase()}`}</option>
+          {visible.map((item) => (
+            <option key={locationId(item)} value={locationId(item)}>{locationLabel(item)}</option>
+          ))}
+        </select>
+        {!items.length && !disabled && <small className={css.locationHint}>No supported options are available yet.</small>}
+      </div>
+    </Field>
+  );
+}
 export function ProductDetails({
   quick=false,
   design,
@@ -192,29 +262,71 @@ export function ProductDetails({
     </article>
   );
 }
-export function CommerceCheckout({ store, config, design, onClose, onEvent, onAccount }) {
-  const { cart, removeFromCart, updateQty, refreshProducts } = useCart(),
-    items = cart.filter((p) => p.storeSlug === store.slug),
-    [form, setForm] = useState(() => {
+export function CommerceCheckout({ store, config, fulfillment = config?.fulfillment || {}, design, onClose, onEvent, onAccount }) {
+  const { cart, removeFromCart, updateQty, refreshProducts } = useCart();
+  const items = cart.filter((p) => p.storeSlug === store.slug);
+  const itemsKey = items.map((item) => `${item._id}:${item.quantity}:${JSON.stringify(item.selectedVariants || {})}`).join("|");
+  const physical = items.some((p) => p.productType === "physical");
+  const zones = activeRows(config?.delivery?.zones).filter((zone) => !zone.excluded);
+  // New public responses expose a deliberately small fulfillment summary.
+  // Keep the saved config fallback so storefronts cached before this release
+  // continue to expose their existing delivery and pickup options.
+  const pickups = activeRows(
+    Array.isArray(fulfillment?.pickupLocations)
+      ? fulfillment.pickupLocations
+      : config?.delivery?.pickups,
+  );
+  const legacyDeliveryAvailable = config?.delivery?.enabled === true
+    ? zones.length > 0
+    : config?.delivery?.enabled !== false && zones.length > 0;
+  const deliveryAvailable = typeof fulfillment?.deliveryAvailable === "boolean"
+    ? fulfillment.deliveryAvailable
+    : legacyDeliveryAvailable;
+  const pickupAvailable = pickups.length > 0;
+  const availableFulfillment = [
+    ...(deliveryAvailable ? ["delivery"] : []),
+    ...(pickupAvailable ? ["pickup"] : []),
+  ];
+  const [form, setForm] = useState(() => {
       let saved = {};
       try { saved = JSON.parse(sessionStorage.getItem(`store-checkout-handoff:${store.slug}`) || "{}"); } catch {}
+      const savedAddress = saved.address || {};
+      const defaultCountry = savedAddress.countryCode || savedAddress.country || zoneCountryValue(zones[0]);
+      const savedMethod = saved.fulfillmentMethod || (saved.pickupId ? "pickup" : deliveryAvailable ? "delivery" : pickupAvailable ? "pickup" : "");
       return {
-      customerName: "",
-      customerPhone: "",
-      customerEmail: "",
-      address: { line: "", country: "NG", state: "", city: "", postcode: "" },
-      pickupId: "",
-      coupon: "",
-      paymentMethod: config.checkout.paymentMethods[0] || "bank",
-      notes: "",
-      marketingConsent: false,
       ...saved,
+      customerName: saved.customerName || "",
+      customerPhone: saved.customerPhone || "",
+      customerEmail: saved.customerEmail || "",
+      address: {
+        line: savedAddress.line || savedAddress.streetAddress || "",
+        streetAddress: savedAddress.streetAddress || savedAddress.line || "",
+        directions: savedAddress.directions || "",
+        countryCode: defaultCountry || "",
+        country: savedAddress.country || defaultCountry || "",
+        regionId: savedAddress.regionId || "",
+        state: savedAddress.state || "",
+        areaId: savedAddress.areaId || "",
+        city: savedAddress.city || "",
+        postcode: savedAddress.postcode || "",
+      },
+      pickupId: saved.pickupId || "",
+      fulfillmentMethod: savedMethod,
+      coupon: saved.coupon || "",
+      paymentMethod: saved.paymentMethod || config.checkout.paymentMethods[0] || "bank",
+      notes: saved.notes || "",
+      marketingConsent: Boolean(saved.marketingConsent),
     }; }),
     [quote, setQuote] = useState(null),
     [error, setError] = useState(""),
     [busy, setBusy] = useState(false),
     [done, setDone] = useState(null),
     [step, setStep] = useState("cart");
+  const [quoteBusy, setQuoteBusy] = useState(false),
+    [quoteError, setQuoteError] = useState(""),
+    [countries, setCountries] = useState([]),
+    [regions, setRegions] = useState([]),
+    [areas, setAreas] = useState([]);
   const [proofFile,setProofFile]=useState(null),[uploadPercent,setUploadPercent]=useState(0),[proofUploaded,setProofUploaded]=useState(false),[proofComplete,setProofComplete]=useState(false);const uploadedProof=useRef("");
   const reviewRef=useRef(null);const [copied,setCopied]=useState("");const copyTimer=useRef(null);
   const copyPayment=async(label,value)=>{try{await navigator.clipboard.writeText(String(value));setCopied(label);clearTimeout(copyTimer.current);copyTimer.current=setTimeout(()=>setCopied(""),2000);}catch{setCopied("Copy failed. Select and copy the value manually.");}};
@@ -223,9 +335,16 @@ export function CommerceCheckout({ store, config, design, onClose, onEvent, onAc
   const key = useRef(""),
     lock = useRef(false),
     root = `/v1-1/store-studio/commerce/public/${encodeURIComponent(store.slug)}`;
-  const physical = items.some((p) => p.productType === "physical"),
-    payload = () => ({
+  const payload = () => ({
       ...form,
+      // The existing order API deliberately treats an omitted/blank method as
+      // a digital checkout. Do not send a new "digital" enum to legacy APIs.
+      fulfillmentMethod: physical ? form.fulfillmentMethod : "",
+      address: {
+        ...form.address,
+        line: form.address.streetAddress || form.address.line || "",
+        streetAddress: form.address.streetAddress || form.address.line || "",
+      },
       tracking:trackingData("store",store.slug),
       items: items.map((p) => ({
         productId: p._id,
@@ -236,12 +355,236 @@ export function CommerceCheckout({ store, config, design, onClose, onEvent, onAc
   const change = (k, v) => {
     setForm((f) => ({ ...f, [k]: v }));
     setQuote(null);
+    setQuoteError("");
     key.current = "";
   };
   const address = (k, v) => change("address", { ...form.address, [k]: v });
+  const setFulfillment = (fulfillmentMethod) => {
+    setForm((current) => ({
+      ...current,
+      fulfillmentMethod,
+      pickupId: fulfillmentMethod === "pickup" ? current.pickupId : "",
+    }));
+    setQuote(null);
+    setQuoteError("");
+    key.current = "";
+  };
+  // The curated location API currently supplies the countries it knows about.
+  // A live legacy store can still have a countrywide zone outside that list,
+  // so merge configured zones in rather than losing an existing checkout.
+  const countryItems = [
+    ...countries.filter((country) => zones.some((zone) => countryMatchesZone(country, zone))),
+    ...zones.reduce((items, zone) => {
+      const value = zoneCountryValue(zone);
+      if (!value || items.some((item) => countryMatchesZone(item, zone))) return items;
+      return [...items, { id: value, code: value, name: value }];
+    }, []),
+  ];
+  const selectedCountry = countryItems.find((item) =>
+    sameLocation(locationId(item), form.address.countryCode) ||
+    sameLocation(locationLabel(item), form.address.countryCode) ||
+    sameLocation(locationLabel(item), form.address.country),
+  );
+  const selectedCountryZones = zones.filter((zone) =>
+    countryMatchesZone(selectedCountry || { code: form.address.countryCode, name: form.address.country }, zone),
+  );
+  const countrywideDelivery = selectedCountryZones.some(countrywideZone);
+  const deliveryLocationReady = Boolean(
+    form.address.countryCode && (countrywideDelivery || form.address.regionId || form.address.state),
+  );
+  const regionItems = regions.length
+    ? regions
+    : zones
+        .filter((zone) => !form.address.countryCode || countryMatchesZone(selectedCountry || { code: form.address.countryCode, name: form.address.country }, zone))
+        .map((zone) => ({ id: zone.regionId || zoneRegion(zone), name: zoneRegion(zone) }))
+        .filter((item) => item.id && item.name)
+        .filter((item, index, list) => list.findIndex((candidate) => candidate.id === item.id) === index);
+  const regionRequired = Boolean(form.address.countryCode && !countrywideDelivery);
+  const showRegionSelector = Boolean(form.address.countryCode && (regionRequired || regionItems.length));
+  const areaItems = areas.length
+    ? areas
+    : zones
+        .filter((zone) => !form.address.regionId || zone.regionId === form.address.regionId || sameLocation(zoneRegion(zone), form.address.state))
+        .flatMap((zone) => zoneAreas(zone).map((name) => ({ id: name, name })))
+        .filter((item, index, list) => list.findIndex((candidate) => candidate.id === item.id) === index);
+  const activePickup = pickups.find((pickup) => pickup.id === form.pickupId);
+  const detailsReady = !physical || (
+    form.fulfillmentMethod === "pickup"
+      ? Boolean(activePickup)
+      : form.fulfillmentMethod === "delivery" && deliveryLocationReady
+  );
+  const canRequestQuote = physical && step === "details" && (
+    form.fulfillmentMethod === "pickup"
+      ? Boolean(activePickup)
+      : form.fulfillmentMethod === "delivery" && deliveryLocationReady
+  );
+
+  useEffect(() => {
+    if (!physical) return;
+    const allowed = [
+      ...(deliveryAvailable ? ["delivery"] : []),
+      ...(pickupAvailable ? ["pickup"] : []),
+    ];
+    setForm((current) => {
+      const fulfillmentMethod = allowed.includes(current.fulfillmentMethod)
+        ? current.fulfillmentMethod
+        : allowed.length === 1
+          ? allowed[0]
+          : "";
+      const pickupId = fulfillmentMethod === "pickup" && pickups.some((pickup) => pickup.id === current.pickupId)
+        ? current.pickupId
+        : "";
+      return current.fulfillmentMethod === fulfillmentMethod && current.pickupId === pickupId
+        ? current
+        : { ...current, fulfillmentMethod, pickupId };
+    });
+  }, [physical, deliveryAvailable, pickupAvailable, pickups]);
+
+  useEffect(() => {
+    let active = true;
+    apiRequest("/v1-1/store-studio/commerce/locations/countries", { token: null })
+      .then((result) => {
+        if (active && Array.isArray(result.items)) setCountries(result.items);
+      })
+      .catch(() => {
+        // Existing storefronts keep working while the new location library is rolled out.
+      });
+    return () => { active = false; };
+  }, []);
+
+  useEffect(() => {
+    if (!form.address.countryCode || !countryItems.length) return;
+    const match = countryItems.find((item) =>
+      sameLocation(locationId(item), form.address.countryCode) ||
+      sameLocation(locationLabel(item), form.address.countryCode) ||
+      sameLocation(locationLabel(item), form.address.country),
+    );
+    if (!match) return;
+    const countryCode = match.code || locationId(match);
+    const country = locationLabel(match) || countryCode;
+    if (form.address.countryCode === countryCode && form.address.country === country) return;
+    setForm((current) => ({
+      ...current,
+      address: { ...current.address, countryCode, country },
+    }));
+  }, [form.address.countryCode, form.address.country, countryItems]);
+
+  useEffect(() => {
+    const country = form.address.countryCode;
+    if (!country) {
+      setRegions([]);
+      return undefined;
+    }
+    let active = true;
+    apiRequest(`/v1-1/store-studio/commerce/locations/regions?country=${encodeURIComponent(country)}`, { token: null })
+      .then((result) => {
+        if (active && Array.isArray(result.items)) setRegions(result.items);
+      })
+      .catch(() => {
+        if (active) setRegions([]);
+      });
+    return () => { active = false; };
+  }, [form.address.countryCode]);
+
+  useEffect(() => {
+    const region = form.address.regionId;
+    if (!region) {
+      setAreas([]);
+      return undefined;
+    }
+    let active = true;
+    apiRequest(`/v1-1/store-studio/commerce/locations/areas?region=${encodeURIComponent(region)}`, { token: null })
+      .then((result) => {
+        if (active && Array.isArray(result.items)) setAreas(result.items);
+      })
+      .catch(() => {
+        if (active) setAreas([]);
+      });
+    return () => { active = false; };
+  }, [form.address.regionId]);
+
+  useEffect(() => {
+    if (form.address.regionId || !form.address.state || !regionItems.length) return;
+    const match = regionItems.find((item) => sameLocation(locationLabel(item), form.address.state) || item.aliases?.some((alias) => sameLocation(alias, form.address.state)));
+    if (match) setForm((current) => ({ ...current, address: { ...current.address, regionId: locationId(match), state: locationLabel(match) } }));
+  }, [form.address.regionId, form.address.state, regionItems]);
+
+  useEffect(() => {
+    if (form.address.areaId || !form.address.city || !areaItems.length) return;
+    const match = areaItems.find((item) => sameLocation(locationLabel(item), form.address.city) || item.aliases?.some((alias) => sameLocation(alias, form.address.city)));
+    if (match) setForm((current) => ({ ...current, address: { ...current.address, areaId: locationId(match), city: locationLabel(match) } }));
+  }, [form.address.areaId, form.address.city, areaItems]);
+
+  useEffect(() => {
+    if (!physical || step !== "details") return undefined;
+    if (!form.fulfillmentMethod) {
+      setQuote(null);
+      setQuoteError("This store has not enabled a delivery or pickup option for physical products.");
+      return undefined;
+    }
+    if (!canRequestQuote) {
+      setQuote(null);
+      setQuoteError(
+        form.fulfillmentMethod === "pickup"
+          ? "Choose a pickup location to see your total."
+          : !form.address.countryCode
+            ? "Choose your country to see delivery options."
+            : "Choose your state or region to see delivery availability.",
+      );
+      return undefined;
+    }
+    let active = true;
+    setQuoteBusy(true);
+    setQuoteError("");
+    const timer = setTimeout(() => {
+      apiRequest(`${root}/quote`, {
+        token: null,
+        method: "POST",
+        body: JSON.stringify(payload()),
+      })
+        .then((nextQuote) => {
+          if (active) setQuote(nextQuote);
+        })
+        .catch((nextError) => {
+          if (active) {
+            setQuote(null);
+            setQuoteError(nextError.message || "Delivery is not available for this location.");
+          }
+        })
+        .finally(() => {
+          if (active) setQuoteBusy(false);
+        });
+    }, 350);
+    return () => {
+      active = false;
+      clearTimeout(timer);
+    };
+  }, [
+    physical,
+    step,
+    form.fulfillmentMethod,
+    form.pickupId,
+    form.address.countryCode,
+    form.address.regionId,
+    form.address.state,
+    form.address.areaId,
+    form.address.city,
+    form.coupon,
+    itemsKey,
+    canRequestQuote,
+    root,
+  ]);
   const review = async (e) => {
     e?.preventDefault();
     if (lock.current) return;
+    if (physical) {
+      if (!form.fulfillmentMethod)
+        return setError("Choose how you would like to receive your order.");
+      if (form.fulfillmentMethod === "pickup" && !activePickup)
+        return setError("Choose an available pickup location.");
+      if (form.fulfillmentMethod === "delivery" && !deliveryLocationReady)
+        return setError("Choose your country and state or region so we can calculate delivery.");
+    }
     lock.current = true;
     setBusy(true);
     setError("");
@@ -354,7 +697,7 @@ export function CommerceCheckout({ store, config, design, onClose, onEvent, onAc
             >
               Back to Cart
             </Button>
-            <Button form="atelier-checkout" type="submit" disabled={busy}>
+            <Button form="atelier-checkout" type="submit" disabled={busy || !detailsReady}>
               {busy ? "Calculating…" : "Confirm Order"}
             </Button>
           </div>
@@ -455,65 +798,136 @@ export function CommerceCheckout({ store, config, design, onClose, onEvent, onAc
               />
             </Field>
             {physical && (
-              <>
-                <Field label="Delivery method">
-                  <select
-                    value={form.pickupId}
-                    onChange={(e) => change("pickupId", e.target.value)}
-                  >
-                    <option value="">Deliver to my address</option>
-                    {config.delivery.pickups
-                      .filter((p) => p.enabled)
-                      .map((p) => (
-                        <option key={p.id} value={p.id}>
-                          Pickup: {p.name}
-                        </option>
-                      ))}
-                  </select>
-                </Field>
-                {form.pickupId ? (
-                  <p>
-                    {
-                      config.delivery.pickups.find(
-                        (p) => p.id === form.pickupId,
-                      )?.address
-                    }
-                  </p>
-                ) : (
-                  <>
+              <section className={css.fulfillmentSection} aria-labelledby="fulfillment-heading">
+                <div className={css.fulfillmentHeading}>
+                  <span className={css.fulfillmentIcon}><Truck size={16} /></span>
+                  <div>
+                    <strong id="fulfillment-heading">How would you like to receive your order?</strong>
+                    <small>Only options offered by this store are shown.</small>
+                  </div>
+                </div>
+                {availableFulfillment.length > 1 && (
+                  <div className={css.fulfillmentChoices} role="radiogroup" aria-labelledby="fulfillment-heading">
+                    {deliveryAvailable && (
+                      <button
+                        type="button"
+                        role="radio"
+                        aria-checked={form.fulfillmentMethod === "delivery"}
+                        className={form.fulfillmentMethod === "delivery" ? css.fulfillmentChoiceActive : ""}
+                        onClick={() => setFulfillment("delivery")}
+                      >
+                        <Truck size={16} /><span><b>Delivery</b><small>Send it to my address</small></span>
+                      </button>
+                    )}
+                    {pickupAvailable && (
+                      <button
+                        type="button"
+                        role="radio"
+                        aria-checked={form.fulfillmentMethod === "pickup"}
+                        className={form.fulfillmentMethod === "pickup" ? css.fulfillmentChoiceActive : ""}
+                        onClick={() => setFulfillment("pickup")}
+                      >
+                        <Store size={16} /><span><b>Pickup</b><small>Collect from the store</small></span>
+                      </button>
+                    )}
+                  </div>
+                )}
+                {!availableFulfillment.length && (
+                  <p className={css.fulfillmentUnavailable} role="alert">This store has not enabled delivery or pickup for physical products yet.</p>
+                )}
+                {availableFulfillment.length === 1 && form.fulfillmentMethod && (
+                  <p className={css.fulfillmentSingle}>{form.fulfillmentMethod === "delivery" ? "Delivery is available for this order." : "Pickup is available for this order."}</p>
+                )}
+                {form.fulfillmentMethod === "pickup" && (
+                  <div className={css.pickupPanel}>
+                    <Field label="Pickup location">
+                      <select required value={form.pickupId} onChange={(event) => change("pickupId", event.target.value)}>
+                        <option value="">Choose a pickup location</option>
+                        {pickups.map((pickup) => <option key={pickup.id} value={pickup.id}>{pickup.name}</option>)}
+                      </select>
+                    </Field>
+                    {activePickup && (
+                      <div className={css.pickupDetails}>
+                        <MapPin size={15} /><div><strong>{activePickup.name}</strong><span>{activePickup.address}</span>{activePickup.hours && <small>{activePickup.hours}</small>}{activePickup.instructions && <small>{activePickup.instructions}</small>}</div>
+                      </div>
+                    )}
+                  </div>
+                )}
+                {form.fulfillmentMethod === "delivery" && (
+                  <div className={css.deliveryAddress}>
+                    <div className={css.deliveryAddressHeading}><MapPin size={16}/><span><strong>Delivery address</strong><small>Choose a supported location to see the delivery price.</small></span></div>
+                    <LocationSelect
+                      label="Country"
+                      required
+                      items={countryItems}
+                      value={form.address.countryCode}
+                      placeholder="Choose your country"
+                      onChange={(item) => change("address", {
+                        ...form.address,
+                        countryCode: item?.code || locationId(item),
+                        country: locationLabel(item) || item?.code || locationId(item),
+                        regionId: "", state: "", areaId: "", city: "",
+                      })}
+                    />
+                    {showRegionSelector && (
+                      <LocationSelect
+                        label={regionRequired ? "State / region" : "State / region (optional)"}
+                        required={regionRequired}
+                        items={regionItems}
+                        value={form.address.regionId}
+                        disabled={!form.address.countryCode}
+                        placeholder={regionRequired ? "Choose your state or region" : "Choose a state or region if applicable"}
+                        onChange={(item) => change("address", {
+                          ...form.address,
+                          regionId: locationId(item),
+                          state: locationLabel(item),
+                          areaId: "", city: "",
+                        })}
+                      />
+                    )}
+                    {areaItems.length > 0 && (
+                      <LocationSelect
+                        label="City / area (optional)"
+                        items={areaItems}
+                        value={form.address.areaId}
+                        disabled={!form.address.regionId}
+                        placeholder="Choose an area if applicable"
+                        onChange={(item) => change("address", {
+                          ...form.address,
+                          areaId: locationId(item),
+                          city: locationLabel(item),
+                        })}
+                      />
+                    )}
                     <Field label="Street address">
                       <input
                         required
                         autoComplete="street-address"
-                        value={form.address.line}
-                        onChange={(e) => address("line", e.target.value)}
+                        value={form.address.streetAddress || form.address.line}
+                        placeholder="House number, street and estate"
+                        onChange={(event) => change("address", { ...form.address, line: event.target.value, streetAddress: event.target.value })}
                       />
                     </Field>
-                    {[
-                      ["country", "Country code (e.g. NG)"],
-                      ["state", "State / region"],
-                      ["city", "City"],
-                      ["postcode", "Postal code (optional)"],
-                    ].map(([k, label]) => (
-                      <Field key={k} label={label}>
-                        <input
-                          required={k === "country"}
-                          maxLength={k === "country" ? 2 : 80}
-                          value={form.address[k]}
-                          onChange={(e) =>
-                            address(
-                              k,
-                              k === "country"
-                                ? e.target.value.toUpperCase()
-                                : e.target.value,
-                            )
-                          }
-                        />
-                      </Field>
-                    ))}
-                  </>
+                    <Field label="Additional directions (optional)">
+                      <input
+                        autoComplete="off"
+                        value={form.address.directions}
+                        placeholder="Landmark, gate code or other useful detail"
+                        onChange={(event) => address("directions", event.target.value)}
+                      />
+                    </Field>
+                  </div>
                 )}
-              </>
+                {(form.fulfillmentMethod || quoteBusy || quoteError) && (
+                  <section className={css.deliveryQuote} aria-live="polite">
+                    {quoteBusy ? <span>Checking delivery options…</span> : quote ? <>
+                      <div><span>{form.fulfillmentMethod === "pickup" ? "Pickup" : "Delivery"}</span><strong>{quote.delivery?.name || (form.fulfillmentMethod === "pickup" ? activePickup?.name : "Selected location")}</strong></div>
+                      {estimateLabel(quote.delivery?.estimate, quote.delivery?.estimateLabel) && <small>Estimated arrival: {estimateLabel(quote.delivery?.estimate, quote.delivery?.estimateLabel)}</small>}
+                      <div className={css.deliveryQuotePrice}><span>Delivery fee</span><strong>{Number(quote.totals?.shippingMinor || 0) === 0 ? "Free" : formatMoney(quote.totals?.shippingMinor, quote.totals?.currency || store.currency)}</strong></div>
+                    </> : quoteError ? <p role="alert">{quoteError}</p> : <span>Choose your location to see delivery availability and your total.</span>}
+                  </section>
+                )}
+              </section>
             )}
             <Field label="Discount code (optional)">
               <input
@@ -572,9 +986,9 @@ export function CommerceCheckout({ store, config, design, onClose, onEvent, onAc
             )}
             <h3 className={css.reviewTitle}>Order summary</h3>
             <dl className={`${css.totals} ${css.reviewTotals}`}>
-              {[["subtotalMinor","Subtotal"],["discountMinor","Discount"],["shippingMinor","Delivery"],["taxMinor",`${config.checkout.taxLabel}${quote.totals.taxInclusive?" (included)":""}`],["totalMinor","Total"]].map(([k,label])=><div key={k}><dt>{label}</dt><dd>{k==="discountMinor"?"-":""}{formatMoney(quote.totals[k],quote.totals.currency)}</dd></div>)}
+              {[["subtotalMinor","Subtotal"],["discountMinor","Discount"],["shippingMinor","Delivery"],["taxMinor",`${config.checkout.taxLabel}${quote.totals.taxInclusive?" (included)":""}`],["totalMinor","Total"]].map(([k,label])=><div key={k}><dt>{label}</dt><dd>{k === "shippingMinor" && Number(quote.totals[k] || 0) === 0 ? "Free" : <>{k === "discountMinor" ? "-" : ""}{formatMoney(quote.totals[k],quote.totals.currency)}</>}</dd></div>)}
             </dl>
-            <details className={css.reviewItems}><summary>Items & delivery · {quote.lines.length} {quote.lines.length===1?"item":"items"}</summary><p>{form.customerName} · {form.customerPhone}</p>{quote.lines.map((l,i)=><p key={i}>{l.quantity} × {l.name} — {formatMoney(l.unitMinor*l.quantity,quote.totals.currency)}</p>)}<p>{quote.delivery.name}{quote.delivery.estimate?` · ${quote.delivery.estimate}`:""}</p></details>
+            <details className={css.reviewItems}><summary>Items & delivery · {quote.lines.length} {quote.lines.length===1?"item":"items"}</summary><p>{form.customerName} · {form.customerPhone}</p>{quote.lines.map((l,i)=><p key={i}>{l.quantity} × {l.name} — {formatMoney(l.unitMinor*l.quantity,quote.totals.currency)}</p>)}<p>{quote.delivery.name}{estimateLabel(quote.delivery.estimate,quote.delivery.estimateLabel) ? ` · ${estimateLabel(quote.delivery.estimate, quote.delivery.estimateLabel)}` : ""}</p></details>
             {quote.delivery.unconfigured&&<p className={css.transferNote}>Any delivery charges must be arranged with the store separately.</p>}
           </section>
         )}

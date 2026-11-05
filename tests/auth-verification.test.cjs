@@ -5,7 +5,7 @@ const vm = require('node:vm');
 const source = fs.readFileSync('V1.1/components/auth/V11AuthPage.jsx', 'utf8');
 function setup(code) {
   let focused = -1, requests = 0;
-  const ctx = { code, busy:false, verifying:{current:false}, form:{email:'test@example.com'}, refs:{current:Array.from({length:4},(_,i)=>({focus(){focused=i},select(){}}))}, setCode(value){ctx.code=value}, setError(){}, setBusy(value){ctx.busy=value}, apiRequest(){requests++;return new Promise(()=>{})}, finishAuthentication(){} };
+  const ctx = { code, passwordChallenge:"", setNewPassword(){},setConfirmPassword(){}, busy:false, verifying:{current:false}, form:{email:'test@example.com'}, refs:{current:Array.from({length:4},(_,i)=>({focus(){focused=i},select(){}}))}, setCode(value){ctx.code=value}, setError(){}, setBusy(value){ctx.busy=value}, apiRequest(){requests++;return new Promise(()=>{})}, finishAuthentication(){} };
   vm.createContext(ctx);
   vm.runInContext(source.slice(source.indexOf('  const verifyCode ='),source.indexOf('  const google ='))+';globalThis.remove=deleteCode;globalThis.enter=enterCode;',ctx);
   return {ctx,focus:()=>focused,requests:()=>requests};
@@ -27,4 +27,8 @@ test('deletion cannot mutate a code while verification is pending',()=>{
 test('typing or pasting four digits submits once; deleting never submits',()=>{
  const {ctx,requests}=setup(['','','','']);ctx.enter(0,'123');assert.equal(requests(),0);ctx.enter(3,'4');assert.equal(requests(),1);ctx.enter(3,'4');assert.equal(requests(),1);
  const pasted=setup(['','','','']);pasted.ctx.enter(0,'9876');assert.equal(pasted.requests(),1);
+});
+
+test('Google password verification uses the challenge endpoint instead of registration',()=>{
+ const {ctx}=setup(['','','','']);let path,body;ctx.passwordChallenge='challenge-token';ctx.apiRequest=(p,o)=>{path=p;body=JSON.parse(o.body);return new Promise(()=>{});};ctx.enter(0,'1234');assert.equal(path,'/auth/google-password/verify');assert.equal(body.challengeId,'challenge-token');assert.equal(body.email,'test@example.com');
 });
