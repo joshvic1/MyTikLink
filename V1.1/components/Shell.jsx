@@ -1,3 +1,4 @@
+import {subscriptionAction} from '../lib/subscriptionAction.mjs';
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -221,11 +222,11 @@ const helpChannels = [
     href: "https://wa.me/2348129037939",
   },
   {
-    title: "Chat with MyTikLink AI",
+    title: "Ask MyTikLink AI",
     detail: "Get instant help with MyTikLink.",
     Icon: MessagesSquare,
     tone: "ai",
-    badge: "Available now",
+    badge: "Responds immediately",
     action: "ai",
   },
   {
@@ -249,18 +250,14 @@ const helpChannels = [
     detail: "Connect with our community.",
     Icon: Send,
     tone: "telegram",
-    badge: "Coming soon",
-    soon: true,
+    badge: "Join our community",
+    href: "https://t.me/mytiklink",
   },
 ];
 export function Shell({ user, onLogout, children, onCreate, onAddProduct, hasStore = false, payments = [] }) {
   const router = useRouter();
   const { openSubscription } = useSubscription();
-  const isFreePlan = String(user?.plan || "free").toLowerCase().startsWith("free");
-  const expiredDate = Boolean(user?.planExpiry && new Date(user.planExpiry).getTime() <= Date.now());
-  const hasPaidBefore = payments.some(payment => String(payment.status || "").toLowerCase() === "successful" && /^(pro|standard)(_|$)/i.test(payment.plan || ""));
-  const expiredPlan = expiredDate || (isFreePlan && hasPaidBefore);
-  const showUpgrade = Boolean(user) && (isFreePlan || expiredPlan);
+  const {show:showUpgrade,renew:expiredPlan,previous:previousPayment}=subscriptionAction(user,payments);
   const current = activeRoute(router.asPath);
   const activePath = router.asPath.split("?")[0].replace(/\/+$/, "");
   const isStoreManagement =
@@ -390,7 +387,7 @@ export function Shell({ user, onLogout, children, onCreate, onAddProduct, hasSto
         </div>
       </aside>
       <main className={styles.main}>
-        <header className={styles.topbar}>
+        {activePath !== '/v1-1/store/design' && <header className={styles.topbar}>
           <div className={styles.topbarIdentity}>
             <IconButton
               label="Open menu"
@@ -426,12 +423,12 @@ export function Shell({ user, onLogout, children, onCreate, onAddProduct, hasSto
                 <PackagePlus /><span>Add product</span>
               </Button>
             )}
-            {showUpgrade && <Button className={`${styles.topbarUpgrade} ${expiredPlan ? styles.topbarUpgradeExpired : ""}`} onClick={() => openSubscription({ mode: "upgrade", preselected: "pro" })}><Sparkles aria-hidden="true" />Upgrade</Button>}
+            {showUpgrade && <Button className={`${styles.topbarUpgrade} ${expiredPlan ? styles.topbarUpgradeExpired : ""}`} onClick={() => openSubscription({ mode: expiredPlan ? "renew" : "upgrade", preselected: expiredPlan ? String(previousPayment?.plan||user?.plan||"pro").split("_")[0].replace("free","pro") : "pro", plan: previousPayment?.plan||user?.plan })}><Sparkles aria-hidden="true" />{expiredPlan ? "Renew" : "Upgrade"}</Button>}
             <Button className={styles.topbarCreate} onClick={onCreate}>
               <Plus /> Create
             </Button>
           </div>
-        </header>
+        </header>}
         {children}
       </main>
       <div
@@ -534,7 +531,7 @@ export function Shell({ user, onLogout, children, onCreate, onAddProduct, hasSto
           tone="teal"
           className={styles.helpSheet}
           title="How can we help?"
-          description="Choose the best way to reach our team."
+          description="Choose a help channel below to get the support you need."
           headerIcon={<Headphones />}
           onClose={() => setHelpOpen(false)}
         >

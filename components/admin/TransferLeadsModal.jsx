@@ -1,4 +1,5 @@
 "use client";
+import {apiBase as adminApiBase} from "@/components/control/api";
 
 import { useState } from "react";
 
@@ -22,10 +23,10 @@ export default function TransferLeadsModal({
     try {
       setLoading(true);
 
-      const token = localStorage.getItem("admin_token");
+      const token = "session";
 
       await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/admin/agents/${currentAgent._id}/transfer`,
+        `${adminApiBase()}/admin/agents/${currentAgent._id}/transfer`,
         {
           targetAgentId: selectedAgent,
         },

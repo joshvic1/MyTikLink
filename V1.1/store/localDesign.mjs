@@ -1,0 +1,3 @@
+export const draftKey=(user,store)=>user&&store?`v11-store-design-v1:${user}:${store}`:null;
+export function readDraft(storage,key){try{const value=JSON.parse(storage.getItem(key)||'null');if(value?.version!==1||!Array.isArray(value.design?.sections)||!value.design?.brand||!value.design?.layout)return null;return value;}catch{return null;}}
+export function writeDraft(storage,key,design,revision){if(!key)throw Error('Store identity is unavailable.');const text=JSON.stringify({version:1,design,revision,updatedAt:Date.now()});if(/data:(?:image|video|application)\/|blob:/i.test(text))throw Error('Finish uploading media before saving your draft.');storage.setItem(key,text);}

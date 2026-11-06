@@ -1,3 +1,4 @@
+import {apiBase as adminApiBase} from "@/components/control/api";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -32,11 +33,11 @@ export default function SegmentUsersPage() {
       setLoading(true);
 
       const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/admin/email/segments/${segmentKey}`,
+        `${adminApiBase()}/admin/email/segments/${segmentKey}`,
         {
           params: { page, limit },
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("admin_token")}`,
+            Authorization: `Bearer ${"session"}`,
           },
         }
       );
@@ -51,10 +52,10 @@ export default function SegmentUsersPage() {
   }
 
   function downloadCSV() {
-    const token = localStorage.getItem("admin_token");
+    const token = "session";
 
     fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/admin/email/segments/${segmentKey}/export`,
+      `${adminApiBase()}/admin/email/segments/${segmentKey}/export`,
       {
         headers: { Authorization: `Bearer ${token}` },
       }

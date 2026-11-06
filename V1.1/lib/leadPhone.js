@@ -1,12 +1,16 @@
 import { parsePhoneNumberFromString } from "libphonenumber-js";
 
-export function normalizeLeadPhone(value) {
+export function normalizeLeadPhone(value, countryCode) {
   const raw = String(value || "").trim();
   if (!/^[+\d\s().-]+$/.test(raw)) return null;
   let international = raw.replace(/^00/, "+");
   // A local number cannot be interpreted safely without its country.
   if (!international.startsWith("+")) {
-    if (international.startsWith("0")) return null;
+    if (international.startsWith("0")) {
+      if(!/^[A-Z]{2}$/.test(String(countryCode||"")))return null;
+      const local=parsePhoneNumberFromString(international,countryCode);
+      return local?.isValid()?local.number:null;
+    }
     international = `+${international}`;
   }
   const phone = parsePhoneNumberFromString(international);

@@ -1,3 +1,4 @@
+import {useLayoutEffect} from "react";
 import {createPortal} from "react-dom";
 const modalStack=[];
 let restoreModalScroll=null;
@@ -65,8 +66,18 @@ export function Field({ label, hint, error, children }) {
   return <label className={styles.field}><span>{label}</span>{children}{hint && !error && <small>{hint}</small>}{error && <small className={styles.fieldError}>{error}</small>}</label>;
 }
 
-export function Modal({ tone = "purple", title, description, headerIcon, headerActions, hideCloseButton = false, onClose, children, footer, wide = false, className = "", style, backdropClassName = "" }) {
+export function Modal({ tone = "purple", title, description, headerContent, headerIcon, headerActions, hideCloseButton = false, onClose, children, footer, wide = false, className = "", style, backdropClassName = "" }) {
   const dialogRef = useRef(null);
+  const backdropRef=useRef(null);
+  useLayoutEffect(()=>{
+   const element=backdropRef.current,viewport=window.visualViewport;
+   const update=()=>{if(!element||!window.matchMedia('(max-width:640px), (any-pointer:coarse)').matches)return;if(viewport&&Math.abs(viewport.scale-1)>.05)return;
+    element.style.setProperty('--sheet-visible-height',`${viewport?.height||window.innerHeight}px`);
+    element.style.setProperty('--sheet-visible-top',`${viewport?.offsetTop||0}px`);
+   };update();viewport?.addEventListener('resize',update);viewport?.addEventListener('scroll',update);window.addEventListener('resize',update);
+   return()=>{viewport?.removeEventListener('resize',update);viewport?.removeEventListener('scroll',update);window.removeEventListener('resize',update);};
+  },[]);
+
   const previousFocus = useRef(typeof document!=="undefined"?document.activeElement:null);
   const closeRef = useRef(onClose);
   closeRef.current = onClose;
@@ -75,6 +86,7 @@ export function Modal({ tone = "purple", title, description, headerIcon, headerA
     if(!modalStack.length) restoreModalScroll=lockModalScroll();
     const dialog = dialogRef.current;
     modalStack.push(dialog);
+    if(backdropRef.current)backdropRef.current.style.zIndex=String(10050+modalStack.length);
     modalStack.forEach(item=>{item.inert=item!==dialog;});
     const focusable = () => [...(dialog?.querySelectorAll('button:not([disabled]),a[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])') || [])];
     focusable()[0]?.focus({preventScroll:true});
@@ -82,5 +94,5 @@ export function Modal({ tone = "purple", title, description, headerIcon, headerA
     document.addEventListener("keydown", keydown);
     return () => { document.removeEventListener("keydown", keydown); const index=modalStack.indexOf(dialog);if(index>=0)modalStack.splice(index,1);modalStack.forEach(item=>{item.inert=item!==modalStack.at(-1);});if(!modalStack.length){restoreModalScroll?.();restoreModalScroll=null;}if(previous?.isConnected)previous.focus?.({preventScroll:true}); };
   }, []);
-  return typeof document!=="undefined"?createPortal(<div data-keyboard-sheet="" className={`${styles.modalBackdrop} ${backdropClassName}`} onMouseDown={(event) => event.target === event.currentTarget && onClose()}><section ref={dialogRef} style={style} data-popup-tone={tone} className={`${styles.modal} ${popup.surface} ${wide ? styles.modalWide : ""} ${className}`} role="dialog" aria-modal="true" aria-label={title}><header className={popup.header}><div className={headerIcon ? styles.modalHeadingWithIcon : ""}>{headerIcon && <span className={styles.modalHeaderIcon}>{headerIcon}</span>}<div><h2>{title}</h2>{description && <p>{description}</p>}</div></div>{headerActions?<div style={{display:"flex",alignItems:"center",gap:8}}>{headerActions}{!hideCloseButton&&<IconButton label="Close" onClick={onClose}><X/></IconButton>}</div>:!hideCloseButton&&<IconButton label="Close" onClick={onClose}><X/></IconButton>}</header><div className={`${styles.modalBody} ${/delete|deactivate|activate this/i.test(title)?styles.confirmationBody:""}`}>{/delete|deactivate|activate this/i.test(title)&&<div className={styles.confirmationIntro}><span><ShieldAlert size={23}/></span><div><b>{/delete/i.test(title)?"Review before deleting":"You’re in control"}</b><small>{/delete/i.test(title)?"This action cannot be undone.":"Confirm the visibility change below."}</small></div></div>}{children}</div>{footer && <footer className={popup.footer}>{footer}</footer>}</section></div>,document.body):null;
+  return typeof document!=="undefined"?createPortal(<div ref={backdropRef} data-keyboard-sheet="" className={`${styles.modalBackdrop} ${backdropClassName}`} onMouseDown={(event) => event.target === event.currentTarget && onClose()}><section ref={dialogRef} style={style} data-popup-tone={tone} className={`${styles.modal} ${popup.surface} ${wide ? styles.modalWide : ""} ${className}`} role="dialog" aria-modal="true" aria-label={title}><header className={popup.header}><div className={headerIcon ? styles.modalHeadingWithIcon : ""}>{headerIcon && <span className={styles.modalHeaderIcon}>{headerIcon}</span>}<div><h2>{title}</h2>{description && <p>{description}</p>}{headerContent}</div></div>{headerActions?<div style={{display:"flex",alignItems:"center",gap:8}}>{headerActions}{!hideCloseButton&&<IconButton label="Close" onClick={onClose}><X/></IconButton>}</div>:!hideCloseButton&&<IconButton label="Close" onClick={onClose}><X/></IconButton>}</header><div className={`${styles.modalBody} ${/delete|deactivate|activate this/i.test(title)?styles.confirmationBody:""}`}>{/delete|deactivate|activate this/i.test(title)&&<div className={styles.confirmationIntro}><span><ShieldAlert size={23}/></span><div><b>{/delete/i.test(title)?"Review before deleting":"You’re in control"}</b><small>{/delete/i.test(title)?"This action cannot be undone.":"Confirm the visibility change below."}</small></div></div>}{children}</div>{footer && <footer className={popup.footer}>{footer}</footer>}</section></div>,document.body):null;
 }

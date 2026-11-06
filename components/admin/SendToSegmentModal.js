@@ -1,4 +1,5 @@
 "use client";
+import {apiBase as adminApiBase} from "@/components/control/api";
 
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -11,10 +12,10 @@ export default function SendToSegmentModal({ segmentKey, onClose }) {
 
   useEffect(() => {
     async function loadTemplates() {
-      const token = localStorage.getItem("admin_token");
+      const token = "session";
 
       const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/admin/email/templates`,
+        `${adminApiBase()}/admin/email/templates`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -32,10 +33,10 @@ export default function SendToSegmentModal({ segmentKey, onClose }) {
     setSending(true);
 
     try {
-      const token = localStorage.getItem("admin_token");
+      const token = "session";
 
       const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/admin/email/send-to-segment`,
+        `${adminApiBase()}/admin/email/send-to-segment`,
         { segmentKey, templateId },
         { headers: { Authorization: `Bearer ${token}` } }
       );

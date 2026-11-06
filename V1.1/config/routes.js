@@ -38,7 +38,7 @@ export const navigation = [
   },
   {
     key: "insights",
-    label: "Insights",
+    label: "Analytics & Insights",
     href: v11Routes.insights,
     icon: "insights",
   },

@@ -886,3 +886,14 @@
 .topbarActions .topbarUpgradeExpired{background:linear-gradient(120deg,#d92d40,#ed4b56);border-color:#dc3547;box-shadow:0 4px 12px #d92d4033,inset 0 1px 0 #ffffff38}
 .topbarActions .topbarUpgradeExpired:hover{background:linear-gradient(120deg,#bf2034,#df3949);box-shadow:0 7px 17px #d92d4049}
 .topbarActions .topbarUpgradeExpired:focus-visible{outline-color:#d92d40}
+
+/* Comfortable support cards without changing their layout. */
+.helpSheet .helpChannelCard{padding:12px;min-height:84px}.helpSheet .helpChannel_ai .helpChannelCopy em{background:#e6f6eb;color:#237447}@media(max-width:640px){.helpSheet .helpChannelCard{padding:11px 12px;min-height:68px}}
+
+/* One scroll area keeps action buttons reachable while the keyboard resizes. */
+.modalBackdrop>.modal{display:flex;flex-direction:column;overflow:hidden;min-height:0}
+.modalBackdrop>.modal>header,.modalBackdrop>.modal>footer{flex:0 0 auto}
+.modalBackdrop>.modal>.modalBody{min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+@media(max-width:640px),(any-pointer:coarse){.modalBackdrop{top:var(--sheet-visible-top,0px);bottom:auto;height:var(--sheet-visible-height,100dvh);align-items:flex-end}.modalBackdrop>.modal{max-height:calc(var(--sheet-visible-height,100dvh) - 12px)}}
+
+.slugReview{font-size:inherit;line-height:1.5;min-width:0}.slugEditor{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:8px;padding:8px;background:#faf8fd;border:1px solid #e6deef;border-radius:10px}.slugEditor small{font-size:11px;overflow-wrap:anywhere}.slugEditor input{border:1px solid #ddd2ea;border-radius:7px;padding:7px 9px;min-height:36px;font:inherit;outline:none}.slugEditor input:focus{border-color:#9065d2;box-shadow:0 0 0 3px #9065d218}.slugEditor button{min-height:36px;padding:7px 10px;font-size:12px}

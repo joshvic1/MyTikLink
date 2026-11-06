@@ -1,0 +1,4 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {subscriptionAction} from './subscriptionAction.mjs';
+test('never-paid Free users upgrade even with a historical Free expiry',()=>{assert.deepEqual(subscriptionAction({plan:'free',planExpiry:'2020-01-01'}),{show:true,renew:false,previous:undefined});});
+test('downgraded paid users retain renewal and their last paid plan',()=>{const p={status:'successful',plan:'standard_yearly',paidAt:'2024-01-01'};const a=subscriptionAction({plan:'free'},[p]);assert.equal(a.renew,true);assert.equal(a.show,true);assert.equal(a.previous.plan,'standard_yearly');});
+test('expired paid users renew; active paid header behavior is preserved',()=>{assert.equal(subscriptionAction({plan:'pro',planExpiry:'2020-01-01'}).renew,true);for(const plan of ['pro','standard'])assert.equal(subscriptionAction({plan,planExpiry:'2099-01-01'}).show,false);});

@@ -1,3 +1,4 @@
+import {TrackingPage} from "./TrackingPage";
 import {apiRequest} from "../lib/api";
 import StoreReadyPreview, {StoreReadyThumbnail} from "../components/StoreReadyPreview";
 import {dashboardSuggestions} from "../lib/dashboardAccess";
@@ -88,6 +89,7 @@ export function HomePage({ user, data, onCreate }) {
     {upNextActions.length > 0 && <section className={styles.upNextRail} aria-label="Up next suggestions">{upNextActions.map((action) => <div className={styles.upNextSlide} key={action.key}><UpNext thumbnail={["store-upgrade","store-ready"].includes(action.kind)?<StoreReadyThumbnail detail={storeDetail} store={data.store}/>:undefined} secondaryLabel="Preview" page={action.kind==="starter-upgrade"?starter:null} action={action} onDismiss={() => dismissUpNext(action, action.key)} onSecondary={["store-upgrade","store-ready"].includes(action.kind)?()=>setStorePreview(true):action.kind==="starter-upgrade"&&starter?()=>setStarterPreview(starter):undefined} onAction={() => ["starter-upgrade","store-upgrade","redirect-upgrade"].includes(action.kind)?openSubscription({mode:"upgrade",preselected:"pro"}):action.kind === "create" ? onCreate("chooser") : router.push(action.href)}/></div>)}</section>}
     {isNewWorkspace ? <>{createSection}{isFree && <OnboardingPanel user={user} data={data} chooseFeature={chooseFeature}/>}</> : <>{recentSection}{createSection}{isFree && <OnboardingPanel user={user} data={data} chooseFeature={chooseFeature}/>}</>}
     {!recent.length && !isNewWorkspace && !isFree && <EmptyState title="Your workspace is ready" description="Create your first customer journey." action={<Button onClick={() => onCreate("page")}>Create a landing page</Button>}/>} 
+    <section className={styles.section}><div className={styles.sectionTitle}><h2>Pixels &amp; Integrations</h2></div><TrackingPage embedded/></section>
     {storePreview&&<StoreReadyPreview detail={storeDetail} onClose={()=>setStorePreview(false)} onUpgrade={publishing?undefined:()=>{setStorePreview(false);openSubscription({mode:"upgrade",preselected:"pro"});}}/>}
     {starterPreview&&<StarterPagePreview page={starterPreview} onClose={()=>setStarterPreview(null)} onUpgrade={()=>{setStarterPreview(null);openSubscription({mode:"upgrade",preselected:"pro"});}}/>}
     {featureInfo && <FeatureHelp feature={featureInfo} onClose={()=>setFeatureInfo(null)} onStart={()=>{const action=featureInfo.action;setFeatureInfo(null);chooseFeature(action);}}/>}

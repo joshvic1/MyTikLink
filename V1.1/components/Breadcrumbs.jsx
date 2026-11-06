@@ -4,7 +4,7 @@ import styles from "../styles/v11.module.css";
 
 const labels = {
   pages: "Landing pages", links: "Redirect Links", store: "Storefront",
-  analytics: "Insights", insights: "Insights", settings: "Settings",
+  analytics: "Analytics & Insights", insights: "Analytics & Insights", settings: "Settings",
   profile: "Account", tracking: "Tracking", billing: "Billing", security: "Security",
   plan: "Plan", products: "Products", orders: "Orders", design: "Design",
   setup: "Setup", editor: "Editor", builder: "Builder", create: "Create",

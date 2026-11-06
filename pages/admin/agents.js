@@ -1,4 +1,5 @@
 "use client";
+import {apiBase as adminApiBase} from "@/components/control/api";
 
 import { useEffect, useState } from "react";
 
@@ -32,10 +33,10 @@ export default function AgentsPage() {
 
   const fetchAgents = async () => {
     try {
-      const token = localStorage.getItem("admin_token");
+      const token = "session";
 
       const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/admin/agents`,
+        `${adminApiBase()}/admin/agents`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -52,10 +53,10 @@ export default function AgentsPage() {
   };
   const openLeads = async (agent) => {
     try {
-      const token = localStorage.getItem("admin_token");
+      const token = "session";
 
       const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/admin/agents/${agent._id}/leads`,
+        `${adminApiBase()}/admin/agents/${agent._id}/leads`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -74,10 +75,10 @@ export default function AgentsPage() {
   };
   const toggleAgent = async (agent) => {
     try {
-      const token = localStorage.getItem("admin_token");
+      const token = "session";
 
       await axios.put(
-        `${process.env.NEXT_PUBLIC_API_URL}/admin/agents/${agent._id}/toggle`,
+        `${adminApiBase()}/admin/agents/${agent._id}/toggle`,
         {},
         {
           headers: {
@@ -98,10 +99,10 @@ export default function AgentsPage() {
     if (!confirmDelete) return;
 
     try {
-      const token = localStorage.getItem("admin_token");
+      const token = "session";
 
       await axios.delete(
-        `${process.env.NEXT_PUBLIC_API_URL}/admin/agents/${id}`,
+        `${adminApiBase()}/admin/agents/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

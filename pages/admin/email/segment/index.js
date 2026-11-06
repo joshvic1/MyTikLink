@@ -1,4 +1,5 @@
 "use client";
+import {apiBase as adminApiBase} from "@/components/control/api";
 
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -18,10 +19,10 @@ export default function AdminEmailIndexPage() {
     try {
       setLoading(true);
 
-      const token = localStorage.getItem("admin_token");
+      const token = "session";
 
       const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/admin/email/segments`,
+        `${adminApiBase()}/admin/email/segments`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

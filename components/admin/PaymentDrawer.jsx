@@ -1,4 +1,5 @@
 "use client";
+import {apiBase as adminApiBase} from "@/components/control/api";
 
 import { useState } from "react";
 
@@ -17,10 +18,10 @@ export default function PaymentDrawer({ agent, onClose, refresh }) {
     try {
       setLoading(true);
 
-      const token = localStorage.getItem("admin_token");
+      const token = "session";
 
       await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/admin/agents/${agent._id}/payout`,
+        `${adminApiBase()}/admin/agents/${agent._id}/payout`,
         {
           amount: Number(amount),
         },

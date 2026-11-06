@@ -1,4 +1,5 @@
 "use client";
+import {apiBase as adminApiBase} from "@/components/control/api";
 
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -17,10 +18,10 @@ export default function SegmentEmailLogsPage() {
 
     axios
       .get(
-        `${process.env.NEXT_PUBLIC_API_URL}/admin/email/segments/${segmentKey}/logs?page=${page}`,
+        `${adminApiBase()}/admin/email/segments/${segmentKey}/logs?page=${page}`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("admin_token")}`,
+            Authorization: `Bearer ${"session"}`,
           },
         }
       )

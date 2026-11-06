@@ -1,3 +1,6 @@
+import {Modal,Button} from '../components/UI';
+import ScratchGuide from './ScratchGuide';
+import {historyState,historyReducer} from './historyState';
 
 import CustomPageRenderer from "@/components/custom/renderer/CustomPageRenderer";
 import ThemeEditor from "./ThemeEditor";
@@ -8,12 +11,12 @@ import { v11ApiBase } from "../lib/apiBase";
 // builder/customBuilder.js
 import { canUseLandingPages } from "@/V1.1/lib/pageAccess.js";
 import styles from "./MobileBuilder.module.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useReducer } from "react";
 import { useRouter } from "next/router";
 import AddElementModal from "@/components/custom/modals/AddElementModal";
 import { createElement } from "@/components/custom/utils/elementFactory";
 import Section from "@/components/custom/builder/Section";
-import { Plus, ArrowLeft, Check, Rocket, Loader2, Save, Eye, Pencil } from "lucide-react";
+import { Plus, ArrowLeft, Check, Rocket, Loader2, Save, Eye, Pencil, Undo2, Redo2, ChevronUp, ChevronDown, Trash2, CircleHelp } from "lucide-react";
 import DraftsModal from "@/components/custom/modals/DraftsModal";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -35,7 +38,13 @@ export default function CustomBuilder() {
 
   const { pageId, themeId } = router.query;
   const [editorMode,setEditorMode]=useState("edit");
-  const [sections, setSections] = useState([]);
+  const [selectedSection,setSelectedSection]=useState(null);
+  const [history,dispatchHistory]=useReducer(historyReducer,[],historyState);
+  const sections=history.present;
+  const setSections=value=>dispatchHistory({type:'set',value});
+  const resetSections=value=>dispatchHistory({type:'reset',value});
+  const selectedIndex=sections.findIndex(section=>section.id===selectedSection);
+  const moveSelected=direction=>{if(selectedIndex<0||selectedIndex+direction<0||selectedIndex+direction>=sections.length)return;setSections(current=>{const next=[...current];[next[selectedIndex],next[selectedIndex+direction]]=[next[selectedIndex+direction],next[selectedIndex]];return next;});setHasChanges(true);};
   const [showModal, setShowModal] = useState(false);
   const [addTarget, setAddTarget] = useState(null);
   const [showDrafts, setShowDrafts] = useState(false);
@@ -108,7 +117,7 @@ export default function CustomBuilder() {
         );
 
         // ✅ load existing sections
-        setSections(res.data.customContent || []);
+        resetSections(res.data.customContent || []);
         setPageTitle(res.data.title || "");
         // optional
         setCurrentDraftId(null);
@@ -137,7 +146,7 @@ export default function CustomBuilder() {
       const restored = router.query.themeDraft ? getDrafts().find(draft => draft.id === router.query.themeDraft && getThemeBlock(draft.content)?.themeId === themeId) : null;
       const content = restored?.content || [instance];
       const draftId = restored?.id || saveDraft(content);
-      setCurrentDraftId(draftId); setSections(content); setShowDrafts(false); setLoadingPage(false);
+      setCurrentDraftId(draftId); resetSections(content); setShowDrafts(false); setLoadingPage(false);
       if (!restored) router.replace({pathname:router.pathname,query:{...router.query,themeDraft:draftId}},undefined,{shallow:true});
     });
     return () => { active = false; };
@@ -155,7 +164,7 @@ export default function CustomBuilder() {
   }, [pageId, themeId, router.query.drafts]);
 
   useEffect(() => {
-    if (sections.length === 0) return;
+    if (sections.length === 0 && !currentDraftId) return;
 
     const timeout = setTimeout(() => {
       const drafts = getDrafts();
@@ -228,9 +237,8 @@ export default function CustomBuilder() {
     );
   };
 
-  const deleteSection = (sectionId) => {
-    setSections((prev) => prev.filter((sec) => sec.id !== sectionId));
-  };
+  const [deleteTarget,setDeleteTarget]=useState(null);
+  const deleteSection = setDeleteTarget;
   const updateElement = (sectionId, elementId, newData) => {
     setSections((prev) =>
       prev.map((sec) =>
@@ -317,7 +325,7 @@ export default function CustomBuilder() {
     }
   };
   const handleSelectDraft = (draft) => {
-    setSections(draft.content);
+    resetSections(draft.content);
 
     setCurrentDraftId(draft.id);
 
@@ -426,14 +434,14 @@ export default function CustomBuilder() {
     return <div className={styles.loading}>Loading page...</div>;
   }
   return (
-    <div className={styles.container}>
+    <div className={styles.container}><ScratchGuide userId={user?._id||user?.id} onEdit={()=>setEditorMode("edit")}/>
 
       {editorMode==="preview"&&<div className={styles.preview}><div className={styles.previewLabel}>Mobile preview</div><div inert="" className={styles.previewPage}>{sections.length?<CustomPageRenderer sections={sections}/>:<p>Add your first element to see a preview.</p>}</div></div>}
       {/* MAIN CANVAS */}
       <div className={styles.canvas} hidden={editorMode!=="edit"}>
         {sections.length === 0 ? (
           <div
-            className={styles.emptyBox}
+            data-scratch-add="" className={styles.emptyBox}
             role="button" tabIndex={0} onKeyDown={e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openAddElement("outside");}}}
             onClick={() => openAddElement("outside")}
           >
@@ -443,7 +451,8 @@ export default function CustomBuilder() {
           </div>
         ) : (
           sections.map((section,index) => (
-            <div key={section.id} className={styles.blockCard}><div className={styles.blockHeading}><strong>Section {index+1}</strong><div><button aria-label={`Move section ${index+1} up`} disabled={index===0} onClick={()=>{const next=[...sections];[next[index-1],next[index]]=[next[index],next[index-1]];setSections(next);setHasChanges(true);}}>↑</button><button aria-label={`Move section ${index+1} down`} disabled={index===sections.length-1} onClick={()=>{const next=[...sections];[next[index+1],next[index]]=[next[index],next[index+1]];setSections(next);setHasChanges(true);}}>↓</button></div></div><Section
+            <div key={section.id} onPointerDownCapture={()=>setSelectedSection(section.id)} className={styles.blockCard}><Section
+              renderHeader={edit=>(<div className={styles.blockHeading}><strong>Section {index+1}</strong><div data-scratch-move=""><button type="button" aria-label={`Edit section ${index+1}`} onClick={edit}><Pencil size={15}/></button><button type="button" aria-label={`Delete section ${index+1}`} onClick={()=>deleteSection(section.id)}><Trash2 size={15}/></button><button aria-label={`Move section ${index+1} up`} disabled={index===0} onClick={()=>{const next=[...sections];[next[index-1],next[index]]=[next[index],next[index-1]];setSections(next);setHasChanges(true);}}>↑</button><button aria-label={`Move section ${index+1} down`} disabled={index===sections.length-1} onClick={()=>{const next=[...sections];[next[index+1],next[index]]=[next[index],next[index+1]];setSections(next);setHasChanges(true);}}>↓</button></div></div>)}
               key={section.id}
               section={section}
               openAddElement={openAddElement}
@@ -456,7 +465,7 @@ export default function CustomBuilder() {
         )}
         {sections.length > 0 && (
           <div
-            className={styles.addOutside}
+            data-scratch-add="" className={styles.addOutside}
             role="button" tabIndex={0} onKeyDown={e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openAddElement("outside");}}}
             onClick={() => openAddElement("outside")}
           >
@@ -472,14 +481,18 @@ export default function CustomBuilder() {
           <ArrowLeft size={20} />
         </button>
 
-        <button className={styles.saveDraft} aria-pressed={editorMode==="preview"} onClick={()=>setEditorMode(editorMode==="preview"?"edit":"preview")}>{editorMode==="preview"?<><Pencil size={18}/>Back to canvas</>:<><Eye size={18}/>Preview</>}</button>
+        <button aria-label={editorMode==="preview"?"Edit page":"Preview page"} data-scratch-preview="" className={styles.saveDraft} aria-pressed={editorMode==="preview"} onClick={()=>setEditorMode(editorMode==="preview"?"edit":"preview")}>{editorMode==="preview"?<><Pencil size={18}/><span>Edit</span></>:<><Eye size={18}/><span>Preview</span></>}</button>
 
+        <button className={styles.iconBtn} aria-label="Undo" disabled={!history.past.length} onClick={()=>{dispatchHistory({type:'undo'});setHasChanges(true);}}><Undo2 size={17}/></button>
+        <button className={styles.iconBtn} aria-label="Redo" disabled={!history.future.length} onClick={()=>{dispatchHistory({type:'redo'});setHasChanges(true);}}><Redo2 size={17}/></button>
+        <button type="button" className={styles.iconBtn} aria-label="Show canvas guide" onClick={()=>window.dispatchEvent(new Event("scratch:help"))}><CircleHelp size={17}/></button>
         {/* PUBLISH */}
-        <button className={styles.publish} onClick={handlePublish}>
+        <button data-scratch-publish="" className={styles.publish} onClick={handlePublish}>
           <Rocket size={18} />
           Publish
         </button>
       </div>
+      {deleteTarget&&<Modal title="Remove section?" onClose={()=>setDeleteTarget(null)} footer={<><Button onClick={()=>setDeleteTarget(null)} variant="secondary">Cancel</Button><Button onClick={()=>{setSections(prev=>prev.filter(sec=>sec.id!==deleteTarget));setHasChanges(true);setDeleteTarget(null);}}>Confirm</Button></>}><p>This removes the section and its items. You can undo this change.</p></Modal>}
       <AddElementModal
         isOpen={showModal}
         onClose={() => setShowModal(false)}

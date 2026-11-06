@@ -6,12 +6,19 @@ import { parsePhoneNumberFromString, getCountries, getCountryCallingCode } from 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Button, Field, Modal, LoadingState } from "./UI";
 import { notify } from "./Notifications";
-import { v11Api } from "../lib/api";
+import { apiRequest, v11Api } from "../lib/api";
 import styles from "../styles/v11.module.css";
-import { Sparkles, Search, Check, ArrowRight, LockKeyhole, LoaderCircle, ExternalLink } from "lucide-react";
+import { Pencil, Sparkles, Search, Check, ArrowRight, LockKeyhole, LoaderCircle, ExternalLink } from "lucide-react";
 
 export function CreateLinkModal({ link, onClose, onSaved }) {
  const editing=Boolean(link);
+ const [slugInfo,setSlugInfo]=useState(null),[slug,setSlug]=useState(link?.linkId||''),[slugDraft,setSlugDraft]=useState(''),[editingSlug,setEditingSlug]=useState(false),[slugError,setSlugError]=useState(''),[slugBusy,setSlugBusy]=useState(false),[customSlug,setCustomSlug]=useState(null);
+ useEffect(()=>{let live=true;apiRequest('/v1-1/links/slug-preview').then(data=>{if(live){setSlugInfo(data);setSlug(link?.linkId||data.slug);}}).catch(e=>{if(live)setSlugError(e.message)});return()=>{live=false}},[link?.linkId]);
+ const applySlug=async()=>{
+  const value=slugDraft.trim().toLowerCase();if(!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value)||value.length>64){setSlugError('Use 1–64 letters, numbers or single hyphens, without spaces.');return;}
+  setSlugBusy(true);setSlugError('');try{const result=await apiRequest('/v1-1/links/slug-availability?slug='+encodeURIComponent(value)+(link? '&excludeId='+link._id:''));if(!result.available)throw Error('That slug is already taken. Choose another address.');setSlug(result.slug);setCustomSlug(result.slug);setEditingSlug(false);}catch(e){setSlugError(e.message)}finally{setSlugBusy(false)}
+ };
+
  const {openSubscription}=useSubscription();
  const [saved,setSaved]=useState(null),[copied,setCopied]=useState(false);
  const [step,setStep]=useState(0),[search,setSearch]=useState(""),[page,setPage]=useState(1);
@@ -103,11 +110,12 @@ export function CreateLinkModal({ link, onClose, onSaved }) {
  };
  const submit=async(afterUpgrade=false)=>{
   if(submitting.current)return;
+  if(editingSlug||(!editing&&!slugInfo)){notify.warning(editingSlug?'Apply your link address first.':'Your link address is still loading. Please try again.');return;}
   if(Object.keys(fieldErrors).length){const target=Object.keys(fieldErrors).some(key=>key!=="design")?0:1;setStep(target);validateStep(target);return;}
   submitting.current=true;setState(s=>({...s,saving:true}));
   try{
    const {valid,error,...destination}=parsed;
-   const payload={title:form.title.trim(),...destination,templateId:form.templateId};
+   const payload={title:form.title.trim(),...destination,templateId:form.templateId,...(customSlug!==null&&customSlug!==link?.linkId?{customSlug}:!editing?{slugToken:slugInfo.token}:{})};
    const result=editing?await v11Api.updateLink(link.linkId,payload):await v11Api.createLink(payload);
    setSaved(result.link||result);
    notify.success(editing?"Redirect link updated":"Redirect link created");
@@ -142,7 +150,7 @@ export function CreateLinkModal({ link, onClose, onSaved }) {
    {!state.loading&&!state.error&&!catalog.templates.length&&<p className={styles.wizardHint}>{search?"No designs match your search.":"No other designs are available yet."}</p>}
    {catalog.totalPages>1&&<div className={styles.templatePagination}><Button variant="secondary" disabled={page===1||state.loading} onClick={()=>setPage(p=>p-1)}>Previous</Button><span aria-live="polite">Page {page} of {catalog.totalPages}</span><Button variant="secondary" disabled={page>=catalog.totalPages||state.loading} onClick={()=>setPage(p=>p+1)}>Next page</Button></div>}
   </>}
-  {step===2&&<><div className={styles.redirectReviewHero}>{catalog.templates.find(t=>t._id===form.templateId)?.thumbnailUrl?<img src={catalog.templates.find(t=>t._id===form.templateId).thumbnailUrl} alt=""/>:<span><ExternalLink size={22}/></span>}<div><small>YOUR REDIRECT</small><strong>{form.title}</strong><p>{templateName} · {destinationLabels[platform]}</p></div><Check size={18}/></div><dl className={styles.wizardReview}><div><dt>Link name</dt><dd>{form.title}</dd></div><div><dt>Destination</dt><dd>{form.whatsappCode}</dd></div><div><dt>Type</dt><dd>{parsed.platform} · {parsed.linkType}</dd></div>{parsed.linkType==="dm"&&form.prefill&&<div><dt>Ready message</dt><dd>{form.prefill}</dd></div>}<div><dt>Design</dt><dd>{templateName}</dd></div></dl></>}
+  {step===2&&<><div className={styles.redirectReviewHero}>{catalog.templates.find(t=>t._id===form.templateId)?.thumbnailUrl?<img src={catalog.templates.find(t=>t._id===form.templateId).thumbnailUrl} alt=""/>:<span><ExternalLink size={22}/></span>}<div><small>YOUR REDIRECT</small><strong>{form.title}</strong><p>{templateName} · {destinationLabels[platform]}</p></div><Check size={18}/></div><dl className={styles.wizardReview}><div><dt>Link name</dt><dd>{form.title}</dd></div><div><dt>Destination</dt><dd>{form.whatsappCode}</dd></div><div><dt>Type</dt><dd>{parsed.platform} · {parsed.linkType}</dd></div>{parsed.linkType==="dm"&&form.prefill&&<div><dt>Ready message</dt><dd>{form.prefill}</dd></div>}<div><dt>Design</dt><dd>{templateName}</dd></div><div><dt>Link URL</dt><dd className={styles.slugReview}><span style={{overflowWrap:'anywhere'}}>{slugInfo ? slugInfo.prefix+slug : link?.publicUrl||'Preparing link…'}</span>{slugInfo?.canCustomize&&!editingSlug&&<button type="button" aria-label="Edit link address" onClick={()=>{setSlugDraft(slug);setSlugError('');setEditingSlug(true)}} style={{border:0,background:'transparent',color:'#7951b0',padding:8}}><Pencil size={14}/></button>}{editingSlug&&<div className={styles.slugEditor}><small>{slugInfo.prefix}</small><input aria-label="Custom link slug" value={slugDraft} onChange={e=>setSlugDraft(e.target.value)} style={{minWidth:100,width:'100%',flex:1}}/><Button type="button" variant="secondary" disabled={slugBusy} onClick={e=>{e.preventDefault();e.stopPropagation();applySlug();}}>{slugBusy?'Checking…':'Apply'}</Button>{editing&&<small style={{width:'100%',color:'#9a5d18'}}>Changing this address will stop the previous URL from working.</small>}</div>}{slugError&&<small role="alert" style={{display:'block',color:'#b42318'}}>{slugError}</small>}</dd></div></dl></>}
   </div>
  </Modal>;
 }

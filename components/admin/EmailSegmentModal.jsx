@@ -1,3 +1,4 @@
+import {apiBase as adminApiBase} from "@/components/control/api";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "@/styles/admin/emailModal.module.css";
@@ -14,11 +15,11 @@ export default function EmailSegmentModal({ segmentKey, onClose }) {
   useEffect(() => {
     axios
       .post(
-        `${process.env.NEXT_PUBLIC_API_URL}/admin/email/segments/${segmentKey}/preview`,
+        `${adminApiBase()}/admin/email/segments/${segmentKey}/preview`,
         {},
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("admin_token")}`,
+            Authorization: `Bearer ${"session"}`,
           },
         }
       )
@@ -57,14 +58,14 @@ export default function EmailSegmentModal({ segmentKey, onClose }) {
         : html;
 
     await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/admin/email/segments/${segmentKey}/send`,
+      `${adminApiBase()}/admin/email/segments/${segmentKey}/send`,
       {
         subject,
         html: finalHtml,
       },
       {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("admin_token")}`,
+          Authorization: `Bearer ${"session"}`,
         },
       }
     );

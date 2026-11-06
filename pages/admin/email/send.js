@@ -1,4 +1,5 @@
 "use client";
+import {apiBase as adminApiBase} from "@/components/control/api";
 
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -21,17 +22,17 @@ export default function SendEmailToSegmentPage() {
   useEffect(() => {
     async function loadData() {
       try {
-        const token = localStorage.getItem("admin_token");
+        const token = "session";
 
         const [segRes, tplRes] = await Promise.all([
           axios.get(
-            `${process.env.NEXT_PUBLIC_API_URL}/api/admin/email/segments`,
+            `${adminApiBase()}/api/admin/email/segments`,
             {
               headers: { Authorization: `Bearer ${token}` },
             }
           ),
           axios.get(
-            `${process.env.NEXT_PUBLIC_API_URL}/api/admin/email/templates`,
+            `${adminApiBase()}/api/admin/email/templates`,
             {
               headers: { Authorization: `Bearer ${token}` },
             }
@@ -53,10 +54,10 @@ export default function SendEmailToSegmentPage() {
     async function loadPreview() {
       if (!selectedTemplate) return;
       try {
-        const token = localStorage.getItem("admin_token");
+        const token = "session";
 
         const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/admin/email/templates/${selectedTemplate}/preview`,
+          `${adminApiBase()}/api/admin/email/templates/${selectedTemplate}/preview`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
 
@@ -77,10 +78,10 @@ export default function SendEmailToSegmentPage() {
       setLoadingCount(true);
 
       try {
-        const token = localStorage.getItem("admin_token");
+        const token = "session";
 
         const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/admin/email/segments/${selectedSegment}/count`,
+          `${adminApiBase()}/api/admin/email/segments/${selectedSegment}/count`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
 
@@ -111,10 +112,10 @@ export default function SendEmailToSegmentPage() {
     setSending(true);
 
     try {
-      const token = localStorage.getItem("admin_token");
+      const token = "session";
 
       await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/admin/email/send`,
+        `${adminApiBase()}/api/admin/email/send`,
         {
           segment: selectedSegment,
           templateId: selectedTemplate,

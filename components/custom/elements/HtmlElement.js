@@ -22,12 +22,12 @@ export default function HtmlElement({
       </div>
 
       <div className={styles.actions}>
-        <button className={styles.edit} onClick={() => setOpen(true)}>
+        <button data-canvas-edit="" data-canvas-action="" className={styles.edit} onClick={() => setOpen(true)}>
           <Pencil size={14} />
         </button>
 
         <button
-          className={styles.delete}
+          data-canvas-action="" className={styles.delete}
           onClick={() => onDeleteElement(sectionId, element.id)}
         >
           x

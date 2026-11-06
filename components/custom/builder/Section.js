@@ -8,6 +8,7 @@ import EditSectionModal from "../modals/EditSectionModal";
 
 export default function Section({
   section,
+  renderHeader,
   onAddElement,
   openAddElement,
   onDeleteElement,
@@ -19,6 +20,8 @@ export default function Section({
 }) {
   const [showEdit, setShowEdit] = useState(false);
   return (
+    <>
+    {renderHeader?.(()=>setShowEdit(true))}
     <div
       className={styles.section}
       style={{
@@ -74,7 +77,7 @@ export default function Section({
       }}
     >
       {/* HEADER */}
-      <div className={styles.header}>
+      {!renderHeader&&<div className={styles.header}>
         <div className={styles.label}>Section</div>
 
         <div className={styles.actions}>
@@ -91,6 +94,7 @@ export default function Section({
         </div>
       </div>
 
+      }
       {/* ELEMENTS */}
       <div className={styles.inner}>
         {section.elements.map((el) => (
@@ -128,6 +132,6 @@ export default function Section({
         section={section}
         onSave={(data) => onUpdateSection(section.id, data)}
       />
-    </div>
+    </div></>
   );
 }

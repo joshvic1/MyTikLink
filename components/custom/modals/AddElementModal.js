@@ -60,7 +60,7 @@ export default function AddElementModal({ isOpen, onClose, onSelect }) {
     el.label.toLowerCase().includes(query.toLowerCase()),
   );
   return (
-    <BottomSheet isOpen={isOpen} onClose={onClose}>
+    <BottomSheet title="Add element" isOpen={isOpen} onClose={onClose}>
       <div className={styles.container}>
         <h3 className={styles.title}>Add Element</h3>
 
@@ -76,7 +76,7 @@ export default function AddElementModal({ isOpen, onClose, onSelect }) {
             const Icon = el.icon;
 
             return (
-              <div
+              <button type="button" disabled={!el.available}
                 key={el.type}
                 className={`${styles.card} ${!el.available ? styles.disabled : ""}`}
                 onClick={() => el.available && onSelect(el.type)}
@@ -90,7 +90,7 @@ export default function AddElementModal({ isOpen, onClose, onSelect }) {
                 </div>
 
                 <p className={styles.label}>{el.label}</p>
-              </div>
+              </button>
             );
           })}
         </div>

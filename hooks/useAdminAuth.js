@@ -1,23 +1,9 @@
 "use client";
-
-import { useState, useEffect } from "react";
-
-export default function useAdminAuth() {
-  const [token, setToken] = useState(null);
-  const [loading, setLoading] = useState(true); // 🔥 NEW
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const t = localStorage.getItem("admin_token");
-      setToken(t);
-      setLoading(false); // 🔥 LOCALSTORAGE DONE
-    }
-  }, []);
-
-  const logout = () => {
-    localStorage.removeItem("admin_token");
-    setToken(null);
-  };
-
-  return { token, loading, logout };
+import {useEffect,useState} from 'react';
+import {request} from '@/components/control/api';
+export default function useAdminAuth(){
+ const [token,setToken]=useState(null),[loading,setLoading]=useState(true);
+ useEffect(()=>{const c=new AbortController();request('/control/me',{signal:c.signal}).then(()=>setToken('session')).catch(()=>setToken(null)).finally(()=>setLoading(false));return()=>c.abort();},[]);
+ const logout=async()=>{try{await request('/staff/logout',{method:'POST',body:{}});}finally{setToken(null);}};
+ return {token,loading,logout};
 }

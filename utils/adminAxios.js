@@ -1,19 +1,4 @@
-import axios from "axios";
-
-const adminAxios = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
-});
-
-// Attach token automatically on every request
-adminAxios.interceptors.request.use((config) => {
-  const token =
-    typeof window !== "undefined" ? localStorage.getItem("admin_token") : null;
-
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-
-  return config;
-});
-
-export default adminAxios;
+import axios from 'axios';
+import {apiBase} from '@/components/control/api';
+// The same-origin BFF reads the HttpOnly Inbox session and enforces Super Admin authority.
+export default axios.create({baseURL:apiBase()});

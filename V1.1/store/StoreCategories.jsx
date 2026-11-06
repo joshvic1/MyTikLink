@@ -1,3 +1,5 @@
+import {CatalogUrl,slugFromName,SmallLoading} from "./CatalogControls";
+import NumericInput from "../components/NumericInput";
 import SettingsHelp from "./SettingsHelp";
 import { useEffect, useRef, useState } from "react";
 import { Plus, Search, X, Pencil, Archive, ChevronRight } from "lucide-react";
@@ -7,171 +9,23 @@ import { notify } from "../components/Notifications";
 import ImagePicker from "./ImagePicker";
 import css from "./StoreSettings.module.css";
 const endpoint = "/v1-1/store-studio/categories";
-export function CategoryEditor({ category, onClose, onSaved, parents = [] }) {
-  const [form, setForm] = useState(
-    category || {
-      name: "",
-      slug: "",
-      description: "",
-      image: "",
-      visible: true,
-      sortOrder: 0,
-      parent: "",
-    },
-  );
-  const [busy, setBusy] = useState(false),
-    [error, setError] = useState(""),
-    [discard, setDiscard] = useState(false);
-  const lock = useRef(false),
-    dirty = useRef(false);
-  const set = (key, value) => {
-    dirty.current = true;
-    setForm((f) => ({ ...f, [key]: value }));
-  };
-  const close = () => {
-    if (lock.current) return;
-    if (dirty.current) setDiscard(true);
-    else onClose();
-  };
-  const submit = async (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (lock.current) return;
-    lock.current = true;
-    setBusy(true);
-    setError("");
-    try {
-      const result = await apiRequest(
-        endpoint + (category ? `/${category._id}` : ""),
-        { method: category ? "PATCH" : "POST", body: JSON.stringify(form) },
-      );
-      notify.success(category ? "Category updated" : "Category created");
-      onSaved(result.category);
-    } catch (e) {
-      setError(e.message);
-    } finally {
-      lock.current = false;
-      setBusy(false);
-    }
-  };
-  return (
-    <Modal
-      tone="teal"
-      title={category ? "Edit category" : "Add a category"}
-      description="Organise the products in your store."
-      onClose={close}
-      footer={
-        <>
-          {discard ? (
-            <>
-              <Button variant="secondary" onClick={() => setDiscard(false)}>
-                Keep editing
-              </Button>
-              <Button onClick={onClose}>Discard changes</Button>
-            </>
-          ) : (
-            <>
-              <Button variant="secondary" disabled={busy} onClick={close}>
-                Cancel
-              </Button>
-              <Button
-                form="store-category-editor"
-                type="submit"
-                disabled={busy}
-              >
-                {busy ? "Saving…" : "Save category"}
-              </Button>
-            </>
-          )}
-        </>
-      }
-    >
-      {discard && <p role="alert">Discard your unsaved category changes?</p>}
-      <form id="store-category-editor" onSubmit={submit} className={css.form}>
-        <Field label="Category name">
-          <input
-            autoFocus
-            required
-            maxLength={80}
-            value={form.name}
-            onChange={(e) => set("name", e.target.value)}
-          />
-        </Field>
-        <Field label="Category URL">
-          <input
-            maxLength={80}
-            placeholder="Created from the name"
-            value={form.slug}
-            onChange={(e) => set("slug", e.target.value)}
-          />
-        </Field>
-        <Field label="Parent category">
-          <select
-            value={form.parent || ""}
-            onChange={(e) => set("parent", e.target.value)}
-          >
-            <option value="">None — top level</option>
-            {parents
-              .filter((p) => !p.parent && p._id !== category?._id)
-              .map((p) => (
-                <option value={p._id} key={p._id}>
-                  {p.name}
-                </option>
-              ))}
-          </select>
-        </Field>
-        <Field label="Description">
-          <textarea
-            rows={3}
-            maxLength={600}
-            value={form.description}
-            onChange={(e) => set("description", e.target.value)}
-          />
-        </Field>
-        <Field label="Search title (optional)">
-          <input
-            maxLength={70}
-            value={form.seoTitle || ""}
-            onChange={(e) => set("seoTitle", e.target.value)}
-          />
-        </Field>
-        <Field label="Search description (optional)">
-          <textarea
-            maxLength={170}
-            value={form.seoDescription || ""}
-            onChange={(e) => set("seoDescription", e.target.value)}
-          />
-        </Field>
-        <ImagePicker
-          label="Category image"
-          value={form.image}
-          onChange={(url) => set("image", url)}
-        />
-        <Field label="Display order">
-          <input
-            type="number"
-            min={0}
-            max={10000}
-            value={form.sortOrder}
-            onChange={(e) => set("sortOrder", Number(e.target.value))}
-          />
-        </Field>
-        <label className={css.check}>
-          <input
-            type="checkbox"
-            checked={form.visible}
-            onChange={(e) => set("visible", e.target.checked)}
-          />{" "}
-          Show in store navigation
-        </label>
-        {error && (
-          <p role="alert" className={css.error}>
-            {error}
-          </p>
-        )}
-      </form>
-    </Modal>
-  );
+export function CategoryEditor({category,onClose,onSaved}){
+ const initial=category||{name:'',slug:'',description:'',image:'',visible:true,sortOrder:0};
+ const [form,setForm]=useState(initial),[manual,setManual]=useState(!!category),[busy,setBusy]=useState(false),[error,setError]=useState(''),[discard,setDiscard]=useState(false);const lock=useRef(false);
+ const dirty=JSON.stringify(form)!==JSON.stringify(initial);
+ const set=(key,value)=>setForm(f=>({...f,[key]:value,...(key==='name'&&!manual?{slug:slugFromName(value)}:{})}));
+ const close=()=>{if(!busy){if(dirty)setDiscard(true);else onClose();}};
+ const submit=async e=>{e.preventDefault();e.stopPropagation();if(lock.current)return;lock.current=true;setBusy(true);setError('');try{const d=await apiRequest(endpoint+(category?`/${category._id}`:''),{method:category?'PATCH':'POST',body:JSON.stringify(form)});notify.success(category?'Category updated':'Category created');onSaved(d.category);}catch(e){setError(e.message);}finally{lock.current=false;setBusy(false);}};
+ return <><Modal tone="teal" title={category?'Edit category':'Add category'} onClose={close} footer={<><Button variant="secondary" disabled={busy} onClick={close}>Cancel</Button><Button form="store-category-editor" type="submit" disabled={busy}>{busy?'Saving…':'Save category'}</Button></>}>
+ <form id="store-category-editor" onSubmit={submit} className={css.form}>
+ <Field label="Category name"><input required maxLength={80} value={form.name} onChange={e=>set('name',e.target.value)}/></Field>
+ <CatalogUrl kind="categories" slug={form.slug} onChange={value=>{setManual(true);set('slug',value);}}/>
+ <Field label="Description"><textarea rows={3} maxLength={600} value={form.description||''} onChange={e=>set('description',e.target.value)}/></Field>
+ <ImagePicker label="Category image" value={form.image} onChange={v=>set('image',v)}/>
+ <Field label="Display order"><NumericInput min={0} max={10000} value={form.sortOrder} onChange={e=>set('sortOrder',e.target.value)}/></Field>
+ <label className={css.check}><input type="checkbox" checked={form.visible!==false} onChange={e=>set('visible',e.target.checked)}/>Show in store navigation</label>
+ {error&&<p role="alert" className={css.error}>{error}</p>}</form></Modal>
+ {discard&&<Modal title="Discard category changes?" onClose={()=>setDiscard(false)} footer={<><Button variant="secondary" onClick={()=>setDiscard(false)}>Keep editing</Button><Button onClick={()=>{setDiscard(false);onClose();}}>Discard changes</Button></>}><p>Your unsaved changes will be lost if you leave.</p></Modal>}</>;
 }
 export function CategoryManager() {
   const [merging, setMerging] = useState(null),
@@ -250,7 +104,7 @@ export function CategoryManager() {
         </p>
       )}
       {busy ? (
-        <p role="status">Loading categories…</p>
+        <SmallLoading label="Loading categories…"/>
       ) : rows.length ? (
         <div className={css.categoryList}>
           {rows.map((row) => (

@@ -1,4 +1,5 @@
 "use client";
+import {apiBase as adminApiBase} from "@/components/control/api";
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
@@ -20,10 +21,10 @@ export default function EmailLogDetailPage() {
     setLoading(true);
 
     try {
-      const token = localStorage.getItem("admin_token");
+      const token = "session";
 
       const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/admin/email/logs/${id}?page=${page}&limit=30`,
+        `${adminApiBase()}/api/admin/email/logs/${id}?page=${page}&limit=30`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

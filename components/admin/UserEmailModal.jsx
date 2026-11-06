@@ -1,4 +1,5 @@
 "use client";
+import {apiBase as adminApiBase} from "@/components/control/api";
 
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -21,9 +22,9 @@ export default function UserEmailModal({ user, onClose }) {
     if (!key) return;
     setLoading(true);
 
-    const token = localStorage.getItem("admin_token");
+    const token = "session";
     const res = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/admin/email/templates/preview`,
+      `${adminApiBase()}/admin/email/templates/preview`,
       { templateKey: key, userId: user._id },
       { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -35,10 +36,10 @@ export default function UserEmailModal({ user, onClose }) {
 
   async function handleSend() {
     setSending(true);
-    const token = localStorage.getItem("admin_token");
+    const token = "session";
 
     await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/admin/email/send-user`,
+      `${adminApiBase()}/admin/email/send-user`,
       { userId: user._id, templateKey, subject, html },
       { headers: { Authorization: `Bearer ${token}` } }
     );

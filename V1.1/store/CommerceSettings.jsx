@@ -1,3 +1,10 @@
+import CurrencySettings from "./CurrencySettings";
+import {FaInstagram,FaFacebook,FaTiktok,FaYoutube,FaTwitter,FaLinkedin,FaGlobe} from "react-icons/fa";
+import CollectionEditor from "./CollectionEditor";
+import {SmallLoading,ProductSelection} from "./CatalogControls";
+import NumericInput from "../components/NumericInput";
+import PaymentMethods from "./PaymentMethods";
+import DeliveryCountries from "./DeliveryCountries";
 import SettingsHelp from "./SettingsHelp";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -162,6 +169,7 @@ export function CommerceSettingsPanel({ tab, setup = {}, onDirtyChange }) {
     [entry, setEntry] = useState(null),
     [deleteEntry, setDeleteEntry] = useState(null),
     [discard, setDiscard] = useState(false);
+  const [paymentStore,setPaymentStore]=useState({businessType:setup.businessType,bank:{name:setup.bankName,accountName:setup.accountName,accountNumber:setup.accountNumber}});
   const lock = useRef(false);
   const load = async () => {
     const d = await apiRequest(`${root}/config`);
@@ -171,6 +179,7 @@ export function CommerceSettingsPanel({ tab, setup = {}, onDirtyChange }) {
     setRevision(d.revision);
     setHistory(d.history);
     setCapabilities(d.capabilities);
+    if(d.paymentStore)setPaymentStore(d.paymentStore);
   };
   useEffect(() => {
     load().catch((e) => setError(e.message));
@@ -191,81 +200,65 @@ export function CommerceSettingsPanel({ tab, setup = {}, onDirtyChange }) {
   }, [dirty, onDirtyChange]);
   const set = (group, key, value) =>
     setConfig((c) => ({ ...c, [group]: { ...c[group], [key]: value } }));
-  const save = async () => {
-    const d = await apiRequest(`${root}/config`, {
-      method: "PUT",
-      body: JSON.stringify({ config, revision }),
-    });
-    const loadedConfig=normaliseDeliveryConfig({...d.config,identity:{showFloatingWhatsapp:true,showRecommendations:true,...d.config.identity}});
-    setConfig(loadedConfig);
-    setSaved(loadedConfig);
-    setRevision(d.revision);
-    return d.revision;
+  const section={Branding:'identity',Payments:'checkout',Inventory:'inventory',Policies:'policies',SEO:'seo',Advanced:'identity'}[tab];
+  const sectionDirty=!!section&&!!config&&JSON.stringify(config[section])!==JSON.stringify(saved?.[section]);
+  const saveSection=async()=>{
+   if(lock.current||!section)return;lock.current=true;setBusy(true);setError('');
+   try{const d=await apiRequest(`${root}/settings/${section}`,{method:'PUT',body:JSON.stringify({value:config[section],revision})});setConfig(c=>({...c,[section]:d.value}));setSaved(c=>({...c,[section]:d.value}));setRevision(d.revision);notify.success(`${tab} settings saved`);}
+   catch(e){setError(e.message);}finally{lock.current=false;setBusy(false);}
   };
-  const updateDeliveryDraft = (nextDelivery, successMessage) => {
-    setConfig((current) => {
-      const { rules: legacyRules, ...deliveryChanges } = nextDelivery;
-      const providedZones = Array.isArray(nextDelivery.zones)
-        ? nextDelivery.zones
-        : Array.isArray(legacyRules)
-          ? legacyRules
-          : null;
-      const mergedDelivery = {
-        ...current.delivery,
-        ...deliveryChanges,
-        // All old rule edits are promoted to the canonical `zones` field.
-        ...(providedZones ? { zones: providedZones } : {}),
-      };
-      return normaliseDeliveryConfig({ ...current, delivery: mergedDelivery });
-    });
-    notify.success(successMessage || "Delivery change added to your draft");
+  const saveToggle=async(group,key,value)=>{
+   if(lock.current)return;lock.current=true;setBusy(true);setError('');
+   try{const d=await apiRequest(`${root}/settings/${group}`,{method:'PUT',body:JSON.stringify({value:{[key]:value},revision})});
+    setConfig(c=>({...c,[group]:{...c[group],[key]:d.value[key]}}));setSaved(c=>({...c,[group]:{...c[group],[key]:d.value[key]}}));setRevision(d.revision);notify.success('Setting saved');
+   }catch(e){setError(e.message);}finally{lock.current=false;setBusy(false);}
   };
-  const action = async (publish) => {
-    if (lock.current) return;
-    lock.current = true;
-    setBusy(true);
-    setError("");
+  const persistDelivery = async (delivery) => {
+    if (lock.current) throw Error("Wait for the current save to finish.");
+    lock.current = true; setBusy(true); setError("");
     try {
-      const rev = dirty || revision === 0 ? await save() : revision;
-      if (publish) {
-        const d = await apiRequest(`${root}/publish`, {
-          method: "POST",
-          body: JSON.stringify({ revision: rev }),
-        });
-        setRevision(d.revision);
-      }
-      notify.success(
-        publish ? "Store settings published" : "Settings draft saved",
-      );
-    } catch (e) {
-      setError(e.message);
-    } finally {
-      lock.current = false;
-      setBusy(false);
-    }
+      const d = await apiRequest(`${root}/delivery`, { method: "PUT", body: JSON.stringify({ delivery, revision }) });
+      setConfig(current => ({ ...current, delivery: d.delivery }));
+      setSaved(current => ({ ...current, delivery: d.delivery }));
+      setRevision(d.revision);
+    } finally { lock.current = false; setBusy(false); }
+  };
+  const persistPayment=async(method,value)=>{
+    if(lock.current)throw Error('Wait for the current save to finish.');
+    lock.current=true;setBusy(true);
+    try{const d=await apiRequest(`${root}/payments/${method}`,{method:'PUT',body:JSON.stringify({...value,revision})});
+      const merge=current=>({...current,checkout:{...current.checkout,paymentMethods:d.checkout.paymentMethods,paymentInstructions:d.checkout.paymentInstructions}});
+      setConfig(merge);setSaved(merge);setRevision(d.revision);setPaymentStore(d.paymentStore);
+    }finally{lock.current=false;setBusy(false);}
+  };
+  const updateDeliveryDraft = async (changes, message) => {
+    await persistDelivery({ ...config.delivery, ...changes });
+    notify.success(message || "Delivery settings saved");
   };
   if (!config)
     return (
-      <p role={error ? "alert" : "status"}>{error || "Loading settings…"}</p>
+      error?<p role="alert">{error}</p>:<SmallLoading label="Loading settings…"/>
     );
   const text = (group, key, label, type = "text", hint = "") => (
     <Field key={`${group}-${key}`} label={label} hint={hint}>
       {type === "textarea" ? (
         <textarea
           rows={4}
+          aria-label={label}
           value={config[group][key] || ""}
           onChange={(e) => set(group, key, e.target.value)}
         />
       ) : (
         <input
           type={type}
+          aria-label={label}
           value={config[group][key] ?? ""}
           placeholder={setup[key] || ""}
           onChange={(e) =>
             set(
               group,
               key,
-              type === "number" ? Number(e.target.value) : e.target.value,
+              e.target.value,
             )
           }
         />
@@ -277,7 +270,8 @@ export function CommerceSettingsPanel({ tab, setup = {}, onDirtyChange }) {
       <input
         type="checkbox"
         checked={!!config[group][key]}
-        onChange={(e) => set(group, key, e.target.checked)}
+        disabled={busy}
+        onChange={(e) => saveToggle(group, key, e.target.checked)}
       />
       {label}
     </label>
@@ -307,9 +301,9 @@ export function CommerceSettingsPanel({ tab, setup = {}, onDirtyChange }) {
       : source.map((item, itemIndex) =>
           itemIndex === index ? value : item,
         );
-    updateDeliveryDraft(
+    await updateDeliveryDraft(
       { [kind]: nextItems },
-      index < 0 ? "Added to your delivery draft" : "Delivery draft updated",
+      index < 0 ? "Delivery location saved" : "Delivery location updated",
     );
   };
   const removeDeliveryEntry = async (kind, index) =>
@@ -354,16 +348,16 @@ export function CommerceSettingsPanel({ tab, setup = {}, onDirtyChange }) {
   });
   return (
     <>
-      <div className={css.panelHeading}>
+      {tab!=="Discounts"&&<div className={css.panelHeading}>
         <div>
           <h2>{tab} <SettingsHelp topic={tab}/></h2>
-          <p>Save a draft, then publish when you’re ready.</p>
+          <p>{tab==="Payments"?"Choose how customers can pay for orders from your store.":tab==="Delivery"?"Choose where you deliver and what customers pay.":"Manage your store settings."}</p>
         </div>
-      </div>
+      </div>}
       {tab === "Branding" && (
         <div className={css.form}>
           {text("identity", "name", "Brand name")}
-          {text("identity", "description", "Store introduction", "textarea")}
+          {text("identity", "description", "Store Description", "textarea")}
           {text("identity", "phone", "WhatsApp number")}
           {text("identity", "email", "Contact email", "email")}
           {text("identity", "address", "Store address", "textarea")}
@@ -371,9 +365,10 @@ export function CommerceSettingsPanel({ tab, setup = {}, onDirtyChange }) {
           {check("identity", "showPhone", "Show contact number")}
           {check("identity", "showEmail", "Show contact email")}
           {check("identity", "showFloatingWhatsapp", "Show floating WhatsApp button")}
+          {check("identity", "showOrderWhatsapp", 'Show "Send Order on WhatsApp" on order received page')}
           {check("identity", "showRecommendations", "Show You may also like on product pages")}
           {Object.keys(config.identity.socials).map((key) => (
-            <Field label={`${key} link`} key={key}>
+            <Field label={<span style={{display:"inline-flex",alignItems:"center",gap:7}}>{(() => {const Icon=({instagram:FaInstagram,facebook:FaFacebook,tiktok:FaTiktok,youtube:FaYoutube,twitter:FaTwitter,x:FaTwitter,linkedin:FaLinkedin})[key]||FaGlobe;return <Icon aria-hidden="true"/>;})()}{key} link</span>} key={key}>
               <input
                 type="url"
                 placeholder="https://…"
@@ -394,175 +389,21 @@ export function CommerceSettingsPanel({ tab, setup = {}, onDirtyChange }) {
       )}
       {tab === "Delivery" && (
         <div className={css.deliverySettings}>
-          <section className={css.deliveryHero}>
-            <span className={css.deliveryHeroIcon}><Truck size={18} /></span>
-            <div>
-              <h3>Delivery</h3>
-              <p>Choose where you deliver and what customers pay.</p>
-            </div>
-            <label className={css.deliveryToggle}>
-              <span>Offer delivery</span>
-              <input
-                type="checkbox"
-                checked={deliveryEnabled(config.delivery)}
-                onChange={async (event) => {
-                  try {
-                    updateDeliveryDraft(
-                      { enabled: event.target.checked },
-                      event.target.checked ? "Delivery enabled in your draft" : "Delivery disabled in your draft",
-                    );
-                  } catch (saveError) {
-                    setError(saveError.message);
-                  }
-                }}
-              />
-              <i aria-hidden="true" />
-            </label>
-          </section>
-          <p className={css.deliveryHint}>
-            Pickup stays available separately. Save your draft, then publish it
-            when you are ready for customers to use the changes.
-          </p>
+          <DeliveryCountries digital={paymentStore.businessType==="digital"} delivery={config.delivery} currency={config.checkout.currency} busy={busy} onSave={persistDelivery} />
 
-          <section className={css.deliverySection}>
-            <div className={css.deliverySectionHeading}>
-              <div>
-                <h3>Delivery locations</h3>
-                <p>Set a fee and delivery time for each place you serve.</p>
-              </div>
-              <Button
-                variant="secondary"
-                onClick={() => setEntry({ kind: "zones", index: -1, value: newZone() })}
-              >
-                <Plus size={14} /> Add
-              </Button>
-            </div>
-            <div className={css.deliveryRows}>
-              {deliveryRules(config.delivery).map((zone, index) => (
-                <DeliveryRow
-                  key={zone.id || index}
-                  zone={zone}
-                  legacyNotice={legacyDeliveryZone(zone)}
-                  currency={config.checkout.currency}
-                  onEdit={() => setEntry({ kind: "zones", index, value: zone })}
-                  onDelete={() => setDeleteEntry({ kind: "zones", index, value: zone })}
-                  onToggle={async (enabled) => {
-                    try {
-                      await saveDeliveryEntry("zones", index, { ...zone, enabled });
-                    } catch (saveError) {
-                      setError(saveError.message);
-                    }
-                  }}
-                />
-              ))}
-              {!deliveryRules(config.delivery).length && (
-                <DeliveryEmpty
-                  icon={<MapPin />}
-                  title="No delivery locations yet"
-                  description="Add the states or areas you can deliver to."
-                  action={() => setEntry({ kind: "zones", index: -1, value: newZone() })}
-                />
-              )}
-            </div>
-          </section>
-
-          <section className={css.deliverySection}>
-            <div className={css.deliverySectionHeading}>
-              <div>
-                <h3>Pickup locations</h3>
-                <p>Let customers collect an order instead of choosing delivery.</p>
-              </div>
-              <Button
-                variant="secondary"
-                onClick={() => setEntry({ kind: "pickups", index: -1, value: newPickup() })}
-              >
-                <Plus size={14} /> Add
-              </Button>
-            </div>
-            <div className={css.deliveryRows}>
-              {(config.delivery.pickups || []).map((pickup, index) => (
-                <PickupRow
-                  key={pickup.id || index}
-                  pickup={pickup}
-                  onEdit={() => setEntry({ kind: "pickups", index, value: pickup })}
-                  onDelete={() => setDeleteEntry({ kind: "pickups", index, value: pickup })}
-                  onToggle={async (enabled) => {
-                    try {
-                      await saveDeliveryEntry("pickups", index, { ...pickup, enabled });
-                    } catch (saveError) {
-                      setError(saveError.message);
-                    }
-                  }}
-                />
-              ))}
-              {!(config.delivery.pickups || []).length && (
-                <DeliveryEmpty
-                  icon={<Store />}
-                  title="No pickup locations yet"
-                  description="Add one if customers can collect their orders."
-                  action={() => setEntry({ kind: "pickups", index: -1, value: newPickup() })}
-                />
-              )}
-            </div>
-          </section>
+          <section className={css.deliverySection}><div className={css.deliverySectionHeading}><h3>Pickup locations</h3><span>Coming soon</span></div><p>Let customers collect orders from your store. This feature will be available soon.</p></section>
           {text("delivery", "instructions", "Delivery note for customers", "textarea")}
+          <Button disabled={busy} onClick={()=>updateDeliveryDraft({},"Delivery note saved").catch(e=>setError(e.message))}>Save delivery note</Button>
         </div>
       )}
+      {tab === "Payments" && <PaymentMethods checkout={config.checkout} store={paymentStore} busy={busy} onSave={persistPayment}/>}
       {tab === "Payments" && (
         <div className={css.form}>
-          {method("bank", "Manual bank transfer")}
-          {method("cod", "Cash on delivery")}
-          {method("whatsapp", "Arrange payment on WhatsApp")}
-          <p className={css.note}>
-            Bank payments stay pending until you confirm receipt. Online
-            provider payments are not connected to this store.
-          </p>
-          <a
-            href="/v1-1/store/settings?tab=bank"
-            className={css.textLink}
-            onClick={(e) => {
-              e.preventDefault();
-              setEntry({
-                kind: "bank",
-                value: {
-                  name: setup.name,
-                  phone: setup.phone,
-                  category: setup.category,
-                  businessType: setup.businessType,
-                  bankName: setup.bankName || "",
-                  accountName: setup.accountName || "",
-                  accountNumber: setup.accountNumber || "",
-                  address: setup.address,
-                  description: setup.description,
-                  showFeatured: setup.showFeatured,
-                },
-              });
-            }}
-          >
-            Edit bank transfer details
-          </a>
-        </div>
-      )}
-      {tab === "Checkout" && (
-        <div className={css.form}>
-          <Field label="Currency">
-            <select
-              value={config.checkout.currency}
-              onChange={(e) => set("checkout", "currency", e.target.value)}
-            >
-              {["NGN", "USD", "GBP", "EUR", "GHS", "KES", "ZAR"].map((c) => (
-                <option key={c}>{c}</option>
-              ))}
-            </select>
-          </Field>
-          <p>
-            Currency changes are blocked once your store has products or orders.
-            Prices are never silently converted.
-          </p>
+          <CurrencySettings checkout={config.checkout} busy={busy} onChange={value=>set("checkout","displayCurrencies",value)}/><h3>Checkout preferences</h3>
           {check("checkout", "requireEmail", "Require an email address")}
-          {check("checkout", "allowNotes", "Allow order notes")}
+          {paymentStore.businessType!=="digital"&&check("checkout", "allowNotes", "Allow order notes")}
           <Field label="Tax rate (%)">
-            <input
+            <NumericInput
               type="number"
               min={0}
               max={100}
@@ -626,38 +467,12 @@ export function CommerceSettingsPanel({ tab, setup = {}, onDirtyChange }) {
             ),
           )}
           <p>
-            These are your store’s policies. Review the wording before
-            publishing.
+            These are your store’s policies. Review the wording before saving.
           </p>
           <ReviewManager />
         </div>
       )}
-      {tab === "SEO" && (
-        <div className={css.form}>
-          {text("seo", "title", "Search title")}
-          {text("seo", "description", "Search description", "textarea")}
-          <ImagePicker
-            label="Social sharing image"
-            value={config.seo.image}
-            onChange={(v) => set("seo", "image", v)}
-          />
-          {check(
-            "seo",
-            "noindex",
-            "Ask search engines not to index this store",
-          )}
-          <div className={css.note}>
-            <strong>
-              {config.seo.title || config.identity.name || setup.name}
-            </strong>
-            <p>
-              {config.seo.description ||
-                config.identity.description ||
-                setup.description}
-            </p>
-          </div>
-        </div>
-      )}
+      {tab === "SEO" && <section className={css.note}><h3>Search engine optimisation <small>Coming soon</small></h3><p>More tools to help customers discover your store are on the way.</p></section>}
       {tab === "Integrations" && (
         <div className={css.form}>
           {text("integrations", "ga4", "Google Analytics measurement ID")}
@@ -683,15 +498,7 @@ export function CommerceSettingsPanel({ tab, setup = {}, onDirtyChange }) {
           )}
         </div>
       )}
-      {tab === "Discounts" && (
-        <>
-          <p>
-            One discount applies per order. A code replaces automatic offers;
-            automatic offers use the best eligible saving.
-          </p>
-          <ResourceManager kind="discounts" />
-        </>
-      )}
+      {tab === "Discounts" && <ResourceManager kind="discounts"/>}
       {tab === "Customers" && <Customers />}
       {tab === "Advanced" && (
         <div className={css.form}>
@@ -706,37 +513,6 @@ export function CommerceSettingsPanel({ tab, setup = {}, onDirtyChange }) {
           </Field>
           <MediaInfrastructure />
           <Analytics />
-          <h3>Published settings history <SettingsHelp topic="Published settings history"/></h3>
-          {history.map((h) => (
-            <Button
-              variant="secondary"
-              key={h.id}
-              disabled={busy}
-              onClick={async () => {
-                try {
-                  const d = await apiRequest(`${root}/restore`, {
-                    method: "POST",
-                    body: JSON.stringify({ revision, id: h.id }),
-                  });
-                  const loadedConfig=normaliseDeliveryConfig({...d.config,identity:{showFloatingWhatsapp:true,showRecommendations:true,...d.config.identity}});
-    setConfig(loadedConfig);
-                  setSaved(loadedConfig);
-                  setRevision(d.revision);
-                  notify.success("Revision restored to draft");
-                } catch (e) {
-                  setError(e.message);
-                }
-              }}
-            >
-              Restore {new Date(h.date).toLocaleString()}
-            </Button>
-          ))}
-          {!history.length && (
-            <p>
-              Earlier published settings appear here after your next
-              publication.
-            </p>
-          )}
         </div>
       )}
       {error && (
@@ -744,28 +520,7 @@ export function CommerceSettingsPanel({ tab, setup = {}, onDirtyChange }) {
           {error}
         </p>
       )}
-      {!["Discounts", "Customers"].includes(tab) && (
-        <footer className={css.saveBar}>
-          <span>{dirty ? "Unsaved changes" : "Draft saved"}</span>
-          <Button
-            variant="secondary"
-            disabled={busy || !dirty}
-            onClick={() => setDiscard(true)}
-          >
-            Cancel
-          </Button>
-          <Button
-            variant="secondary"
-            disabled={busy || !dirty}
-            onClick={() => action(false)}
-          >
-            Save draft
-          </Button>
-          <Button disabled={busy} onClick={() => action(true)}>
-            {busy ? "Saving…" : "Publish settings"}
-          </Button>
-        </footer>
-      )}
+      {section&&tab!=="SEO"&&<div className={css.contextSave}><Button variant="secondary" disabled={busy||!sectionDirty} onClick={()=>setConfig(c=>({...c,[section]:saved[section]}))}>Cancel</Button><Button disabled={busy||!sectionDirty} onClick={saveSection}>{busy?'Saving…':`Save ${tab.toLowerCase()}`}</Button></div>}
       {discard && (
         <Modal
           title="Discard settings changes?"
@@ -816,7 +571,7 @@ export function CommerceSettingsPanel({ tab, setup = {}, onDirtyChange }) {
         <Modal
           tone="orange"
           title={`Remove ${deleteEntry.kind === "rules" || deleteEntry.kind === "zones" ? "delivery location" : "pickup location"}?`}
-          description="This only changes your draft. Publish settings when you are ready for customers to see it."
+          description="This change takes effect immediately. Existing orders keep their original details."
           onClose={() => setDeleteEntry(null)}
           footer={
             <>
@@ -838,7 +593,7 @@ export function CommerceSettingsPanel({ tab, setup = {}, onDirtyChange }) {
           }
         >
           <p className={css.deleteDeliveryCopy}>
-            {deleteEntry.value.name || "This location"} will no longer be used after the next publish.
+            {deleteEntry.value.name || "This location"} will no longer be offered to new orders.
           </p>
         </Modal>
       )}
@@ -1234,7 +989,7 @@ function DeliveryEntryEditor({ entry, currency, onClose, onSave }) {
               {ESTIMATE_PRESETS.map((item) => <button key={item.id} type="button" className={preset === item.id ? css.estimateChoiceActive : ""} onClick={() => selectPreset(item.id)}>{item.label}</button>)}
               <button type="button" className={preset === "custom" ? css.estimateChoiceActive : ""} onClick={() => setPreset("custom")}>Custom range</button>
             </div>
-            {preset === "custom" && <div className={css.estimateCustom}><Field label="From" error={errors.estimate}><input type="number" min="0" value={value.estimateRange?.min ?? ""} onChange={(event) => set("estimateRange", { ...value.estimateRange, min: Number(event.target.value) })} /></Field><Field label="To"><input type="number" min="0" value={value.estimateRange?.max ?? ""} onChange={(event) => set("estimateRange", { ...value.estimateRange, max: Number(event.target.value) })} /></Field><Field label="Unit"><select value={value.estimateRange?.unit || "day"} onChange={(event) => set("estimateRange", { ...value.estimateRange, unit: event.target.value })}><option value="day">Days</option><option value="hour">Hours</option></select></Field><label className={css.businessDaysCheck}><input type="checkbox" checked={Boolean(value.estimateRange?.businessDays)} onChange={(event) => set("estimateRange", { ...value.estimateRange, businessDays: event.target.checked })} /> Business days</label></div>}
+            {preset === "custom" && <div className={css.estimateCustom}><Field label="From" error={errors.estimate}><NumericInput type="number" min="0" value={value.estimateRange?.min ?? ""} onChange={(event) => set("estimateRange", { ...value.estimateRange, min: Number(event.target.value) })} /></Field><Field label="To"><NumericInput type="number" min="0" value={value.estimateRange?.max ?? ""} onChange={(event) => set("estimateRange", { ...value.estimateRange, max: Number(event.target.value) })} /></Field><Field label="Unit"><select value={value.estimateRange?.unit || "day"} onChange={(event) => set("estimateRange", { ...value.estimateRange, unit: event.target.value })}><option value="day">Days</option><option value="hour">Hours</option></select></Field><label className={css.businessDaysCheck}><input type="checkbox" checked={Boolean(value.estimateRange?.businessDays)} onChange={(event) => set("estimateRange", { ...value.estimateRange, businessDays: event.target.checked })} /> Business days</label></div>}
           </section>
         </> : <>
           <LocationPicker label="City / area (optional)" value={value.areaId || ""} items={areas} disabled={!value.regionId} placeholder="Choose a city or area" onChange={(area) => set("areaId", area.id)} />
@@ -1260,7 +1015,9 @@ export function ResourceManager({ kind = "collections" }) {
     [search, setSearch] = useState(""),
     [reload, setReload] = useState(0),
     [archive, setArchive] = useState(null);
+  const [loading,setLoading]=useState(true);
   useEffect(() => {
+    setLoading(true);setError("");
     const c = new AbortController();
     const t = setTimeout(
       () =>
@@ -1274,7 +1031,7 @@ export function ResourceManager({ kind = "collections" }) {
           })
           .catch((e) => {
             if (!c.signal.aborted) setError(e.message);
-          }),
+          }).finally(()=>{if(!c.signal.aborted)setLoading(false);}),
       200,
     );
     return () => {
@@ -1310,8 +1067,9 @@ export function ResourceManager({ kind = "collections" }) {
         };
   return (
     <>
+      {loading&&<SmallLoading label="Loading entries…"/>}
       <div className={css.panelHeading}>
-        <h3>{kind === "collections" ? "Collections" : "Discount codes"} <SettingsHelp topic={kind === "collections" ? "Collections" : "Discount codes"}/></h3>
+        <div><h3>{kind === "collections" ? "Collections" : "Discounts"} <SettingsHelp topic={kind === "collections" ? "Collections" : "Discount codes"}/></h3>{kind==="discounts"&&<p>Create codes and automatic offers. One discount applies per order; a code replaces automatic offers.</p>}</div>
         <Button onClick={() => setEdit(fresh)}>
           <Plus size={14} /> Add
         </Button>
@@ -1420,7 +1178,8 @@ export function ResourceManager({ kind = "collections" }) {
     </>
   );
 }
-function ResourceEditor({ kind, value, onClose, onSaved }) {
+function ResourceEditor(props){return props.kind==="collections"?<CollectionEditor {...props}/>:<DiscountEditor {...props}/>;}
+function DiscountEditor({ kind, value, onClose, onSaved }) {
   const [categorySearch, setCategorySearch] = useState(""),
     [categoryChoices, setCategoryChoices] = useState([]);
   useEffect(() => {
@@ -1445,25 +1204,7 @@ function ResourceEditor({ kind, value, onClose, onSaved }) {
   }, [kind, categorySearch]);
   const [form, setForm] = useState(value),
     [busy, setBusy] = useState(false),
-    [error, setError] = useState(""),
-    [products, setProducts] = useState([]),
-    [search, setSearch] = useState("");
-  useEffect(() => {
-    const c = new AbortController();
-    const timer = setTimeout(
-      () =>
-        apiRequest(`/products/me?page=1&search=${encodeURIComponent(search)}`, {
-          signal: c.signal,
-        })
-          .then((d) => setProducts(d.products || []))
-          .catch(() => {}),
-      250,
-    );
-    return () => {
-      clearTimeout(timer);
-      c.abort();
-    };
-  }, [search]);
+    [error, setError] = useState("");
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
   const field = (k, label, type = "text") => (
     <Field key={k} label={label}>
@@ -1471,14 +1212,14 @@ function ResourceEditor({ kind, value, onClose, onSaved }) {
         type={type}
         value={form[k] ?? ""}
         onChange={(e) =>
-          set(k, type === "number" ? Number(e.target.value) : e.target.value)
+          set(k, e.target.value)
         }
       />
     </Field>
   );
   return (
     <Modal
-      title={kind === "collections" ? "Edit collection" : "Edit discount"}
+      title={value._id ? "Edit discount" : "Add discount"}
       onClose={() => !busy && onClose()}
       footer={
         <>
@@ -1517,50 +1258,7 @@ function ResourceEditor({ kind, value, onClose, onSaved }) {
           }
         }}
       >
-        {kind === "collections" ? (
-          <>
-            {field("name", "Collection name")}
-            {field("slug", "URL slug")}
-            {field("description", "Description")}
-            <ImagePicker
-              label="Collection image"
-              value={form.image}
-              onChange={(v) => set("image", v)}
-            />
-            <Field label="Products to include">
-              <select
-                value={form.mode}
-                onChange={(e) => set("mode", e.target.value)}
-              >
-                <option value="manual">Selected products</option>
-                <option value="new">Added in the last 30 days</option>
-                <option value="sale">Products on sale</option>
-                <option value="price">Products below a price</option>
-              </select>
-            </Field>
-            {form.mode === "price" && (
-              <Field label="Price ceiling">
-                <input
-                  type="number"
-                  step="0.01"
-                  value={money(form.priceUnderMinor)}
-                  onChange={(e) =>
-                    set("priceUnderMinor", minor(e.target.value))
-                  }
-                />
-              </Field>
-            )}
-            {field("sortOrder", "Display order", "number")}
-            <label className={css.check}>
-              <input
-                type="checkbox"
-                checked={form.visible}
-                onChange={(e) => set("visible", e.target.checked)}
-              />{" "}
-              Show collection
-            </label>
-          </>
-        ) : (
+
           <>
             {field("code", "Code")}
             <Field label="Discount type">
@@ -1579,7 +1277,7 @@ function ResourceEditor({ kind, value, onClose, onSaved }) {
                   form.type === "percent" ? "Percentage off" : "Amount off"
                 }
               >
-                <input
+                <NumericInput
                   type="number"
                   step="0.01"
                   value={money(form.value)}
@@ -1588,7 +1286,7 @@ function ResourceEditor({ kind, value, onClose, onSaved }) {
               </Field>
             )}
             <Field label="Minimum order">
-              <input
+              <NumericInput
                 type="number"
                 step="0.01"
                 value={money(form.minimumMinor)}
@@ -1630,7 +1328,6 @@ function ResourceEditor({ kind, value, onClose, onSaved }) {
               </label>
             ))}
           </>
-        )}
         {kind === "discounts" && (
           <fieldset>
             <legend>Eligible categories</legend>
@@ -1668,39 +1365,7 @@ function ResourceEditor({ kind, value, onClose, onSaved }) {
             ))}
           </fieldset>
         )}
-        {(kind === "discounts" || form.mode === "manual") && (
-          <fieldset>
-            <legend>
-              {kind === "discounts"
-                ? "Eligible products (optional)"
-                : "Select products"}
-            </legend>
-            <input
-              aria-label="Search products to include"
-              placeholder="Search products"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-            {products.map((p) => (
-              <label key={p._id} className={css.check}>
-                <input
-                  type="checkbox"
-                  checked={form.productIds.includes(p._id)}
-                  onChange={(e) =>
-                    set(
-                      "productIds",
-                      e.target.checked
-                        ? [...form.productIds, p._id]
-                        : form.productIds.filter((id) => id !== p._id),
-                    )
-                  }
-                />
-                {p.name}
-              </label>
-            ))}
-            <small>{form.productIds.length} selected</small>
-          </fieldset>
-        )}
+        <fieldset><legend>Eligible products (optional)</legend><ProductSelection value={form.productIds||[]} onChange={v=>set('productIds',v)}/></fieldset>
         {error && (
           <p role="alert" className={css.error}>
             {error}

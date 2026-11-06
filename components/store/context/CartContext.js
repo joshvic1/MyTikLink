@@ -61,6 +61,7 @@ export function CartProvider({ children }) {
       );
       const cartKey = getCartKey(product._id, selectedVariants);
 
+      if(product.productType==="digital"){return [...prev.filter(p=>p._id!==product._id),{...product,selectedVariants,cartKey,quantity:1,storeSlug:product.store?.slug||product.storeSlug}];}
       const existing = prev.find((p) => p.cartKey === cartKey);
 
       if (existing) {

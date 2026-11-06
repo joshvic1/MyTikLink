@@ -1,3 +1,4 @@
+import NumericInput from "../components/NumericInput";
 import PaletteInput from "../components/PaletteInput";
 import { useEffect, useState } from "react";
 import {
@@ -306,7 +307,7 @@ export default function SectionEditor({ design, onChange, products = [] }) {
             {["featured", "new-arrivals", "best-sellers"].includes(s.type) && (
               <>
                 <Field label="Maximum products">
-                  <input
+                  <NumericInput
                     type="number"
                     min={1}
                     max={24}

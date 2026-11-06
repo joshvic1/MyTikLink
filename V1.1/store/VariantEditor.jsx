@@ -1,3 +1,4 @@
+import NumericInput from "../components/NumericInput";
 import { useState } from "react";
 import { Button, Field } from "../components/UI";
 export default function VariantEditor({ form, set }) {
@@ -131,7 +132,7 @@ export default function VariantEditor({ form, set }) {
         >
           <strong>{Object.values(row.values).join(" / ")}</strong>
           <Field label="Stock">
-            <input
+            <NumericInput
               type="number"
               min={0}
               value={row.stock}

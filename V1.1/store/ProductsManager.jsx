@@ -1,3 +1,4 @@
+import NumericInput from "../components/NumericInput";
 import CompactLoading from "../components/CompactLoading";
 import {useSubscription} from "../components/SubscriptionModal";
 import {canUseLandingPages} from "../lib/pageAccess";
@@ -312,7 +313,7 @@ function LegacyProductForm({ product, onClose, onSaved }) {
             </Field>
             {form.productType === "physical" && (
               <Field label="Available stock" error={errors.stock}>
-                <input
+                <NumericInput
                   type="number"
                   min="0"
                   value={form.stock}
@@ -500,8 +501,8 @@ export default function ProductsManager({
     <div className={`${styles.managementPage} ${ui.page}`}>
       <PageHeader title="Products"/>
       <div className={ui.toolbar}><label className={ui.search}><Search size={18}/><input aria-label="Search products" value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search products…"/></label><button aria-label="Filter products" aria-expanded={filters} className={filters?ui.chosen:''} onClick={()=>setFilters(!filters)}><SlidersHorizontal size={18}/></button></div>
-      {filters&&<div className={ui.filters}><label>Stock<select value={stock} onChange={e=>setStock(e.target.value)}><option value="all">All stock</option><option value="in">In stock</option><option value="out">Out of stock</option></select></label><label>Sort by<select value={sort} onChange={e=>setSort(e.target.value)}><option value="newest">Newest</option><option value="oldest">Oldest</option><option value="priceHigh">Highest price</option><option value="priceLow">Lowest price</option><option value="name">Name</option></select></label></div>}
-      <div className={ui.tabs} aria-label="Product status">{[['All',summary.total,'all','all'],['Active',metrics.active,'published','all'],['Draft',metrics.drafts,'draft','all'],['Out of stock',metrics.out,'all','out']].map(([label,count,state,inventory])=><button key={label} aria-pressed={status===state&&stock===inventory} className={status===state&&stock===inventory?ui.tabActive:''} onClick={()=>{setStatus(state);setStock(inventory);}}>{label} ({count})</button>)}</div>
+      {filters&&<div className={ui.filters}>{store?.businessType!=="digital"&&<label>Stock<select value={stock} onChange={e=>setStock(e.target.value)}><option value="all">All stock</option><option value="in">In stock</option><option value="out">Out of stock</option></select></label>}<label>Sort by<select value={sort} onChange={e=>setSort(e.target.value)}><option value="newest">Newest</option><option value="oldest">Oldest</option><option value="priceHigh">Highest price</option><option value="priceLow">Lowest price</option><option value="name">Name</option></select></label></div>}
+      <div className={ui.tabs} aria-label="Product status">{[['All',summary.total,'all','all'],['Active',metrics.active,'published','all'],['Draft',metrics.drafts,'draft','all'],['Out of stock',metrics.out,'all','out']].filter(row=>store?.businessType!=='digital'||row[3]!=='out').map(([label,count,state,inventory])=><button key={label} aria-pressed={status===state&&stock===inventory} className={status===state&&stock===inventory?ui.tabActive:''} onClick={()=>{setStatus(state);setStock(inventory);}}>{label} ({count})</button>)}</div>
       {error ? (
         <div className={styles.managementError}>
           {error}
@@ -543,10 +544,11 @@ export default function ProductsManager({
  <ProductActions name={product.name} items={[{label:'Delete demo',Icon:Trash2,danger:true,run:()=>setConfirming(product)}]}/>
  </article>:<article className={`${ui.card} ${selected.includes(product._id)?ui.selected:''}`} key={product._id}>
               <div className={ui.image}><img src={product.images?.[0]||'/placeholder.png'} alt=""/><input type="checkbox" aria-label={`Select ${product.name}`} checked={selected.includes(product._id)} onChange={e=>setSelected(ids=>e.target.checked?(ids.length<50?[...ids,product._id]:ids):ids.filter(id=>id!==product._id))}/></div>
-              <div className={ui.info}><button className={ui.title} title={product.name} onClick={()=>setEditing(product)}>{product.name}</button><div className={ui.price}>{money(product.price)}{Number(product.comparePrice)>Number(product.price)&&<del>{money(product.comparePrice)}</del>}</div><div className={ui.meta}><span className={product.status==='published'?ui.active:ui.draft}><i/>{product.status==='published'?'Active':'Draft'}</span><small>{product.productType==='digital'?'Digital':product.trackStock===false?'Stock not tracked':Number(product.stock)>0?`In stock: ${product.stock}`:'Out of stock'}</small></div></div>
+              <div className={ui.info}><button className={ui.title} title={product.name} onClick={()=>setEditing(product)}>{product.name}</button><div className={ui.price}>{money(product.price)}{Number(product.comparePrice)>Number(product.price)&&<del>{money(product.comparePrice)}</del>}</div><div className={ui.meta}><span className={product.status==='published'?ui.active:ui.draft}><i/>{product.status==='published'?'Active':'Draft'}</span><small>{store?.businessType==='digital'||product.productType==='digital'?'Digital':product.trackStock===false?'Stock not tracked':Number(product.stock)>0?`In stock: ${product.stock}`:'Out of stock'}</small></div></div>
               <ProductActions name={product.name} items={[
  {label:'Edit product',Icon:Pencil,run:()=>setEditing(product)},
- {label:'Duplicate product',Icon:Copy,run:()=>{const {_id,slug,__v,createdAt,updatedAt,...draft}=product;openNew({...draft,name:product.name+' (copy)',status:'draft',sku:''});}},
+ {label:product.status==='published'?'Unpublish product':'Publish product',Icon:Archive,run:()=>{setSelected([product._id]);setBulk(product.status==='published'?'draft':'published');}},
+ {label:'Duplicate product',Icon:Copy,run:()=>{const {_id,slug,__v,createdAt,updatedAt,...draft}=product;openNew({...draft,name:product.name+' (copy)',status:'published',sku:''});}},
  {label:'Copy link',Icon:Share2,run:()=>copy(product)},
  {label:'View product',Icon:ExternalLink,run:()=>store?.slug?window.open(productUrl(product),'_blank','noopener,noreferrer'):notify.error('Your storefront link is not ready yet.')},
  {label:'Delete product',Icon:Trash2,danger:true,run:()=>setConfirming(product)}
@@ -570,10 +572,10 @@ export default function ProductsManager({
           tone="teal"
           title={
             bulk === "delete" ? "Delete selected products?" : bulk === "duplicate" ? "Duplicate selected products?" : bulk === "draft"
-              ? "Move selected products to draft?"
+              ? (selected.length===1?"Unpublish product?":"Unpublish selected products?")
               : "Publish selected products?"
           }
-          description={bulk === "delete" ? `${selected.length} products will be deleted. Existing orders stay intact. This cannot be undone.` : bulk === "duplicate" ? `${selected.length} products will be copied as drafts.` : `${selected.length} selected products will be updated. Prices and stock stay unchanged.`}
+          description={bulk === "delete" ? `${selected.length} products will be deleted. Existing orders stay intact. This cannot be undone.` : bulk === "duplicate" ? `${selected.length} products will be copied as drafts.` : bulk === "draft" ? "This product will no longer appear on your store, but you'll still have access to it on your Products page. You can publish it again anytime." : `${selected.length} selected products will be updated. Prices and stock stay unchanged.`}
           onClose={() => !bulkBusy && setBulk("")}
           footer={
             <>
@@ -628,6 +630,7 @@ export default function ProductsManager({
       {openingNew&&<Modal title="Add product" onClose={()=>{}}><CompactLoading label="Opening your product editor…"/></Modal>}
       {editing && (
         <ProductForm
+          businessType={store?.businessType}
           product={editing.name ? editing : null}
           onClose={() => setEditing(null)}
           onSaved={saved}

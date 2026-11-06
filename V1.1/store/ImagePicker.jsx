@@ -1,3 +1,6 @@
+import {ImageIcon} from "lucide-react";
+import css from "./CatalogEditor.module.css";
+import {SmallLoading} from "./CatalogControls";
 import { uploadStoreImage } from "./storeMedia";
 import { useState } from "react";
 import { apiRequest } from "../lib/api";
@@ -6,6 +9,7 @@ export default function ImagePicker({ label, value, onChange }) {
     [error, setError] = useState(""),
     [progress, setProgress] = useState(""),
     [recent, setRecent] = useState(null);
+  const [page,setPage]=useState(0),[more,setMore]=useState(false),[loading,setLoading]=useState(false);
   const upload = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -21,15 +25,7 @@ export default function ImagePicker({ label, value, onChange }) {
       e.target.value = "";
     }
   };
-  const browse = async () => {
-    setError("");
-    try {
-      const data = await apiRequest("/v1-1/store-studio/commerce/media/jobs");
-      setRecent(data.jobs.filter((j) => j.status === "ready"));
-    } catch (e) {
-      setError(e.message);
-    }
-  };
+  const browse=async(next=1)=>{if(loading)return;setLoading(true);setError('');try{const data=await apiRequest(`/v1-1/store-studio/commerce/recent-images?page=${next}`);setRecent(old=>next===1?data.items:[...(old||[]),...data.items]);setPage(next);setMore(data.hasMore);}catch(e){setError(e.message);}finally{setLoading(false);}};
   return (
     <div>
       <label style={{ display: "grid", gap: 10, fontSize: 12 }}>
@@ -49,7 +45,7 @@ export default function ImagePicker({ label, value, onChange }) {
         />
       </label>
       {busy && <small role="status">{progress}</small>}
-      <button type="button" disabled={busy} onClick={browse}>
+      <button className={css.recent} type="button" disabled={busy||loading} onClick={()=>browse(1)}><ImageIcon size={16}/>
         Choose a recent image
       </button>
       {value && (
@@ -60,13 +56,13 @@ export default function ImagePicker({ label, value, onChange }) {
       {recent && (
         <div
           aria-label="Recent store images"
-          style={{ display: "flex", gap: 8, flexWrap: "wrap", padding: 8 }}
+          className={css.images}
         >
           {recent.length ? (
             recent.map((image, i) => (
               <button
                 type="button"
-                key={image._id}
+                key={`${image._id}-${image.imageIndex}`}
                 aria-label={`Use recent image ${i + 1}`}
                 onClick={() => {
                   onChange(image.url);
@@ -85,7 +81,7 @@ export default function ImagePicker({ label, value, onChange }) {
             ))
           ) : (
             <small>
-              No completed images yet. Check Advanced for processing status.
+              No product images yet. Upload an image above.
             </small>
           )}
           <button type="button" onClick={() => setRecent(null)}>
@@ -93,6 +89,8 @@ export default function ImagePicker({ label, value, onChange }) {
           </button>
         </div>
       )}
+      {loading&&<SmallLoading label="Finding images…"/>}
+      {recent&&more&&<button className={css.recent} type="button" disabled={loading} onClick={()=>browse(page+1)}>Load more images</button>}
       {error && <p role="alert">{error}</p>}
     </div>
   );

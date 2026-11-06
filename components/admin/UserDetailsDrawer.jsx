@@ -1,4 +1,5 @@
 "use client";
+import {apiBase as adminApiBase} from "@/components/control/api";
 
 import { useState, useEffect } from "react";
 import { X, ChevronRight } from "lucide-react";
@@ -23,11 +24,11 @@ export default function UserDetailsDrawer({ user, onClose }) {
   }, [user]);
 
   async function fetchData() {
-    const token = localStorage.getItem("admin_token");
+    const token = "session";
 
     // Fetch links
     const linkRes = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/admin/user-links/${user._id}`,
+      `${adminApiBase()}/admin/user-links/${user._id}`,
       { headers: { Authorization: `Bearer ${token}` } },
     );
     const linkData = await linkRes.json();
@@ -35,7 +36,7 @@ export default function UserDetailsDrawer({ user, onClose }) {
 
     // Fetch payments
     const payRes = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/admin/payments/${user._id}`,
+      `${adminApiBase()}/admin/payments/${user._id}`,
       { headers: { Authorization: `Bearer ${token}` } },
     );
     const payData = await payRes.json();
@@ -247,11 +248,11 @@ function EditUserForm({ user, onClose }) {
     totalRedirectsAllowed: user.totalRedirectsAllowed || 0,
   });
 
-  const token = localStorage.getItem("admin_token");
+  const token = "session";
 
   const save = async () => {
     await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/admin/update-user/${user._id}`,
+      `${adminApiBase()}/admin/update-user/${user._id}`,
       {
         method: "PATCH",
         headers: {
@@ -313,11 +314,11 @@ function ChangePlanForm({ user, onClose }) {
     user.planExpiry ? user.planExpiry.split("T")[0] : "",
   );
 
-  const token = localStorage.getItem("admin_token");
+  const token = "session";
 
   const applyPlan = async () => {
     await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/admin/change-plan/${user._id}`,
+      `${adminApiBase()}/admin/change-plan/${user._id}`,
       {
         method: "POST",
         headers: {
@@ -365,11 +366,11 @@ function ChangePlanForm({ user, onClose }) {
 
 function BanUserForm({ user, onClose }) {
   const [reason, setReason] = useState("");
-  const token = localStorage.getItem("admin_token");
+  const token = "session";
 
   const ban = async () => {
     await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/admin/ban-user/${user._id}`,
+      `${adminApiBase()}/admin/ban-user/${user._id}`,
       {
         method: "POST",
         headers: {
@@ -402,11 +403,11 @@ function BanUserForm({ user, onClose }) {
 }
 
 function DeleteUserForm({ user, onClose }) {
-  const token = localStorage.getItem("admin_token");
+  const token = "session";
 
   const removeUser = async () => {
     await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/admin/delete-user/${user._id}`,
+      `${adminApiBase()}/admin/delete-user/${user._id}`,
       {
         method: "DELETE",
         headers: {

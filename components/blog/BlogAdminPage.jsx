@@ -65,7 +65,7 @@ export default function BlogAdminPage() {
 
   const token =
     typeof window !== "undefined"
-      ? localStorage.getItem("admin_token") || localStorage.getItem("token")
+      ? "session"
       : "";
 
   const filteredPosts = useMemo(() => {

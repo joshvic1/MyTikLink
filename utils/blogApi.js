@@ -1,9 +1,10 @@
+import {apiBase} from "@/components/control/api";
 import axios from "axios";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "";
 
 async function request(path, options = {}) {
-  const res = await fetch(`${API_URL}${path}`, options);
+  const res = await fetch(`${path.startsWith("/admin/") ? apiBase() : API_URL}${path}`, options);
   const data = await res.json().catch(() => ({}));
 
   if (!res.ok) {
@@ -75,7 +76,7 @@ export async function uploadBlogImage(token, file) {
   const formData = new FormData();
   formData.append("image", file);
 
-  const res = await axios.post(`${API_URL}/upload/admin`, formData, {
+  const res = await axios.post(`${apiBase()}/upload/admin`, formData, {
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "multipart/form-data",
