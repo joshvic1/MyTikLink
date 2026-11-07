@@ -1,0 +1,9 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {checkoutErrors} from '../store/checkoutValidation.mjs';
+const base={form:{customerName:'',customerPhone:'',customerEmail:'',fulfillmentMethod:'delivery',address:{countryCode:'',line:'',city:''}},physical:true,requireEmail:true,validPhone:false,showRegionSelector:false,deliveryLocationReady:false,countryProfile:null};
+test('empty physical checkout reports all visible required fields in order',()=>{assert.deepEqual(Object.keys(checkoutErrors(base)),['customerName','customerPhone','customerEmail','countryCode','streetAddress','city']);});
+test('digital checkout requires contact details but never delivery fields',()=>{assert.deepEqual(Object.keys(checkoutErrors({...base,physical:false,requireEmail:false})),['customerName','customerPhone','customerEmail']);});
+test('physical email may be optional, but supplied invalid email is rejected',()=>{const form={...base.form,customerName:'Customer',fulfillmentMethod:'pickup'};assert.deepEqual(checkoutErrors({...base,form,requireEmail:false,validPhone:true,activePickup:{id:'pickup'}}),{});assert.ok(checkoutErrors({...base,form:{...form,customerEmail:'bad@'},requireEmail:false,validPhone:true,activePickup:{id:'pickup'}}).customerEmail);});
+test('pickup selection and supported delivery region are required',()=>{assert.ok(checkoutErrors({...base,form:{...base.form,fulfillmentMethod:'pickup'}}).pickupId);assert.ok(checkoutErrors({...base,showRegionSelector:true}).regionId);});
+test('valid digital checkout and valid physical delivery clear errors',()=>{const form={...base.form,customerName:'Customer',customerEmail:'customer@example.com',address:{countryCode:'NG',line:'10 Sample Street'}};assert.deepEqual(checkoutErrors({...base,form,physical:false,validPhone:true}),{});assert.deepEqual(checkoutErrors({...base,form,validPhone:true,countryProfile:{},showRegionSelector:true,deliveryLocationReady:true}),{});});

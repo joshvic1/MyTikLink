@@ -431,7 +431,7 @@ export function Shell({ user, onLogout, children, onCreate, onAddProduct, hasSto
         </header>}
         {children}
       </main>
-      <div
+      {activePath !== '/v1-1/store/design' && <div
         className={`${styles.floatingNavAssembly} ${isStoreManagement ? styles.floatingNavStoreMode : ""}`}
       >
         <nav
@@ -453,7 +453,7 @@ export function Shell({ user, onLogout, children, onCreate, onAddProduct, hasSto
           <Headphones />
           <span>Help</span>
         </button>
-      </div>
+      </div>}
       {menuOpen && (
         <div
           className={`${styles.drawerBackdrop} ${menuClosing ? styles.drawerBackdropClosing : ""}`}

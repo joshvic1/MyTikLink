@@ -1,89 +1,18 @@
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import Head from "next/head";
-import { apiRequest } from "../../../V1.1/lib/api";
-export default function Receipt() {
-  const router = useRouter(),
-    [data, setData] = useState(null),
-    [error, setError] = useState(""),
-    [busy, setBusy] = useState(false);
-  const load = async () => {
-    if (!router.isReady || busy) return;
-    setBusy(true);
-    try {
-      const d = await apiRequest(
-        `/v1-1/store-studio/commerce/public/${encodeURIComponent(router.query.slug)}/receipt/${encodeURIComponent(router.query.token || "")}`,
-        { token: null },
-      );
-      setData(d);
-      setError("");
-    } catch (e) {
-      setError(e.message);
-    } finally {
-      setBusy(false);
-    }
-  };
-  useEffect(() => {
-    load();
-  }, [router.isReady]);
-  return (
-    <>
-      <Head>
-        <title>Order status</title>
-        <meta name="robots" content="noindex,nofollow" />
-        <meta name="referrer" content="no-referrer" />
-      </Head>
-      <main
-        style={{
-          maxWidth: 580,
-          margin: "50px auto",
-          padding: 24,
-          fontFamily: "system-ui",
-        }}
-      >
-        <h1>{data?.storeName || "Your order"}</h1>
-        {data && (
-          <>
-            <h2>{data.orderNumber}</h2>
-            <p>
-              Payment: <strong>{data.paymentStatus}</strong> · Fulfilment:{" "}
-              {data.fulfillmentStatus.replaceAll("_", " ")}
-            </p>
-            {data.orderStatus === "cancelled" && (
-              <p>This order is cancelled.</p>
-            )}
-            {data.items.map((i, n) => (
-              <p key={n}>
-                {i.quantity} × {i.name}
-              </p>
-            ))}
-            <h3>
-              {new Intl.NumberFormat("en-NG", {
-                style: "currency",
-                currency: data.totals.currency,
-              }).format(data.totals.totalMinor / 100)}
-            </h3>
-            {data.paymentStatus === "pending" && (
-              <p>
-                Payment has not been confirmed. Contact the store after
-                completing your payment.
-              </p>
-            )}
-            {data.downloads.map((item, i) => (
-              <p key={i}>
-                <a href={item.url} target="_blank" rel="noreferrer">
-                  Open {item.name}
-                </a>
-              </p>
-            ))}
-          </>
-        )}
-        {error && <p role="alert">{error}</p>}
-        <button disabled={busy || !router.isReady} onClick={load}>
-          {busy ? "Checking…" : "Refresh status"}
-        </button>
-        <p>Keep this private order link safe.</p>
-      </main>
-    </>
-  );
+import {useEffect,useState} from 'react';
+import {useRouter} from 'next/router';
+import Head from 'next/head';
+import {apiRequest} from '../../../V1.1/lib/api';
+import {storeThemeStyle} from '../../../V1.1/store/StoreTheme';
+import css from '../../../V1.1/store/CustomerExperience.module.css';
+function AccessAction({item}){
+ const [busy,setBusy]=useState(false),[error,setError]=useState('');
+ return <><button className={css.action} disabled={busy} onClick={async()=>{setBusy(true);setError('');try{const result=await apiRequest(item.accessPath+'?format=json',{token:null});const target=new URL(result.url);if(target.protocol!=='https:')throw Error('This access link is unavailable.');window.location.assign(target.href);}catch(e){setError(e.status===403?'Access to this purchase is no longer available.':'This item is temporarily unavailable. Please try again later or contact the store.');}finally{setBusy(false);}}}>{busy?'Preparing access…':item.method==='download'?'Download file':'Open access link'}</button>{error&&<p role="alert" className={css.status}>{error}</p>}</>;
+}
+export default function Receipt(){
+ const router=useRouter(),[data,setData]=useState(null),[branding,setBranding]=useState(null),[error,setError]=useState(''),[busy,setBusy]=useState(false);
+ const slug=String(router.query.slug||''),root=`/v1-1/store-studio/commerce/public/${encodeURIComponent(slug)}`;
+ const load=async()=>{if(!router.isReady||busy)return;setBusy(true);setError('');try{setData(await apiRequest(`${root}/receipt/${encodeURIComponent(router.query.token||'')}`,{token:null}));}catch(e){setData(null);setError(e.status===404?'This access link is invalid or no longer available. Sign in to your account to find your purchase.':e.status===403?'Access to this purchase is unavailable. Please check your account.':'We could not load your purchase. Please try again shortly.');}finally{setBusy(false);}};
+ useEffect(()=>{if(!router.isReady)return;load();apiRequest(`${root}/config`,{token:null}).then(setBranding).catch(()=>{});},[router.isReady,slug,router.query.token]);
+ const design=data?.design||branding?.design||{},name=data?.storeName||branding?.store?.name||'Your purchase',digital=data?.items?.some(i=>i.productType==='digital'),cancelled=data?.orderStatus==='cancelled',ready=data?.paymentStatus==='paid'&&!cancelled,downloads=data?.downloads||[],account=data?.accountUrl||`/v1-1/s/${encodeURIComponent(slug)}?account=1`;
+ return <main className={css.receipt} style={storeThemeStyle(design)}><Head><title>{name} · Purchase access</title><meta name="robots" content="noindex,nofollow"/><meta name="referrer" content="no-referrer"/></Head><header className={css.header}><a className={css.secondary} href={`/v1-1/s/${encodeURIComponent(slug)}`}>{design.brand?.logo?<img className={css.logo} src={design.brand.logo} alt={name}/>:name}</a></header><div className={css.body}>{busy&&!data?<p role="status">Loading your purchase…</p>:<><h1>{cancelled?'Access unavailable':ready?digital?(downloads.length&&downloads.every(i=>i.available)?'Your digital purchase is ready.':'Your payment is confirmed.'):'Your payment is confirmed.':'Your purchase'}</h1>{error&&<p role="alert" className={css.status}>{error}</p>}{data&&<><small>Order {data.orderNumber}</small>{cancelled?<p className={css.status}>This purchase has been cancelled. Digital access is no longer available.</p>:!ready?<p className={css.status}>Your payment is awaiting confirmation. Access will appear here after confirmation.</p>:null}{(digital?downloads:data.items).map((item,i)=><article className={css.purchase} key={i}>{item.image&&<img src={item.image} alt=""/>}<div><h3>{item.name}</h3>{item.description&&<p>{item.description}</p>}{digital&&ready&&(item.available?<AccessAction item={item}/>:<p className={css.status}>The store needs to complete access for this item. Check back here or contact the store.</p>)}</div></article>)}{digital&&ready&&!downloads.length&&<p className={css.status}>Access is temporarily unavailable. The store may need to complete this purchase manually.</p>}{!digital&&<p>Status: {(data.fulfillmentStatus||'Processing').replaceAll('_',' ')}</p>}</>}<p><a className={css.secondary} href={account}>View My Purchases</a></p><button disabled={busy||!router.isReady} onClick={load}>{busy?'Checking…':'Refresh status'}</button></>}</div></main>;
 }

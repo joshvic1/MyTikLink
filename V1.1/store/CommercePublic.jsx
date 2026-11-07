@@ -1,3 +1,5 @@
+import FlagIcon from '../components/FlagIcon';
+import {checkoutErrors} from "./checkoutValidation.mjs";
 import {currencyDigits} from "./currencies.mjs";
 import {useDisplayCurrency} from "./DisplayCurrency";
 import NumericInput from "../components/NumericInput";
@@ -5,7 +7,7 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import {normalizeLeadPhone} from "../lib/leadPhone";
 import {notify} from "../components/Notifications";
-import { deliveryLocations, countryFlag } from "./deliveryLocations";
+import { deliveryLocations } from "./deliveryLocations";
 import {trackingData} from "../tracking/browser";
 import {uploadPaymentProof} from "@/services/uploadService";
 import {cartQuantityLimit} from "@/components/store/context/cartLimits.mjs";
@@ -65,13 +67,13 @@ const countrywideZone = (zone = {}) => {
   return !zone.regionId && !zone.states?.length && !zone.areaIds?.length && !zone.cities?.length;
 };
 
-function LocationSelect({label,items=[],value='',onChange,placeholder,disabled=false,required=false,style,loading=false}) {
+function LocationSelect({label,items=[],value='',onChange,placeholder,disabled=false,required=false,style,loading=false,error,name}) {
  const [open,setOpen]=useState(false),[search,setSearch]=useState(''),[query,setQuery]=useState('');
  useEffect(()=>{const timer=setTimeout(()=>setQuery(search.trim().toLowerCase()),150);return()=>clearTimeout(timer);},[search]);
  const selected=items.find(item=>locationId(item)===value);
  const visible=items.filter(item=>`${locationLabel(item)} ${item.aliases?.join(' ')||''}`.toLowerCase().includes(query));
- return <><Field label={label}><button type="button" className={css.locationTrigger} aria-label={`Choose ${label.toLowerCase()}`} disabled={disabled} aria-haspopup="dialog" aria-expanded={open} onClick={()=>{setSearch('');setOpen(true);}}>{selected?`${label==='Country'?countryFlag(selected.code)+' ':''}${locationLabel(selected)}`:placeholder||`Choose ${label}`}<span>⌄</span></button>{required&&<input tabIndex={-1} aria-hidden="true" className={css.requiredLocation} value={selected?value:''} required onChange={()=>{}} onInvalid={e=>{e.preventDefault();setOpen(true);}}/>}</Field>
- {open&&<Modal className={`${css.publicModal} ${css.locationSheet}`} style={style} title={`Choose ${label.toLowerCase()}`} onClose={()=>setOpen(false)}><input autoFocus type="search" aria-label={`Search ${label.toLowerCase()}`} placeholder={`Search ${label.toLowerCase()}`} value={search} onChange={e=>setSearch(e.target.value)}/><div className={css.locationResults} role="listbox" aria-label={label}>{loading?<p role="status">Loading locations…</p>:visible.map(item=><button type="button" role="option" aria-selected={locationId(item)===value} key={locationId(item)} onClick={()=>{onChange(item);setOpen(false);}}><span>{label==='Country'?countryFlag(item.code)+' ':''}{locationLabel(item)}</span>{locationId(item)===value&&<Check size={16}/>}</button>)}{!loading&&!visible.length&&<p>No matching locations.</p>}</div>{value&&<button type="button" className={css.clearLocation} onClick={()=>{onChange(null);setOpen(false);}}>Clear selection</button>}</Modal>}</>;
+ return <><Field label={label} error={error}><button name={name} aria-invalid={Boolean(error)} type="button" className={css.locationTrigger} aria-label={`Choose ${label.toLowerCase()}`} disabled={disabled} aria-haspopup="dialog" aria-expanded={open} onClick={()=>{setSearch('');setOpen(true);}}><span>{selected&&label==='Country'&&<><FlagIcon code={selected.code}/>{' '}</>}{selected?locationLabel(selected):placeholder||`Choose ${label}`}</span><span>⌄</span></button>{required&&<input tabIndex={-1} aria-hidden="true" className={css.requiredLocation} value={selected?value:''} required onChange={()=>{}} onInvalid={e=>{e.preventDefault();setOpen(true);}}/>}</Field>
+ {open&&<Modal className={`${css.publicModal} ${css.locationSheet}`} style={style} title={`Choose ${label.toLowerCase()}`} onClose={()=>setOpen(false)}><input autoFocus type="search" aria-label={`Search ${label.toLowerCase()}`} placeholder={`Search ${label.toLowerCase()}`} value={search} onChange={e=>setSearch(e.target.value)}/><div className={css.locationResults} role="listbox" aria-label={label}>{loading?<p role="status">Loading locations…</p>:visible.map(item=><button type="button" role="option" aria-selected={locationId(item)===value} key={locationId(item)} onClick={()=>{onChange(item);setOpen(false);}}><span>{label==='Country'&&<><FlagIcon code={item.code}/>{' '}</>}{locationLabel(item)}</span>{locationId(item)===value&&<Check size={16}/>}</button>)}{!loading&&!visible.length&&<p>No matching locations.</p>}</div>{value&&<button type="button" className={css.clearLocation} onClick={()=>{onChange(null);setOpen(false);}}>Clear selection</button>}</Modal>}</>;
 }
 export function ProductDetails({
   quick=false,
@@ -214,7 +216,7 @@ export function ProductDetails({
               onAdded();
             }}
           >
-            <ShoppingCart size={17} /> {['atelier-services','streetline-services'].includes(design?.theme)?'Add service to cart':'Add to cart'}
+            <ShoppingCart size={17} /> {product.productType==='digital'?'Pay now':['atelier-services','streetline-services'].includes(design?.theme)?'Add service to cart':'Add to cart'}
           </Button>
           {!quick&&product.description&&<details className={css.productDescription} open><summary>Product details</summary><p className={css.description}>{product.description}</p></details>}
         </div>
@@ -316,6 +318,8 @@ export function CommerceCheckout({ store, config: initialConfig, fulfillment: in
     [regions, setRegions] = useState([]),
     [areas, setAreas] = useState([]);
   const [proofFile,setProofFile]=useState(null),[uploadPercent,setUploadPercent]=useState(0),[proofUploaded,setProofUploaded]=useState(false),[proofComplete,setProofComplete]=useState(false);const uploadedProof=useRef("");
+  const [attemptedCheckout,setAttemptedCheckout]=useState(false);
+  const checkoutRef=useRef(null);
   const reviewRef=useRef(null);const [copied,setCopied]=useState("");const copyTimer=useRef(null);
   const copyPayment=async(label,value)=>{try{await navigator.clipboard.writeText(String(value));setCopied(label);clearTimeout(copyTimer.current);copyTimer.current=setTimeout(()=>setCopied(""),2000);}catch{setCopied("Copy failed. Select and copy the value manually.");}};
   useEffect(()=>()=>clearTimeout(copyTimer.current),[]);
@@ -409,6 +413,9 @@ export function CommerceCheckout({ store, config: initialConfig, fulfillment: in
       ? Boolean(activePickup)
       : form.fulfillmentMethod === "delivery" && deliveryLocationReady
   );
+  const fieldErrors = checkoutErrors({form,physical,requireEmail:config.checkout.requireEmail,validPhone:normalizeLeadPhone(form.customerPhone,'NG'),activePickup,showRegionSelector,deliveryLocationReady,countryProfile});
+  const fieldError=name=>attemptedCheckout?fieldErrors[name]:undefined;
+  const fieldProps=name=>({name,'aria-invalid':Boolean(fieldError(name))});
   const canRequestQuote = physical && step === "details" && !settingsBusy && !settingsError && (
     form.fulfillmentMethod === "pickup"
       ? Boolean(activePickup)
@@ -595,10 +602,20 @@ export function CommerceCheckout({ store, config: initialConfig, fulfillment: in
   const review = async e => {
     e?.preventDefault();
     if(lock.current||settingsBusy||settingsError)return;
+    setAttemptedCheckout(true);
+    if(Object.keys(fieldErrors).length){
+      requestAnimationFrame(()=>{
+        const first=checkoutRef.current?.querySelector('[aria-invalid="true"]');
+        first?.scrollIntoView({behavior:'smooth',block:'center'});
+        first?.focus({preventScroll:true});
+      });
+      return;
+    }
     const phone=normalizeLeadPhone(form.customerPhone,'NG');
     if(!phone){setError('Enter a valid WhatsApp number with its country code.');return;}
     if(!methods.includes(form.paymentMethod)){setError('This store has no available payment method for this order.');return;}
     if(physical&&!detailsReady){setError('Choose your delivery location.');return;}
+    if(quoteBusy||!quote||quoteError){setError(quoteError||'Please wait for your order total to finish updating, then confirm again.');return;}
     lock.current=true;setBusy(true);setError('');
     if(!key.current)key.current=crypto.randomUUID();
     try{
@@ -672,7 +689,7 @@ export function CommerceCheckout({ store, config: initialConfig, fulfillment: in
             >
               Back to Cart
             </Button>
-            <Button form="atelier-checkout" type="submit" disabled={busy || settingsBusy || Boolean(settingsError) || !methods.length || !detailsReady || quoteBusy || !quote || Boolean(quoteError)}>
+            <Button form="atelier-checkout" type="submit" disabled={busy || settingsBusy || Boolean(settingsError) || !methods.length}>
               {busy ? "Calculating…" : "Confirm Order"}
             </Button>
           </div>
@@ -729,18 +746,18 @@ export function CommerceCheckout({ store, config: initialConfig, fulfillment: in
           </>
         )}
         {step === "details" && (
-          <form id="atelier-checkout" onSubmit={review} className={css.form}>
-            <Field label="Full name">
+          <form ref={checkoutRef} noValidate id="atelier-checkout" onSubmit={review} className={css.form}>
+            <Field label="Full name" error={fieldError("customerName")}>
               <input
                 required
                 maxLength={120}
-                autoComplete="name"
+                autoComplete="name" {...fieldProps("customerName")}
                 value={form.customerName}
                 onChange={(e) => change("customerName", e.target.value)}
               />
             </Field>
-            <Field label="WhatsApp number"><PhoneInput country="ng" enableSearch value={form.customerPhone} countryCodeEditable={false} containerClass={css.phoneInput} inputProps={{onPaste:event=>{const value=normalizeLeadPhone(event.clipboardData.getData('text'),'NG');if(value){event.preventDefault();change('customerPhone',value);}},required:true,name:'customerPhone',autoComplete:'tel','aria-label':'WhatsApp number'}} onChange={value=>change('customerPhone','+'+value.replace(/^2340/,'234'))}/></Field>
-            <Field
+            <Field label="WhatsApp number" error={fieldError("customerPhone")}><PhoneInput country="ng" enableSearch value={form.customerPhone} countryCodeEditable={false} containerClass={css.phoneInput} inputProps={{...fieldProps("customerPhone"),onPaste:event=>{const value=normalizeLeadPhone(event.clipboardData.getData('text'),'NG');if(value){event.preventDefault();change('customerPhone',value);}},required:true,name:'customerPhone',autoComplete:'tel','aria-label':'WhatsApp number'}} onChange={value=>change('customerPhone','+'+value.replace(/^2340/,'234'))}/></Field>
+            <Field error={fieldError("customerEmail")}
               label={
                 (config.checkout.requireEmail||!physical) ? "Email" : "Email (optional)"
               }
@@ -748,7 +765,7 @@ export function CommerceCheckout({ store, config: initialConfig, fulfillment: in
               <input
                 type="email"
                 required={config.checkout.requireEmail||!physical}
-                autoComplete="email"
+                autoComplete="email" {...fieldProps("customerEmail")}
                 value={form.customerEmail}
                 onChange={(e) => change("customerEmail", e.target.value)}
               />
@@ -793,8 +810,8 @@ export function CommerceCheckout({ store, config: initialConfig, fulfillment: in
                 )}
                 {form.fulfillmentMethod === "pickup" && (
                   <div className={css.pickupPanel}>
-                    <Field label="Pickup location">
-                      <select required value={form.pickupId} onChange={(event) => change("pickupId", event.target.value)}>
+                    <Field label="Pickup location" error={fieldError("pickupId")}>
+                      <select {...fieldProps("pickupId")} required value={form.pickupId} onChange={(event) => change("pickupId", event.target.value)}>
                         <option value="">Choose a pickup location</option>
                         {pickups.map((pickup) => <option key={pickup.id} value={pickup.id}>{pickup.name}</option>)}
                       </select>
@@ -810,7 +827,7 @@ export function CommerceCheckout({ store, config: initialConfig, fulfillment: in
                   <div className={css.deliveryAddress}>
                     <div className={css.deliveryAddressHeading}><MapPin size={16}/><span><strong>Delivery address</strong><small>Choose a supported location to see the delivery price.</small></span></div>
                     <LocationSelect
-                      label="Country"
+                      label="Country" name="countryCode" error={fieldError("countryCode")}
                       style={storeThemeStyle(design)}
                       required
                       items={countryItems}
@@ -825,7 +842,7 @@ export function CommerceCheckout({ store, config: initialConfig, fulfillment: in
                     />
                     {showRegionSelector && (
                       <LocationSelect
-                        label="State / Region"
+                        label="State / Region" name="regionId" error={fieldError("regionId")}
                         style={storeThemeStyle(design)}
                         loading={!regions.length && !regionItems.length}
                         required={regionRequired}
@@ -855,16 +872,16 @@ export function CommerceCheckout({ store, config: initialConfig, fulfillment: in
                         })}
                       />
                     )}
-                    <Field label="Street address">
+                    <Field label="Street address" error={fieldError("streetAddress")}>
                       <textarea rows={2}
                         required
-                        autoComplete="street-address"
+                        autoComplete="street-address" {...fieldProps("streetAddress")}
                         value={form.address.streetAddress || form.address.line}
                         placeholder="House number, street and estate"
                         onChange={(event) => change("address", { ...form.address, line: event.target.value, streetAddress: event.target.value })}
                       />
                     </Field>
-                    {!countryProfile && <Field label="City / Area"><input required autoComplete="address-level2" value={form.address.city} onChange={event => change("address", { ...form.address, city: event.target.value, areaId: "" })} /></Field>}
+                    {!countryProfile && <Field label="City / Area" error={fieldError("city")}><input {...fieldProps("city")} required autoComplete="address-level2" value={form.address.city} onChange={event => change("address", { ...form.address, city: event.target.value, areaId: "" })} /></Field>}
                     {selectedCountryZones.some(zone => zone.postcodes?.length) && <Field label="Postal code"><input autoComplete="postal-code" value={form.address.postcode} onChange={event => address("postcode", event.target.value)} /></Field>}
                     <Field label="Additional directions (optional)">
                       <input
@@ -936,7 +953,7 @@ export function CommerceCheckout({ store, config: initialConfig, fulfillment: in
             {settingsError&&<p role="alert">{settingsError} <button type="button" onClick={()=>setSettingsRetry(v=>v+1)}>Retry</button></p>}
             {!methods.length&&<p role="alert">This store has no available payment methods. Contact the store to order.</p>}
             {!physical&&quoteError&&<p role="alert">{quoteError}</p>}
-            {quote&&<section aria-label="Order summary"><h3>Order summary</h3>{quote.lines.map(line=><p key={line.productId}>{line.name}{line.productType==='physical'?` × ${line.quantity}`:''}</p>)}<strong>Total: {displayMoney(quote.totals.totalMinor,quote.totals.currency)}</strong></section>}
+            {quote&&<section className={css.checkoutSummary} aria-label="Order summary"><header><h3>Order summary</h3><small>{quote.lines.length} {quote.lines.length===1?'item':'items'}</small></header><ul>{quote.lines.map((line,index)=><li key={index}><div><strong>{line.name}</strong><small>{line.productType==='physical'?`Quantity: ${line.quantity}`:'Digital product'}</small></div><span>{displayMoney(line.unitMinor*line.quantity,quote.totals.currency)}</span></li>)}</ul><dl>{[['subtotalMinor','Subtotal'],['discountMinor','Discount'],['shippingMinor',form.fulfillmentMethod==='pickup'?'Pickup':'Delivery'],['taxMinor',`${config.checkout.taxLabel||'Tax'}${quote.totals.taxInclusive?' (included)':''}`],['totalMinor','Total']].filter(([key])=>(physical||key!=='shippingMinor')&&(!['discountMinor','taxMinor'].includes(key)||Number(quote.totals[key])>0)).map(([key,label])=><div key={key} className={key==='totalMinor'?css.summaryTotal:undefined}><dt>{label}</dt><dd>{key==='discountMinor'?'-':''}{key==='shippingMinor'&&!quote.totals[key]?'Free':displayMoney(quote.totals[key],quote.totals.currency)}</dd></div>)}</dl></section>}
           </form>
         )}
         {step === "review" && quote && (
@@ -969,7 +986,7 @@ export function CommerceCheckout({ store, config: initialConfig, fulfillment: in
             {config.notifications?.email&&form.customerEmail&&<p className={css.confirmationEmail}>You’ll receive an email when the store confirms your order.</p>}
             {form.paymentMethod!=="whatsapp"&&onAccount&&<Button onClick={()=>{onClose();onAccount();}}>View my orders</Button>}
             {form.paymentMethod!=="whatsapp"&&<a className={css.trackOrder} href={`/v1-1/store-receipt/${encodeURIComponent(store.slug)}?token=${encodeURIComponent(done.receiptToken)}`}>Track this order</a>}
-            {(form.paymentMethod==="whatsapp"||done.paymentSnapshot?.showOrderWhatsapp)&&whats&&<a className={css.whatsapp} href={`https://wa.me/${whats}?text=${encodeURIComponent(summary)}`} target="_blank" rel="noreferrer"><FaWhatsapp/> Send Order on WhatsApp</a>}
+            {(form.paymentMethod==="whatsapp"||done.paymentSnapshot?.showOrderWhatsapp)&&whats&&<a className={`${css.whatsapp} ${!physical?css.whatsappPrimary:""}`} href={`https://wa.me/${whats}?text=${encodeURIComponent(summary)}`} target="_blank" rel="noreferrer"><FaWhatsapp/> Send Order on WhatsApp</a>}
           </section>
         )}
         {error && (

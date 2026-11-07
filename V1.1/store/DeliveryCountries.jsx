@@ -1,10 +1,13 @@
+import FlagIcon from '../components/FlagIcon';
+import SearchableSelect from '../components/SearchableSelect';
 import NumericInput from "../components/NumericInput";
 import { useEffect, useState } from 'react';
-import { Plus, Pencil, MoreHorizontal, Truck } from 'lucide-react';
+import { Plus, Pencil, MoreHorizontal, CircleHelp } from 'lucide-react';
 import { Button, Field, Modal } from '../components/UI';
 import { notify } from '../components/Notifications';
-import { countryFlag, deliveryLocations } from './deliveryLocations';
+import { deliveryLocations } from './deliveryLocations';
 import css from './DeliveryCountries.module.css';
+import settingsCss from './StoreSettings.module.css';
 
 const presets = [
   ['Same day', 0, 0, false], ['Next day', 1, 1, false],
@@ -18,19 +21,7 @@ const minor = value => {
 };
 
 export function DeliveryLocationPicker({ label, items, value, onChange, disabled = false, country = false }) {
-  const [query, setQuery] = useState('');
-  const [search, setSearch] = useState('');
-  useEffect(() => { const timer = setTimeout(() => setSearch(query.trim().toLowerCase()), 150); return () => clearTimeout(timer); }, [query]);
-  const id = item => item.id || item.code;
-  const visible = items.filter(item => id(item) === value || `${item.name} ${item.code || ''} ${(item.aliases || []).join(' ')}`.toLowerCase().includes(search));
-  return <Field label={label}><div className={css.picker}>
-    <input type="search" aria-label={`Search ${label.toLowerCase()}`} placeholder={`Search ${label.toLowerCase()}`} value={query} disabled={disabled} onChange={e => setQuery(e.target.value)} />
-    <select required aria-label={label} value={value} disabled={disabled} onChange={e => { onChange(items.find(item => id(item) === e.target.value)); setQuery(''); }}>
-      <option value="">Select {label.toLowerCase()}</option>
-      {visible.map(item => <option key={id(item)} value={id(item)}>{country ? `${countryFlag(item.code)} ` : ''}{item.name}</option>)}
-    </select>
-    {!visible.length && <small>No matching locations.</small>}
-  </div></Field>;
+  return <SearchableSelect label={label} items={country?items.map(item=>({...item,flagCode:item.code})):items} value={value} onChange={onChange} disabled={disabled} required/>;
 }
 
 export function FeeEditor({ entry, countries, currency, onSave, onClose }) {
@@ -82,7 +73,7 @@ export function FeeEditor({ entry, countries, currency, onSave, onClose }) {
         <Field label="To"><NumericInput type="number" required min={range.min} max="366" value={range.max} onChange={e => setRange(r => ({ ...r, max: e.target.value === '' ? '' : Number(e.target.value) }))} /></Field>
         <Field label="Time unit"><select value={range.unit === 'hour' ? 'hour' : range.businessDays ? 'business' : 'day'} onChange={e => setRange(r => ({ ...r, unit: e.target.value === 'hour' ? 'hour' : 'day', businessDays: e.target.value === 'business' }))}><option value="business">Business days</option><option value="day">Days</option><option value="hour">Hours</option></select></Field>
       </div>}
-      {!stateMode && <><Field label={`Free delivery above (${currency}, optional)`}><NumericInput inputMode="decimal" type="number" min="0" step="0.01" value={value.threshold} placeholder="No minimum set" onChange={e => set('threshold', e.target.value)} /></Field><details className={css.advanced}><summary>Delivery coverage</summary><label><input type="checkbox" checked={value.allStates} onChange={e => set('allStates', e.target.checked)} />Deliver to all states in this country</label><p>When off, delivery is available only in states with an enabled custom fee.</p></details></>}
+      {!stateMode && <><Field label={`Free delivery for orders above (${currency}, optional)`}><NumericInput inputMode="decimal" type="number" min="0" step="0.01" value={value.threshold} placeholder="No minimum set" onChange={e => set('threshold', e.target.value)} /></Field><details className={css.advanced}><summary>Delivery coverage</summary><label><input type="checkbox" checked={value.allStates} onChange={e => set('allStates', e.target.checked)} />Deliver to all states in this country</label><p>When off, delivery is available only in states with an enabled custom fee.</p></details></>}
       {stateMode && Object.hasOwn(initial, 'freeAboveMinor') && <small>Existing free delivery minimum: {initial.freeAboveMinor == null ? 'none' : money(initial.freeAboveMinor, currency)}. This is preserved when you save.</small>}
       {error && <p className={css.error} role="alert">{error}</p>}
     </form>
@@ -107,12 +98,12 @@ export default function DeliveryCountries({ delivery, currency, onSave, busy, di
   const available = [...countries.filter(c => !configured.some(row => row.countryCode === c.code) || entry?.value?.countryCode === c.code)];
   if (entry?.value?.countryCode && !available.some(c => c.code === entry.value.countryCode)) available.push({ code: entry.value.countryCode, name: entry.value.name });
   return <div className={css.root}>
-    <header className={css.hero}><span><Truck size={19}/></span><div><h3>Delivery <button type="button" aria-label="About delivery" onClick={()=>setHelp(true)}>?</button></h3><p>Choose where you deliver and what customers pay.</p></div><button type="button" className={css.offerToggle} role="switch" aria-label="Offer Delivery" aria-checked={!digital&&delivery.enabled===true} aria-disabled={digital||busy} disabled={busy} onClick={()=>digital?setHelp(true):safe({...delivery,enabled:!delivery.enabled},'Delivery setting saved')}>Offer Delivery <i aria-hidden="true"><span/></i></button></header>
+    <header className={`${settingsCss.panelHeading} ${css.deliveryHeader}`}><div><h2>Delivery <button className={settingsCss.helpButton} type="button" aria-label="About delivery" onClick={()=>setHelp(true)}><CircleHelp size={15}/></button></h2><p>Choose where you deliver and what customers pay.</p></div><button type="button" className={css.offerToggle} role="switch" aria-label="Offer Delivery" aria-checked={!digital&&delivery.enabled===true} aria-disabled={digital||busy} disabled={busy} onClick={()=>digital?setHelp(true):safe({...delivery,enabled:!delivery.enabled},'Delivery setting saved')}><i aria-hidden="true"><span/></i></button></header>
     {help&&<Modal title="Delivery" onClose={()=>setHelp(false)}><p>{digital?'This option is only available for physical stores.':'Set a general fee for each country and optional fees for individual states.'}</p></Modal>}
     <div className={css.heading}><h3>Delivery locations</h3><Button variant="secondary" disabled={digital || busy || !countries.length} onClick={() => setEntry({ kind: 'country' })}><Plus size={14} /> Add Delivery Location</Button></div>
     {!configured.length && <div className={css.empty}>Add a country and set one general delivery fee.</div>}
     {configured.map(country => <section className={css.country} key={country.countryCode}>
-      <div className={css.countryHeading}><h4><span aria-hidden="true">{countryFlag(country.countryCode)}</span> {country.name}{!country.enabled && <small>Disabled</small>}</h4><div className={css.actions}><button type="button" disabled={busy} onClick={() => setEntry({ kind: 'country', value: country })}><Pencil size={13} /> Edit</button><RowMenu label={country.name} enabled={country.enabled} disabled={busy} onToggle={() => safe(replace({ ...country, enabled: !country.enabled }), 'Country updated')} onDelete={() => setRemove({ country })} /></div></div>
+      <div className={css.countryHeading}><h4><span aria-hidden="true"><FlagIcon code={country.countryCode}/></span> {country.name}{!country.enabled && <small>Disabled</small>}</h4><div className={css.actions}><button type="button" disabled={busy} onClick={() => setEntry({ kind: 'country', value: country })}><Pencil size={13} /> Edit</button><RowMenu label={country.name} enabled={country.enabled} disabled={busy} onToggle={() => safe(replace({ ...country, enabled: !country.enabled }), 'Country updated')} onDelete={() => setRemove({ country })} /></div></div>
       <div className={css.general}><p>General delivery fee <strong>{money(country.feeMinor, currency)}</strong></p><p>Estimated delivery <strong>{country.estimate || 'Not set'}</strong></p><small>{country.allStates ? 'Applies to all states without a custom fee.' : 'Delivery is limited to enabled states below.'}</small>{country.freeAboveMinor != null && <small>Free delivery from {money(country.freeAboveMinor, currency)}.</small>}</div>
       <div className={css.stateHeading}><div><h5>Custom state fees</h5><p>Set different delivery fees for selected states.</p></div><button type="button" disabled={busy} onClick={() => setEntry({ kind: 'state', country })}><Plus size={13} /> Add state</button></div>
       <ul className={css.rows}>{country.states.map(state => <li key={state.regionId}><div><strong>{state.name}{!state.enabled && <small>Disabled</small>}</strong><span>{money(state.feeMinor, currency)} <i>·</i> {state.estimate || 'Not set'}</span></div><div className={css.actions}><button type="button" disabled={busy} aria-label={`Edit ${state.name} fee`} onClick={() => setEntry({ kind: 'state', country, value: state })}><Pencil size={13} /> Edit</button><RowMenu label={state.name} enabled={state.enabled} disabled={busy} onToggle={() => safe(replace({ ...country, states: country.states.map(s => s.regionId === state.regionId ? { ...s, enabled: !s.enabled } : s) }), 'State fee updated')} onDelete={() => setRemove({ country, state })} /></div></li>)}</ul>

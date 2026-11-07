@@ -277,7 +277,7 @@ Total Price: ₦${whatsappTotalPrice.toLocaleString()}
   const customButtonText = data.store?.addToCartButtonText?.trim();
 
   const defaultButtonText =
-    data.productType === "digital" ? "BUY NOW" : "ADD TO CART";
+    data.productType === "digital" ? "PAY NOW" : "ADD TO CART";
 
   const addToCartButtonText = customButtonText || defaultButtonText;
   const storeWhatsappNumber =

@@ -2,3 +2,34 @@
 .controls{display:grid;gap:14px}.controls input:not([type=checkbox]),.controls select,.controls textarea{width:100%;min-height:42px;padding:9px 11px}.controls input[type=color]{padding:4px;height:44px}.controls fieldset{border:1px solid #e7dff0;border-radius:12px;padding:12px}.controls fieldset label{display:block;margin:8px 0}
 
 .historyControls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.historyControls small{font-size:11px;color:#80718f;margin-left:auto}.controls>button{justify-content:flex-start;border:1px solid #e6deef;border-radius:12px;padding:12px;background:#faf8fe}.controls>nav{position:sticky;top:0;z-index:2;margin:0}.editModal{max-width:720px!important}.controls details[open]{box-shadow:0 3px 15px #53307909}.controls textarea{min-height:100px}.toolbar{flex-wrap:wrap}.toolbar small{flex:1;min-width:90px}.editModal>header>div:last-child{flex:0 0 auto!important}.controls [data-guide-highlight]{outline:3px solid #a66ae5;outline-offset:3px}@media(max-width:480px){.controls{gap:12px}.toolbar small{order:5;flex-basis:100%;max-width:none}.controls>nav button{padding:10px 8px}.historyControls small{flex-basis:100%}}
+
+/* Compact editor sheet and consistent modal controls. */
+.editModal{height:82dvh!important;max-height:82dvh!important;align-self:flex-end;border-radius:22px 22px 0 0!important}
+.editModal>header{padding:18px 14px!important;gap:10px}
+.headerActions{display:flex;align-items:center;gap:6px}
+.editModal .headerActions .historyIcon{display:inline-flex;align-items:center;justify-content:center;width:30px;min-width:30px;height:32px;min-height:32px;padding:0;border:1px solid #ded2f2;border-radius:9px;background:#ffffffb8;color:#7042ab;box-shadow:none}
+.editModal .headerActions .historyIcon:disabled{opacity:.35}
+.tabsCard{position:sticky;top:0;z-index:3;padding:7px;border:1px solid #e9e1f3;border-radius:15px;background:#fff;box-shadow:0 3px 12px #53307908}
+.tabsCard>nav{display:flex;gap:3px;padding:3px;border-radius:10px;background:#f5f0fc}
+.tabsCard>nav button{flex:1;min-width:0;width:auto;min-height:36px;padding:8px 6px;border:0;border-radius:8px;background:transparent;color:#78648c;font-size:11px;font-weight:650;box-shadow:none}
+.tabsCard>nav button[aria-pressed=true]{background:#fff;color:#7136c6;box-shadow:0 2px 7px #563c8410}
+.optionCard{display:grid;gap:14px;padding:15px;border:1px solid #e9e1f3;border-radius:14px;background:#fff;min-width:0}
+.optionCard h2{margin:0;color:#51336c}.optionCard p{margin:0;font-size:11px}
+.controls button:not([data-design-tab]):not([aria-label]){display:inline-flex;align-items:center;justify-content:center;gap:7px;width:100%;min-height:40px;padding:10px 14px;border:1px solid #dfd2f0;border-radius:10px;background:#f5effd;color:#7042a3;font-family:inherit;font-size:12px;font-weight:600;line-height:1.3;box-shadow:none}
+.controls button:not([data-design-tab]):not([aria-label]):hover{background:#ede3fa;transform:none;box-shadow:none}
+.controls button:disabled{opacity:.4;cursor:default}
+.controls button[aria-label]{border-radius:8px;background:#f7f2fc;color:#7042a3;border:1px solid #e6dcf2}
+.controls summary button[aria-label]{background:transparent;border:0;color:inherit}
+@media(min-width:700px){.editModal{align-self:center;border-radius:20px!important;max-height:min(82dvh,800px)!important}}
+
+/* Match the compact, edge-to-edge landing-page editor toolbar. */
+.studio.studio{padding:0;max-width:none;width:100%;min-height:100dvh;margin:0}
+.toolbar.toolbar{padding:9px 12px;gap:9px;flex-wrap:nowrap;width:100%;box-sizing:border-box;background:linear-gradient(115deg,#faf7ff,#f3faf8)}
+.toolbar>a{width:32px;min-height:34px;padding:4px;flex:none;box-sizing:border-box}
+.toolbar>button:not(:last-child){min-height:34px;padding:7px 10px;font-size:12px;white-space:nowrap;background:#fff;border:1px solid #e4d8f2;color:#7344ac;border-radius:10px;box-shadow:0 2px 6px #58357407}
+.toolbar>button[aria-label="Show store design guide"]{width:34px;padding:7px;justify-content:center;flex:none}
+.toolbar>button:last-child{min-height:40px;padding:10px 18px;font-size:13px;white-space:nowrap}
+.toolbar small{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;order:0;flex:1}
+.productButton{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:10px 18px;border-radius:10px;background:linear-gradient(120deg,#7336d5,#a25de5);color:#fff;text-decoration:none;font-size:13px;font-weight:600;border:0}
+.studio [data-guide-highlight]{outline:3px solid #a66ae5;outline-offset:3px;border-radius:5px}
+@media(max-width:480px){.toolbar small{position:absolute;width:1px;height:1px;clip-path:inset(50%);overflow:hidden}.toolbar.toolbar{gap:7px}}

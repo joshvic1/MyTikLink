@@ -2,7 +2,7 @@ import {CatalogUrl,slugFromName,SmallLoading} from "./CatalogControls";
 import NumericInput from "../components/NumericInput";
 import SettingsHelp from "./SettingsHelp";
 import { useEffect, useRef, useState } from "react";
-import { Plus, Search, X, Pencil, Archive, ChevronRight } from "lucide-react";
+import { Plus, Search, X, Pencil, Trash2, ChevronRight } from "lucide-react";
 import { apiRequest, v11Api } from "../lib/api";
 import { Button, Field, Modal } from "../components/UI";
 import { notify } from "../components/Notifications";
@@ -28,7 +28,7 @@ export function CategoryEditor({category,onClose,onSaved}){
  {discard&&<Modal title="Discard category changes?" onClose={()=>setDiscard(false)} footer={<><Button variant="secondary" onClick={()=>setDiscard(false)}>Keep editing</Button><Button onClick={()=>{setDiscard(false);onClose();}}>Discard changes</Button></>}><p>Your unsaved changes will be lost if you leave.</p></Modal>}</>;
 }
 export function CategoryManager() {
-  const [merging, setMerging] = useState(null),
+  const [merging, setMerging] = useState(null), [deleting,setDeleting]=useState(null), [removing,setRemoving]=useState(false),
     [rows, setRows] = useState([]),
     [query, setQuery] = useState(""),
     [page, setPage] = useState(1),
@@ -65,22 +65,21 @@ export function CategoryManager() {
     };
   }, [query, page, reload]);
   const archive = async (row) => {
-    if (!window.confirm(`Archive ${row.name}? Products must be moved first.`))
-      return;
+    if(removing)return;setRemoving(true);
     try {
       await apiRequest(`${endpoint}/${row._id}`, { method: "DELETE" });
       setReload((v) => v + 1);
-      notify.success("Category archived");
+      setDeleting(null);notify.success("Category deleted");
     } catch (e) {
       notify.error(e.message);
-    }
+    } finally {setRemoving(false);}
   };
   return (
     <>
       <div className={css.panelHeading}>
         <div>
           <h2>Product categories <SettingsHelp topic="Product categories"/></h2>
-          <p>Give every collection a clear place in your store.</p>
+          <p>Create a category for your products.</p>
         </div>
         <Button onClick={() => setEditing({})}>
           <Plus size={16} /> Add category
@@ -126,18 +125,7 @@ export function CategoryManager() {
               >
                 <Pencil size={16} />
               </button>
-              <button
-                aria-label={`Merge ${row.name}`}
-                onClick={() => setMerging(row)}
-              >
-                Merge
-              </button>
-              <button
-                aria-label={`Archive ${row.name}`}
-                onClick={() => archive(row)}
-              >
-                <Archive size={16} />
-              </button>
+              <button aria-label={`Delete ${row.name}`} onClick={()=>setDeleting(row)}><Trash2 size={16}/></button>
             </article>
           ))}
         </div>
@@ -170,6 +158,7 @@ export function CategoryManager() {
           Next <ChevronRight size={14} />
         </Button>
       </div>
+      {deleting&&<Modal title="Delete category?" description="Are you sure you want to delete this category? Products in this category will not be deleted." onClose={()=>!removing&&setDeleting(null)} footer={<><Button variant="secondary" disabled={removing} onClick={()=>setDeleting(null)}>Cancel</Button><Button variant="danger" disabled={removing} onClick={()=>archive(deleting)}>{removing?'Deleting…':'Delete category'}</Button></>}/>}
       {merging && (
         <CategoryMerge
           category={merging}

@@ -888,7 +888,7 @@
 .topbarActions .topbarUpgradeExpired:focus-visible{outline-color:#d92d40}
 
 /* Comfortable support cards without changing their layout. */
-.helpSheet .helpChannelCard{padding:12px;min-height:84px}.helpSheet .helpChannel_ai .helpChannelCopy em{background:#e6f6eb;color:#237447}@media(max-width:640px){.helpSheet .helpChannelCard{padding:11px 12px;min-height:68px}}
+.helpSheet .helpChannelCard{padding:14px;min-height:96px}.helpSheet .helpChannel_ai .helpChannelCopy em{background:#e6f6eb;color:#237447}@media(max-width:640px){.helpSheet .helpChannelCard{padding:13px 14px;min-height:80px}}
 
 /* One scroll area keeps action buttons reachable while the keyboard resizes. */
 .modalBackdrop>.modal{display:flex;flex-direction:column;overflow:hidden;min-height:0}
@@ -897,3 +897,8 @@
 @media(max-width:640px),(any-pointer:coarse){.modalBackdrop{top:var(--sheet-visible-top,0px);bottom:auto;height:var(--sheet-visible-height,100dvh);align-items:flex-end}.modalBackdrop>.modal{max-height:calc(var(--sheet-visible-height,100dvh) - 12px)}}
 
 .slugReview{font-size:inherit;line-height:1.5;min-width:0}.slugEditor{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:8px;padding:8px;background:#faf8fd;border:1px solid #e6deef;border-radius:10px}.slugEditor small{font-size:11px;overflow-wrap:anywhere}.slugEditor input{border:1px solid #ddd2ea;border-radius:7px;padding:7px 9px;min-height:36px;font:inherit;outline:none}.slugEditor input:focus{border-color:#9065d2;box-shadow:0 0 0 3px #9065d218}.slugEditor button{min-height:36px;padding:7px 10px;font-size:12px}
+
+.routeProgress{position:fixed;top:0;left:0;right:0;height:3px;z-index:12000;pointer-events:none;background:linear-gradient(90deg,#8b4cf5,#c9b1ff,#8b4cf5);background-size:200% 100%;animation:routeLoading 1.2s linear infinite}@keyframes routeLoading{to{background-position:200% 0}}@media(prefers-reduced-motion:reduce){.routeProgress{animation:none}}
+
+/* Give support choices a little more room without changing their layout. */
+.helpSheet .helpChannelCard>.helpChannelIcon{width:34px;height:34px;flex-basis:34px}.helpSheet .helpChannelCopy b{font-size:11.5px!important}.helpSheet .helpChannelCopy small{font-size:9.5px!important}.helpSheet .helpChannelCopy em{font-size:8px!important}

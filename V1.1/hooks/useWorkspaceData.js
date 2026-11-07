@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
-import { unwrapCollection, v11Api } from "../lib/api";
+import { useCallback, useEffect, useState, useRef } from "react";
+import { unwrapCollection, v11Api, getToken } from "../lib/api";
 
 const warningFor = (result, label) => result.status === "rejected" ? `${label}${result.reason?.status ? ` (HTTP ${result.reason.status})` : " (connection error)"}` : null;
 const optionalStore = () => v11Api.store().catch(error => {
@@ -11,16 +11,24 @@ const initial = { pages: [], links: [], store: null, products: [], orders: [], l
 
 export function useWorkspaceData(enabled = true) {
   const [state, setState] = useState({ ...initial, loading: true, error: null, warnings: [] });
+  const loaded=useRef(false),generation=useRef(0);
   const refresh = useCallback(async () => {
     if (!enabled) return;
-    setState((current) => ({ ...current, loading: true, error: null }));
+    const request=++generation.current,token=getToken();
+    const current=()=>request===generation.current&&getToken()===token;
+    setState((value) => ({ ...value, loading: !loaded.current, error: null }));
+    const historyRequest=v11Api.clickHistory().then(value=>({status:"fulfilled",value}),reason=>({status:"rejected",reason}));
+    const paymentsRequest=v11Api.paymentHistory().then(value=>({status:"fulfilled",value}),reason=>({status:"rejected",reason}));
     const dashboard = await v11Api.dashboardV11().catch(() => null);
+    if(!current())return;
     if (dashboard) {
-      const [historyResult, paymentsResult, statsResult] = await Promise.allSettled([
-        v11Api.clickHistory(),
-        v11Api.paymentHistory(),
-        dashboard.store ? v11Api.storeStats() : Promise.resolve(null),
+      loaded.current=true;
+      setState(value=>({...value,pages:dashboard.pages||[],links:dashboard.links||[],store:dashboard.store||null,products:dashboard.products||[],orders:dashboard.orders||[],leads:dashboard.leads||[],dashboard,loading:false,error:null}));
+      const [historyResult, paymentsResult, statsResult] = await Promise.all([
+        historyRequest,paymentsRequest,
+        (dashboard.store?v11Api.storeStats():Promise.resolve(null)).then(value=>({status:"fulfilled",value}),reason=>({status:"rejected",reason}))
       ]);
+      if(!current())return;
       setState({
         pages: dashboard.pages || [], links: dashboard.links || [], store: dashboard.store || null,
         products: dashboard.products || [], orders: dashboard.orders || [], leads: dashboard.leads || [],
@@ -36,7 +44,7 @@ export function useWorkspaceData(enabled = true) {
     const requests = [v11Api.pages(), v11Api.links(), storeRequest,
       storeRequest.then(store => store ? v11Api.products() : []),
       storeRequest.then(store => store ? v11Api.orders() : []),
-      v11Api.clickHistory(), v11Api.paymentHistory()];
+      historyRequest.then(r=>{if(r.status==="rejected")throw r.reason;return r.value}), paymentsRequest.then(r=>{if(r.status==="rejected")throw r.reason;return r.value})];
     const [pagesResult, linksResult, storeResult, productsResult, ordersResult, historyResult, paymentsResult] = await Promise.allSettled(requests);
     const listedPages = pagesResult.status === "fulfilled" ? unwrapCollection(pagesResult.value, "pages") : [];
     const pages = listedPages;
@@ -46,6 +54,8 @@ export function useWorkspaceData(enabled = true) {
     let statsWarning = null;
     if (storeResult.status === "fulfilled" && storeResult.value) storeStats = await v11Api.storeStats().catch(error => {statsWarning = warningFor({status:"rejected",reason:error},"Store statistics");return null;});
     const warnings = [warningFor(pagesResult,"Landing pages"), warningFor(linksResult,"Redirect links"), warningFor(storeResult,"Storefront"), ...(storeResult.status === "fulfilled" ? [warningFor(productsResult,"Products"), warningFor(ordersResult,"Orders")] : []), warningFor(historyResult,"Click history"), warningFor(paymentsResult,"Payment history"), statsWarning, ...(leadResults.some(result=>result.status === "rejected") ? ["Some page leads"] : [])].filter(Boolean);
+    if(!current())return;
+    loaded.current=true;
     setState({
       pages,
       links: linksResult.status === "fulfilled" ? unwrapCollection(linksResult.value, "links") : [],
@@ -62,6 +72,6 @@ export function useWorkspaceData(enabled = true) {
       warnings,
     });
   }, [enabled]);
-  useEffect(() => { if (enabled) refresh(); }, [enabled, refresh]);
+  useEffect(() => { if(enabled)refresh();else{loaded.current=false;setState({...initial,loading:true,error:null,warnings:[]});}return()=>{generation.current++;}; }, [enabled, refresh]);
   return { ...state, refresh };
 }

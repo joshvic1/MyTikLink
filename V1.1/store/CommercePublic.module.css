@@ -517,3 +517,13 @@
 .locationSheet[role=dialog][data-popup-tone]>div{flex:1 1 auto!important;min-height:0!important;overflow-y:auto!important;padding:14px!important}
 .locationSheet .locationResults{max-height:45dvh}.locationSheet .locationResults button{font-size:14px;min-height:46px}
 @media(max-width:600px){.locationSheet[role=dialog][data-popup-tone]{width:100%!important;border-radius:16px 16px 0 0!important}}
+
+/* Checkout details and purchase feedback */
+.form [aria-invalid="true"]{border-color:#b42318!important;outline-color:#b42318}
+.checkoutSummary{padding:20px;border:1px solid var(--store-line,#e4e7ec);border-radius:16px;background:var(--store-paper,#fff);color:var(--store-ink,#202420)}
+.checkoutSummary header{display:flex;align-items:center;justify-content:space-between;gap:12px}.checkoutSummary h3{margin:0;font-size:16px}.checkoutSummary small{font-size:12px;opacity:.7}
+.checkoutSummary ul{list-style:none;margin:16px 0;padding:0}.checkoutSummary li{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--store-line,#e4e7ec)}.checkoutSummary li div{min-width:0}.checkoutSummary li strong{display:block;font-size:14px;overflow-wrap:anywhere}.checkoutSummary li small{display:block;margin-top:4px}.checkoutSummary li>span{white-space:nowrap;font-size:14px}
+.checkoutSummary dl{margin:0}.checkoutSummary dl>div{display:flex;justify-content:space-between;gap:12px;padding:6px 0;font-size:13px}.checkoutSummary dd{margin:0;font-weight:600}.checkoutSummary .summaryTotal{border-top:1px solid var(--store-line,#e4e7ec);margin-top:10px;padding-top:16px;font-size:18px;font-weight:700}
+.publicModal .whatsappPrimary{display:flex;width:100%;box-sizing:border-box;justify-content:center;align-items:center;gap:10px;min-height:56px;padding:16px 20px;font-size:16px;font-weight:700;border-radius:12px;text-decoration:none}.whatsappPrimary svg{width:23px;height:23px;flex-shrink:0}
+.productPage .productBreadcrumb{display:flex;position:static;width:100%;box-sizing:border-box;justify-content:flex-start;align-items:center;gap:8px;padding:0;margin:0 0 24px;background:transparent;border:0;box-shadow:none;font:400 13px/1.5 var(--store-body, sans-serif);letter-spacing:normal;text-transform:none;color:var(--store-ink,#202420)}
+.productPage .productBreadcrumb a{flex:0 0 auto;padding:0;color:inherit;font:inherit;text-decoration:none;opacity:.7}.productPage .productBreadcrumb a:hover{text-decoration:underline;opacity:1}.productPage .productBreadcrumb span{font:inherit;color:inherit}.productPage .productBreadcrumb span:last-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500}

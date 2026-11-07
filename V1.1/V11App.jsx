@@ -1,3 +1,4 @@
+import PageSkeleton from './components/PageSkeleton';
 import SecurityPage from "./pages/SecurityPage";
 import PublicStore from "./store/PublicStore";
 import RedirectAdminPage from "./pages/RedirectAdminPage";
@@ -18,18 +19,18 @@ import { PageTemplateModal } from "./components/PageTemplateModal";
 import { ErrorState, LoadingState, Modal } from "./components/UI";
 import { useV11Session } from "./lib/useV11Session";
 import { useOnboarding } from "./hooks/useOnboarding";
-import { OnboardingWizard } from "./components/onboarding/OnboardingWizard";
+const OnboardingWizard = dynamic(() => import("./components/onboarding/OnboardingWizard").then(module => module.OnboardingWizard), {loading: () => <PageSkeleton/>});
 import { V11AuthPage } from "./components/auth/V11AuthPage";
 import { V11PasswordPage } from "./components/auth/V11PasswordPage";
 import { useWorkspaceData } from "./hooks/useWorkspaceData";
 import { HomePage } from "./pages/HomePage";
 import { LinksPage } from "./pages/LinksPage";
 import { PagesPage } from "./pages/PagesPage";
-import { AnalyticsPage } from "./pages/AnalyticsPage";
+const AnalyticsPage = dynamic(() => import("./pages/AnalyticsPage").then(module => module.AnalyticsPage), {loading: () => <PageSkeleton/>});
 import { StorePage } from "./pages/StorePage";
 import { TrackingPage } from "./pages/TrackingPage";
-import { AccountPage } from "./pages/AccountPage";
-import { BillingPage } from "./pages/BillingPage";
+const AccountPage = dynamic(() => import("./pages/AccountPage").then(module => module.AccountPage), {loading: () => <PageSkeleton/>});
+const BillingPage = dynamic(() => import("./pages/BillingPage").then(module => module.BillingPage), {loading: () => <PageSkeleton/>});
 import { HelpPage } from "./pages/HelpPage";
 import { PublicLandingPreview, PublicProductPreview, PublicStorePreview, RedirectPreview } from "./pages/PublicPreviewPage";
 import { v11Routes } from "./config/routes";
@@ -41,13 +42,13 @@ import { SubscriptionProvider } from "./components/SubscriptionModal";
 import { notify } from "./components/Notifications";
 
 const VersionedPublicPage = dynamic(() => import("./landing/PublicPage"), { ssr: false, loading: () => <LoadingState/> });
-const TemplateEditor = dynamic(() => import("./landing/PageEditor"), { ssr: false, loading: () => <LoadingState label="Opening the page editor…"/> });
-const CustomBuilder = dynamic(() => import("./landing/CustomBuilder"), { ssr: false, loading: () => <LoadingState label="Opening the custom builder…"/> });
-const ProductsManager = dynamic(() => import("./store/ProductsManager"), { ssr: false, loading: () => <LoadingState label="Opening products…"/> });
-const OrdersManager = dynamic(() => import("./store/OrdersManager"), { ssr: false, loading: () => <LoadingState label="Opening orders…"/> });
-const StoreSettings = dynamic(() => import("./store/StoreSettings"), { ssr: false, loading: () => <LoadingState label="Opening store settings…"/> });
-const StoreDesign = dynamic(() => import("./store/StoreStudio"), { ssr: false, loading: () => <LoadingState label="Opening store designer…"/> });
-const StoreSetup = dynamic(() => import("./pages/StoreSetupPage"), { ssr: false, loading: () => <LoadingState label="Opening storefront setup…"/> });
+const TemplateEditor = dynamic(() => import("./landing/PageEditor"), { ssr: false, loading: () => <PageSkeleton/> });
+const CustomBuilder = dynamic(() => import("./landing/CustomBuilder"), { ssr: false, loading: () => <PageSkeleton/> });
+const ProductsManager = dynamic(() => import("./store/ProductsManager"), { ssr: false, loading: () => <PageSkeleton/> });
+const OrdersManager = dynamic(() => import("./store/OrdersManager"), { ssr: false, loading: () => <PageSkeleton/> });
+const StoreSettings = dynamic(() => import("./store/StoreSettings"), { ssr: false, loading: () => <PageSkeleton/> });
+const StoreDesign = dynamic(() => import("./store/StoreStudio"), { ssr: false, loading: () => <PageSkeleton/> });
+const StoreSetup = dynamic(() => import("./pages/StoreSetupPage"), { ssr: false, loading: () => <PageSkeleton/> });
 const dmSans = DM_Sans({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-v11-body" });
 const manrope = Manrope({ subsets: ["latin"], weight: ["600", "700", "800"], variable: "--font-v11-heading" });
 const preparingLabel = (path) => {
@@ -80,7 +81,7 @@ function V11Content() {
   const isPagesList = path.endsWith("/pages") || path.endsWith("/pages/create");
   const isLinksList = path.endsWith("/links") || path.endsWith("/analytics") || path.endsWith("/insights");
   const [linkRevision,setLinkRevision] = useState(0);
-  const workspace = useWorkspaceData(session.authenticated && !isPagesList && !isLinksList && !publicRoute);
+  const workspace = useWorkspaceData(session.authenticated && !publicRoute);
   const [modal, setModal] = useState(null), [editingLink, setEditingLink] = useState(null), [leadPage, setLeadPage] = useState(null), [productComposer, setProductComposer] = useState(false);
   const [navigating, setNavigating] = useState(false), [loadingPath, setLoadingPath] = useState("");
   const loadingLabel = preparingLabel(loadingPath || path);
@@ -109,7 +110,7 @@ function V11Content() {
   if (publicParts[1] === "s" && publicParts[2]) return <PublicStore slug={decodeURIComponent(publicParts[2])}/>;
   if (publicParts[1] === "r" && publicParts[2]) return <RedirectPage linkId={decodeURIComponent(publicParts[2])}/>;
   const editor = path.endsWith("/pages/editor"), builder = path.endsWith("/pages/builder");
-  if ((session.loading && !session.user) || navigating) return <LoadingState label={loadingLabel} progress={session.loading && !session.user ? 32 : 62}/>;
+  if ((session.loading && !session.user)) return <LoadingState label={loadingLabel} progress={session.loading && !session.user ? 32 : 62}/>;
   if (session.error && !session.user) return <div className={styles.standaloneState}><ErrorState message={session.error.message} onRetry={session.refresh}/></div>;
   if (!session.user) return null;
   if (!publicRoute && onboarding.loading) return <LoadingState label="Preparing your setup…" progress={58}/>;
@@ -118,8 +119,8 @@ function V11Content() {
   if (editor) return <div className={styles.editorIsolation}><div className={styles.editorBreadcrumbBar}><Breadcrumbs/></div><TemplateEditor/></div>;
   if (builder) return <div className={styles.editorIsolation}><div className={styles.editorBreadcrumbBar}><Breadcrumbs/></div><CustomBuilder/></div>;
 
-  if (!isPagesList && !isLinksList && workspace.loading) return <LoadingState label={loadingLabel} progress={82}/>;
-  if (!isPagesList && !isLinksList && workspace.error) return <div className={styles.standaloneState}><ErrorState message={workspace.error.message} onRetry={workspace.refresh}/></div>;
+  const needsWorkspace=path===v11Routes.home || path===v11Routes.store;
+
   const choose = (type) => { setModal(null); if(type === "product"){setProductComposer(true);if(path!==v11Routes.products)router.push(v11Routes.products);} else if (type === "store") router.push(v11Routes.store); else setModal(type); };
   let content;
   if (path.endsWith("/store/settings")) content = <StoreSettings/>;
@@ -140,7 +141,7 @@ function V11Content() {
   else if (path.endsWith("/integrations")) content = <InProgressPage title="Integrations"/>;
   else if (path.endsWith("/help")) content = <HelpPage/>;
   else content = <HomePage user={session.user} data={workspace} onCreate={setModal}/>;
-  return <SubscriptionProvider user={session.user} refreshSession={session.refresh}><Head><title>MyTikLink V1.1</title></Head><Shell payments={workspace.payments} hasStore={Boolean(workspace.store)} user={session.user} onLogout={session.logout} onCreate={() => setModal("chooser")} onAddProduct={() => { setProductComposer(true); if(path !== v11Routes.products)router.push(v11Routes.products); }}>{!isPagesList && !isLinksList && workspace.warnings.length > 0 && <div className={styles.dataWarning} role="status"><span>Could not load: {workspace.warnings.join(", ")}. Your other data is available.</span><button type="button" onClick={workspace.refresh}>Retry</button></div>}{content}</Shell>{modal === "chooser" && <CreateChooser onClose={() => setModal(null)} choose={choose}/>} {modal === "link" && <CreateLinkModal onClose={() => setModal(null)} onSaved={async()=>{setLinkRevision(n=>n+1);if(!isLinksList)await workspace.refresh();}}/>} {editingLink && <CreateLinkModal link={editingLink} onClose={() => setEditingLink(null)} onSaved={async()=>{setLinkRevision(n=>n+1);if(!isLinksList)await workspace.refresh();}}/>} {modal === "page" && <PageTemplateModal user={session.user} onClose={() => setModal(null)}/>} {leadPage && <LeadsModal page={leadPage} leads={workspace.leads} onClose={() => { leadPage.refresh?.(); setLeadPage(null); }}/>}</SubscriptionProvider>;
+  return <SubscriptionProvider user={session.user} refreshSession={session.refresh}><Head><title>MyTikLink V1.1</title></Head><Shell payments={workspace.payments} hasStore={Boolean(workspace.store)} user={session.user} onLogout={session.logout} onCreate={() => setModal("chooser")} onAddProduct={() => { setProductComposer(true); if(path !== v11Routes.products)router.push(v11Routes.products); }}>{!isPagesList && !isLinksList && workspace.warnings.length > 0 && <div className={styles.dataWarning} role="status"><span>Could not load: {workspace.warnings.join(", ")}. Your other data is available.</span><button type="button" onClick={workspace.refresh}>Retry</button></div>}{navigating&&<div className={styles.routeProgress} role="status" aria-label="Opening page"/>}{needsWorkspace&&workspace.loading?<PageSkeleton/>:needsWorkspace&&workspace.error?<ErrorState message={workspace.error.message} onRetry={workspace.refresh}/>:content}</Shell>{modal === "chooser" && <CreateChooser onClose={() => setModal(null)} choose={choose}/>} {modal === "link" && <CreateLinkModal onClose={() => setModal(null)} onSaved={async()=>{setLinkRevision(n=>n+1);if(!isLinksList)await workspace.refresh();}}/>} {editingLink && <CreateLinkModal link={editingLink} onClose={() => setEditingLink(null)} onSaved={async()=>{setLinkRevision(n=>n+1);if(!isLinksList)await workspace.refresh();}}/>} {modal === "page" && <PageTemplateModal user={session.user} onClose={() => setModal(null)}/>} {leadPage && <LeadsModal page={leadPage} leads={workspace.leads} onClose={() => { leadPage.refresh?.(); setLeadPage(null); }}/>}</SubscriptionProvider>;
 }
 
 export default function V11App() {

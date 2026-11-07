@@ -348,7 +348,7 @@ export function CommerceSettingsPanel({ tab, setup = {}, onDirtyChange }) {
   });
   return (
     <>
-      {tab!=="Discounts"&&<div className={css.panelHeading}>
+      {tab!=="Discounts"&&tab!=="Delivery"&&tab!=="Payments"&&<div className={css.panelHeading}>
         <div>
           <h2>{tab} <SettingsHelp topic={tab}/></h2>
           <p>{tab==="Payments"?"Choose how customers can pay for orders from your store.":tab==="Delivery"?"Choose where you deliver and what customers pay.":"Manage your store settings."}</p>
@@ -391,15 +391,15 @@ export function CommerceSettingsPanel({ tab, setup = {}, onDirtyChange }) {
         <div className={css.deliverySettings}>
           <DeliveryCountries digital={paymentStore.businessType==="digital"} delivery={config.delivery} currency={config.checkout.currency} busy={busy} onSave={persistDelivery} />
 
-          <section className={css.deliverySection}><div className={css.deliverySectionHeading}><h3>Pickup locations</h3><span>Coming soon</span></div><p>Let customers collect orders from your store. This feature will be available soon.</p></section>
+          <section className={css.deliverySection}><div className={css.deliverySectionHeading}><h3>Pickup locations</h3><span className={css.comingSoon}>Coming soon</span></div><p>Let customers collect orders from your store. This feature will be available soon.</p></section>
           {text("delivery", "instructions", "Delivery note for customers", "textarea")}
           <Button disabled={busy} onClick={()=>updateDeliveryDraft({},"Delivery note saved").catch(e=>setError(e.message))}>Save delivery note</Button>
         </div>
       )}
-      {tab === "Payments" && <PaymentMethods checkout={config.checkout} store={paymentStore} busy={busy} onSave={persistPayment}/>}
+      {tab === "Payments" && <section className={css.settingsGroup} data-tone="peach"><header className={css.panelHeading}><div><h2>Payments <SettingsHelp topic="Payments"/></h2><p>Choose how customers can pay for orders from your store.</p></div></header><PaymentMethods checkout={config.checkout} store={paymentStore} busy={busy} onSave={persistPayment}/></section>}
       {tab === "Payments" && (
         <div className={css.form}>
-          <CurrencySettings checkout={config.checkout} busy={busy} onChange={value=>set("checkout","displayCurrencies",value)}/><h3>Checkout preferences</h3>
+          <CurrencySettings checkout={config.checkout} busy={busy} onChange={value=>set("checkout","displayCurrencies",value)}/><section className={css.settingsGroup} data-tone="teal"><header className={css.panelHeading}><div><h2>Checkout preferences</h2><p>Choose the details customers provide and how orders are calculated.</p></div></header><div className={css.commerceBody}>
           {check("checkout", "requireEmail", "Require an email address")}
           {paymentStore.businessType!=="digital"&&check("checkout", "allowNotes", "Allow order notes")}
           <Field label="Tax rate (%)">
@@ -429,7 +429,7 @@ export function CommerceSettingsPanel({ tab, setup = {}, onDirtyChange }) {
           <p>
             Guest checkout is enabled. Review tax and policy settings for your
             business before publishing.
-          </p>
+          </p></div></section>
         </div>
       )}
       {tab === "Inventory" && (
@@ -1069,7 +1069,7 @@ export function ResourceManager({ kind = "collections" }) {
     <>
       {loading&&<SmallLoading label="Loading entries…"/>}
       <div className={css.panelHeading}>
-        <div><h3>{kind === "collections" ? "Collections" : "Discounts"} <SettingsHelp topic={kind === "collections" ? "Collections" : "Discount codes"}/></h3>{kind==="discounts"&&<p>Create codes and automatic offers. One discount applies per order; a code replaces automatic offers.</p>}</div>
+        <div><h3>{kind === "collections" ? "Collections" : "Discounts"} <SettingsHelp topic={kind === "collections" ? "Collections" : "Discount codes"}/></h3>{kind==="collections"&&<p>Create a collection for your products.</p>}{kind==="discounts"&&<p>Create codes and automatic offers. One discount applies per order; a code replaces automatic offers.</p>}</div>
         <Button onClick={() => setEdit(fresh)}>
           <Plus size={14} /> Add
         </Button>
@@ -1100,7 +1100,7 @@ export function ResourceManager({ kind = "collections" }) {
               Edit
             </Button>
             <button
-              aria-label={`Archive ${item.name || item.code}`}
+              aria-label={`${kind === "collections" ? "Delete" : "Archive"} ${item.name || item.code}`}
               onClick={() => setArchive(item)}
             >
               <Trash2 size={15} />
@@ -1144,8 +1144,8 @@ export function ResourceManager({ kind = "collections" }) {
       )}
       {archive && (
         <Modal
-          title="Archive this entry?"
-          description="It will no longer be available to customers."
+          title={kind === "collections" ? "Delete collection?" : "Archive this entry?"}
+          description={kind === "collections" ? "Are you sure you want to delete this collection? The products inside it will not be deleted." : "It will no longer be available to customers."}
           onClose={() => setArchive(null)}
           footer={
             <>
@@ -1153,7 +1153,7 @@ export function ResourceManager({ kind = "collections" }) {
                 Cancel
               </Button>
               <Button
-                disabled={busy}
+                variant="danger" disabled={busy}
                 onClick={async () => {
                   setBusy(true);
                   try {
@@ -1169,7 +1169,7 @@ export function ResourceManager({ kind = "collections" }) {
                   }
                 }}
               >
-                Archive
+                {kind === "collections" ? "Delete collection" : "Archive"}
               </Button>
             </>
           }

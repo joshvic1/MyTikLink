@@ -550,7 +550,7 @@ export default function StoreSettingsPage() {
                     />
 
                     <small>
-                      {buttonTextWords.length}/5 words. Default is BUY NOW for
+                      {buttonTextWords.length}/5 words. Default is PAY NOW for
                       digital products and ADD TO CART for physical products.
                     </small>
                   </label>

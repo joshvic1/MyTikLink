@@ -7,7 +7,9 @@ import {
   Copy,
   Plus,
   Trash2,
-  GripVertical,
+  Eye,
+  EyeOff,
+  ChevronDown,
 } from "lucide-react";
 import { Field, Button } from "../components/UI";
 import { apiRequest } from "../lib/api";
@@ -15,8 +17,7 @@ import { sectionTypes, required, newSection } from "./design";
 import ImagePicker from "./ImagePicker";
 import styles from "./store.module.css";
 export default function SectionEditor({ design, onChange, products = [] }) {
-  const [addType, setAddType] = useState("hero"),
-    [dragged, setDragged] = useState(null),
+  const [addOpen, setAddOpen] = useState(false),
     [collections, setCollections] = useState([]);
   useEffect(() => {
     apiRequest("/v1-1/store-studio/commerce/collections")
@@ -30,17 +31,16 @@ export default function SectionEditor({ design, onChange, products = [] }) {
         s.id === id ? { ...s, ...patch } : s,
       ),
     });
+  const canMove = (from, to) => {
+    if (from === to || to < 0 || to >= design.sections.length) return false;
+    const items = [...design.sections];
+    items.splice(to, 0, items.splice(from, 1)[0]);
+    return items.at(-1).type === "footer" && items.findIndex(s => s.type === "header") < items.findIndex(s => s.type === "catalogue");
+  };
   const reorder = (from, to) => {
-    if (from === to || to < 0 || to >= design.sections.length) return;
-    const items = [...design.sections],
-      item = items.splice(from, 1)[0];
-    items.splice(to, 0, item);
-    if (
-      items.at(-1).type !== "footer" ||
-      items.findIndex((s) => s.type === "header") >
-        items.findIndex((s) => s.type === "catalogue")
-    )
-      return;
+    if (!canMove(from, to)) return;
+    const items = [...design.sections];
+    items.splice(to, 0, items.splice(from, 1)[0]);
     onChange({ ...design, sections: items });
   };
   const insert = (type, source) => {
@@ -54,31 +54,14 @@ export default function SectionEditor({ design, onChange, products = [] }) {
   };
   return (
     <>
-      <h2>Your sections</h2>
-      <div className={styles.row}>
-        <select
-          aria-label="Section to add"
-          value={addType}
-          onChange={(e) => setAddType(e.target.value)}
-        >
-          {sectionTypes
-            .filter((t) => !required.includes(t))
-            .map((t) => (
-              <option key={t}>{t}</option>
-            ))}
-        </select>
-        <Button
-          disabled={design.sections.length >= 40}
-          onClick={() => insert(addType)}
-        >
-          <Plus size={14} /> Add
-        </Button>
+      <div className={styles.sectionHeading}>
+        <h2>Your sections</h2>
+        <Button variant="secondary" aria-expanded={addOpen} aria-controls="store-add-section" disabled={design.sections.length>=40} onClick={()=>setAddOpen(!addOpen)}><Plus size={14}/> Add Section</Button>
       </div>
-      <p>
-        Drag sections or use the arrows to reorder. Changes stay in your draft
-        until published.
-      </p>
+      {addOpen&&<div id="store-add-section" className={styles.sectionPicker} role="group" aria-label="Choose a section to add">{sectionTypes.filter(t=>!required.includes(t)).map(type=><button type="button" key={type} onClick={()=>{insert(type);setAddOpen(false);}}><Plus size={13}/>{type.replaceAll('-', ' ').replace(/\b\w/g,c=>c.toUpperCase())}</button>)}</div>}
+      <p className={styles.sectionHint}><ArrowUp size={12}/><ArrowDown size={12}/>Use the arrows to reorder the sections.</p>
       {design.sections.map((s, i) => {
+        const label = ({announcement:"Announcement",header:"Header",categories:"Categories",hero:"Hero banner","category-grid":"Category grid",catalogue:"Product catalogue",featured:"Featured products",about:"About your store",faq:"Frequently asked questions",footer:"Footer"})[s.type] || s.type.replaceAll("-", " ").replace(/\b\w/g, c => c.toUpperCase());
         const settings = s.settings || {},
           set = (key, value) =>
             update(s.id, { settings: { ...settings, [key]: value } });
@@ -86,50 +69,18 @@ export default function SectionEditor({ design, onChange, products = [] }) {
           <details
             id={`studio-section-${s.id}`}
             key={s.id}
-            className={styles.sectionControl}
-            onDragOver={(e) => e.preventDefault()}
-            onDrop={(e) => {
-              e.preventDefault();
-              if (dragged !== null) reorder(dragged, i);
-              setDragged(null);
-            }}
+            className={`${styles.sectionControl} ${styles.sectionCard}`}
           >
-            <summary>
-              <span
-                draggable={!required.includes(s.type)}
-                onDragStart={() => setDragged(i)}
-                onDragEnd={() => setDragged(null)}
-                aria-label="Drag section"
-              >
-                <GripVertical size={14} />
-              </span>{" "}
-              {s.type.replaceAll("-", " ")} · {s.visible ? "Visible" : "Hidden"}
+            <summary className={styles.sectionSummary}>
+              <span className={styles.sectionName}>{label}</span>
+              <span className={styles.sectionActions}>
+                <button type="button" aria-label={`${s.visible ? 'Hide' : 'Show'} ${label}`} title={required.includes(s.type) ? `${label} is required` : `${s.visible ? 'Hide' : 'Show'} ${label}`} aria-pressed={!!s.visible} disabled={required.includes(s.type)} onClick={e=>{e.preventDefault();e.stopPropagation();update(s.id,{visible:!s.visible});}}>{s.visible ? <Eye size={15}/> : <EyeOff size={15}/>}</button>
+                <button type="button" aria-label={`Move ${label} up`} title="Move up" disabled={!canMove(i,i-1)} onClick={e=>{e.preventDefault();e.stopPropagation();reorder(i,i-1);}}><ArrowUp size={14}/></button>
+                <button type="button" aria-label={`Move ${label} down`} title="Move down" disabled={!canMove(i,i+1)} onClick={e=>{e.preventDefault();e.stopPropagation();reorder(i,i+1);}}><ArrowDown size={14}/></button>
+              </span>
+              <ChevronDown className={styles.sectionChevron} size={16} aria-hidden="true"/>
             </summary>
-            {!required.includes(s.type) && (
-              <label>
-                <input
-                  type="checkbox"
-                  checked={s.visible}
-                  onChange={(e) => update(s.id, { visible: e.target.checked })}
-                />{" "}
-                Show section
-              </label>
-            )}
             <div className={styles.row}>
-              <button
-                aria-label={`Move ${s.type} up`}
-                onClick={() => reorder(i, i - 1)}
-                disabled={i === 0 || s.type === "footer"}
-              >
-                <ArrowUp size={15} />
-              </button>
-              <button
-                aria-label={`Move ${s.type} down`}
-                onClick={() => reorder(i, i + 1)}
-                disabled={i >= design.sections.length - 2}
-              >
-                <ArrowDown size={15} />
-              </button>
               {!required.includes(s.type) && (
                 <>
                   <button
