@@ -5,7 +5,7 @@ import InactivePublicPage from "@/V1.1/components/InactivePublicPage";
 import usePageAnalytics from "../lib/usePageAnalytics";
 import { v11ApiBase } from "../lib/apiBase";
 
-import { validateLeadPhoneInput, prepareLeadPhoneInput } from "@/V1.1/lib/leadPhone.js";
+
 // hey
 function loadTikTokPixel(pixelId) {
   if (!pixelId) {
@@ -498,7 +498,7 @@ export default function PublicPage({ slug: providedSlug, initialPage=null, initi
     const submitBtn = form.querySelector("button[type='submit']");
 
     if (!nameInput || !whatsappInput || !submitBtn) return;
-    prepareLeadPhoneInput(whatsappInput);
+
 
     // 🔒 disable initially
     submitBtn.disabled = true;
@@ -529,7 +529,7 @@ export default function PublicPage({ slug: providedSlug, initialPage=null, initi
       if (cooldownActive) return;
 
       const name = nameInput.value.trim();
-      const whatsapp = validateLeadPhoneInput(whatsappInput);
+      const whatsapp = whatsappInput.value.trim();
       if (!whatsapp) return;
       const companyInput = form.querySelector("input[name='company']");
       const company = companyInput ? companyInput.value : "";
@@ -596,7 +596,8 @@ export default function PublicPage({ slug: providedSlug, initialPage=null, initi
     const ctaBtn = document.querySelector("[data-cta='true']");
     if (!ctaBtn) return; // not a button template
 
-    const handleClick = () => {
+    const handleClick = (event) => {
+      event.__v11Tracked = true;
       if (!page.redirectUrl) {
         alert("No redirect URL set for this page");
         return;

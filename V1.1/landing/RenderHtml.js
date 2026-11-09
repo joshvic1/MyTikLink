@@ -1,16 +1,13 @@
 "use client";
 import { v11ApiBase } from "../lib/apiBase";
 
-import { useEffect, useRef } from "react";
-import { validateLeadPhoneInput, prepareLeadPhoneInput } from "@/V1.1/lib/leadPhone.js";
+import { useRef } from "react";
+import { trackingData, announceTracking } from "../tracking/browser";
 
 import { normalizeHtml } from "@/components/custom/utils/htmlSanitizer";
 
 export default function RenderHtml({ element, page }) {
   const container = useRef(null);
-  useEffect(() => {
-    container.current?.querySelectorAll("[data-lead-form='true'] input[name='whatsapp'], [data-lead-form='true'] input[name='phone']").forEach(prepareLeadPhoneInput);
-  }, [element.html]);
   const getOS = () => {
     const ua = navigator.userAgent;
 
@@ -132,68 +129,6 @@ export default function RenderHtml({ element, page }) {
     window.location.href = clean.startsWith("http") ? clean : `https://${clean}`;
   };
 
-  const trackHtmlAction = () => {
-    const eventId = Date.now().toString();
-    const content = {
-      content_type: "product",
-      content_id: page?.slug || "custom-html",
-      content_name: page?.title || "Custom HTML Block",
-      contents: [
-        {
-          content_id: page?.slug || "custom-html",
-          content_name: page?.title || "Custom HTML Block",
-        },
-      ],
-    };
-
-    if (typeof window !== "undefined" && window.ttq) {
-      window.ttq.track("Lead", content, { event_id: eventId });
-
-      setTimeout(() => {
-        window.ttq.track("CompleteRegistration", content, {
-          event_id: Date.now().toString(),
-        });
-      }, 400);
-    }
-
-    if (typeof window !== "undefined" && window.fbq) {
-      window.fbq("track", "Lead");
-      window.fbq("track", "CompleteRegistration");
-    }
-  };
-
-  const trackHtmlFormSubmit = (whatsapp = "") => {
-    const eventId = Date.now().toString();
-    const cleanPhone = whatsapp.replace(/\D/g, "").replace(/^0/, "234");
-    const content = {
-      content_type: "product",
-      content_id: page?.slug || "custom-html",
-      content_name: page?.title || "Custom HTML Block",
-      contents: [
-        {
-          content_id: page?.slug || "custom-html",
-          content_name: page?.title || "Custom HTML Block",
-        },
-      ],
-      ...(cleanPhone ? { phone_number: cleanPhone } : {}),
-    };
-
-    if (typeof window !== "undefined" && window.ttq) {
-      window.ttq.track("Lead", content, { event_id: eventId });
-
-      setTimeout(() => {
-        window.ttq.track("CompleteRegistration", content, {
-          event_id: Date.now().toString(),
-        });
-      }, 400);
-    }
-
-    if (typeof window !== "undefined" && window.fbq) {
-      window.fbq("track", "Lead");
-      window.fbq("track", "CompleteRegistration");
-    }
-  };
-
   const handleClick = (event) => {
     const target = event.target.closest("a, button");
 
@@ -204,9 +139,9 @@ export default function RenderHtml({ element, page }) {
       target.getAttribute("data-href") ||
       target.getAttribute("data-url");
 
-    trackHtmlAction();
-
-    if (!href || href === "#") return;
+    if (!href || href.startsWith("#")) return;
+    event.nativeEvent.__v11Tracked = true;
+    if (page?.slug) announceTracking("page", page.slug, "contact");
 
     event.preventDefault();
 
@@ -224,7 +159,7 @@ export default function RenderHtml({ element, page }) {
 
     const name = form.querySelector("[name='name']")?.value?.trim();
     const phoneInput = form.querySelector("[name='whatsapp']") || form.querySelector("[name='phone']");
-    const whatsapp = validateLeadPhoneInput(phoneInput);
+    const whatsapp = phoneInput?.value?.trim();
     if (!whatsapp) return;
     const company = form.querySelector("[name='company']")?.value || "";
     const submitBtn = form.querySelector("button[type='submit'], button");
@@ -254,6 +189,7 @@ export default function RenderHtml({ element, page }) {
             name,
             whatsapp,
             company,
+            tracking: trackingData("page", page.slug),
           }),
         },
       );
@@ -264,7 +200,7 @@ export default function RenderHtml({ element, page }) {
         throw new Error(data?.message || "Failed to submit");
       }
 
-      trackHtmlFormSubmit(whatsapp);
+      announceTracking("page", page.slug, "lead", data.eventId);
 
       if (data.redirectUrl) {
         setTimeout(() => {

@@ -125,68 +125,6 @@ export default function RenderHtml({ element, page }) {
     window.location.href = clean.startsWith("http") ? clean : `https://${clean}`;
   };
 
-  const trackHtmlAction = () => {
-    const eventId = Date.now().toString();
-    const content = {
-      content_type: "product",
-      content_id: page?.slug || "custom-html",
-      content_name: page?.title || "Custom HTML Block",
-      contents: [
-        {
-          content_id: page?.slug || "custom-html",
-          content_name: page?.title || "Custom HTML Block",
-        },
-      ],
-    };
-
-    if (typeof window !== "undefined" && window.ttq) {
-      window.ttq.track("Lead", content, { event_id: eventId });
-
-      setTimeout(() => {
-        window.ttq.track("CompleteRegistration", content, {
-          event_id: Date.now().toString(),
-        });
-      }, 400);
-    }
-
-    if (typeof window !== "undefined" && window.fbq) {
-      window.fbq("track", "Lead");
-      window.fbq("track", "CompleteRegistration");
-    }
-  };
-
-  const trackHtmlFormSubmit = (whatsapp = "") => {
-    const eventId = Date.now().toString();
-    const cleanPhone = whatsapp.replace(/\D/g, "").replace(/^0/, "234");
-    const content = {
-      content_type: "product",
-      content_id: page?.slug || "custom-html",
-      content_name: page?.title || "Custom HTML Block",
-      contents: [
-        {
-          content_id: page?.slug || "custom-html",
-          content_name: page?.title || "Custom HTML Block",
-        },
-      ],
-      ...(cleanPhone ? { phone_number: cleanPhone } : {}),
-    };
-
-    if (typeof window !== "undefined" && window.ttq) {
-      window.ttq.track("Lead", content, { event_id: eventId });
-
-      setTimeout(() => {
-        window.ttq.track("CompleteRegistration", content, {
-          event_id: Date.now().toString(),
-        });
-      }, 400);
-    }
-
-    if (typeof window !== "undefined" && window.fbq) {
-      window.fbq("track", "Lead");
-      window.fbq("track", "CompleteRegistration");
-    }
-  };
-
   const handleClick = (event) => {
     const target = event.target.closest("a, button");
 
@@ -197,9 +135,9 @@ export default function RenderHtml({ element, page }) {
       target.getAttribute("data-href") ||
       target.getAttribute("data-url");
 
-    trackHtmlAction();
-
-    if (!href || href === "#") return;
+    if (!href || href.startsWith("#")) return;
+    event.nativeEvent.__v11Tracked = true;
+    if (page?.slug) announceTracking("page", page.slug, "contact");
 
     event.preventDefault();
 

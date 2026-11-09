@@ -9,9 +9,9 @@ export default function PublicTracking({kind,slug,consent:providedConsent,conten
  const allowed=providedConsent===undefined?consent:providedConsent;
  useEffect(()=>{if(!allowed||!Object.keys(connections).length)return;
  const send=(type,id=crypto.randomUUID())=>{const attribution=trackingData(kind,slug);if(!attribution)return;browserEvent(connections,type,id);if(type!=='lead'&&Object.values(connections).some(c=>c.server))apiRequest(`/v1-1/tracking/public/${kind}/${encodeURIComponent(slug)}`,{token:null,method:'POST',keepalive:true,body:JSON.stringify({type,id,attribution})}).catch(()=>{});};
- const key=`${kind}:${slug}:${location.pathname}`;if(!viewed.current.has(key)){viewed.current.add(key);send('view');}if(contentKey&&!viewed.current.has('content:'+contentKey)){viewed.current.add('content:'+contentKey);send('content');}
+ const key=`${kind}:${slug}:${location.pathname}`;if(!viewed.current.has(key)){viewed.current.add(key);send('view');}const contentIdentity=contentKey||(kind==='page'?key:null);if(contentIdentity&&!viewed.current.has('content:'+contentIdentity)){viewed.current.add('content:'+contentIdentity);send('content');}
  const event=e=>{if(e.detail?.kind===kind&&e.detail?.slug===slug)send(e.detail.type,e.detail.id)};
- const click=e=>{const link=e.target.closest?.('a[href]');if(link&&/^(https?:\/\/wa.me|https?:\/\/api.whatsapp.com|mailto:|tel:)/i.test(link.href))send('contact');};
+ const click=e=>{if(e.__v11Tracked)return;const link=e.target.closest?.('a[href]');if(link&&!link.getAttribute('href')?.startsWith('#')&&/^(https?:|mailto:|tel:)/i.test(link.href)&&(kind==='page'||/^(https?:\/\/wa.me|https?:\/\/api.whatsapp.com|mailto:|tel:)/i.test(link.href)))send('contact');};
  document.addEventListener('v11:tracking',event);document.addEventListener('click',click);return()=>{document.removeEventListener('v11:tracking',event);document.removeEventListener('click',click);};
  },[allowed,connections,kind,slug,contentKey]);
  const choose=value=>{try{localStorage.setItem(`${kind}-consent:${slug}`,value?'yes':'no');}catch{}setConsent(value);setChoice(false);if(!value){window.fbq?.('consent','revoke');window.ttq?.revokeConsent?.();window.oaiq?.('consent',false);window.gtag?.('consent','update',{analytics_storage:'denied',ad_storage:'denied'});}};

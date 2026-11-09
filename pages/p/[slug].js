@@ -588,7 +588,8 @@ export default function PublicPage({initialPage=null,initialInactive=null,initia
     const ctaBtn = document.querySelector("[data-cta='true']");
     if (!ctaBtn) return; // not a button template
 
-    const handleClick = () => {
+    const handleClick = (event) => {
+      event.__v11Tracked = true;
       if (!page.redirectUrl) {
         alert("No redirect URL set for this page");
         return;

@@ -1,5 +1,6 @@
 // /shared/RenderButton
 import { useState } from "react";
+import { announceTracking } from "../../../V1.1/tracking/browser";
 export default function RenderButton({ element, page, phoneNumber }) {
   const [loading, setLoading] = useState(false);
 
@@ -177,75 +178,14 @@ export default function RenderButton({ element, page, phoneNumber }) {
     large: "18px 32px",
   };
 
-  const handleClick = () => {
+  const handleClick = (event) => {
+    event.nativeEvent.__v11Tracked = true;
     if (loading) return;
 
     setLoading(true);
     const redirectUrl = element.url;
 
-    // =========================
-    // TIKTOK
-    // =========================
-    if (typeof window !== "undefined" && window.ttq) {
-      console.log("🚀 Sending TikTok Events");
-
-      const leadEventId = Date.now().toString();
-
-      window.ttq.track(
-        "Lead",
-        {
-          content_type: "product",
-
-          content_id: page?.slug,
-
-          content_name: page?.title,
-
-          contents: [
-            {
-              content_id: page?.slug,
-              content_name: page?.title,
-            },
-          ],
-
-          ...(phoneNumber && {
-            phone_number: phoneNumber,
-          }),
-        },
-        {
-          event_id: leadEventId,
-        },
-      );
-
-      setTimeout(() => {
-        window.ttq.track(
-          "CompleteRegistration",
-          {
-            content_type: "product",
-
-            content_id: page?.slug,
-
-            content_name: page?.title,
-
-            contents: [
-              {
-                content_id: page?.slug,
-                content_name: page?.title,
-              },
-            ],
-          },
-          {
-            event_id: Date.now().toString(),
-          },
-        );
-      }, 400);
-    }
-
-    // =========================
-    // META
-    // =========================
-    if (typeof window !== "undefined" && window.fbq) {
-      window.fbq("track", "Lead");
-    }
+    if (page?.slug) announceTracking("page", page.slug, "contact");
 
     // =========================
     // DELAY REDIRECT
