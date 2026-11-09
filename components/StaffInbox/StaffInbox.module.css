@@ -33,3 +33,59 @@
 
 @media(max-width:700px){.contentPanel{position:fixed;inset:58px 0 55px;background:transparent;backdrop-filter:none;padding:0 5px;z-index:20;display:block}.contentPanel .modal{height:100%;max-height:100%;width:100%;max-width:none;border-radius:24px 24px 0 0;box-shadow:none;display:flex;flex-direction:column}.contentPanel .modal>header{background:white;min-height:65px;padding:16px}.contentPanel .modal>header .eyebrow{display:none}.contentPanel .modalBody{flex:1;overflow:auto;padding:12px}.bottomNav{z-index:30}.contentPanel .modal>header h2{font-size:19px}}
 .emailControls{margin:4px 12px;font-size:11px;color:#8a7c9b}.emailControls input,.emailControls select{border:1px solid #e5e4ef;border-radius:8px;padding:7px;width:100%;margin:3px 0;font-size:12px}.reactionPicker{display:flex;flex-wrap:wrap;gap:5px}.reactionPicker small{width:100%}.reactionPicker button{font-size:22px;padding:8px}.reactions{display:flex;gap:3px;margin-top:5px}.reactions span{background:#ffffffbb;border:1px solid #e7e0f3;border-radius:12px;padding:2px 6px;font-size:13px}.composerTools{margin:5px 12px;padding:8px;display:flex;gap:6px;align-items:center;overflow-x:auto;flex-shrink:0;border-radius:14px;background:white;box-shadow:0 3px 14px #30244616}.composerTools button{border:0;border-radius:10px;background:#f3f5fc;color:#7b629f;padding:8px;flex-shrink:0;font-size:12px}.composerTools>div{flex-wrap:nowrap!important}.composerTools button:focus-visible{outline:2px solid #9363d5}.tabs{position:relative;width:100%}.tabs .newConversation{margin-left:auto;display:grid;place-items:center;border:0;background:#f1eefb;border-radius:13px;width:34px;height:34px;color:#8060b1;padding:0}.privateRow{background:#fffae9!important}.unreadRow .rowCopy strong{font-weight:750}.followupLabel{font-size:9px;background:#f3eefa;color:#8864b7;padding:2px 6px;border-radius:8px;display:inline-block;margin-top:4px;margin-right:4px}.deliveryMark{font-size:12px;color:#8ca1bd}.dateSeparator{width:fit-content!important;flex:0 0 auto}.composerChannel{display:none!important}@media(max-width:700px){.bubble .loadOlder{display:none}.bubble .messageMore{width:20px;height:20px;min-height:0;padding:0;top:3px;right:4px}.rows{padding-top:2px}.contentPanel{top:48px}.chatComposer textarea{appearance:none;background:none!important;resize:none}}.richEditor{flex:1;min-width:0}.richEditor>[contenteditable]{font-size:14px;line-height:1.5;min-height:30px;max-height:140px;overflow:auto;padding:5px;outline:none;color:#56607b;white-space:pre-wrap}.richEditor>[contenteditable]:empty:before{content:attr(data-placeholder);color:#9199ab;pointer-events:none}.formatTools{display:flex;gap:4px}.formatTools button{border:0;background:#f2eff9;border-radius:6px;color:#76628f;width:23px;height:22px;font-size:11px;padding:0;min-height:0}.formatTools button:first-child{font-weight:800}.formatTools button:nth-child(2){font-style:italic}@media(max-width:700px){.richEditor>[contenteditable]{font-size:16px}}.windowNotice{font-size:11px;color:#93672d;background:#fff5df;border-radius:10px;padding:9px 12px;margin:5px 12px}.emailMetadata{font-size:10px;color:#9196a5;margin:4px 0}.emailMetadata p{font-size:10px!important}.replyContext{flex-wrap:wrap}.replyContext input,.replyContext select{max-width:100%;min-width:0;font-size:11px}.replyContext label{font-size:11px}@media(max-width:700px){.app{height:var(--inbox-viewport-height,100dvh)!important}.chatOpen{position:fixed;inset:0}.chatComposer{padding-bottom:max(7px,env(safe-area-inset-bottom))}.contentPanel .modalBody{overscroll-behavior:contain}}
+/* Compact messages and focused, spacious overlays. */
+.deliveryStatus{display:inline-flex;vertical-align:middle;color:#94a1b4;align-items:center;line-height:1;flex:none}
+.app .deliveryStatus svg{width:16px;height:16px;stroke-width:1.8}
+.deliveryRead{color:#21a7e0}
+.bubble{padding:8px 12px;margin-bottom:9px;min-height:0}
+.bubble p{margin:0;font-size:13px;line-height:1.55}
+.messageMeta{display:flex;justify-content:flex-end;align-items:center;gap:5px;margin-top:3px;color:#8996a9}
+.messageMeta time{margin:0;font-size:9px;line-height:15px}
+.bubble header{padding:0;margin-bottom:5px;font-size:10px}
+.threadHeader{position:relative;flex-shrink:0}
+.conversationMenu{position:absolute;z-index:25;right:12px;top:calc(100% - 3px);width:230px;padding:7px;border:1px solid #e4e8f3;border-radius:16px;background:#fff;box-shadow:0 14px 40px #202b4930;display:grid;gap:4px}
+.conversationMenu button{display:flex;align-items:center;gap:10px;text-align:left;padding:12px;border:0;border-radius:10px;background:#f8f9fd;color:#495b7a;font-size:12px}
+.bottomSheet{align-items:flex-end;padding:0;z-index:1100}
+.bottomSheet .modal{width:560px;max-height:88dvh;border-radius:26px 26px 0 0;padding-bottom:env(safe-area-inset-bottom);animation:sheetRise .25s ease-out}
+.bottomSheet .modal:before{content:'';width:35px;height:4px;border-radius:4px;background:#d8d8e6;align-self:center;margin:9px 0 0}
+.bottomSheet .modal>header{padding:16px 20px;background:#fff}
+.bottomSheet .eyebrow{display:none}
+.bottomSheet .modal h2{margin:0;font-size:18px}
+.bottomSheet .filters{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:0;border:0;background:transparent;margin:0 0 22px}
+.bottomSheet .filters label{font-size:12px;color:#586782;display:grid;gap:6px}
+.bottomSheet .filters select,.bottomSheet .filters input{width:100%;min-height:44px;font-size:14px;border:1px solid #e2e6ef;border-radius:12px;background:#f8f9fd;padding:10px;margin:0}
+.bottomSheet .modalBody>.primary{width:100%}
+.bottomNav button>span{position:relative;overflow:visible;display:inline-flex;justify-content:center;align-items:center}
+.bottomNav .alertBadge{position:absolute;top:-4px;right:-8px;min-width:17px;height:17px;display:grid;place-items:center;padding:0 4px;font-size:9px;line-height:1;border:2px solid #fff;box-sizing:content-box}
+.markRead{margin-left:auto;margin-right:10px;padding:6px 0;border:0;background:none;color:#7d8ba3;font-size:11px;white-space:nowrap}
+.alertCount{font-size:12px;color:#667892;margin:0 0 14px}
+.alertRow{display:grid;grid-template-columns:19px minmax(0,1fr);gap:5px 12px;padding:20px 16px;box-shadow:none;text-align:left}
+.alertRow .alertIcon{grid-column:1;grid-row:1/4;width:15px;height:15px;align-self:center;color:#7686a5}
+.alertRow b,.alertRow span,.alertRow small{grid-column:2}
+.staffChatCard,.channelChoices button{display:flex;align-items:center;gap:13px;width:100%;border:1px solid #e6e2f2;border-radius:17px;padding:17px;background:linear-gradient(115deg,#f5eeff,#f5fbff);color:#655184;text-align:left;margin:14px 0}
+.staffChatCard>span{display:grid;place-items:center;width:40px;height:40px;border-radius:13px;background:#e9ddff;color:#844bd4}
+.staffChatCard>div,.channelChoices span{flex:1;min-width:0}
+.staffChatCard b,.channelChoices b{display:block;font-size:13px}
+.staffChatCard small,.channelChoices small{display:block;font-size:11px;color:#8a8c9e;margin-top:5px;line-height:1.5}
+.channelChoices{display:grid;gap:10px}.channelChoices button{margin:0;background:#fafbff;padding:19px}
+.channelChoices button>svg:first-child{height:27px;width:27px;color:#7553b6}
+.templatePreview{padding:16px;border:1px solid #dedfcf;border-radius:14px;background:#edf5df;font-size:13px;line-height:1.6;white-space:pre-wrap;color:#4c6150}
+.form select,.form textarea{width:100%;border:1px solid #e3e5ef;border-radius:11px;padding:11px;background:#fafbff;color:#475672;font:inherit;min-height:44px}
+.form textarea{min-height:100px}
+.thread .composerTools{position:absolute;bottom:77px;left:8px;right:8px;z-index:15;margin:0;padding:9px;display:flex;gap:6px;overflow:visible;box-shadow:0 8px 35px #24355324;border:1px solid #e4e9f5;background:#fff;border-radius:18px}
+.composerTools>button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;flex:1;min-width:0;padding:10px 5px;font-size:10px;color:#7389ad;background:#f3f6fd;border-radius:12px;min-height:56px}
+.emojiGrid{display:grid;grid-template-columns:repeat(8,1fr);gap:3px;flex:1}.emojiGrid button{padding:5px;font-size:21px;background:none;min-width:0}
+.thread .mentionList{position:absolute;bottom:77px;left:12px;right:12px;z-index:16;display:flex;flex-direction:column;flex-wrap:nowrap;max-height:230px;overflow:auto;background:#fff;border:1px solid #e3e7f1;border-radius:16px;box-shadow:0 12px 35px #24355324;padding:8px;gap:3px}
+.mentionList>small{padding:5px 9px;font-size:10px;color:#9b92ae;text-transform:uppercase;letter-spacing:.08em}
+.mentionList button{display:flex;align-items:center;gap:10px;border:0;background:#f8f9fd;text-align:left;padding:9px;font-size:12px}
+.mentionList button small{display:block;color:#99a1b3;font-size:10px;margin-top:2px}
+.contactSheet details>label{display:grid;gap:7px;padding:0 16px;margin:15px 0;color:#72809b;font-size:11px}
+.contactSheet input,.contactSheet select{width:100%;min-width:0;padding:10px;border:1px solid #e3e8f2;border-radius:10px;background:#fafbff;color:#526380;font:inherit}
+.contactSheet dl{display:grid;grid-template-columns:1fr;gap:5px;padding:0 16px 16px;margin:0}
+.contactSheet dt{margin:14px 0 0;font-size:11px;color:#96a1b5}.contactSheet dd{margin:0;font-size:12px;overflow-wrap:anywhere;color:#4c5e7b}
+.contactSheet summary{display:flex;align-items:center;gap:10px}.contactSheet summary>svg:last-child{margin-left:auto;width:15px}
+.contactSheet .contactIdentity .avatar{width:58px;height:58px;min-width:58px;border-radius:50%}
+@keyframes sheetRise{from{opacity:0;transform:translateY(35px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:700px){.chatOpen{top:var(--inbox-viewport-top,0px)!important;bottom:auto!important;height:var(--inbox-viewport-height,100dvh)!important}.bubble{padding:8px 12px}.bubble p{margin:0;line-height:1.5;font-size:13px}.chatComposer{flex-shrink:0;overflow:visible}.messages{min-height:0}.bottomSheet .modal{max-height:calc(var(--inbox-viewport-height,100dvh) - 18px)}.scrim{max-height:var(--inbox-viewport-height,100dvh)}.bottomSheet .filters{gap:12px}.modalBody input,.modalBody select,.modalBody textarea{font-size:16px}.thread .composerTools{bottom:75px}.contactSheet summary{font-size:12px}}
+@media(prefers-reduced-motion:reduce){.bottomSheet .modal{animation:none}}
+.chatComposer textarea{scrollbar-width:none;overflow-y:auto}.chatComposer textarea::-webkit-scrollbar{display:none}.rail>button{position:relative}.rail .alertBadge{position:absolute;right:0;top:0;font-size:9px;min-width:16px;height:16px;padding:0 3px;display:grid;place-items:center}
