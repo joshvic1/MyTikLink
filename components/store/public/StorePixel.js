@@ -1,6 +1,9 @@
 "use client";
 
-import { useEffect } from "react";
+import PublicTracking from '@/V1.1/tracking/PublicTracking';
+import {apiRequest} from '@/V1.1/lib/api';
+
+import { useEffect, useState, useRef } from "react";
 
 function loadMetaPixel(pixelId) {
   if (!pixelId || typeof window === "undefined") return;
@@ -96,11 +99,22 @@ function loadTikTokPixel(pixelId) {
   window.ttq.page();
 }
 
-export default function StorePixel({ tiktokPixelId, metaPixelId }) {
+function LegacyStorePixel({ tiktokPixelId, metaPixelId }) {
+  const initialized=useRef('');
   useEffect(() => {
+    const key=`${tiktokPixelId||''}:${metaPixelId||''}`;if(initialized.current===key)return;initialized.current=key;
     loadMetaPixel(metaPixelId);
     loadTikTokPixel(tiktokPixelId);
   }, [metaPixelId, tiktokPixelId]);
 
   return null;
+}
+
+// Select one tracking implementation. A staged backend rollout keeps the old pixels working.
+export default function StorePixel({slug,tiktokPixelId,metaPixelId}){
+ const [state,setState]=useState(null);
+ useEffect(()=>{if(!slug)return;const controller=new AbortController();apiRequest(`/v1-1/tracking/public/store/${encodeURIComponent(slug)}`,{token:null,signal:controller.signal}).then(connections=>setState({slug,connections})).catch(()=>{if(!controller.signal.aborted)setState({slug,legacy:true});});return()=>controller.abort();},[slug]);
+ if(!slug)return <LegacyStorePixel tiktokPixelId={tiktokPixelId} metaPixelId={metaPixelId}/>;
+ if(state?.slug!==slug)return null;
+ return state.legacy?<LegacyStorePixel tiktokPixelId={tiktokPixelId} metaPixelId={metaPixelId}/>:<PublicTracking kind="store" slug={slug} consent={true} initialConnections={state.connections}/>;
 }

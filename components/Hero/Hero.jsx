@@ -7,14 +7,7 @@ import styles from "./Hero.module.css";
 export default function Hero({ openAuth, isLoggedIn = false }) {
   const router = useRouter();
 
-  const goToDashboardOrRegister = () => {
-    if (isLoggedIn) {
-      router.push("/dashboard");
-      return;
-    }
-
-    openAuth("register");
-  };
+  const goToDashboardOrRegister = () => openAuth('register');
 
   return (
     <section className={styles.hero}>

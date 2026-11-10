@@ -1,6 +1,6 @@
 import {useEffect} from "react";
 import {v11ApiBase} from "./apiBase";
-export default function usePageAnalytics(page){
+export default function usePageAnalytics(page,{legacy=false}={}){
  useEffect(()=>{
   if(!page?.slug || page.preview)return;
   let visitor;
@@ -11,7 +11,7 @@ export default function usePageAnalytics(page){
    const currentWindow=Math.floor(Date.now()/1800000);if(currentWindow!==activeWindow){sent.clear();activeWindow=currentWindow}
    const id=type+action;if(sent.has(id)||sent.size>=64)return;sent.add(id);
    const payload=JSON.stringify({visitor,window:activeWindow,events:[{type,action}]});
-   const url=`${v11ApiBase()}/v1-1/pages/public/${encodeURIComponent(page.slug)}/events`;
+   const url=`${legacy?process.env.NEXT_PUBLIC_API_URL:v11ApiBase()}/${legacy?'':'v1-1/'}pages/public/${encodeURIComponent(page.slug)}/events`;
    const deliver=()=>fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:payload,keepalive:true,credentials:'omit'});
    // One retry only; the server receipt makes retries safe. Never poll.
    void (async()=>{for(let attempt=0;attempt<2;attempt++){try{const response=await deliver();if(response.status<500)return}catch{}if(!alive)return}})();
@@ -29,5 +29,5 @@ export default function usePageAnalytics(page){
   const lead=()=>send('click','lead-submit');
   view();document.addEventListener('visibilitychange',view);document.addEventListener('click',click,true);document.addEventListener('v11:lead-success',lead);
   return()=>{alive=false;document.removeEventListener('visibilitychange',view);document.removeEventListener('click',click,true);document.removeEventListener('v11:lead-success',lead)};
- },[page?.slug]);
+ },[page?.slug,legacy]);
 }

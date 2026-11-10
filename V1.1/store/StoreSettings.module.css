@@ -51,3 +51,10 @@
 .paymentSections{min-width:0}.paymentSections[hidden]{display:none}.paymentSections>.form{gap:0}.paymentSections .settingsGroup{width:100%;box-sizing:border-box}.commerceBody{display:grid;gap:14px;min-width:0}.commerceBody>p{margin:0}.paymentSections .settingsGroup>.panelHeading{flex-wrap:nowrap}.paymentSections .settingsGroup>.panelHeading>div{min-width:0}.paymentSections .settingsGroup>.panelHeading>button{flex-shrink:0}
 
 .currencyLabel{display:flex;align-items:center;gap:9px}
+
+@media(min-width:1025px){
+ .page{max-width:1500px;width:100%;margin-inline:auto}
+ .tabRail{top:88px}.settingsGroup{border-radius:18px;padding:22px;box-shadow:0 5px 20px #493a7108}
+ .form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:start}
+ .categoryList{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:14px}
+}

@@ -1,3 +1,4 @@
+import {adoptionEvent} from './lib/dashboardPreference';
 import PageSkeleton from './components/PageSkeleton';
 import SecurityPage from "./pages/SecurityPage";
 import PublicStore from "./store/PublicStore";
@@ -78,6 +79,8 @@ function V11Content() {
   // before checking authentication, and never load an owner session for visitors.
   const session = useV11Session({ required: !publicRoute, enabled: router.isReady && !publicRoute });
   const onboarding = useOnboarding(session.authenticated && !publicRoute);
+  useEffect(()=>{if(session.authenticated&&!publicRoute)adoptionEvent('access');},[session.authenticated,publicRoute]);
+
   const isPagesList = path.endsWith("/pages") || path.endsWith("/pages/create");
   const isLinksList = path.endsWith("/links") || path.endsWith("/analytics") || path.endsWith("/insights");
   const [linkRevision,setLinkRevision] = useState(0);

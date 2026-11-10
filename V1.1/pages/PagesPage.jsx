@@ -1,9 +1,9 @@
 import StarterPagePreview from "../components/StarterPagePreview";
-import {findFirstPageImage} from "../lib/pagePresentation";
-import {getThemeBlock} from "../landing/themeModel";
-import {getDrafts} from "../../components/custom/utils/draftStorage";
+import { findFirstPageImage } from "../lib/pagePresentation";
+import { getThemeBlock } from "../landing/themeModel";
+import { getDrafts } from "../../components/custom/utils/draftStorage";
 import PageUpgradePrompt from "../components/PageUpgradePrompt";
-import {useSubscription} from "../components/SubscriptionModal";
+import { useSubscription } from "../components/SubscriptionModal";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Trash2, Plus, Search, FileText, ChevronRight } from "lucide-react";
@@ -20,79 +20,503 @@ import styles from "../styles/v11.module.css";
 
 export function PagesPage({ onCreate, onLeads }) {
   const router = useRouter();
-  useEffect(()=>{
-    if(!router.isReady||router.query.action!=="choose-template")return;
+  useEffect(() => {
+    if (!router.isReady || router.query.action !== "choose-template") return;
     onCreate();
-    const {action,...query}=router.query;
-    router.replace({pathname:router.pathname,query},undefined,{shallow:true});
-  },[router.isReady,router.query.action]);
-  const [emailPreview,setEmailPreview]=useState(null);
-  useEffect(()=>{const id=router.query.preview;if(!router.isReady||typeof id!=="string")return;let active=true;apiRequest(`/v1-1/pages/${encodeURIComponent(id)}`).then(page=>{if(active)setEmailPreview(page);}).catch(()=>{if(active)notify.error("This page is unavailable or belongs to another account.");}).finally(()=>{if(active){const {preview,...query}=router.query;router.replace({pathname:router.pathname,query},undefined,{shallow:true});}});return()=>{active=false;};},[router.isReady,router.query.preview]);
-  const [draftCount,setDraftCount]=useState(0),[draftCover,setDraftCover]=useState("");
-  useEffect(()=>{const update=()=>{try{const drafts=getDrafts();setDraftCount(drafts.length);setDraftCover(getThemeBlock(drafts[0]?.content)?findFirstPageImage(drafts[0].content):"");}catch{setDraftCount(0);}};update();window.addEventListener("focus",update);window.addEventListener("storage",update);return()=>{window.removeEventListener("focus",update);window.removeEventListener("storage",update);};},[]);
-  const {openSubscription}=useSubscription();
-  const [activation,setActivation]=useState(null),[activationBusy,setActivationBusy]=useState(false);
-  useEffect(()=>{const id=router.query.activate;if(!router.isReady||typeof id!=="string")return;let alive=true;apiRequest(`/v1-1/pages/${encodeURIComponent(id)}`).then(p=>{if(alive){setActivation(p);const {activate,...query}=router.query;router.replace({pathname:router.pathname,query},undefined,{shallow:true});}}).catch(()=>{if(alive)notify.error("This page is unavailable or belongs to another account.");});return()=>{alive=false;};},[router.isReady,router.query.activate]);
+    const { action, ...query } = router.query;
+    router.replace({ pathname: router.pathname, query }, undefined, {
+      shallow: true,
+    });
+  }, [router.isReady, router.query.action]);
+  const [emailPreview, setEmailPreview] = useState(null);
+  useEffect(() => {
+    const id = router.query.preview;
+    if (!router.isReady || typeof id !== "string") return;
+    let active = true;
+    apiRequest(`/v1-1/pages/${encodeURIComponent(id)}`)
+      .then((page) => {
+        if (active) setEmailPreview(page);
+      })
+      .catch(() => {
+        if (active)
+          notify.error(
+            "This page is unavailable or belongs to another account.",
+          );
+      })
+      .finally(() => {
+        if (active) {
+          const { preview, ...query } = router.query;
+          router.replace({ pathname: router.pathname, query }, undefined, {
+            shallow: true,
+          });
+        }
+      });
+    return () => {
+      active = false;
+    };
+  }, [router.isReady, router.query.preview]);
+  const [draftCount, setDraftCount] = useState(0),
+    [draftCover, setDraftCover] = useState("");
+  useEffect(() => {
+    const update = () => {
+      try {
+        const drafts = getDrafts();
+        setDraftCount(drafts.length);
+        setDraftCover(
+          getThemeBlock(drafts[0]?.content)
+            ? findFirstPageImage(drafts[0].content)
+            : "",
+        );
+      } catch {
+        setDraftCount(0);
+      }
+    };
+    update();
+    window.addEventListener("focus", update);
+    window.addEventListener("storage", update);
+    return () => {
+      window.removeEventListener("focus", update);
+      window.removeEventListener("storage", update);
+    };
+  }, []);
+  const { openSubscription } = useSubscription();
+  const [activation, setActivation] = useState(null),
+    [activationBusy, setActivationBusy] = useState(false);
+  useEffect(() => {
+    const id = router.query.activate;
+    if (!router.isReady || typeof id !== "string") return;
+    let alive = true;
+    apiRequest(`/v1-1/pages/${encodeURIComponent(id)}`)
+      .then((p) => {
+        if (alive) {
+          setActivation(p);
+          const { activate, ...query } = router.query;
+          router.replace({ pathname: router.pathname, query }, undefined, {
+            shallow: true,
+          });
+        }
+      })
+      .catch(() => {
+        if (alive)
+          notify.error(
+            "This page is unavailable or belongs to another account.",
+          );
+      });
+    return () => {
+      alive = false;
+    };
+  }, [router.isReady, router.query.activate]);
 
-  const [query, setQuery] = useState(""), [search, setSearch] = useState(""), [number, setNumber] = useState(1);
-  const [actionId,setActionId]=useState(""), [stats,setStats]=useState(null);
-  const changePage=async(page,operation)=>{if(actionId)return;setActionId(page._id);try{await operation();await refresh()}catch(e){notify.error(e.message || "Could not update page")}finally{setActionId("")}};
+  const [query, setQuery] = useState(""),
+    [search, setSearch] = useState(""),
+    [number, setNumber] = useState(1);
+  const [actionId, setActionId] = useState(""),
+    [stats, setStats] = useState(null);
+  const changePage = async (page, operation) => {
+    if (actionId) return;
+    setActionId(page._id);
+    try {
+      await operation();
+      await refresh();
+    } catch (e) {
+      notify.error(e.message || "Could not update page");
+    } finally {
+      setActionId("");
+    }
+  };
   const [copiedId, setCopiedId] = useState("");
-  const [pendingDelete, setPendingDelete] = useState(null), [deleting, setDeleting] = useState(false), [exporting, setExporting] = useState(false), [deleteError, setDeleteError] = useState("");
+  const [pendingDelete, setPendingDelete] = useState(null),
+    [deleting, setDeleting] = useState(false),
+    [exporting, setExporting] = useState(false),
+    [deleteError, setDeleteError] = useState("");
   const collection = usePageCollection(search, number);
-  const { pages, summary, total, page, limit, loading, error, refresh } = collection;
-  useEffect(() => { const timer = setTimeout(() => { setSearch(query.trim()); setNumber(1); }, 300); return () => clearTimeout(timer); }, [query]);
+  const { pages, summary, total, page, limit, loading, error, refresh } =
+    collection;
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSearch(query.trim());
+      setNumber(1);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [query]);
   const remove = async () => {
     if (!pendingDelete || deleting || exporting) return;
-    setDeleting(true); setDeleteError("");
-    try { await v11Api.deletePage(pendingDelete._id); setPendingDelete(null); notify.success("Landing page deleted"); await refresh(); }
-    catch { setDeleteError("Couldn’t delete this page. Please try again."); }
-    finally { setDeleting(false); }
+    setDeleting(true);
+    setDeleteError("");
+    try {
+      await v11Api.deletePage(pendingDelete._id);
+      setPendingDelete(null);
+      notify.success("Landing page deleted");
+      await refresh();
+    } catch {
+      setDeleteError("Couldn’t delete this page. Please try again.");
+    } finally {
+      setDeleting(false);
+    }
   };
   const exportBeforeDelete = async () => {
-    setExporting(true); setDeleteError("");
+    setExporting(true);
+    setDeleteError("");
     try {
-      const records = unwrapCollection(await v11Api.pageLeads(pendingDelete._id), "leads");
+      const records = unwrapCollection(
+        await v11Api.pageLeads(pendingDelete._id),
+        "leads",
+      );
       downloadLeads(records, pendingDelete.title);
-    } catch { setDeleteError("Couldn’t export the leads. Please retry before deleting."); }
-    finally { setExporting(false); }
+    } catch {
+      setDeleteError(
+        "Couldn’t export the leads. Please retry before deleting.",
+      );
+    } finally {
+      setExporting(false);
+    }
   };
-  const copyUrl = async page => {
-    try { await navigator.clipboard.writeText(pageUrl(page)); setCopiedId(page._id); notify.success("Page link copied"); }
-    catch { notify.error("Could not copy the page link."); }
+  const copyUrl = async (page) => {
+    try {
+      await navigator.clipboard.writeText(pageUrl(page));
+      setCopiedId(page._id);
+      notify.success("Page link copied");
+    } catch {
+      notify.error("Could not copy the page link.");
+    }
   };
-  useEffect(() => { if (!copiedId) return; const timer = setTimeout(() => setCopiedId(""), 1800); return () => clearTimeout(timer); }, [copiedId]);
-  return <div className={`${styles.page} ${styles.landingPagesView}`}>{emailPreview&&<StarterPagePreview page={emailPreview} onClose={()=>setEmailPreview(null)} onUpgrade={()=>{setEmailPreview(null);openSubscription({mode:"upgrade",preselected:"pro"});}}/>}
-    <PageHeader title="Landing pages"/>
-    <SummaryMetrics label="Landing page statistics" items={[{ label: "Pages", value: summary?.pages ?? null }, { label: "Leads", value: summary?.leads ?? null }]}/>
-    {(summary?.pages > 0 || query) && <div className={styles.landingPageToolbar}>
-      <label className={styles.search}><span className={styles.searchIconChip}><Search size={16} strokeWidth={1.8} aria-hidden="true"/></span><input value={query} onChange={event => setQuery(event.target.value)} aria-label="Search landing pages" placeholder="Search your pages…"/></label>
-      <Button className={styles.landingPageCreate} onClick={onCreate}><Plus size={16} aria-hidden="true"/>Create</Button>
-    </div>}
-    {draftCount > 0 && <button type="button" className={styles.savedDraftCard} onClick={()=>router.push("/v1-1/pages/builder?drafts=1")}><span className={styles.savedDraftIcon}>{draftCover?<img src={draftCover} alt="" style={{width:40,height:40,objectFit:"cover",borderRadius:10}}/>:<FileText size={21}/>}</span><span><strong>Draft</strong><small>Unfinished landing page edit on this device</small></span><b>{draftCount}</b><ChevronRight size={17}/></button>}
-    {error && <div className={styles.dataWarning} role="alert"><span>{error}{summary ? " Previously loaded information is still shown." : ""}</span><Button onClick={refresh}>Retry</Button></div>}
-    {loading && <div className={`${styles.pageListLoading} ${summary ? styles.pageListRefreshing : ""}`} role="status" aria-busy="true" aria-label={summary ? "Updating landing pages" : "Loading landing pages"}><img className={styles.loadingBrand} src="/images/mytiklink-mark-black.png" alt="" width="64" height="64"/></div>}
-    {pages.length > 0 ? <div className={styles.workspaceCardGrid} aria-busy={loading}>{pages.map((page,index) => {
-      const active = page.availability === "active";
-      return <LandingPageCard key={page._id} index={index} page={page} thumbnail={pageThumbnail(page)} fallback={pageInitial(page)} url={pageUrl(page)} busy={!!actionId}
-        onCopy={()=>copyUrl(page)} onEdit={()=>router.push(`/v1-1/pages/${page.builderType === "custom" ? "builder" : "editor"}?pageId=${page._id}`)}
-        onLeads={()=>onLeads(page,refresh)} onStats={()=>setStats(page)}
-        onDuplicate={()=>changePage(page,async()=>{await v11Api.duplicatePage(page._id);notify.success("Page duplicated — the copy is inactive")})}
-        onToggle={isActive=>changePage(page,async()=>{await v11Api.setPageActive(page._id,isActive);notify.success(isActive?"Page activated":"Page deactivated")})}
-        onDelete={()=>{setDeleteError("");setPendingDelete(page)}}/>;
-    })}</div> : !loading && !error && <EmptyState icon="▣" title={summary?.pages > 0 || search ? "No matching pages" : "Create your first landing page"}
-      description={summary?.pages > 0 || search ? "Try a different search." : "Create a page to showcase your offer, collect customer details, or direct people to WhatsApp."}
-      action={summary?.pages === 0 && !search ? <Button onClick={onCreate}><Plus size={16}/>Create landing page</Button> : <Button variant="secondary" onClick={() => setQuery("")}>Clear search</Button>}/>}
-    {total > limit && <nav className={styles.pagePagination} aria-label="Landing page results"><Button variant="secondary" disabled={loading || page <= 1} onClick={() => setNumber(page - 1)}>Previous</Button><span>Page {page} of {Math.ceil(total / limit)}</span><Button variant="secondary" disabled={loading || page * limit >= total} onClick={() => setNumber(page + 1)}>Next</Button></nav>}
-    {stats && <Modal tone="teal" title="Views & clicks" description={stats.title} onClose={()=>setStats(null)} footer={<Button variant="secondary" onClick={()=>setStats(null)}>Close</Button>}><SummaryMetrics items={[{label:"Views",value:stats.viewsCount || 0},{label:"Clicks",value:stats.clicksCount || 0}]}/><p>Views count once per browser session per 30 minutes. Clicks count each action once in that window. Refreshes and repeated taps are deduplicated.</p><p>Tracking starts with this update. These are session-based counts, not unique people. Blocked tracking and offline visits may not be counted.</p></Modal>}
-    {activation?.requiresUpgrade?<PageUpgradePrompt page={activation} onClose={()=>setActivation(null)} onUpgrade={()=>{setActivation(null);openSubscription({mode:"upgrade",preselected:"pro"});}}/>:activation&&<Modal title="Do you want to activate this page?" onClose={()=>!activationBusy&&setActivation(null)} footer={<><Button variant="secondary" disabled={activationBusy} onClick={()=>setActivation(null)}>No</Button><Button disabled={activationBusy} onClick={async()=>{setActivationBusy(true);try{await v11Api.setPageActive(activation._id,true);setActivation(null);await refresh();notify.success("Page activated");}catch(e){notify.error(e.message);}finally{setActivationBusy(false);}}}>{activationBusy?"Activating…":"Yes"}</Button></>}><p>{activation.title}</p></Modal>}
-    {pendingDelete && <Modal className={styles.deleteConfirm} title="Delete landing page?" description="This action cannot be undone." onClose={() => { if (!deleting && !exporting) setPendingDelete(null); }}
-      footer={<><Button variant="secondary" disabled={deleting || exporting} onClick={() => setPendingDelete(null)}>Keep page</Button><Button variant="danger" disabled={deleting || exporting} onClick={remove}>{deleting ? "Deleting…" : "Delete page and leads"}</Button></>}>
-      <div className={styles.deleteConfirmIcon}><Trash2 size={22}/></div><h3>{pendingDelete.title || "Untitled page"}</h3><p>{pageUrl(pendingDelete)}</p>
-      <div className={styles.deleteConfirmDetails}><span>Collected leads <b>{pendingDelete.leadsCount}</b></span></div>
-      <p>This permanently deletes this page and all its collected leads. Its shared link will stop working.</p>
-      {pendingDelete.leadsCount > 0 && <Button variant="secondary" disabled={exporting || deleting} onClick={exportBeforeDelete}>{exporting ? "Exporting…" : "Export leads before deleting"}</Button>}
-      {deleteError && <p role="alert" className={styles.inlineError}>{deleteError}</p>}
-    </Modal>}
-  </div>;
+  useEffect(() => {
+    if (!copiedId) return;
+    const timer = setTimeout(() => setCopiedId(""), 1800);
+    return () => clearTimeout(timer);
+  }, [copiedId]);
+  return (
+    <div
+      className={`${styles.page} ${styles.landingPagesView}`}
+    >
+      <div className={styles.desktopWorkspace}>
+        {emailPreview && (
+          <StarterPagePreview
+            page={emailPreview}
+            onClose={() => setEmailPreview(null)}
+            onUpgrade={() => {
+              setEmailPreview(null);
+              openSubscription({ mode: "upgrade", preselected: "pro" });
+            }}
+          />
+        )}
+        <PageHeader title="Landing pages" />
+        <SummaryMetrics
+          label="Landing page statistics"
+          items={[
+            { label: "Pages", value: summary?.pages ?? null },
+            { label: "Leads", value: summary?.leads ?? null },
+          ]}
+        />
+        {(summary?.pages > 0 || query) && (
+          <div className={styles.landingPageToolbar}>
+            <label className={styles.search}>
+              <span className={styles.searchIconChip}>
+                <Search size={16} strokeWidth={1.8} aria-hidden="true" />
+              </span>
+              <input
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                aria-label="Search landing pages"
+                placeholder="Search your pages…"
+              />
+            </label>
+            <Button className={styles.landingPageCreate} onClick={onCreate}>
+              <Plus size={16} aria-hidden="true" />
+              Create
+            </Button>
+          </div>
+        )}
+        {draftCount > 0 && (
+          <button
+            type="button"
+            className={styles.savedDraftCard}
+            onClick={() => router.push("/v1-1/pages/builder?drafts=1")}
+          >
+            <span className={styles.savedDraftIcon}>
+              {draftCover ? (
+                <img
+                  src={draftCover}
+                  alt=""
+                  style={{
+                    width: 40,
+                    height: 40,
+                    objectFit: "cover",
+                    borderRadius: 10,
+                  }}
+                />
+              ) : (
+                <FileText size={21} />
+              )}
+            </span>
+            <span>
+              <strong>Draft</strong>
+              <small>Unfinished landing page edit on this device</small>
+            </span>
+            <b>{draftCount}</b>
+            <ChevronRight size={17} />
+          </button>
+        )}
+        {error && (
+          <div className={styles.dataWarning} role="alert">
+            <span>
+              {error}
+              {summary ? " Previously loaded information is still shown." : ""}
+            </span>
+            <Button onClick={refresh}>Retry</Button>
+          </div>
+        )}
+        {loading && (
+          <div
+            className={`${styles.pageListLoading} ${summary ? styles.pageListRefreshing : ""}`}
+            role="status"
+            aria-busy="true"
+            aria-label={
+              summary ? "Updating landing pages" : "Loading landing pages"
+            }
+          >
+            <img
+              className={styles.loadingBrand}
+              src="/images/mytiklink-mark-black.png"
+              alt=""
+              width="64"
+              height="64"
+            />
+          </div>
+        )}
+        {pages.length > 0 ? (
+          <div className={styles.workspaceCardGrid} aria-busy={loading}>
+            {pages.map((page, index) => {
+              const active = page.availability === "active";
+              return (
+                <LandingPageCard
+                  key={page._id}
+                  index={index}
+                  page={page}
+                  thumbnail={pageThumbnail(page)}
+                  fallback={pageInitial(page)}
+                  url={pageUrl(page)}
+                  busy={!!actionId}
+                  onCopy={() => copyUrl(page)}
+                  onEdit={() =>
+                    router.push(
+                      `/v1-1/pages/${page.builderType === "custom" ? "builder" : "editor"}?pageId=${page._id}`,
+                    )
+                  }
+                  onLeads={() => onLeads(page, refresh)}
+                  onStats={() => setStats(page)}
+                  onDuplicate={() =>
+                    changePage(page, async () => {
+                      await v11Api.duplicatePage(page._id);
+                      notify.success("Page duplicated — the copy is inactive");
+                    })
+                  }
+                  onToggle={(isActive) =>
+                    changePage(page, async () => {
+                      await v11Api.setPageActive(page._id, isActive);
+                      notify.success(
+                        isActive ? "Page activated" : "Page deactivated",
+                      );
+                    })
+                  }
+                  onDelete={() => {
+                    setDeleteError("");
+                    setPendingDelete(page);
+                  }}
+                />
+              );
+            })}
+          </div>
+        ) : (
+          !loading &&
+          !error && (
+            <EmptyState
+              icon="▣"
+              title={
+                summary?.pages > 0 || search
+                  ? "No matching pages"
+                  : "Create your first landing page"
+              }
+              description={
+                summary?.pages > 0 || search
+                  ? "Try a different search."
+                  : "Create a page to showcase your offer, collect customer details, or direct people to WhatsApp."
+              }
+              action={
+                summary?.pages === 0 && !search ? (
+                  <Button onClick={onCreate}>
+                    <Plus size={16} />
+                    Create landing page
+                  </Button>
+                ) : (
+                  <Button variant="secondary" onClick={() => setQuery("")}>
+                    Clear search
+                  </Button>
+                )
+              }
+            />
+          )
+        )}
+        {total > limit && (
+          <nav
+            className={styles.pagePagination}
+            aria-label="Landing page results"
+          >
+            <Button
+              variant="secondary"
+              disabled={loading || page <= 1}
+              onClick={() => setNumber(page - 1)}
+            >
+              Previous
+            </Button>
+            <span>
+              Page {page} of {Math.ceil(total / limit)}
+            </span>
+            <Button
+              variant="secondary"
+              disabled={loading || page * limit >= total}
+              onClick={() => setNumber(page + 1)}
+            >
+              Next
+            </Button>
+          </nav>
+        )}
+        {stats && (
+          <Modal
+            tone="teal"
+            title="Views & clicks"
+            description={stats.title}
+            onClose={() => setStats(null)}
+            footer={
+              <Button variant="secondary" onClick={() => setStats(null)}>
+                Close
+              </Button>
+            }
+          >
+            <SummaryMetrics
+              items={[
+                { label: "Views", value: stats.viewsCount || 0 },
+                { label: "Clicks", value: stats.clicksCount || 0 },
+              ]}
+            />
+            <p>
+              Views count once per browser session per 30 minutes. Clicks count
+              each action once in that window. Refreshes and repeated taps are
+              deduplicated.
+            </p>
+            <p>
+              Tracking starts with this update. These are session-based counts,
+              not unique people. Blocked tracking and offline visits may not be
+              counted.
+            </p>
+          </Modal>
+        )}
+        {activation?.requiresUpgrade ? (
+          <PageUpgradePrompt
+            page={activation}
+            onClose={() => setActivation(null)}
+            onUpgrade={() => {
+              setActivation(null);
+              openSubscription({ mode: "upgrade", preselected: "pro" });
+            }}
+          />
+        ) : (
+          activation && (
+            <Modal
+              title="Do you want to activate this page?"
+              onClose={() => !activationBusy && setActivation(null)}
+              footer={
+                <>
+                  <Button
+                    variant="secondary"
+                    disabled={activationBusy}
+                    onClick={() => setActivation(null)}
+                  >
+                    No
+                  </Button>
+                  <Button
+                    disabled={activationBusy}
+                    onClick={async () => {
+                      setActivationBusy(true);
+                      try {
+                        await v11Api.setPageActive(activation._id, true);
+                        setActivation(null);
+                        await refresh();
+                        notify.success("Page activated");
+                      } catch (e) {
+                        notify.error(e.message);
+                      } finally {
+                        setActivationBusy(false);
+                      }
+                    }}
+                  >
+                    {activationBusy ? "Activating…" : "Yes"}
+                  </Button>
+                </>
+              }
+            >
+              <p>{activation.title}</p>
+            </Modal>
+          )
+        )}
+        {pendingDelete && (
+          <Modal
+            className={styles.deleteConfirm}
+            title="Delete landing page?"
+            description="This action cannot be undone."
+            onClose={() => {
+              if (!deleting && !exporting) setPendingDelete(null);
+            }}
+            footer={
+              <>
+                <Button
+                  variant="secondary"
+                  disabled={deleting || exporting}
+                  onClick={() => setPendingDelete(null)}
+                >
+                  Keep page
+                </Button>
+                <Button
+                  variant="danger"
+                  disabled={deleting || exporting}
+                  onClick={remove}
+                >
+                  {deleting ? "Deleting…" : "Delete page and leads"}
+                </Button>
+              </>
+            }
+          >
+            <div className={styles.deleteConfirmIcon}>
+              <Trash2 size={22} />
+            </div>
+            <h3>{pendingDelete.title || "Untitled page"}</h3>
+            <p>{pageUrl(pendingDelete)}</p>
+            <div className={styles.deleteConfirmDetails}>
+              <span>
+                Collected leads <b>{pendingDelete.leadsCount}</b>
+              </span>
+            </div>
+            <p>
+              This permanently deletes this page and all its collected leads.
+              Its shared link will stop working.
+            </p>
+            {pendingDelete.leadsCount > 0 && (
+              <Button
+                variant="secondary"
+                disabled={exporting || deleting}
+                onClick={exportBeforeDelete}
+              >
+                {exporting ? "Exporting…" : "Export leads before deleting"}
+              </Button>
+            )}
+            {deleteError && (
+              <p role="alert" className={styles.inlineError}>
+                {deleteError}
+              </p>
+            )}
+          </Modal>
+        )}
+      </div>
+    </div>
+  );
 }

@@ -1,4 +1,6 @@
 "use client";
+
+import UpgradeInvitation from '@/V1.1/components/UpgradeInvitation';
 import { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -18,7 +20,7 @@ import s from "@/styles/LinksCardView.module.css";
 
 import { planConfig } from "@/config/planConfig";
 import EditRedirectModal from "@/components/EditRedirectModal";
-import TutorialModal from "@/components/TutorialModal";
+
 import LeadsModal from "@/components/LeadsModal";
 import { useRef } from "react";
 
@@ -37,7 +39,7 @@ export default function Dashboard({ userPlan }) {
   const [showDelete, setShowDelete] = useState(false);
   const [pageToDelete, setPageToDelete] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
-  const [showTutorial, setShowTutorial] = useState(false);
+
   const [selectedPage, setSelectedPage] = useState(null);
 
   const paidProPlans = ["pro_monthly", "pro_yearly"];
@@ -242,6 +244,7 @@ export default function Dashboard({ userPlan }) {
       onUpgrade={() => setShowUpgrade(true)}
       onLogout={handleLogout}
     >
+      <UpgradeInvitation/>
       {/* TOP SECTION */}
       <div className={styles.topSection}>
         <div className={styles.welcomeCard}>
@@ -265,15 +268,6 @@ export default function Dashboard({ userPlan }) {
                 ⚠️ Your plan expires in less than 3 days.
               </p>
             )}
-          <div
-            className={styles.tutorialBannerDesktop}
-            onClick={() => setShowTutorial(true)}
-          >
-            <div className={styles.youtubeIcon}>▶</div>
-            <p>
-              <strong>How TikLink Works:</strong> Watch quick 1-minute guide
-            </p>
-          </div>
         </div>
 
         <PlanCard
@@ -284,16 +278,6 @@ export default function Dashboard({ userPlan }) {
         />
       </div>
       {/* TUTORIAL ALERT BANNER */}
-
-      <div
-        className={styles.tutorialBannerMobile}
-        onClick={() => setShowTutorial(true)}
-      >
-        <div className={styles.youtubeIcon}>▶</div>
-        <p>
-          <strong>How TikLink Works:</strong> Watch quick 1-minute guide
-        </p>
-      </div>
 
       {/* MOBILE TOP SECTION */}
       <div className={styles.mobileTopSection}>
@@ -517,7 +501,7 @@ export default function Dashboard({ userPlan }) {
           }}
         />
       )}
-      {showTutorial && <TutorialModal setShowModal={setShowTutorial} />}
+
       {selectedPage && (
         <LeadsModal page={selectedPage} onClose={() => setSelectedPage(null)} />
       )}

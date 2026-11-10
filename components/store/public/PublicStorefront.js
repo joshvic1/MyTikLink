@@ -37,6 +37,7 @@ export default function PublicStorefront({ customDomain }) {
 
         const storeRes = await axios.get(storeUrl);
 
+        if(storeRes.data.storefrontVersion==='v1-1'){await router.replace(storeRes.data.canonicalStorefrontPath);return;}
         const storeSlug = storeRes.data.slug;
 
         const productRes = await axios.get(
@@ -109,7 +110,7 @@ export default function PublicStorefront({ customDomain }) {
 
       <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
       <>
-        <StorePixel
+        <StorePixel slug={store.slug}
           tiktokPixelId={store?.user?.tiktokPixelId}
           metaPixelId={store?.user?.metaPixelId}
         />

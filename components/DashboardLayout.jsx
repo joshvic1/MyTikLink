@@ -1,4 +1,5 @@
 "use client";
+import {requestAssistant} from "../support/assistantBridge";
 import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -111,7 +112,7 @@ export default function DashboardLayout({
     <>
       <BlogHelpTopbar
         onMessageSupport={() => {
-          window.dispatchEvent(new CustomEvent("open-smart-assistant"));
+          requestAssistant();
         }}
       />
       <div

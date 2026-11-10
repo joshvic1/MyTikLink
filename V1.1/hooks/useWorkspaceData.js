@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState, useRef } from "react";
-import { unwrapCollection, v11Api, getToken } from "../lib/api";
+import { unwrapCollection, v11Api, getToken, invalidateReads } from "../lib/api";
 
 const warningFor = (result, label) => result.status === "rejected" ? `${label}${result.reason?.status ? ` (HTTP ${result.reason.status})` : " (connection error)"}` : null;
 const optionalStore = () => v11Api.store().catch(error => {
@@ -48,8 +48,8 @@ export function useWorkspaceData(enabled = true) {
     const [pagesResult, linksResult, storeResult, productsResult, ordersResult, historyResult, paymentsResult] = await Promise.allSettled(requests);
     const listedPages = pagesResult.status === "fulfilled" ? unwrapCollection(pagesResult.value, "pages") : [];
     const pages = listedPages;
-    const leadResults = await Promise.allSettled(pages.map(page => v11Api.pageLeads(page._id)));
-    const leads = leadResults.flatMap((result, index) => result.status === "fulfilled" ? unwrapCollection(result.value, "leads").map((lead) => ({ ...lead, pageId: pages[index]._id, pageTitle: pages[index].title })) : []);
+    const leadResults = await Promise.allSettled([v11Api.workspaceLeads()]);
+    const leads = leadResults[0].status === "fulfilled" ? unwrapCollection(leadResults[0].value,"leads") : [];
     let storeStats = null;
     let statsWarning = null;
     if (storeResult.status === "fulfilled" && storeResult.value) storeStats = await v11Api.storeStats().catch(error => {statsWarning = warningFor({status:"rejected",reason:error},"Store statistics");return null;});
@@ -73,5 +73,5 @@ export function useWorkspaceData(enabled = true) {
     });
   }, [enabled]);
   useEffect(() => { if(enabled)refresh();else{loaded.current=false;setState({...initial,loading:true,error:null,warnings:[]});}return()=>{generation.current++;}; }, [enabled, refresh]);
-  return { ...state, refresh };
+  return { ...state, refresh:useCallback(()=>{invalidateReads();return refresh();},[refresh]) };
 }

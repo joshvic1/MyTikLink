@@ -1,3 +1,10 @@
+import {v11Api,getToken} from '../lib/api';
+function warmNavigation(href){if(typeof window==='undefined'||!getToken()||navigator.connection?.saveData)return;const load=href==='/v1-1/pages'?()=>v11Api.pageCollection():href==='/v1-1/dashboard'||href==='/v1-1/store'?()=>v11Api.dashboardV11():href==='/v1-1/links'?()=>v11Api.links():null;if(load)load().catch(()=>{});}
+import IdleHelp from './IdleHelp';
+import {requestAssistant} from '../../support/assistantBridge';
+import VersionBadge from './VersionBadge';
+import {DesktopDashboardHelp} from "./DesktopDashboard";
+import {helpChannels} from "../config/helpChannels";
 import {subscriptionAction} from '../lib/subscriptionAction.mjs';
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -76,6 +83,8 @@ function NavItems({
                 <div className={styles.storeNavParent}>
                   <Link
                     href={item.href}
+              onMouseEnter={()=>warmNavigation(item.href)}
+              onFocus={()=>warmNavigation(item.href)}
                     onClick={close}
                     aria-current={active ? "page" : undefined}
                     className={active ? styles.navActive : ""}
@@ -160,6 +169,8 @@ function NavItems({
             <Link
               key={item.key}
               href={item.href}
+              onMouseEnter={()=>warmNavigation(item.href)}
+              onFocus={()=>warmNavigation(item.href)}
               onClick={close}
               aria-current={active ? "page" : undefined}
               className={active ? styles.navActive : ""}
@@ -212,50 +223,9 @@ const storeMobileItems = [
     icon: "orders",
   },
 ];
-const helpChannels = [
-  {
-    title: "WhatsApp",
-    detail: "Message our support team.",
-    Icon: FaWhatsapp,
-    tone: "whatsapp",
-    badge: "Usually within 30 min",
-    href: "https://wa.me/2348129037939",
-  },
-  {
-    title: "Ask MyTikLink AI",
-    detail: "Get instant help with MyTikLink.",
-    Icon: MessagesSquare,
-    tone: "ai",
-    badge: "Responds immediately",
-    action: "ai",
-  },
-  {
-    title: "Live Chat",
-    detail: "Chat directly with our support team.",
-    Icon: MessagesSquare,
-    tone: "live",
-    badge: "Coming soon",
-    soon: true,
-  },
-  {
-    title: "Email Support",
-    detail: "For detailed questions and enquiries.",
-    Icon: Mail,
-    tone: "email",
-    badge: "Usually within 24 hrs",
-    href: "mailto:support@mytiklink.com",
-  },
-  {
-    title: "Telegram",
-    detail: "Connect with our community.",
-    Icon: Send,
-    tone: "telegram",
-    badge: "Join our community",
-    href: "https://t.me/mytiklink",
-  },
-];
 export function Shell({ user, onLogout, children, onCreate, onAddProduct, hasStore = false, payments = [] }) {
   const router = useRouter();
+  const [workspaceHelpOpen,setWorkspaceHelpOpen]=useState(true);
   const { openSubscription } = useSubscription();
   const {show:showUpgrade,renew:expiredPlan,previous:previousPayment}=subscriptionAction(user,payments);
   const current = activeRoute(router.asPath);
@@ -271,6 +241,7 @@ export function Shell({ user, onLogout, children, onCreate, onAddProduct, hasSto
     [menuClosing, setMenuClosing] = useState(false),
     [helpOpen, setHelpOpen] = useState(false),
     [storeExpanded, setStoreExpanded] = useState(() => isStoreManagement);
+  const helpButtonRef=useRef(null);
   const menuTriggerRef = useRef(null),
     drawerRef = useRef(null),
     closeTimer = useRef(null);
@@ -290,7 +261,7 @@ export function Shell({ user, onLogout, children, onCreate, onAddProduct, hasSto
   };
   const openAssistant = () => {
     setHelpOpen(false);
-    window.dispatchEvent(new CustomEvent("open-smart-assistant"));
+    requestAnimationFrame(()=>requestAssistant());
   };
   useEffect(() => {
     if (!menuOpen) return;
@@ -328,7 +299,7 @@ export function Shell({ user, onLogout, children, onCreate, onAddProduct, hasSto
     };
   }, [menuOpen]);
   return (
-    <div className={styles.shell}>
+    <div className={`${styles.shell} ${styles.desktopDashboardShell} ${activePath !== v11Routes.home ? styles.desktopManagementShell : ""}`}>
       <aside className={styles.sidebar}>
         <Link
           href={v11Routes.home}
@@ -349,6 +320,7 @@ export function Shell({ user, onLogout, children, onCreate, onAddProduct, hasSto
             height="34"
             alt=""
           />
+          <VersionBadge/>
         </Link>
         <nav>
           <NavItems hasStore={hasStore}
@@ -410,7 +382,7 @@ export function Shell({ user, onLogout, children, onCreate, onAddProduct, hasSto
               />
             </Link>
           </div>
-          <div />
+          <div className={styles.desktopGreeting}>{activePath !== v11Routes.home && <span className={styles.desktopSectionLabel}>{({pages:"Landing pages",links:"Redirect links",store:"Storefront",products:"Products",orders:"Orders",storeSettings:"Store settings",design:"Store design",insights:"Analytics & Insights",tracking:"Pixels & Integrations",settings:"Account settings",affiliate:"Affiliate",integrations:"Integrations"})[current] || "MyTikLink workspace"}</span>}{activePath === v11Routes.home && <><h1>Welcome back{user?.name ? `, ${user.name.trim().split(" ")[0]}` : ""} <span aria-hidden="true">👋</span></h1><p>Here’s what’s happening with your MyTikLink account today.</p></>}</div>
           <div className={styles.topbarActions}>
             {onAddProduct && (activePath === v11Routes.store || activePath === v11Routes.products || activePath.startsWith(`${v11Routes.products}/`)) && (
               <Button
@@ -429,7 +401,7 @@ export function Shell({ user, onLogout, children, onCreate, onAddProduct, hasSto
             </Button>
           </div>
         </header>}
-        {children}
+        {activePath === v11Routes.home ? children : <div className={`${styles.managementWorkspace} ${!workspaceHelpOpen ? styles.managementHelpClosed : ""}`}><div className={styles.managementContent}>{children}</div><DesktopDashboardHelp open={workspaceHelpOpen} onToggle={()=>setWorkspaceHelpOpen(value=>!value)}/></div>}
       </main>
       {activePath !== '/v1-1/store/design' && <div
         className={`${styles.floatingNavAssembly} ${isStoreManagement ? styles.floatingNavStoreMode : ""}`}
@@ -446,6 +418,7 @@ export function Shell({ user, onLogout, children, onCreate, onAddProduct, hasSto
         </nav>
         <button
           type="button"
+          ref={helpButtonRef}
           className={styles.mobileHelpButton}
           aria-label="Open help channels"
           onClick={() => setHelpOpen(true)}
@@ -453,6 +426,7 @@ export function Shell({ user, onLogout, children, onCreate, onAddProduct, hasSto
           <Headphones />
           <span>Help</span>
         </button>
+        <IdleHelp buttonRef={helpButtonRef} blocked={helpOpen||menuOpen} path={activePath}/>
       </div>}
       {menuOpen && (
         <div
@@ -487,6 +461,7 @@ export function Shell({ user, onLogout, children, onCreate, onAddProduct, hasSto
                   <span>m</span>
                   <b>mytiklink</b>
                 </span>
+                <VersionBadge/>
               </Link>
               <IconButton label="Close menu" onClick={closeMenu}>
                 <X />

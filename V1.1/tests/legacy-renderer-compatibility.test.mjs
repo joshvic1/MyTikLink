@@ -1,0 +1,13 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {createRequire} from 'node:module';
+const require=createRequire(import.meta.url),React=require('react'),{renderToStaticMarkup}=require('react-dom/server'),swc=require('next/dist/build/swc');
+await swc.loadBindings();
+const source=readFileSync(new URL('../../components/custom/renderer/CustomPageRenderer.js',import.meta.url),'utf8');
+const compiled=await swc.transform(source,{filename:'CustomPageRenderer.jsx',jsc:{parser:{syntax:'ecmascript',jsx:true},transform:{react:{runtime:'automatic'}}},module:{type:'commonjs'}});
+const module={exports:{}};const mockRequire=id=>{if(id==='react/jsx-runtime')return require(id);if(id.endsWith('themeModel'))return {getThemeBlock:sections=>Array.isArray(sections)?sections.find(s=>s?.type==='phase-one-theme'):undefined};if(id.endsWith('ThemeRenderer'))return {default:({instance})=>React.createElement('article',{'data-theme':instance.themeId},instance.title),__esModule:true};if(id.endsWith('RenderElement'))return {default:({el})=>React.createElement('span',null,el.text),__esModule:true};if(id.endsWith('.css'))return {default:{wrapper:'legacy-wrapper'},__esModule:true};throw Error(id);};
+new Function('module','exports','require',compiled.code)(module,module.exports,mockRequire);
+const Renderer=module.exports.default;
+test('retired legacy section styles and content render without conversion',()=>{const sections=[{id:'old-template',bg:'#123456',padding:24,radius:9,layout:'boxed',elements:[{id:'text',type:'text',text:'Original merchant text'}]}];const before=JSON.stringify(sections);const html=renderToStaticMarkup(React.createElement(Renderer,{sections}));assert.match(html,/Original merchant text/);assert.match(html,/background:#123456/);assert.match(html,/padding:24px/);assert.match(html,/width:92%/);assert.equal(JSON.stringify(sections),before);assert.ok(!html.includes('data-theme'));});
+test('only explicit versioned theme blocks select the modern renderer',()=>{const sections=[{type:'phase-one-theme',themeId:'saved-theme',title:'Saved V1.1 content'}];const html=renderToStaticMarkup(React.createElement(Renderer,{sections}));assert.match(html,/data-theme="saved-theme"/);assert.match(html,/Saved V1.1 content/);});

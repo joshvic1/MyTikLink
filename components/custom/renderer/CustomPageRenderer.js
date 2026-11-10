@@ -1,3 +1,5 @@
+import ThemeRenderer from "@/V1.1/landing/ThemeRenderer";
+import {getThemeBlock} from "@/V1.1/landing/themeModel";
 // renderer/CustomPageRenderer.js
 import RenderElement from "./RenderElement";
 import styles from "./CustomPageRenderer.module.css";
@@ -7,6 +9,8 @@ export default function CustomPageRenderer({
   metaPixelId,
   page,
 }) {
+  const versionedTheme=getThemeBlock(sections);
+  if(versionedTheme)return <ThemeRenderer instance={versionedTheme} page={page}/>;
   return (
     <div id="builder-scroll-container" className={styles.wrapper}>
       {sections.map((section) => (

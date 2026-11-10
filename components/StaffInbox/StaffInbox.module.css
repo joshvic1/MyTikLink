@@ -89,3 +89,80 @@
 @media(max-width:700px){.chatOpen{top:var(--inbox-viewport-top,0px)!important;bottom:auto!important;height:var(--inbox-viewport-height,100dvh)!important}.bubble{padding:8px 12px}.bubble p{margin:0;line-height:1.5;font-size:13px}.chatComposer{flex-shrink:0;overflow:visible}.messages{min-height:0}.bottomSheet .modal{max-height:calc(var(--inbox-viewport-height,100dvh) - 18px)}.scrim{max-height:var(--inbox-viewport-height,100dvh)}.bottomSheet .filters{gap:12px}.modalBody input,.modalBody select,.modalBody textarea{font-size:16px}.thread .composerTools{bottom:75px}.contactSheet summary{font-size:12px}}
 @media(prefers-reduced-motion:reduce){.bottomSheet .modal{animation:none}}
 .chatComposer textarea{scrollbar-width:none;overflow-y:auto}.chatComposer textarea::-webkit-scrollbar{display:none}.rail>button{position:relative}.rail .alertBadge{position:absolute;right:0;top:0;font-size:9px;min-width:16px;height:16px;padding:0 3px;display:grid;place-items:center}
+
+/* WhatsApp reference: white incoming messages, pale green outgoing messages. */
+.whatsappThread{background:#f5f3fc;color:#4b586a}
+.whatsappThread .threadHeader{background:#294e92;color:#fff;border-color:transparent}
+.whatsappThread .threadHeader p{color:#dce5f7}
+.whatsappThread .threadHeader .iconButton{background:transparent;border:0;color:white}
+.whatsappThread .bubble{background:#fff;border:0;border-radius:24px 24px 24px 6px;box-shadow:0 5px 20px #cbd5e510;max-width:83%;padding:12px 16px;margin-bottom:14px}
+.whatsappThread .bubble p{color:#4e5b69;font-size:15px;line-height:1.55;margin:0}
+.whatsappThread .outbound{background:#dcecbf;border-radius:24px 24px 6px 24px}
+.whatsappThread .noteBubble{background:#fff2c9;border:1px solid #efdfa8}
+.whatsappThread .messageMeta{color:#879373;margin-top:5px}
+.whatsappThread .messageMeta time{font-size:11px}
+.whatsappThread .bubble:not(.outbound) .messageMeta{color:#9299a4}
+.whatsappThread .deliveryRead{color:#2696cf}
+.whatsappThread .dateSeparator{background:#e8edf4;color:#64758b;font-size:11px;padding:6px 13px}
+.messageQuote{display:flex;flex-direction:column;gap:5px;width:100%;text-align:left;border:0;border-left:4px solid #7a9dbc;background:#ffffff66;border-radius:12px;padding:10px 13px;margin:0 0 10px;color:#536a7d}
+.messageQuote b{font-size:12px}.messageQuote span{font-size:13px;line-height:1.4;white-space:pre-wrap;overflow-wrap:anywhere}
+.whatsappThread .chatComposer{border:1px solid #e3e7ef;border-radius:28px;padding:9px;min-height:62px;box-shadow:0 3px 12px #6f7e9710;gap:10px}
+.whatsappThread .chatComposer textarea{font-size:16px;line-height:24px;color:#4d5d75;padding:8px 2px;min-height:40px}
+.whatsappThread .chatComposer textarea::placeholder{font-size:15px;color:#9099aa}
+.whatsappThread .chatComposer>.iconButton{width:42px;height:42px;background:#e9eefb;color:#456591;border:0;border-radius:15px}
+.whatsappThread .noteToggle{height:40px;border-radius:14px;background:#fff0bd;color:#8c7130;border:1px solid #e9d495;padding:0 12px;font-size:12px!important}
+.whatsappThread .sendButton{background:#2d5396;border-radius:14px;width:40px;height:40px}
+.whatsappThread .composerTools{background:#fff;border:1px solid #e4e8f2;border-radius:23px;padding:10px;bottom:82px;right:auto;max-width:560px;width:calc(100% - 24px);left:12px}
+.whatsappThread .composerTools>button{background:#f5f5fc;border-radius:17px;color:#5c789e;padding:12px 6px;font-size:12px;min-height:74px;gap:8px}
+.whatsappThread .composerTools>button svg{width:25px;height:25px}
+.whatsappThread .loadOlder{background:#e9edf4;color:#607590;font-size:11px;min-height:30px;padding:6px 12px;margin:0 auto 18px;border-radius:20px}
+.templateSheet{background:#243e6580;backdrop-filter:blur(5px)}
+.templateSheet .modal{width:580px;border:1px solid #dfe5ef;border-radius:30px;max-height:90dvh;background:#fff;box-shadow:0 20px 60px #233d6430;padding-bottom:0}
+.templateSheet .modal>header{background:#f8f9ff;border-bottom:1px solid #e1e6ef;padding:18px 20px;flex-shrink:0}
+.templateSheet .modal h2{color:#314e72;font-size:17px;letter-spacing:-.3px}
+.templateSheet .modal>header .iconButton{border:0;border-radius:50%;width:42px;height:42px;background:#eaf0fa;color:#5c7899}
+.templateSheet .modalBody{padding:16px;scrollbar-width:thin}
+.templateSheet .form{margin:0;gap:14px}
+.templateToolbar{display:flex;justify-content:flex-end}
+.templateToolbar button{display:flex;align-items:center;gap:7px;padding:10px 13px;border:1px solid #dce3ed;border-radius:14px;background:white;color:#7c8ba1;font-size:12px}
+.templateSearch{display:flex;align-items:center;gap:9px;background:#edf1fa;border:1px solid #e0e6f1;border-radius:17px;padding:0 13px;min-height:47px;color:#8f9bb0}
+.templateSearch input{border:0;background:transparent!important;box-shadow:none!important;padding:10px 0;font-size:16px;color:#4e617c}
+.templateFilters{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.templateFilters select,.templateFilters input{min-width:0!important;width:100%;margin:0;background:#f8fafb!important;border:1px solid #e4e8ef;border-radius:13px;color:#8390a2;font-size:13px;padding:11px 8px;min-height:45px}
+.templateCards{display:flex;flex-direction:column;gap:11px;max-height:42dvh;overflow:auto;overscroll-behavior:contain;padding:1px;scrollbar-width:thin}
+.templateCards button{display:flex;flex-direction:column;gap:9px;flex-shrink:0;text-align:left;width:100%;padding:15px 14px;background:white;border:1px solid #dce3ed;border-radius:20px;box-shadow:0 1px 3px #334b6d05;color:#3b5578}
+.templateCards button b{font-size:13px;overflow-wrap:anywhere}.templateCards button small{font-size:12px;color:#9198a3;margin:0}
+.templateCards button p{font-size:12px;color:#9299a5;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;line-height:1.5}
+.templateCards button.templateSelected{background:#eaf3dc;border-color:#b9cca0}
+.templateHeading{color:#375171;font-size:14px!important;margin:7px 0 0!important}
+.templateSheet .templatePreview{background:#eaf3df;border:1px solid #dfe7d5;color:#354d6c;border-radius:22px;padding:20px;font-size:14px;line-height:1.65}
+.templatePreview b{display:block;margin-bottom:10px}.templateHint{font-size:12px;color:#9299a3;line-height:1.6;margin:0}
+.templateSheet .primary{background:#2c5093;border:0;box-shadow:none;color:white;border-radius:17px;min-height:52px;font-size:13px;width:100%}
+.skeleton{width:100%;padding:12px;overflow:hidden}.skeletonItem{border:1px solid #e9edf3;background:#fff;border-radius:18px;padding:16px;margin-bottom:13px;display:grid;gap:9px}
+.skeletonItem span,.skeletonItem i,.skeletonLine{display:block;height:10px;border-radius:8px;background:linear-gradient(100deg,#e9edf3 20%,#f7f9fc 45%,#e9edf3 70%);background-size:220% 100%;animation:inboxSkeleton 1.5s ease-in-out infinite}
+.skeletonItem span{width:42%;height:13px}.skeletonItem i:last-child{width:65%}.skeletonLine{width:30px}
+.skeletonChat .skeletonItem{width:62%;min-height:80px}.skeletonChat .skeletonItem:nth-child(even){margin-left:auto;background:#edf3e6;width:50%}
+.skeletonList .skeletonItem{min-height:77px}.loadingPage .skeleton{max-width:520px}
+@keyframes inboxSkeleton{to{background-position:-220% 0}}
+@media(min-width:701px){.templateSheet{align-items:center;padding:24px}.templateSheet .modal:before{display:none}}
+@media(max-width:700px){
+ .app.chatOpen{position:fixed!important;left:0!important;right:0!important;top:var(--inbox-viewport-top,0px)!important;bottom:auto!important;height:var(--inbox-viewport-height,100dvh)!important;min-height:0!important;padding:0!important;gap:0!important}
+ .chatOpen .workspace{height:100%;min-height:0;gap:0;overflow:hidden}
+ .chatOpen .columns{height:100%;min-height:0;flex:1;gap:0;overflow:hidden}
+ .chatOpen .thread{height:100%;min-height:0;border:0;border-radius:0;padding-bottom:var(--inbox-safe-bottom,env(safe-area-inset-bottom,0px))}
+ .chatOpen .messages{flex:1 1 0;min-height:0;padding:14px 12px 8px;scroll-behavior:auto}
+ .chatOpen .chatComposer{margin:0 8px 6px!important;padding:8px!important;min-height:56px;flex:none}
+ .chatOpen .whatsappThread .threadHeader{background:#294e92;color:white}
+ .whatsappThread .bubble{max-width:87%;padding:11px 14px;border-radius:23px 23px 23px 6px}
+ .whatsappThread .outbound{border-radius:23px 23px 6px 23px}
+ .whatsappThread .bubble p{font-size:15px}.whatsappThread .noteBubble{max-width:94%}
+ .whatsappThread .composerTools{bottom:74px}.whatsappThread .composerTools>button{font-size:11px;min-height:67px}
+ .templateSheet{padding:8px!important;top:var(--inbox-viewport-top,0px);bottom:auto;height:var(--inbox-viewport-height,100dvh);align-items:flex-end}
+ .templateSheet .modal{border-radius:28px;max-height:calc(var(--inbox-viewport-height,100dvh) - 24px);width:100%}
+ .templateSheet .modal:before{background:#c8d2e2;width:40px;height:5px;margin:11px 0 0}
+ .templateSheet .modal>header{padding:13px 18px;min-height:62px}.templateSheet .modalBody{padding:14px}
+ .templateSheet .templateFilters input,.templateSheet .templateFilters select{font-size:16px}
+ .templateCards{max-height:40dvh}.templateSheet .form label input{font-size:16px}
+}
+@media(prefers-reduced-motion:reduce){.skeletonItem span,.skeletonItem i,.skeletonLine{animation:none}}
+.floatingDate{position:absolute;top:74px;left:50%;transform:translateX(-50%);pointer-events:none}

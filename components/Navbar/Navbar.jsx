@@ -132,7 +132,7 @@ export default function Navbar({ openAuth }) {
                 color: "#2f8cff",
               }}
               onClick={() =>
-                isLoggedIn ? router.push("/dashboard") : openAuth("login")
+                openAuth("login")
               }
             >
               Login

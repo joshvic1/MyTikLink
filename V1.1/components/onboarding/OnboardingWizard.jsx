@@ -36,7 +36,7 @@ export function OnboardingWizard({ state, onComplete, onLogout }) {
   const finishingRef=useRef(false);
   useEffect(()=>{if(finishPhase!=="working")return;const timer=setInterval(()=>setProgressIndex(i=>Math.min(i+1,2)),650);return()=>clearInterval(timer);},[finishPhase]);
   useEffect(()=>{if(finishPhase!=="done")return;const timer=setTimeout(()=>{if(countdown>1)setCountdown(n=>n-1);else onComplete().catch(()=>{setFinishPhase("redirect-error");});},1000);return()=>clearTimeout(timer);},[finishPhase,countdown]);
-  const steps = useMemo(() => ["whatsapp", "identity", "intent", ...(data.intent === "storefront" ? ["payment"] : []), "brand"], [data.intent]);
+  const steps = useMemo(() => ["whatsapp", "identity", ...(initial.skipIntent ? [] : ["intent"]), ...(data.intent === "storefront" ? ["payment"] : []), "brand"], [data.intent,initial.skipIntent]);
   const step = steps[index] || "whatsapp";
   const selectedCountry = countries.find((country) => country.iso === data.countryIso) || countries.find((country) => country.code === data.countryCode) || countries.find((country) => country.iso === "NG");
   const visibleCountries = useMemo(() => { const term = countryQuery.trim().toLowerCase().replace(/^00/, "+"); return term ? countries.filter((country) => [country.name, country.code, country.iso, ...country.aliases].some((value) => value.toLowerCase().includes(term))) : countries; }, [countryQuery]);

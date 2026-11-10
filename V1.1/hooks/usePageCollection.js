@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { v11Api } from "../lib/api";
+import { v11Api, invalidateReads } from "../lib/api";
 import { loadPageCollection } from "../lib/pageCollection";
 
 export function usePageCollection(search, page) {
@@ -21,5 +21,5 @@ export function usePageCollection(search, page) {
     return () => { sequence.current += 1; };
   }, [refresh]);
   useEffect(()=>{window.addEventListener("v11:plan-updated",refresh);return()=>window.removeEventListener("v11:plan-updated",refresh);},[refresh]);
-  return { ...state, refresh };
+  return { ...state, refresh:useCallback(()=>{invalidateReads();return refresh();},[refresh]) };
 }

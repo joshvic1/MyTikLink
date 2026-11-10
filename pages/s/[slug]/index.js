@@ -8,3 +8,5 @@ export default function StorePage() {
     </CartProvider>
   );
 }
+
+export async function getServerSideProps(context){const {resolveStorefront}=await import('@/V1.1/lib/storefrontRouting.mjs');return await resolveStorefront(context,{})||{props:{}};}

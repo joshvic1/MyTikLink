@@ -1,3 +1,7 @@
+import {createReadCache} from './readCache.mjs';
+const reads=createReadCache();
+export const invalidateReads=()=>reads.clear();
+if(typeof window!=='undefined')window.addEventListener('v11:plan-updated',invalidateReads);
 import { v11ApiBase } from "./apiBase.js";
 export class ApiError extends Error {
   constructor(message, status, details) {
@@ -13,7 +17,17 @@ export function getToken() {
   return window.localStorage.getItem("token");
 }
 
-export async function apiRequest(path, options = {}) {
+export function apiRequest(path, options = {}) {
+ const {fresh=false,...request}=options;
+ const method=(request.method||'GET').toUpperCase();
+ const mutation=method!=='GET'&&path!=='/auth/dashboard-events';
+ if(mutation)invalidateReads();
+ const token=Object.hasOwn(request,'token')?request.token:getToken();
+ const cacheable=typeof window!=='undefined'&&token&&method==='GET'&&!request.signal&&(/^(?:\/v1-1\/(?:dashboard|pages|links)(?:\?|$)|\/auth\/me$|\/users\/plan$|\/store\/me$)/.test(path));
+ const load=()=>networkRequest(path,request).then(value=>{if(mutation)invalidateReads();return value;}).catch(error=>{if(error.status===401||error.status===403)invalidateReads();throw error;});
+ return cacheable?reads.read(token,path,load,{fresh}):load();
+}
+async function networkRequest(path, options = {}) {
   const token = Object.prototype.hasOwnProperty.call(options, "token") ? options.token : getToken();
   const isForm = typeof FormData !== "undefined" && options.body instanceof FormData;
   const { timeoutMs = 20000, ...requestOptions } = options;
@@ -23,7 +37,7 @@ export async function apiRequest(path, options = {}) {
   options.signal?.addEventListener("abort", abort, { once: true });
   const timer = timeoutMs > 0 ? setTimeout(abort, timeoutMs) : null;
   try {
-    const response = await fetch(path.startsWith("/api/") ? path : `${path.startsWith("/v1-1/") ? v11ApiBase() : process.env.NEXT_PUBLIC_API_URL}${path}`, {
+    const response = await fetch(path.startsWith("/api/") ? path : `${(path.startsWith("/v1-1/") || path.startsWith("/auth/dashboard-")) ? v11ApiBase() : process.env.NEXT_PUBLIC_API_URL}${path}`, {
       ...requestOptions,
       signal: controller.signal,
       headers: {
@@ -65,6 +79,7 @@ export const v11Api = {
   saveOnboardingStage: (stage, payload) => apiRequest(`/v1-1/onboarding/stage/${encodeURIComponent(stage)}`, { method: "PUT", body: JSON.stringify(payload) }),
   completeOnboarding: () => apiRequest("/v1-1/onboarding/complete", { method: "POST" }),
   uploadImage: (file) => { const body = new FormData(); body.append("image", file); return apiRequest("/upload", { method: "POST", body }); },
+  workspaceLeads: () => apiRequest("/v1-1/pages/leads"),
   pages: () => apiRequest("/v1-1/pages"),
   pageCollection: ({ page = 1, search = "" } = {}) => apiRequest(`/v1-1/pages?paged=1&limit=20&page=${page}&search=${encodeURIComponent(search)}`, { timeoutMs: 20000 }),
   pageDetail: (id) => apiRequest(`/v1-1/pages/${encodeURIComponent(id)}`, { timeoutMs: 20000 }),

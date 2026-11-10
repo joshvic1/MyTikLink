@@ -10,7 +10,7 @@ import {v11Api} from "../lib/api";
 import {pageUrl} from "../lib/pageUrl";
 import {pageThumbnail,pageHasLeadForm} from "../lib/pagePresentation";
 import {linkUrl,recordedClicks} from "../lib/linkPresentation";
-export default function RecentEntityCard({item,kind,index=0,refresh,onEdit,store,user}){
+export default function RecentEntityCard({item,kind,index=0,refresh,onEdit,store,user,dashboardRow=false}){
  const router=useRouter(),[busy,setBusy]=useState(false),[panel,setPanel]=useState('');
  const isPage=kind==='page',isLink=kind==='link',product=kind==='product';
  const status=isPage?(item.isActive===false?'Inactive':item.availability==='plan_required'?'Plan required':item.slug?'Active':'Draft'):isLink?(item.v11Disabled?'Disabled':item.v11OwnerPaused?'Inactive':item.status || 'Active'):item.status || 'Product';
@@ -22,7 +22,7 @@ export default function RecentEntityCard({item,kind,index=0,refresh,onEdit,store
  const edit=()=>{if(onEdit)return onEdit(item);if(isLink||product)return setPanel('edit');router.push(isPage?`/v1-1/pages/${item.builderType==='custom'?'builder':'editor'}?pageId=${item._id}`:`/v1-1/store/products?edit=${item._id}`)};
  const duplicate=()=>run(async()=>{if(isPage)await v11Api.duplicatePage(item._id);else await v11Api.createLink({title:`${item.title} (copy)`,linkType:item.linkType,platform:item.platform,destinationUrl:item.destinationUrl,fallbackUrl:item.fallbackUrl,whatsappCode:item.whatsappCode,prefill:item.prefill,templateId:item.templateId?._id || item.templateId});notify.success(isPage?'Page duplicated — copy is inactive':'Redirect link duplicated')});
  const toggle=value=>run(async()=>{if(isPage)await v11Api.setPageActive(item._id,value);else await v11Api.setLinkActive(item._id,value);notify.success(value?'Activated':'Deactivated')});
- return <><LandingPageCard page={page} index={index} entity={kind} thumbnail={image} fallback={String(page.title || kind).charAt(0).toUpperCase()} url={url} price={product?(item.price!=null?`₦${Number(item.price).toLocaleString()}`:'Price not set'):undefined} statusLabel={status} busy={busy} onCopy={async()=>{try{await navigator.clipboard.writeText(url);notify.success('Link copied')}catch{notify.error('Could not copy link')}}} onEdit={edit} onDuplicate={product?undefined:duplicate} onToggle={product||status==='Disabled'?undefined:toggle} onDelete={()=>setPanel('delete')} onStats={product?undefined:()=>setPanel('stats')} onLeads={()=>setPanel('leads')}/>
+ return <><LandingPageCard dashboardRow={dashboardRow} page={page} index={index} entity={kind} thumbnail={image} fallback={String(page.title || kind).charAt(0).toUpperCase()} url={url} price={product?(item.price!=null?`₦${Number(item.price).toLocaleString()}`:'Price not set'):undefined} statusLabel={status} busy={busy} onCopy={async()=>{try{await navigator.clipboard.writeText(url);notify.success('Link copied')}catch{notify.error('Could not copy link')}}} onEdit={edit} onDuplicate={product?undefined:duplicate} onToggle={product||status==='Disabled'?undefined:toggle} onDelete={()=>setPanel('delete')} onStats={product?undefined:()=>setPanel('stats')} onLeads={()=>setPanel('leads')}/>
  {panel==='edit'&&product&&<ProductEditor product={item} onClose={()=>setPanel('')} onSaved={async()=>{setPanel('');await refresh?.()}}/>}
  {panel==='edit'&&isLink&&<CreateLinkModal link={item} onClose={()=>setPanel('')} onSaved={refresh}/>}
  {panel==='leads'&&<LeadsModal page={page} onClose={()=>setPanel('')}/>}

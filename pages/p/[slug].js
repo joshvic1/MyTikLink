@@ -1,4 +1,6 @@
 "use client";
+
+import usePageAnalytics from "@/V1.1/lib/usePageAnalytics";
 import PublicTracking from "../../V1.1/tracking/PublicTracking";
 import {trackingData,announceTracking} from "../../V1.1/tracking/browser";
 import InactivePublicPage from "@/V1.1/components/InactivePublicPage";
@@ -411,6 +413,7 @@ export default function PublicPage({initialPage=null,initialInactive=null,initia
   const { slug } = router.query;
 
   const [page, setPage] = useState(initialPage);
+  usePageAnalytics(page,{legacy:true});
   const [inactive,setInactive]=useState(initialInactive);
   const [loading, setLoading] = useState(!initialPage&&!initialInactive&&!initialError);
   const COOLDOWN_MS = 2 * 60 * 1000; // 2 minutes

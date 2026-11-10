@@ -1,5 +1,8 @@
 "use client";
 
+import {useRouter} from 'next/router';
+import {safeAuthReturn} from '@/V1.1/lib/authReturn';
+
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
@@ -76,6 +79,7 @@ export default function Home() {
   const { login, subscribe } = useAuth();
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const router=useRouter();
   const [authMode, setAuthMode] = useState(null);
   const [toast, setToast] = useState(null);
   const [openAI, setOpenAI] = useState(false);
@@ -95,9 +99,9 @@ export default function Home() {
     const auth = searchParams.get("auth");
 
     if (auth === "login") {
-      setAuthMode("login");
+      router.replace('/v1-1/login'+(searchParams.get('next')?'?next='+encodeURIComponent(safeAuthReturn(searchParams.get('next'))):''));
     } else if (auth === "register") {
-      setAuthMode("register");
+      router.replace('/v1-1/register'+(searchParams.get('next')?'?next='+encodeURIComponent(safeAuthReturn(searchParams.get('next'))):''));
     }
   }, [searchParams]);
 
@@ -121,90 +125,12 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, []);
 
-  /* Open AI only after real inactivity */
-  useEffect(() => {
-    if (openAI || authMode) return;
-
-    let inactivityTimer;
-
-    const THREE_HOURS = 3 * 60 * 60 * 1000;
-    const INACTIVITY_TIME = 30 * 1000;
-
-    const recentlyClosed = () => {
-      const lastClosed = localStorage.getItem("ai_last_closed");
-      if (!lastClosed) return false;
-
-      return Date.now() - Number(lastClosed) < THREE_HOURS;
-    };
-
-    const isUserTyping = () => {
-      const activeElement = document.activeElement;
-      if (!activeElement) return false;
-
-      const tag = activeElement.tagName?.toLowerCase();
-
-      return (
-        tag === "input" ||
-        tag === "textarea" ||
-        tag === "select" ||
-        activeElement.isContentEditable
-      );
-    };
-
-    const startTimer = () => {
-      clearTimeout(inactivityTimer);
-
-      if (recentlyClosed()) return;
-
-      inactivityTimer = setTimeout(() => {
-        if (document.visibilityState !== "visible") return;
-
-        if (isUserTyping()) {
-          startTimer();
-          return;
-        }
-
-        setOpenAI(true);
-      }, INACTIVITY_TIME);
-    };
-
-    const resetTimer = () => {
-      startTimer();
-    };
-
-    const events = [
-      "mousemove",
-      "mousedown",
-      "keydown",
-      "scroll",
-      "wheel",
-      "touchstart",
-      "touchmove",
-      "input",
-      "focusin",
-    ];
-
-    events.forEach((event) => {
-      window.addEventListener(event, resetTimer, { passive: true });
-    });
-
-    startTimer();
-
-    return () => {
-      clearTimeout(inactivityTimer);
-
-      events.forEach((event) => {
-        window.removeEventListener(event, resetTimer);
-      });
-    };
-  }, [openAI, authMode]);
-
   const handleCloseAI = () => {
     localStorage.setItem("ai_last_closed", Date.now());
     setOpenAI(false);
   };
 
-  const openAuth = (mode) => setAuthMode(mode);
+  const openAuth = mode => router.push(mode==='register'?'/v1-1/register':'/v1-1/login');
   const closeAuth = () => setAuthMode(null);
   const showToast = (message, type = "success") => setToast({ message, type });
   if (customDomain) {

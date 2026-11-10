@@ -50,10 +50,11 @@ function loadTikTokPixel(pixelId) {
 }
 
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 export default function RedirectPage() {
   const router = useRouter();
+  const countRequests=useRef(new Map());
 
   useEffect(() => {
     const observer = new MutationObserver(() => {
@@ -80,6 +81,8 @@ export default function RedirectPage() {
     if (!linkId) return;
 
     let mounted = true;
+    const timers=[];
+    const later=(fn,ms)=>{const timer=setTimeout(()=>{if(mounted)fn();},ms);timers.push(timer);};
     const fetchData = async () => {
       setLoading(true);
       setError(null);
@@ -104,20 +107,12 @@ export default function RedirectPage() {
         }
 
         // 2) ask backend to increment count AND check limit
-        const countRes = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/links/count/${linkId}`,
-          {
-            method: "POST",
-          }
-        );
-
-        // handle non-JSON or server errors
-        if (!countRes.ok) {
-          console.error("Count endpoint returned non-OK:", countRes.status);
-          // allow redirect anyway (or show message)
-        }
-
-        const countData = await countRes.json().catch(() => ({}));
+        if(!countRequests.current.has(linkId))countRequests.current.set(linkId,fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/links/count/${encodeURIComponent(linkId)}`,
+          {method:'POST'}
+        ).then(async response=>{if(!response.ok)throw Error('Could not validate this link. Please retry.');return response.json();}));
+        const countData=await countRequests.current.get(linkId);
+        if(!mounted)return;
 
         // 3) If blocked -> redirect to expired immediately
         if (countData.blocked) {
@@ -130,19 +125,19 @@ export default function RedirectPage() {
         // 4) Else perform redirect (use delay from API or fallback)
         const delay = data.redirectDelay ?? 6000;
 
-        setTimeout(() => {
+        later(() => {
           // 🔥 FIRE EVENT FIRST (for ALL cases)
           if (window.ttq) {
             window.ttq.track("CompleteRegistration");
           }
 
           // ⏳ Give TikTok time to send request
-          setTimeout(() => {
+          later(() => {
             if (data.deepLink && data.deepLink !== data.fallback) {
               window.location.href = data.deepLink;
 
               // fallback after app attempt
-              setTimeout(() => {
+              later(() => {
                 if (document.visibilityState === "visible") window.location.href = data.fallback;
               }, 1200);
             } else {
@@ -162,6 +157,7 @@ export default function RedirectPage() {
 
     return () => {
       mounted = false;
+      timers.forEach(clearTimeout);
     };
   }, [linkId]);
 

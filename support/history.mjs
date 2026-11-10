@@ -1,0 +1,4 @@
+export function cleanMessages(rows){return Array.isArray(rows)?rows.filter(m=>['user','assistant','ai'].includes(m?.role)&&typeof(m.content??m.text)==='string').map(m=>({...m,role:m.role==='user'?'user':'assistant',content:(m.content??m.text)})):[];}
+export function readHistory(storage,key){try{const rows=JSON.parse(storage.getItem(key)||'[]');return Array.isArray(rows)?rows.filter(c=>typeof c.id==='string').map(c=>({...c,messages:cleanMessages(c.messages)})):[];}catch{return [];}}
+export function legacyHistory(storage){return ['mytiklink_smart_assistant_messages','ai_chat'].flatMap((key,i)=>{try{const messages=cleanMessages(JSON.parse(storage.getItem(key)||'[]'));return messages.length?[{id:`imported-${i}`,title:i?'Earlier public AI chat':'Earlier dashboard chat',messages}]:[];}catch{return [];}});}
+

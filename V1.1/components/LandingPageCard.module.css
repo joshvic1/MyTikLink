@@ -82,3 +82,16 @@
 @media(prefers-reduced-motion:reduce){.portalMenu button,.portalMenu button svg{transition:none}.portalMenu button:hover:not(:disabled),.portalMenu button:hover svg,.portalMenu button:active:not(:disabled){transform:none}}
 
 .unlockStarter{display:inline-flex;border:0;background:transparent;color:#9871b6;font:inherit;font-size:9px;font-weight:600;padding:3px 0 3px 7px;cursor:pointer;white-space:nowrap}.unlockStarter:hover{color:#714392;text-decoration:underline}
+
+@media(min-width:1025px){
+ .dashboardRow.card{grid-template-columns:46px minmax(0,1fr) 56px 27px;gap:9px;align-items:center;min-height:73px;padding:10px;background:#ffffffd9;border-radius:0;border-bottom:1px solid #eee9f7;box-shadow:none;animation:none}
+ .dashboardRow .art{grid-row:1;grid-column:1;width:46px;height:48px;min-height:0;background:transparent;border-radius:9px}.dashboardRow .art:after{display:none}.dashboardRow .thumbnail{width:46px;height:48px;margin:0;border-radius:9px}
+ .dashboardRow .identity{grid-column:2;grid-row:1;padding:0}.dashboardRow .identity h3{font-size:11px}.dashboardRow .identity .badge{max-width:100%;margin-top:3px;font-size:8px;padding:2px 6px}.dashboardRow .link{height:15px;margin-top:2px}.dashboardRow .link button{display:none}.dashboardRow .link a{font-size:9px}.dashboardRow .price{font-size:10px}
+ .dashboardRow .more{grid-column:4;grid-row:1;align-self:center}.dashboardRow .actions{position:static;grid-column:3;grid-row:1}.dashboardRow .analytics{display:none}.dashboardRow .edit{padding:0 7px;min-width:52px;font-size:10px}.dashboardRow .unlockStarter{font-size:8px}
+}
+
+@media(min-width:1025px){.dashboardRow .identity h3{font-size:12px}.dashboardRow .identity .badge{font-size:9px}.dashboardRow .link a{font-size:10px}}
+
+.desktopSlug{display:none}@media(min-width:1025px){.dashboardRow .mobileSlug{display:none}.dashboardRow .desktopSlug{display:inline}}
+
+.desktopProductLink{display:none}@media(min-width:1025px){.dashboardRow .desktopProductLink{display:flex}.dashboardRow .desktopHidePrice{display:none}}

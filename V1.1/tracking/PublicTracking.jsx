@@ -3,17 +3,18 @@ import {apiRequest} from '../lib/api';
 import {trackingData,browserEvent} from './browser';
 
 // Landing pages initialize automatically. Store consent remains owned by PublicStore.
-export default function PublicTracking({kind,slug,consent:providedConsent,contentKey}) {
+export default function PublicTracking({kind,slug,consent:providedConsent,contentKey,initialConnections}) {
  const [configuration,setConfiguration]=useState(null);
  const viewed=useRef(new Set());
  const identity=`${kind}:${slug}`;
  useEffect(()=>{
   if(!slug)return;
+  if(initialConnections!==undefined){setConfiguration({identity,connections:initialConnections});return;}
   const controller=new AbortController();
   apiRequest(`/v1-1/tracking/public/${kind}/${encodeURIComponent(slug)}`,{token:null,signal:controller.signal})
    .then(connections=>{if(!controller.signal.aborted)setConfiguration({identity,connections});}).catch(()=>{});
   return()=>controller.abort();
- },[identity,kind,slug]);
+ },[identity,kind,slug,initialConnections]);
  const allowed=kind==='page'||providedConsent===true;
  useEffect(()=>{
   if(!allowed||configuration?.identity!==identity)return;

@@ -7,3 +7,42 @@
 .headerGuide{display:inline-flex;align-items:center;gap:5px;font-size:11px!important;line-height:18px;color:#79529a!important;text-decoration:underline;text-underline-offset:3px;font-weight:500}.headerGuide:hover{color:#512376!important}.advanced summary{display:flex;align-items:center;gap:7px;list-style:none;min-height:20px}.advanced summary::-webkit-details-marker{display:none}.advanced summary:after{content:"";width:6px;height:6px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg);margin-left:auto;margin-right:3px;transition:transform .18s}.advanced[open] summary:after{transform:rotate(225deg)}.advanced summary span{margin-left:0;font-size:9px}.apiCheck{color:#15845b;background:#e5f7ed;border-radius:50%;padding:2px;width:19px;height:19px;flex-shrink:0}.connectionActions{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid #eee6f2;padding-top:14px;margin-top:4px}.connectionActions b{display:block;font-size:11px;color:#695771;font-weight:600}.connectionActions small{display:block;font-size:10px;line-height:1.5;color:#97859f;margin-top:4px}.clearButton{display:inline-flex;align-items:center;justify-content:center;gap:5px;flex-shrink:0;padding:8px 10px;border:1px solid #f0d5de;border-radius:8px;background:#fff4f7;color:#ae4e6b;font-size:10px;font-weight:600;cursor:pointer;transition:background .18s,transform .18s}.clearButton:hover:not(:disabled){background:#ffe8ef;transform:translateY(-1px)}.clearButton:disabled{opacity:.45;cursor:default}.headerGuide:focus-visible,.clearButton:focus-visible,.advanced summary:focus-visible{outline:2px solid #ac86ce;outline-offset:3px}.guides article{padding:12px 13px;margin-bottom:8px}.guides article b{font-size:12px!important;line-height:18px}.guides article p{font-size:11px!important;line-height:1.65!important;margin:6px 0 8px!important}.guides article a{font-size:10px!important;line-height:17px}@media(max-width:360px){.connectionActions{flex-wrap:wrap}.clearButton{margin-left:auto}}@media(prefers-reduced-motion:reduce){.advanced summary:after,.clearButton{transition:none}.clearButton:hover:not(:disabled){transform:none}}
 
 .logo img{filter:none!important;opacity:1!important}.tiktok{background:#fff}.snapchat{background:#fffc00}.meta img{filter:none!important}
+
+@media(min-width:1025px){
+ .dashboardEmbedded.page{position:relative;padding:0;margin:0}.dashboardEmbedded .help{width:auto;margin:0 0 12px auto;min-height:28px;padding:4px 0;border:0;background:transparent;box-shadow:none;font-size:10px;display:flex}
+ .dashboardEmbedded .list{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;border:0;border-radius:0;background:transparent;padding:0;overflow:visible}
+ .dashboardEmbedded .row{position:relative;display:grid;grid-template-columns:24px minmax(0,1fr);gap:5px 7px;align-content:center;min-height:82px;padding:10px;border:1px solid #e9e3f6;border-radius:16px;background:#fff;box-shadow:0 4px 15px #67419805;text-align:left}
+ .dashboardEmbedded .logo{grid-row:1/3;width:24px;height:28px;background:transparent}.dashboardEmbedded .logo img{width:24px;height:24px}.dashboardEmbedded .name{font-size:9px;line-height:1.3;min-width:0}.dashboardEmbedded .name small{display:none}.dashboardEmbedded .connected{grid-column:2;font-size:7px;max-width:100%;padding:2px 3px;gap:2px}.dashboardEmbedded .row>svg{display:none}.dashboardEmbedded .row:not(:disabled):not(:has(.connected)):after{content:'Connect';grid-column:2;font-size:9px;color:#7538d7;font-weight:650}.dashboardEmbedded>p:last-child{display:none}
+}
+@media(min-width:1025px) and (max-width:1439px){.dashboardEmbedded .list{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+@media(min-width:1025px){
+ .dashboardEmbedded .connected{justify-self:start;align-self:start;width:max-content;max-width:100%;padding:3px 6px;white-space:nowrap;line-height:1.2}
+ .dashboardEmbedded .row:not(:disabled):not(:has(.connected)):after{justify-self:start;width:max-content;max-width:100%;padding:3px 6px;border-radius:6px;background:#f1eaff;line-height:1.2}
+ .dashboardEmbedded .logo{align-self:center}
+ .dashboardEmbedded .name{align-self:end}
+}
+
+@media(min-width:1025px){
+ .dashboardEmbedded.page .help{position:absolute;right:0;top:-42px;margin:0!important;padding:5px 9px;border:1px solid #ece6fa;border-radius:99px;background:#fff;box-shadow:0 2px 5px #56398b0d;font-size:10px;min-height:28px}
+ .dashboardEmbedded .list{grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+ .dashboardEmbedded .row{grid-template-columns:25px minmax(0,1fr) 10px;gap:5px;min-height:78px;padding:10px 7px;border-radius:15px;box-shadow:0 4px 9px #4b367a0b}
+ .dashboardEmbedded .logo{width:25px;height:30px;grid-column:1;grid-row:1/3}
+ .dashboardEmbedded .name{grid-column:2;grid-row:1;font-size:9px;font-weight:650;line-height:1.3}
+ .dashboardEmbedded .row>svg{display:block;grid-column:3;grid-row:1/3;width:11px;height:14px;align-self:center;color:#222738}
+ .dashboardEmbedded .connected,.dashboardEmbedded .row:not(:disabled):not(:has(.connected)):after{grid-column:2;grid-row:2;font-size:8px;line-height:1.3;border-radius:99px;padding:3px 5px}
+ .dashboardEmbedded .connected{color:#158534;background:#e2f9df;gap:3px}
+ .dashboardEmbedded .connected svg{display:none}
+ .dashboardEmbedded .connected:before{content:'';width:4px;height:4px;border-radius:50%;background:currentColor;flex-shrink:0}
+ .dashboardEmbedded .row:not(:disabled):not(:has(.connected)):after{background:#eee2ff;color:#6a21dd}
+}
+
+/* Fit readable integration cards into no more than three columns. */
+@media(min-width:1025px){
+ .dashboardEmbedded .list{grid-template-columns:repeat(auto-fit,minmax(min(100%,max(190px,calc((100% - 24px)/3))),1fr));gap:12px}
+ .dashboardEmbedded .row{grid-template-columns:32px minmax(0,1fr) 14px;gap:7px 10px;padding:14px;min-height:88px}
+ .dashboardEmbedded .logo,.dashboardEmbedded .logo img{width:30px;height:30px}
+ .dashboardEmbedded .name{font-size:11px}
+ .dashboardEmbedded .connected,.dashboardEmbedded .row:not(:disabled):not(:has(.connected)):after{font-size:9px;padding:4px 8px}
+ .dashboardEmbedded .row>svg{width:14px;height:16px}
+}

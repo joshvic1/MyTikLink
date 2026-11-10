@@ -1,4 +1,6 @@
 "use client";
+
+import {authenticationDestination} from '@/V1.1/lib/dashboardPreference';
 import { useEffect, useState } from "react";
 import Modal from "./Modal";
 import axios from "axios";
@@ -61,7 +63,7 @@ export default function AuthModal({
       login(res.data.token);
       toast.success("Logged in!");
       handleClose();
-      router.push("/dashboard");
+      router.push(await authenticationDestination(res.data.token));
     } catch (err) {
       const status = err.response?.status;
       const message = err.response?.data?.message;
@@ -128,7 +130,7 @@ export default function AuthModal({
       login(res.data.token);
       toast.success("Account created!");
       handleClose();
-      router.push("/dashboard");
+      router.push(await authenticationDestination(res.data.token));
     } catch (err) {
       toast.error("Registration failed after verification");
     }
