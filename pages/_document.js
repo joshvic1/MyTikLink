@@ -4,6 +4,9 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-v11.png" />
+        <link rel="shortcut icon" href="/favicon.ico?v=11" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=11" />
         {/* TikTok Pixel */}
         {/* <script
           dangerouslySetInnerHTML={{
