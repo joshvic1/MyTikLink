@@ -194,7 +194,7 @@ function Detail({module,record,onClose,onUpdated,actor}){
 
 
 
-  try{await request(path,{method,body});onUpdated();}catch(e){setError(e.message);}finally{setBusy(false);}
+  try{await request(path,{method,body});onUpdated();if(action==='delete')onClose();}catch(e){setError(e.message);}finally{setBusy(false);}
 
 
 
@@ -230,7 +230,7 @@ function Detail({module,record,onClose,onUpdated,actor}){
 
 
 
- {account&&actor.superAdmin&&!user.deletedAt&&<button className={s.button} style={{color:'#b42318'}} onClick={()=>setAction('delete')}>Delete account</button>}
+ {account&&actor.superAdmin&&<button className={s.button} style={{color:'#b42318'}} onClick={()=>setAction('delete')}>Delete account</button>}
 
  {account&&!user.deletedAt&&actor.superAdmin&&<button className={s.button} onClick={()=>setAction('plan')}>Change plan</button>}
 
@@ -290,7 +290,7 @@ function Detail({module,record,onClose,onUpdated,actor}){
 
 
 
- {action==='delete'&&<section role="alert"><h3>Delete this user account?</h3><p>This action removes account access and disables public resources. Financial records and merchant orders are retained.</p><p>{user.name} · {user.email} · {display(user.plan)}</p><p>{Object.entries(detail?.counts||{}).map(([k,v])=>`${v} ${k}`).join(' · ')}</p><label><input type="checkbox" checked={billingReviewed} onChange={e=>setBillingReviewed(e.target.checked)}/>I reviewed provider subscriptions, refunds and disputes.</label><label>Type DELETE<input value={confirmation} onChange={e=>setConfirmation(e.target.value)}/></label></section>}
+ {action==='delete'&&<section role="alert"><h3>Delete this user account?</h3><p>This permanently deletes the account, landing pages, redirect links, storefronts, products and related storefront content. It cannot be restored. Financial records, merchant orders, cancelled automation history and administrative audit records are retained. Use Suspend access if you only want to temporarily block access.</p><p>{user.name} · {user.email} · {display(user.plan)}</p><p>{Object.entries(detail?.counts||{}).map(([k,v])=>`${v} ${k}`).join(' · ')}</p><label><input type="checkbox" checked={billingReviewed} onChange={e=>setBillingReviewed(e.target.checked)}/>I reviewed provider subscriptions, refunds and disputes.</label><label>Type DELETE<input value={confirmation} onChange={e=>setConfirmation(e.target.value)}/></label></section>}
 
  {action&&<form className={s.confirm} onSubmit={save}><h3>Confirm {action==='restrict'?(user.suspendedAt?'account restoration':'account suspension'):action==='moderate'?'availability change':action==='cancel'?'email cancellation':action==='profile'?'profile changes':action==='delete'?'account deletion':'plan change'}</h3><p>{action==='plan'?'Uses the existing plan-change service, including quota updates. This does not charge or refund the customer.':action==='restrict'?'Restricts authenticated account access. Published resources have separate moderation controls.':'This operation will be recorded in the administrative audit log.'}</p>
 
