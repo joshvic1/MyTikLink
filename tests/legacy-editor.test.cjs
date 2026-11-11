@@ -1,0 +1,23 @@
+const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
+const root=path.resolve(__dirname,'..');
+test('legacy editor starts in preview and routes trusted item taps to modal fields',async()=>{
+ const swc=require(root+'/node_modules/next/dist/build/swc');await swc.loadBindings();
+ const state=[],deps=[],effects=[];let cursor=0,receive,focused=0,scrolled=0;
+ const card={dataset:{legacyField:'f2'},closest:()=>({open:false}),querySelector:()=>({focus:()=>focused++}),scrollIntoView:()=>scrolled++};
+ const controls={current:{querySelectorAll:()=>[card]}},source={};
+ const react={useState(initial){const i=cursor++;if(!(i in state))state[i]=typeof initial==='function'?initial():initial;return[state[i],v=>state[i]=v];},useRef(initial){const i=cursor++;return state[i]||(state[i]={current:initial});},useMemo(fn){return fn();},useEffect(fn,next){const i=cursor++;if(!deps[i]||next.some((v,j)=>v!==deps[i][j]))effects.push(fn);deps[i]=next;}};
+ const EditorControls=()=>null,Header=()=>null;
+ const module={exports:{}};
+ const code=swc.transformSync(fs.readFileSync(root+'/V1.1/landing/LandingTemplateEditor.jsx','utf8'),{filename:'LandingTemplateEditor.jsx',jsc:{parser:{syntax:'ecmascript',jsx:true},transform:{react:{runtime:'automatic'}},target:'es2020'},module:{type:'commonjs'}}).code;
+ vm.runInNewContext(code,{module,exports:module.exports,window:{addEventListener:(_,fn)=>receive=fn,removeEventListener(){}},requestAnimationFrame:fn=>{fn();return 1;},cancelAnimationFrame(){},require(spec){if(spec==='react')return react;if(spec==='./EditorControls')return {default:EditorControls,__esModule:true};if(spec==='./EditorHeader')return {default:Header,__esModule:true};if(spec==='./useEditorTools')return {default:()=>({controls,change(){},undo(){},redo(){}}),__esModule:true};if(spec==='./legacyPreview')return {buildLegacyPreview:()=>'<html>Preview</html>'};if(spec.endsWith('.css'))return {};if(spec.includes('PaletteInput')||spec.includes('/api'))return {};return require(require.resolve(spec,{paths:[root]}));}});
+ const props={template:{editableSchema:{fields:[{key:'f1'},{key:'f2'}]}},config:{f1:'One',f2:'Two'}};
+ const nodes=n=>!n||typeof n!=='object'?[]:[n,...[n.props?.children].flat(Infinity).flatMap(nodes)];
+ const render=()=>{cursor=0;const result=nodes(module.exports.default(props));result.find(n=>n.type==='iframe').props.ref.current={contentWindow:source};while(effects.length)effects.shift()();return result;};
+ let tree=render();assert.equal(tree[0].props['data-editor-mode'],'preview');assert.equal(tree.find(n=>n.type===EditorControls).props.open,false);assert.equal(tree.find(n=>n.type==='iframe').props.sandbox,'allow-scripts');
+ const channel=state.find(v=>typeof v==='string'&&v.startsWith('legacy-'));
+ receive({source:{},data:{channel,type:'legacy-edit',key:'f2'}});assert.equal(render().find(n=>n.type===EditorControls).props.open,false);
+ receive({source,data:{channel,type:'legacy-edit',key:'missing'}});assert.equal(render().find(n=>n.type===EditorControls).props.open,false);
+ receive({source,data:{channel,type:'legacy-edit',key:'f2'}});tree=render();assert.equal(tree.find(n=>n.type===EditorControls).props.open,true);assert.equal(focused,1);assert.equal(scrolled,1);assert.equal(tree[0].props['data-editor-mode'],'preview');
+ tree.find(n=>n.type===EditorControls).props.onClose();assert.equal(render().find(n=>n.type===EditorControls).props.open,false);
+ tree.find(n=>n.type===Header).props.onMode('edit');assert.equal(render().find(n=>n.type===EditorControls).props.open,true);
+});
