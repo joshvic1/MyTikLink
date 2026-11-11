@@ -1,3 +1,4 @@
+import {businessFocusLabels} from '../store/themeRecommendations';
 import EmailPreferences from "../components/EmailPreferences";
 import {ColorPicker} from "../landing/EditorInputs";
 import {PasswordDialog} from "./SecurityPage";
@@ -46,6 +47,7 @@ export function AccountPage({ user, refreshSession }) {
         setWorkspaceDraft({
           publicName: data?.publicName || "",
           categoryId:data?.category?.id||"",categoryLabel:data?.category?.label||"",customCategory:data?.category?.customLabel||"",accountType:data?.accountType||"business",
+          businessFocus:businessFocusLabels[data?.businessFocus]?data.businessFocus:"",businessMode:data?.businessMode||"",
           description: data?.brand?.description || "",
           imageUrl:data?.brand?.imageUrl||"", preferredColor:data?.brand?.preferredColor||"#6336ff",
         });
@@ -62,6 +64,7 @@ export function AccountPage({ user, refreshSession }) {
     if(scope==='profile'&&(!form.name.trim()||!isValidPhoneNumber(phone))){notify.warning('Enter your full name and a valid WhatsApp number.');return;}
     if(scope==='business'&&(workspaceDraft.publicName.trim().length<2||!workspaceDraft.categoryId)){notify.warning('Enter your business name and choose a category.');return;}
     if(scope==='business'&&['other','other-emerging/other'].includes(workspaceDraft.categoryId)&&workspaceDraft.customCategory.trim().length<2){notify.warning('Describe your business category.');return;}
+    if(scope==='business'&&!businessFocusLabels[workspaceDraft.businessFocus]){notify.warning('Choose what your business sells.');return;}
     setSaving(true);setStatus('Saving changes…');
     try{
       if(scope==='profile'){
@@ -69,9 +72,9 @@ export function AccountPage({ user, refreshSession }) {
         if(phone!==workspace.whatsappNumber)await v11Api.saveOnboardingStage('whatsapp',{whatsappNumber:phone});
         setForm(current=>({...current,phone}));setWorkspace(current=>({...current,whatsappNumber:phone}));
       }
-      if(scope==='business'&&(workspaceDraft.publicName.trim()!==workspace.publicName||workspaceDraft.categoryId!==workspace.category?.id||(workspaceDraft.customCategory||'')!==(workspace.category?.customLabel||'')||(workspaceDraft.accountType||'business')!==workspace.accountType)){
-        await v11Api.saveOnboardingStage('identity',{accountType:workspaceDraft.accountType||'business',publicName:workspaceDraft.publicName.trim(),categoryId:workspaceDraft.categoryId,customCategory:workspaceDraft.customCategory||''});
-        setWorkspace(current=>({...current,publicName:workspaceDraft.publicName.trim(),accountType:workspaceDraft.accountType||'business',category:{id:workspaceDraft.categoryId,label:workspaceDraft.categoryLabel,customLabel:workspaceDraft.customCategory||''}}));
+      if(scope==='business'&&(workspaceDraft.publicName.trim()!==workspace.publicName||workspaceDraft.categoryId!==workspace.category?.id||(workspaceDraft.customCategory||'')!==(workspace.category?.customLabel||'')||(workspaceDraft.accountType||'business')!==workspace.accountType||workspaceDraft.businessFocus!==workspace.businessFocus)){
+        await v11Api.saveOnboardingStage('identity',{accountType:workspaceDraft.accountType||'business',publicName:workspaceDraft.publicName.trim(),categoryId:workspaceDraft.categoryId,customCategory:workspaceDraft.customCategory||'',businessFocus:workspaceDraft.businessFocus,businessMode:workspaceDraft.accountType==='creator'?'digital':workspaceDraft.businessFocus.startsWith('digital_')?'digital':'physical'});
+        setWorkspace(current=>({...current,publicName:workspaceDraft.publicName.trim(),accountType:workspaceDraft.accountType||'business',businessFocus:workspaceDraft.businessFocus,category:{id:workspaceDraft.categoryId,label:workspaceDraft.categoryLabel,customLabel:workspaceDraft.customCategory||''}}));
       }
       if(scope==='business'||scope==='branding'){
         const brand={imageUrl:workspace.brand?.imageUrl||'',description:scope==='business'?workspaceDraft.description:workspace.brand?.description||'',preferredColor:scope==='branding'?workspaceDraft.preferredColor:workspace.brand?.preferredColor||''};
@@ -115,7 +118,7 @@ export function AccountPage({ user, refreshSession }) {
           <label className={skin.field}>Business name<input value={workspaceDraft.publicName} onChange={e=>setWorkspaceDraft({...workspaceDraft,publicName:e.target.value})}/></label>
           <div className={skin.field}><span>Business category</span><button className={skin.categorySelect} disabled={saving} onClick={()=>setCategoryOpen(true)}>{workspaceDraft.customCategory||workspaceDraft.categoryLabel||'Select a category'}<ChevronRight size={16}/></button></div>
           {['other','other-emerging/other'].includes(workspaceDraft.categoryId)&&<label className={skin.field}>Your category<input value={workspaceDraft.customCategory||''} onChange={e=>setWorkspaceDraft({...workspaceDraft,customCategory:e.target.value})}/></label>}
-          {!workspace.accountType&&<label className={skin.field}>Account type<select value={workspaceDraft.accountType||'business'} onChange={e=>setWorkspaceDraft({...workspaceDraft,accountType:e.target.value})}><option value="business">Business / organization</option><option value="creator">Creator</option></select></label>}
+          <label className={skin.field}>Account type<select value={workspaceDraft.accountType||'business'} onChange={e=>setWorkspaceDraft({...workspaceDraft,accountType:e.target.value,businessFocus:e.target.value==='creator'&&workspaceDraft.businessFocus?.startsWith('physical_')?'':workspaceDraft.businessFocus})}><option value="business">Business / organization</option><option value="creator">Creator</option></select></label><label className={skin.field}>What your business sells<select value={workspaceDraft.businessFocus||''} onChange={e=>setWorkspaceDraft({...workspaceDraft,businessFocus:e.target.value})}><option value="">Select products or services</option>{Object.entries(businessFocusLabels).filter(([value])=>workspaceDraft.accountType!=='creator'||value.startsWith('digital_')).map(([value,label])=><option key={value} value={value}>{label}</option>)}</select></label>
           <div className={skin.descriptionHeading}><label htmlFor="settings-description">Business description</label><button disabled={!canGenerate||generating||saving} onClick={generate}>{generating?<LoaderCircle className={skin.spin} size={14}/>:<Sparkles size={14}/>} {generating?"Generating…":"Generate with AI"}</button></div>{!canGenerate&&<p className={skin.hint}>Save your business name and category to enable AI writing.</p>}<label className={skin.field}><textarea id="settings-description" rows={3} maxLength={400} value={workspaceDraft.description} onChange={e=>setWorkspaceDraft({...workspaceDraft,description:e.target.value})}/></label>
           {saveButton('business')}</>:<p className={skin.hint}>Your business details could not be loaded. Refresh to try again.</p>}
         </section>
