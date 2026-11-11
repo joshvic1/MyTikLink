@@ -7,8 +7,8 @@ test('history sums archived click values instead of counting rows',()=>{
  assert.equal(recordedClicks({_id:'a',redirectCount:37,recordedClicks:5000},[{linkId:'a',clicksUsed:4200}]),5000);
 });
 test('public links use configured canonical origin, never browser origin',()=>{
- assert.equal(linkUrl({linkId:'hello',publicUrl:'https://mytik.link/v1-1/r/hello'}),'https://mytiklink.com/v1-1/r/hello');
- assert.ok(linkUrl({linkId:'hello'}).endsWith('/v1-1/r/hello'));
+ assert.equal(linkUrl({linkId:'hello',publicUrl:'https://mytik.link/v1-1/r/hello'}),'https://mytiklink.com/r/hello');
+ assert.ok(linkUrl({linkId:'hello'}).endsWith('/r/hello'));
 });
 test('title interpolation cannot inject HTML and templates have restrictive CSP',()=>{
  const html=redirectFrame({title:'<img src=x onerror=alert(1)>',template:{html:'<h1>{{title}}</h1>',css:'body{color:red}'}});

@@ -1,5 +1,5 @@
 export function linkUrl(link) {
- return `https://mytiklink.com/v1-1/r/${encodeURIComponent(link.linkId)}`;
+ return `https://mytiklink.com/r/${encodeURIComponent(link.linkId)}`;
 }
 export function recordedClicks(link,history=[]) {
  if(Number.isFinite(link.recordedClicks))return link.recordedClicks;

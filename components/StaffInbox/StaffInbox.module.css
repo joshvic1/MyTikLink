@@ -92,7 +92,7 @@
 
 /* WhatsApp reference: white incoming messages, pale green outgoing messages. */
 .whatsappThread{background:#f5f3fc;color:#4b586a}
-.whatsappThread .threadHeader{background:#294e92;color:#fff;border-color:transparent}
+.whatsappThread .threadHeader{background:linear-gradient(110deg,#402469,#632ac2);color:#fff;border-color:transparent}
 .whatsappThread .threadHeader p{color:#dce5f7}
 .whatsappThread .threadHeader .iconButton{background:transparent;border:0;color:white}
 .whatsappThread .bubble{background:#fff;border:0;border-radius:24px 24px 24px 6px;box-shadow:0 5px 20px #cbd5e510;max-width:83%;padding:12px 16px;margin-bottom:14px}
@@ -152,7 +152,7 @@
  .chatOpen .thread{height:100%;min-height:0;border:0;border-radius:0;padding-bottom:var(--inbox-safe-bottom,env(safe-area-inset-bottom,0px))}
  .chatOpen .messages{flex:1 1 0;min-height:0;padding:14px 12px 8px;scroll-behavior:auto}
  .chatOpen .chatComposer{margin:0 8px 6px!important;padding:8px!important;min-height:56px;flex:none}
- .chatOpen .whatsappThread .threadHeader{background:#294e92;color:white}
+ .chatOpen .whatsappThread .threadHeader{background:linear-gradient(110deg,#402469,#632ac2);color:white}
  .whatsappThread .bubble{max-width:87%;padding:11px 14px;border-radius:23px 23px 23px 6px}
  .whatsappThread .outbound{border-radius:23px 23px 6px 23px}
  .whatsappThread .bubble p{font-size:15px}.whatsappThread .noteBubble{max-width:94%}
@@ -166,3 +166,17 @@
 }
 @media(prefers-reduced-motion:reduce){.skeletonItem span,.skeletonItem i,.skeletonLine{animation:none}}
 .floatingDate{position:absolute;top:74px;left:50%;transform:translateX(-50%);pointer-events:none}
+
+/* Keep the conversation inside the visible viewport as mobile keyboards open. */
+@media (max-width:1024px) and (pointer:coarse){
+ .app.chatOpen{position:fixed!important;inset:auto 0!important;top:var(--inbox-viewport-top,0px)!important;height:var(--inbox-viewport-height,100dvh)!important;max-height:var(--inbox-viewport-height,100dvh);min-height:0!important}
+ .chatOpen .workspace{min-height:0;height:100%;overflow:hidden}
+ .chatOpen .columns{flex:1 1 0;min-height:0;height:auto;overflow:hidden}
+ .chatOpen .thread{min-height:0;height:100%;max-height:100%;display:flex;flex-direction:column}
+ .chatOpen .messages{min-height:0;flex:1 1 0;overflow-y:auto}
+ .chatOpen .chatComposer{flex:0 0 auto;margin-bottom:6px!important;padding-bottom:var(--inbox-safe-bottom,0px)}
+ .contentPanel{top:calc(var(--inbox-viewport-top,0px) + 48px);bottom:auto;height:calc(var(--inbox-viewport-height,100dvh) - 103px)}
+ .privateChat{display:flex;flex-direction:column;min-height:0;max-height:100%}
+ .privateChat .privateMessages{flex:1 1 auto;min-height:0}
+ .privateChat textarea{font-size:16px}
+}

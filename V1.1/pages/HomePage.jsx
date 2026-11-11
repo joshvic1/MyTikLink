@@ -306,7 +306,7 @@ export function HomePage({ user, data, onCreate }) {
       await navigator.clipboard.writeText(
         new URL(
           item.publicHref,
-          process.env.NEXT_PUBLIC_SITE_URL || "https://mytik.link",
+          process.env.NEXT_PUBLIC_SITE_URL || "https://mytiklink.com",
         ).href,
       );
       notify.success("Link copied");

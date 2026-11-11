@@ -250,15 +250,15 @@ function Detail({module,record,onClose,onUpdated,actor}){
 
 
 
- {module==='pages'&&<External href={`https://mytiklink.com/v1-1/p/${encodeURIComponent(record.slug)}`}>Open published page</External>}
+ {module==='pages'&&<External href={`https://mytiklink.com/p/${encodeURIComponent(record.slug)}`}>Open published page</External>}
 
 
 
- {module==='stores'&&<External href={`https://mytiklink.com/v1-1/s/${encodeURIComponent(record.slug)}`}>Open storefront</External>}
+ {module==='stores'&&<External href={`https://mytiklink.com/s/${encodeURIComponent(record.slug)}`}>Open storefront</External>}
 
 
 
- {module==='links'&&record.linkId&&<External href={`https://mytiklink.com/v1-1/r/${encodeURIComponent(record.linkId)}`}>Open redirect link</External>}
+ {module==='links'&&record.linkId&&<External href={`https://mytiklink.com/r/${encodeURIComponent(record.linkId)}`}>Open redirect link</External>}
 
 
 
@@ -266,7 +266,7 @@ function Detail({module,record,onClose,onUpdated,actor}){
 
 
 
- {module==='products'&&record.storeSlug&&record.slug&&<External href={`https://mytiklink.com/v1-1/s/${encodeURIComponent(record.storeSlug)}/products/${encodeURIComponent(record.slug)}`}>Open product page</External>}
+ {module==='products'&&record.storeSlug&&record.slug&&<External href={`https://mytiklink.com/s/${encodeURIComponent(record.storeSlug)}/products/${encodeURIComponent(record.slug)}`}>Open product page</External>}
 
 
 
@@ -274,7 +274,7 @@ function Detail({module,record,onClose,onUpdated,actor}){
 
 
 
- {module==='links'&&record.linkId&&<CopyLink url={`https://mytiklink.com/v1-1/r/${encodeURIComponent(record.linkId)}`}/>}
+ {module==='links'&&record.linkId&&<CopyLink url={`https://mytiklink.com/r/${encodeURIComponent(record.linkId)}`}/>}
 
 
 

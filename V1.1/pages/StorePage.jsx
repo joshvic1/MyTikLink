@@ -51,7 +51,7 @@ export function StorePage({ data,user }) {
   const store = data.store, stats = data.storeStats || {};
   const pending = data.orders.filter(order => ["new", "pending"].includes(String(order.status).toLowerCase()));
   const lowStock = data.products.filter(product => !product.isDemo && product.trackStock !== false && Number(product.stock ?? product.quantity ?? 99) <= 3);
-  const storePath = `/v1-1/s/${store.slug}`;
+  const storePath = `/s/${store.slug}`;
   const storeUrl = `https://mytiklink.com${storePath}`;
   const hasStudioStatus = publication && (typeof publication.published === "boolean" || typeof publication.enabled === "boolean");
   const live = hasStudioStatus ? Boolean(publication.published && publication.enabled && publication.available!==false) : store.isPublished !== false;

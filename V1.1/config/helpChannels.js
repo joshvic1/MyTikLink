@@ -1,5 +1,5 @@
 import TykAvatar from '../../components/MyTikLinkAI/TykAvatar';
-import {MessagesSquare,Mail,Send} from "lucide-react";
+import {MessagesSquare,Mail,Send,Lightbulb} from "lucide-react";
 import {FaWhatsapp} from "react-icons/fa";
 export const helpChannels = [
   {
@@ -26,6 +26,7 @@ export const helpChannels = [
     badge: "Coming soon",
     soon: true,
   },
+  {title:"Suggest a feature",detail:"Tell us what would help your business.",Icon:Lightbulb,tone:"ai",badge:"Share your idea",action:"suggest"},
   {
     title: "Email Support",
     detail: "For detailed questions and enquiries.",

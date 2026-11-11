@@ -469,7 +469,7 @@ export default function ProductsManager({
     onDataChange?.();
   };
   const productUrl = (product) =>
-    `${window.location.origin}/v1-1/s/${store?.slug || ""}/products/${encodeURIComponent(product.slug)}`;
+    `https://mytiklink.com/s/${encodeURIComponent(store?.slug || "")}/${encodeURIComponent(product.slug)}`;
   const copy = async (product) => {
     if (!store?.slug)
       return notify.error("Your storefront link is not ready yet.");

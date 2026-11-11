@@ -14,7 +14,7 @@ import {cartQuantityLimit} from "@/components/store/context/cartLimits.mjs";
 import {storeThemeStyle,productHref} from "./StoreTheme";
 import {storeImageSrcSet} from "./storeMedia";
 import { useEffect, useRef, useState } from "react";
-import { AlertCircle, X, Minus, Plus, ShoppingCart, Copy, Check, CheckCircle2, MapPin, Store, Truck } from "lucide-react";
+import { AlertCircle, ChevronRight, X, Minus, Plus, ShoppingCart, Copy, Check, CheckCircle2, MapPin, Store, Truck } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import { useCart } from "@/components/store/context/CartContext";
 import { apiRequest } from "../lib/api";
@@ -104,7 +104,7 @@ export function ProductDetails({
   return (
     <article className={`${css.productPage} ${["streetline","streetline-services"].includes(design?.theme)?css.streetline:""} ${quick?css.quickProduct:""}`} style={storeThemeStyle(design)}>
       {optionToast>0&&<div className={css.optionToast} role="alert"><AlertCircle size={18}/><strong>Select an option, please.</strong><button type="button" onClick={()=>setOptionToast(0)} aria-label="Dismiss option reminder"><X size={15}/></button></div>}
-      {!quick&&<nav className={css.productBreadcrumb} aria-label="Product breadcrumb"><a href={`/v1-1/s/${encodeURIComponent(store.slug)}`}>{['atelier-services','streetline-services'].includes(design?.theme)?'Services':'Shop'}</a><span>/</span><span>{product.name}</span></nav>}
+      {!quick&&<nav className={css.productBreadcrumb} aria-label="Product breadcrumb"><a href={`/v1-1/s/${encodeURIComponent(store.slug)}`}>{['atelier-services','streetline-services'].includes(design?.theme)?'Services':'Shop'}</a><ChevronRight size={14} aria-hidden="true"/><span aria-current="page" title={product.name}>{product.name}</span></nav>}
       <div className={css.product}>
         <div>
           {product.images?.[image] && (
@@ -998,12 +998,12 @@ export function CommerceCheckout({ store, config: initialConfig, fulfillment: in
     </Modal>
   );
 }
-export function ReviewForm({ slug, onClose }) {
+export function ReviewForm({ slug, design, onClose }) {
   const [form, setForm] = useState({ name: "", rating: 5, text: "" }),
     [busy, setBusy] = useState(false),
     [message, setMessage] = useState("");
   return (
-    <Modal title="Leave a review" onClose={onClose}>
+    <Modal title="Leave a review" className={css.publicModal} style={storeThemeStyle(design)} onClose={onClose}>
       <form
         className={css.form}
         onSubmit={async (e) => {

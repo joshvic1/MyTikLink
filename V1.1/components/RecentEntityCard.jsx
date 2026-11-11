@@ -14,7 +14,7 @@ export default function RecentEntityCard({item,kind,index=0,refresh,onEdit,store
  const router=useRouter(),[busy,setBusy]=useState(false),[panel,setPanel]=useState('');
  const isPage=kind==='page',isLink=kind==='link',product=kind==='product';
  const status=isPage?(item.isActive===false?'Inactive':item.availability==='plan_required'?'Plan required':item.slug?'Active':'Draft'):isLink?(item.v11Disabled?'Disabled':item.v11OwnerPaused?'Inactive':item.status || 'Active'):item.status || 'Product';
- const url=isPage&&item.slug?pageUrl(item):isLink?linkUrl(item):product&&store?.slug&&item.slug?`${typeof window!=='undefined'?window.location.origin:''}/s/${store.slug}/${item.slug}`:'';
+ const url=isPage&&item.slug?pageUrl(item):isLink?linkUrl(item):product&&store?.slug&&item.slug?`https://mytiklink.com/s/${encodeURIComponent(store.slug)}/${encodeURIComponent(item.slug)}`:'';
  const rawImage=isPage?pageThumbnail(item):item.thumbnailUrl || item.imageUrl || item.image || item.images?.[0];
  const image=typeof rawImage==='string'?rawImage:rawImage?.url;
  const page={...item,title:product?item.name:item.title,slug:isLink?item.linkId:item.slug,availability:(status==='Active'||status==='published')?'active':status==='Plan required'?'plan_required':'inactive',hasLeadForm:isPage&&(item.hasLeadForm??pageHasLeadForm(item)),clicksCount:isLink?recordedClicks(item):item.clicksCount};

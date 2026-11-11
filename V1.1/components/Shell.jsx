@@ -1,3 +1,4 @@
+import FeatureSuggestion,{requestFeatureSuggestion} from './FeatureSuggestion';
 import {v11Api,getToken} from '../lib/api';
 function warmNavigation(href){if(typeof window==='undefined'||!getToken()||navigator.connection?.saveData)return;const load=href==='/v1-1/pages'?()=>v11Api.pageCollection():href==='/v1-1/dashboard'||href==='/v1-1/store'?()=>v11Api.dashboardV11():href==='/v1-1/links'?()=>v11Api.links():null;if(load)load().catch(()=>{});}
 import IdleHelp from './IdleHelp';
@@ -300,6 +301,7 @@ export function Shell({ user, onLogout, children, onCreate, onAddProduct, hasSto
   }, [menuOpen]);
   return (
     <div className={`${styles.shell} ${styles.desktopDashboardShell} ${activePath !== v11Routes.home ? styles.desktopManagementShell : ""}`}>
+      <FeatureSuggestion/>
       <aside className={styles.sidebar}>
         <Link
           href={v11Routes.home}
@@ -529,12 +531,12 @@ export function Shell({ user, onLogout, children, onCreate, onAddProduct, hasSto
                       <em>{badge}</em>
                     </span>
                   </button>
-                ) : action === "ai" ? (
+                ) : action === "ai" || action === "suggest" ? (
                   <button
                     key={title}
                     type="button"
                     className={`${styles.helpChannelCard} ${styles[`helpChannel_${tone}`]}`}
-                    onClick={openAssistant}
+                    onClick={action === "suggest" ? ()=>{setHelpOpen(false);requestFeatureSuggestion()} : openAssistant}
                   >
                     <span className={styles.helpChannelIcon}>
                       <Icon />

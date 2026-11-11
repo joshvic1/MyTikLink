@@ -1,10 +1,10 @@
-import {LayoutDashboard,Users,CreditCard,PanelsTopLeft,Link2,Store,Package,ShoppingBag,Contact,Mail,Workflow,Inbox,ShieldCheck,Activity,Layers,Server,FileClock,Image,BarChart3,Settings,BookOpen,Tag} from 'lucide-react';
+import {MessageCircle,LayoutDashboard,Users,CreditCard,PanelsTopLeft,Link2,Store,Package,ShoppingBag,Contact,Mail,Workflow,Inbox,ShieldCheck,Activity,Layers,Server,FileClock,Image,BarChart3,Settings,BookOpen,Tag} from 'lucide-react';
 
 export const groups=[
 
  {name:'Overview',items:[['overview','Overview',LayoutDashboard,'overview.view'],['analytics','Platform analytics',BarChart3,'overview.view'],['activity','Platform activity',Activity,'overview.view'],['audit','Admin audit log',FileClock,'audit.view']]},
 
- {name:'Accounts',items:[['users','All users',Users,'users.view'],['adoption','V1.1 adoption',BarChart3,'users.view']]},
+ {name:'Accounts',items:[['users','All users',Users,'users.view'],['adoption','V1.1 adoption',BarChart3,'users.view'],['feature-suggestions','Feature suggestions',MessageCircle,'users.view']]},
 
  {name:'Billing',items:[['subscriptions','Subscriptions',CreditCard,'billing.view'],['transactions','Transactions',FileClock,'billing.view'],['recovery','Payment recovery',Workflow,'billing.view'],['recovery-emails','Recovery email history',Mail,'billing.view'],['plans','Plans & entitlements',Layers,'billing.view'],['revenue','Revenue',BarChart3,'overview.view']]},
 

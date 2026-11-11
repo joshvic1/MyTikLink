@@ -2,7 +2,7 @@ import {useEffect} from 'react';
 export default function useInboxViewport(active,timeline,nearBottom){
  useEffect(()=>{
    const viewport=window.visualViewport,root=document.documentElement;
-   let frame;
+   let frame,timer;
    const update=()=>{
      cancelAnimationFrame(frame);frame=requestAnimationFrame(()=>{
        const height=viewport?.height||window.innerHeight;
@@ -13,11 +13,13 @@ export default function useInboxViewport(active,timeline,nearBottom){
        if(active&&nearBottom.current&&timeline.current)timeline.current.scrollTop=timeline.current.scrollHeight;
      });
    };
+   const settle=()=>{update();clearTimeout(timer);timer=setTimeout(update,350);};
+   document.addEventListener('focusin',settle);document.addEventListener('focusout',settle);
    update();viewport?.addEventListener('resize',update);viewport?.addEventListener('scroll',update);window.addEventListener('resize',update);
-   return()=>{cancelAnimationFrame(frame);viewport?.removeEventListener('resize',update);viewport?.removeEventListener('scroll',update);window.removeEventListener('resize',update);for(const name of ['height','top'])root.style.removeProperty('--inbox-viewport-'+name);root.style.removeProperty('--inbox-safe-bottom')};
+   return()=>{clearTimeout(timer);document.removeEventListener('focusin',settle);document.removeEventListener('focusout',settle);cancelAnimationFrame(frame);viewport?.removeEventListener('resize',update);viewport?.removeEventListener('scroll',update);window.removeEventListener('resize',update);for(const name of ['height','top'])root.style.removeProperty('--inbox-viewport-'+name);root.style.removeProperty('--inbox-safe-bottom')};
  },[active]);
  useEffect(()=>{
-   if(!active||!window.matchMedia('(max-width: 700px)').matches)return;
+   if(!active||!window.matchMedia('(max-width: 1024px) and (pointer: coarse)').matches)return;
    const body=document.body,root=document.documentElement,y=window.scrollY;
    const old={position:body.style.position,top:body.style.top,width:body.style.width,overflow:body.style.overflow,rootOverflow:root.style.overflow};
    Object.assign(body.style,{position:'fixed',top:-y+'px',width:'100%',overflow:'hidden'});root.style.overflow='hidden';
