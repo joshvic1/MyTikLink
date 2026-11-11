@@ -1,6 +1,6 @@
 import useInboxLive from './useInboxLive';
 import useInboxViewport from './useInboxViewport';
-import {mergeMessages,deliveryStatus,chatDate,visibleMessageText} from './inboxTimeline.mjs';
+import {mergeMessages,deliveryStatus,chatDate,visibleMessageText,withPendingPreviews} from './inboxTimeline.mjs';
 import RichEmailEditor from './RichEmailEditor';
 import VoiceRecorder from './VoiceRecorder';
 import Notifications from './Notifications';
@@ -37,7 +37,7 @@ export default function StaffInbox({demo=false}){
  const [historyBusy,setHistoryBusy]=useState(false),[templatesLoading,setTemplatesLoading]=useState(false);
  const scrollIntent=useRef('latest'),messageContent=useRef(),lastSync=useRef(null),syncBusy=useRef(null),syncQueued=useRef(false),lastSyncId=useRef(null),loadedMessages=useRef([]);loadedMessages.current=messages;
 
- const sendTransaction=useRef();
+ const sendTransaction=useRef(),pendingPreviews=useRef(new Map());
  const timeline=useRef(),pendingSend=useRef(),firstUnread=useRef(),nearBottom=useRef(true),dateTimer=useRef(),typingSent=useRef(0),listScroll=useRef(0);
  useInboxViewport(Boolean(selected)||panel==='private',timeline,nearBottom);
  useLayoutEffect(()=>{
@@ -74,7 +74,7 @@ export default function StaffInbox({demo=false}){
  useEffect(()=>{if(!selected||demo||note||threadLoading)return;const timer=setTimeout(()=>api('conversations/'+selected._id+'/draft',{text:draft,html:richHtml?.text===draft?richHtml.html:''}).catch(()=>{}),1000);return()=>clearTimeout(timer)},[draft,selected?._id,note,threadLoading]);
  useEffect(()=>{if(demo)return;api('me').then(d=>setUser(d.user)).catch(e=>{if(e.status!==401)setLoginError(e.message)}).finally(()=>setBoot(false))},[demo]);
  const handleError=useCallback(e=>{if(e.status===401){setUser(null);setSelected(null);setMessages([]);setRows([])}setError(e.message)},[]);
- const loadList=useCallback(async(quiet=false)=>{if(!user||demo)return;const version=++listVersion.current;if(!quiet)setLoading(true);try{const q=new URLSearchParams({view,status,channel,search,label:labelFilter,page:String(page)});const d=await api('conversations?'+q);if(version===listVersion.current){setRows(previous=>page?Array.from(new Map([...previous,...d.conversations].map(r=>[r._id,r])).values()):d.conversations);setHasMore(d.hasMore);setError('')}}catch(e){if(version===listVersion.current)handleError(e)}finally{if(version===listVersion.current)setLoading(false)}},[user,demo,view,status,channel,search,labelFilter,page,handleError]);
+ const loadList=useCallback(async(quiet=false)=>{if(!user||demo)return;const version=++listVersion.current;if(!quiet)setLoading(true);try{const q=new URLSearchParams({view,status,channel,search,label:labelFilter,page:String(page)});const d=await api('conversations?'+q);if(version===listVersion.current){setRows(previous=>withPendingPreviews(page?Array.from(new Map([...previous,...d.conversations].map(r=>[r._id,r])).values()):d.conversations,pendingPreviews.current));setHasMore(d.hasMore);setError('')}}catch(e){if(version===listVersion.current)handleError(e)}finally{if(version===listVersion.current)setLoading(false)}},[user,demo,view,status,channel,search,labelFilter,page,handleError]);
  useEffect(()=>{const timer=setTimeout(()=>loadList(),250);return()=>clearTimeout(timer)},[loadList]);
  useEffect(()=>{if(!user||demo)return;Promise.all([api('team'),api('connection'),api('permissions'),api('alerts')]).then(([t,c,p,a])=>{setTeam(t.team);setConnection(c);setPermissionGroups(p.groups);setAlerts(a.alerts);setAlertCount(a.unread);if(can('collaboration.receive'))api('private').then(d=>setPrivateRows(d.chats)).catch(()=>{})}).catch(handleError)},[user,demo,handleError]);
  async function refreshLive(){
@@ -121,15 +121,18 @@ export default function StaffInbox({demo=false}){
    const tx={id,key,text:draft,requestId:pendingSend.current.key,confirmed:false};sendTransaction.current=tx;
    setSending(true);setDrafts(x=>({...x,[key]:''}));
    const localId='pending:'+tx.requestId;
+   if(!note){pendingPreviews.current.set(String(id),{requestId:String(user._id)+':'+tx.requestId,text:draft||media?.name||template?.name||'',sentAt:new Date().toISOString(),status:'sending'});setRows(rows=>withPendingPreviews(rows,pendingPreviews.current));}
    nearBottom.current=true;scrollIntent.current='latest';
    setMessages(current=>mergeMessages(current,[{_id:localId,requestId:String(user._id)+':'+tx.requestId,optimistic:true,kind,text:draft||(!media?template?.name:''),attachments:media?[media]:[],authorName:user.name,sentAt:new Date().toISOString(),status:'sending',replyMessage:replyMessage?._id}]));
    try{
      const d=await api('conversations/'+id+'/messages',{text:draft||media?.name,replyAll:!note&&selected.channel==='email'&&emailMode==='all',html:!note&&selected.channel==='email'&&richHtml?.text===draft?richHtml.html:undefined,cc:!note&&selected.channel==='email'?emailCc.split(',').map(v=>v.trim()).filter(Boolean):undefined,bcc:!note&&selected.channel==='email'?emailBcc.split(',').map(v=>v.trim()).filter(Boolean):undefined,forwardTo:!note&&emailMode==='forward'?forwardTo:undefined,media:media?._id,kind,template:template?{name:template.name,language:template.language,values:templateValues}:undefined,replyMessage:note?undefined:replyMessage?._id,mentions:note?mentions:[],requestId:tx.requestId});
+     if(!note){pendingPreviews.current.delete(String(id));setRows(rows=>rows.map(row=>row._id===id&&(!row.lastMessageAt||new Date(row.lastMessageAt)<=new Date(d.message.sentAt))?{...row,preview:d.message.text?.slice(0,160)||'',lastMessageAt:d.message.sentAt,latestKind:'outbound',deliveryEvent:deliveryStatus(d.message)}:row));}
      tx.confirmed=true;firstUnread.current=null;nearBottom.current=true;
      if(selection.current===id)setMessages(m=>mergeMessages(m,[d.message]));
      if(sendTransaction.current===tx){pendingSend.current=null;if(selection.current===id){setMedia(null);setTemplate(null);setTemplateValues({});setReplyMessage(null);setMentions([]);setRichHtml('');}}
      loadList(true);return true;
    }catch(error){
+     const preview=pendingPreviews.current.get(String(id));if(preview){preview.status=error.deliveryState==='failed'?'failed':'unknown';setRows(rows=>rows.map(row=>row._id===id&&row.lastMessageAt===preview.sentAt?{...row,deliveryEvent:preview.status}:row));}
      const d=await api('conversations/'+id).catch(()=>null);
      if(d){if(selection.current===id)setMessages(m=>mergeMessages(m,d.messages));tx.confirmed=tx.confirmed||d.messages.some(m=>m.requestId===String(user._id)+':'+tx.requestId&&(m.status==='sent'||m.kind==='note'||['delivered','read'].includes(m.deliveryEvent)));}
      if(!tx.confirmed){if(selection.current===id)setMessages(rows=>rows.map(row=>row._id===localId?{...row,status:error.deliveryState==='failed'?'failed':'unknown'}:row));setDrafts(x=>({...x,[key]:x[key]||tx.text}));if(error.deliveryState==='failed'&&sendTransaction.current===tx)pendingSend.current=null;toast.error(error.message);}

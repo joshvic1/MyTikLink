@@ -10,7 +10,7 @@ test('audio plays inline without preloading and cycles 1x through 3x back to 1x'
  vm.runInNewContext(code,{module,exports:module.exports,require(spec){if(spec==='react')return react;return require(require.resolve(spec,{paths:[root]}));}});
  const nodes=n=>!n||typeof n!=='object'?[]:[n,...[n.props?.children].flat(Infinity).flatMap(nodes)];
  const render=()=>{cursor=0;return nodes(module.exports.default({src:'/test-audio'}));};
- let tree=render();assert.equal(tree.find(n=>n.type==='audio').props.preload,'none');assert.ok(!tree.some(n=>n.type==='select'));
+ let tree=render();assert.equal(tree.find(n=>n.type==='audio').props.preload,'none');assert.equal(tree.find(n=>n.type==='audio').props.src,'/test-audio?playback=mp3');assert.equal(tree.find(n=>n.type==='audio').props.playsInline,true);assert.ok(!tree.some(n=>n.type==='select'));
  for(const speed of [1.5,2,2.5,3,1]){tree.find(n=>n.props?.['aria-label']?.startsWith('Playback speed')).props.onClick();tree=render();assert.equal(player.playbackRate,speed);assert.equal(tree.find(n=>n.props?.['aria-label']?.startsWith('Playback speed')).props.children.join(''),speed+'x');}
  await tree.find(n=>n.props?.['aria-label']==='Play audio').props.onClick();assert.equal(played,1);
  tree.find(n=>n.type==='audio').props.onPlaying();tree=render();await tree.find(n=>n.props?.['aria-label']==='Pause audio').props.onClick();assert.equal(paused,1);

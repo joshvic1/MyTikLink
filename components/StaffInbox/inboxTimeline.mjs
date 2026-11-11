@@ -21,3 +21,9 @@ export function visibleMessageText(message){
  if(message.attachments?.some(a=>/^(image|audio|video)\//.test(a.mimeType||''))&&/^\[(?:audio|image|video)(?: message)?\]$/i.test((message.text||'').trim()))return '';
  return message.text;
 }
+
+export function withPendingPreviews(rows,pending){
+ return rows.map(row=>{const message=pending.get(String(row._id));if(!message||row.latestRequestId===message.requestId||new Date(row.lastMessageAt)>=new Date(message.sentAt))return row;
+ return {...row,preview:message.text||'',lastMessageAt:message.sentAt,latestKind:'outbound',deliveryEvent:message.status};
+ }).sort((a,b)=>new Date(b.lastMessageAt)-new Date(a.lastMessageAt));
+}
