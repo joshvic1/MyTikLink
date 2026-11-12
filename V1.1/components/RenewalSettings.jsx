@@ -1,0 +1,29 @@
+import {useEffect,useState} from 'react';
+import {Check,CreditCard,Plus,RefreshCw,ShieldCheck} from 'lucide-react';
+import {v11Api} from '../lib/api';
+import {subscriptionPlans} from '../config/plans';
+import {useSubscription} from './SubscriptionModal';
+import {Button} from './UI';
+import css from './UpgradePayment.module.css';
+export default function RenewalSettings({user}){
+ const subscription=useSubscription();
+ const [data,setData]=useState(null),[error,setError]=useState(''),[busy,setBusy]=useState(false),[loading,setLoading]=useState(true),[confirm,setConfirm]=useState(false),[notice,setNotice]=useState(''),[consent,setConsent]=useState(false),[cardId,setCardId]=useState('');
+ const load=async()=>{setLoading(true);setError('');try{const value=await v11Api.subscriptions();setData(value);setCardId(id=>value.cards?.some(c=>c.id===id)?id:value.cards?.find(c=>c.plan===value.plan)?.id||value.cards?.[0]?.id||'')}catch(e){setError(e.status===404?'Card management is not available on the connected server yet. Please try again after the payment update is released.':e.message)}finally{setLoading(false)}};
+ useEffect(()=>{void load();const updated=()=>{setConsent(false);void load()};window.addEventListener('v11:plan-updated',updated);return()=>window.removeEventListener('v11:plan-updated',updated)},[]);
+ const cancel=async()=>{setBusy(true);setError('');try{const result=await v11Api.cancelSubscriptions();setNotice(result.message);setConfirm(false);setConsent(false);await load()}catch(e){setError(e.message)}finally{setBusy(false)}};
+ const enable=async()=>{if(!consent||!cardId)return;setBusy(true);setError('');try{const result=await v11Api.enableSubscription(cardId);setNotice(result.message);setConsent(false);await load()}catch(e){setError(e.message)}finally{setBusy(false)}};
+ const currentPlan=data?.plan||user?.plan||'free',yearly=currentPlan.endsWith('_yearly'),tier=currentPlan.includes('pro')?'pro':'standard';
+ const price=subscriptionPlans.find(p=>p.id===tier)?.cycles[yearly?'yearly':'monthly'].price;
+ const active=data?.subscriptions.filter(s=>s.autoRenew)||[],cards=(data?.cards?.length?data.cards:(data?.subscriptions||[]).filter(s=>s.card).map(s=>({...s.card,id:s.id})))||[];
+ const usable=cards.filter(c=>c.plan===currentPlan&&new Date(data?.planExpiry||user?.planExpiry)>new Date());
+ const add=()=>subscription?.openSubscription({mode:currentPlan==='free'?'upgrade':'renew',preselected:currentPlan==='free'?'pro':tier,plan:currentPlan,paymentStep:currentPlan!=='free',cardOnly:true});
+ const card=(c,activeCard=false)=><div className={css.savedCard} key={c.id}><span className={css.savedCardIcon}><CreditCard size={19}/></span><div><b>{c.brand||'Card'} <span>•••• {c.last4}</span></b><small>{c.bank||'Saved card'}{c.expiryMonth?` · ${c.expiryMonth}/${c.expiryYear}`:''}</small></div>{!activeCard&&usable.length>1&&usable.some(x=>x.id===c.id)&&<input type="radio" name="renewal-card" aria-label={`Use card ending ${c.last4}`} checked={cardId===c.id} onChange={()=>{setCardId(c.id);setConsent(false)}}/>}</div>;
+ return <section className={css.renewals}><div className={css.renewalHeading}><h3>Card & auto-renewal</h3>{data&&<span className={css.renewalBadge} data-on={Boolean(active.length)}>{active.length?'On':data.setupStatus?'Pending':'Off'}</span>}</div>
+ {loading&&!data?<p>Checking your saved cards…</p>:active.length?<>{active.map(s=><div key={s.id}>{s.card?card({...s.card,id:s.id},true):<p>{s.plan}</p>}<p className={css.renewalSchedule}>₦{Number(s.amount).toLocaleString()} every {s.interval==='annually'?'year':'month'}{s.nextPaymentDate?` · Next payment ${new Date(s.nextPaymentDate).toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'})}`:''}</p></div>)}{confirm?<><p>Cancel auto-renewal? Your paid access remains active until its expiry date.</p><div className={css.renewalActions}><Button disabled={busy} onClick={cancel}>{busy?'Cancelling…':'Confirm cancellation'}</Button><Button variant="secondary" disabled={busy} onClick={()=>setConfirm(false)}>Keep it on</Button></div></>:<Button variant="secondary" onClick={()=>setConfirm(true)}>Cancel auto-renewal</Button>}</>:data?<>
+ {cards.length?<>{cards.map(c=>card(c))}<p>Your card is saved. Auto-renewal is currently off.</p>{usable.length?<><label className={`${css.consent} ${css.designedConsent}`}><input type="checkbox" checked={consent} disabled={busy} onChange={e=>setConsent(e.target.checked)}/><span className={css.tickBox}><Check size={12}/></span><span>Auto-renew my subscription every {yearly?'year':'month'}<small>₦{Number(price).toLocaleString()} when your paid period ends. Cancel anytime.</small></span></label><Button disabled={!consent||busy} onClick={enable}>{busy?'Activating…':'Activate auto-renewal'}</Button></>:<p>Renew your current plan with a card to activate auto-renewal.</p>}</>:<div className={css.noCard}><CreditCard size={23}/><div><b>No card added yet</b><p>Add a card through a plan payment to activate auto-renewal.</p></div></div>}
+ <Button variant="secondary" disabled={busy} onClick={add}><Plus size={14}/>{cards.length?'Use a different card':'Add card & activate'}</Button><p className={css.addCardNote}>Pay for your plan securely with Paystack. Your paid time is extended, and renewal starts afterward.</p>
+ </>:null}
+ {data?.setupStatus&&<><p className={css.notice}>{data.setupStatus==='unavailable'?'The last card could not be enabled for automatic renewal. Add another card through a plan payment.':'Your latest renewal preference is awaiting Paystack confirmation.'}</p>{!active.length&&<Button variant="secondary" disabled={busy} onClick={cancel}>Cancel pending auto-renewal</Button>}</>}
+ {notice&&<p role="status" className={css.notice}>{notice}</p>}{error&&<p className={css.error} role="alert">{error}</p>}<button className={css.back} disabled={busy||loading} onClick={load}><RefreshCw size={12}/>{loading?'Checking…':'Refresh card details'}</button>
+ </section>;
+}

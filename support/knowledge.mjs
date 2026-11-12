@@ -32,6 +32,147 @@ export const knowledge=[
  article('legacy-billing','legacy','Previous dashboard plan and account settings','/dashboard/settings',['Open Settings to manage your profile, password and available plan upgrade or renewal.','Review the current billing screen for exact price, plan expiry and supported changes. Switching to V1.1 does not reset a subscription.'],['pages/dashboard/settings.js'])
 ];
 
+// Source-reviewed additions; rollout is not a claim of production availability.
+knowledge.push(...[
+  {
+    "id": "plan-payment-methods",
+    "version": "v1-1",
+    "title": "Upgrade plan: pay with bank transfer or card",
+    "route": "/v1-1/settings/billing",
+    "steps": [
+      "Open Billing and Payments, choose your plan and Monthly or Yearly, then continue to the payment-method step. Review the actual amount shown; upgrades may have adjusted prices. These payments purchase your MyTikLink plan, not an order from a merchant store.",
+      "Pay with bank transfer generates temporary transfer details inside the upgrade modal. Copy the amount, account number, bank name and account name. Send the exact amount before expiry. I have made the transfer checks the payment status; clicking it alone does not confirm payment. If already paid, check status or contact support rather than paying again. Do not send to expired details. Bank transfer does not enable auto-renewal.",
+      "Pay with card opens Paystack hosted checkout to authenticate and pay together. Auto-renew my subscription is checked by default in checkout; untick it for a one-time payment. The renewal interval follows the selected monthly or yearly plan. Never send card details to TYK.",
+      "After verified payment, opted-in renewal is scheduled after the paid period; it is not an extra immediate authentication charge. Check the payment result and Billing and Payments for the resulting plan and renewal status."
+    ],
+    "source": [
+      "V1.1/components/UpgradePayment.jsx",
+      "V1.1/components/SubscriptionModal.jsx",
+      "backend/src/services/billingRenewals.js"
+    ],
+    "status": "rollout",
+    "updated": "2026-11-12",
+    "plan": "Existing account entitlements and access permissions apply.",
+    "related": []
+  },
+  {
+    "id": "card-auto-renewal",
+    "version": "v1-1",
+    "title": "Saved card and auto-renewal: activate or cancel subscription",
+    "route": "/v1-1/settings/billing",
+    "steps": [
+      "Open account settings → Billing and Payments → Card and auto-renewal. The server result determines the controls shown. A request error or unavailable endpoint means status is unknown, not that you have no card or that renewal is off. Retry/refresh; if it persists contact support. This updated panel requires the matching backend release.",
+      "With active renewal, review the masked card, amount, interval and next renewal date. Choose Cancel auto-renewal and confirm. Cancellation stops future renewal and preserves already-paid access until expiry; it is not a refund or account deletion.",
+      "With an eligible saved reusable card and renewal off, the consent checkbox starts unchecked in settings. Select it and choose Activate auto-renewal. Activation schedules renewal after the current paid period without an immediate charge. Card ownership, current plan and reusable authorization must be verified by the server.",
+      "Without an eligible card, use Add card & activate or Use a different card. This opens a clearly priced plan payment through Paystack: it charges for a plan period and extends paid time, then schedules renewal. It is not free card linking. Free or expired accounts must select/pay for an eligible plan. Never claim activation succeeded until confirmed by the service."
+    ],
+    "source": [
+      "V1.1/components/RenewalSettings.jsx",
+      "backend/src/services/billingRenewals.js"
+    ],
+    "status": "rollout",
+    "updated": "2026-11-12",
+    "plan": "Existing account entitlements and access permissions apply.",
+    "related": []
+  },
+  {
+    "id": "account-deletion",
+    "version": "v1-1",
+    "title": "Delete my account permanently versus suspension",
+    "route": "/v1-1/settings/profile",
+    "steps": [
+      "In account settings find Delete your MyTikLink account and choose Delete account. Read the consequences, type DELETE and enter the full account name exactly as displayed. Choose Send verification code. In Confirm account deletion enter the emailed six-digit code yourself and choose Permanently delete account. The code expires after ten minutes; never share it with TYK or support. Keep my account cancels before final confirmation.",
+      "Deletion removes the account and associated platform content; suspension only restricts access and is a different action. Required transaction and audit records may be retained, so do not promise every financial record is erased.",
+      "Active billing, pending paid orders or other processing work can block deletion. Follow the exact blocker shown and contact support if needed. Cancelling auto-renewal does not necessarily remove all blockers immediately or end the paid period. TYK cannot delete accounts or bypass verification.",
+      "This self-service screen is part of the pending release. If absent, use verified support; do not invent a delete button on older screens."
+    ],
+    "source": [
+      "V1.1/components/DeleteAccount.jsx",
+      "backend/src/account/routes.js",
+      "backend/src/control/accountDeletion.js"
+    ],
+    "status": "rollout",
+    "updated": "2026-11-12",
+    "plan": "Existing account entitlements and access permissions apply.",
+    "related": []
+  },
+  {
+    "id": "cart-checkout",
+    "version": "v1-1",
+    "title": "Store cart, checkout required fields, quantity and payment",
+    "route": "/v1-1/store",
+    "steps": [
+      "On the public storefront, add physical products to the cart, choosing required variants. Open the cart to review items, change quantities within stock limits or Remove an item. Carts belong to the individual store. Digital products use Pay now by default.",
+      "Continue from Your cart to checkout details. Required fields show inline validation when confirmation is attempted, and the first invalid field is brought into view. Complete the highlighted fields, including applicable delivery information. Both physical and digital checkout validate their required information.",
+      "Review the order summary, subtotal, applicable discounts, delivery and final total. Payment choices depend on the merchant settings. A transfer proof or WhatsApp order message is not proof of verified payment. Digital access depends on confirmed payment.",
+      "The public storefront account icon opens its customer login/account drawer directly. Customer accounts and merchant dashboard accounts are separate. Review and account dialogs follow the storefront theme. Use the actual public store/product link on mytiklink.com, not the API host mytik.link."
+    ],
+    "source": [
+      "V1.1/store/PublicStore.jsx",
+      "V1.1/store/CommercePublic.jsx",
+      "V1.1/store/CustomerDrawer.jsx"
+    ],
+    "status": "available",
+    "updated": "2026-11-12",
+    "plan": "Existing account entitlements and access permissions apply.",
+    "related": []
+  },
+  {
+    "id": "inbox-media",
+    "version": "both",
+    "title": "Inbox audio playback, images, videos and message bubbles",
+    "route": "/crm-inbox",
+    "steps": [
+      "For authorized inbox staff, audio appears in a chat player with play/pause. Tap its playback speed to cycle through 1x, 1.5x, 2x, 2.5x and 3x, then return to 1x. Images and videos display in bubbles with loading placeholders; media is loaded in batches/lazily rather than downloading all history at once.",
+      "Browser-compatible audio handling is implemented, including conversion where needed. Do not guarantee every device or file will play. If playback fails, ask for browser/device and the visible error without requesting private messages, and escalate persistent failures.",
+      "Outgoing messages appear immediately with their current sending/failure status, and should appear as the latest conversation preview while pending. This is not proof of successful delivery. Date badges show Today, Yesterday, or a compact date such as 26th Sept 2026.",
+      "Ordinary customer messages should not increment the separate Alerts list/count. Push notifications are separate; staff/assignment alerts can still appear."
+    ],
+    "source": [
+      "components/StaffInbox/StaffInbox.jsx",
+      "components/StaffInbox/AudioPlayer.jsx",
+      "components/StaffInbox/MessageAttachment.jsx",
+      "backend/src/staff/browserAudio.js"
+    ],
+    "status": "available",
+    "updated": "2026-11-12",
+    "plan": "Existing account entitlements and access permissions apply.",
+    "related": []
+  },
+  {
+    "id": "inbox-receipts",
+    "version": "both",
+    "title": "WhatsApp message one tick, double tick and blue read ticks",
+    "route": "/crm-inbox",
+    "steps": [
+      "For authorized inbox staff, sending, sent, delivered and read are distinct statuses. Double delivery ticks and blue read ticks depend on actual WhatsApp/Meta delivery and read callbacks. A customer reply alone does not prove a specific earlier message was read.",
+      "If messages stay at one tick, report the affected time and visible status through support. Production callback receipt still needs confirmation; do not claim this external delivery issue is resolved merely because the UI supports ticks. TYK cannot inspect private conversations or repair Meta webhooks."
+    ],
+    "source": [
+      "components/StaffInbox/StaffInbox.jsx",
+      "backend/src/staff/receipts.js"
+    ],
+    "status": "available",
+    "updated": "2026-11-12",
+    "plan": "Existing account entitlements and access permissions apply.",
+    "related": []
+  }
+]);
+
+const reviewedChanges = {
+ onboarding: ['Choose a concrete business focus: Physical products, Physical services, Digital products or Digital services. The uncertain option was removed from business focus. “I’m not sure yet” in what to create first is a separate choice and is not a product/service category.'],
+ store: ['If an older account has unresolved business focus, the storefront template-selection flow lets you select the required account type/focus there and save it without first leaving for account settings. Saving a category alone may not resolve missing business focus.'],
+ billing: ['Plan upgrades now have bank-transfer and card choices in the updated modal. Refer to plan-payment-methods and card-auto-renewal for the reviewed flow; these controls require the matching frontend/backend release. Store settings → Payments configures customer checkout and is separate from your MyTikLink subscription.']
+};
+for (const item of knowledge) {
+ if (reviewedChanges[item.id]) { item.steps.push(...reviewedChanges[item.id]); item.updated='2026-11-12'; }
+ if (item.id==='store') item.source.push('V1.1/store/themeRecommendations.js');
+ if (item.id==='pages') {
+  item.steps=item.steps.map(step=>step.startsWith('In the theme editor, switch') ? 'The template editor opens the designed preview. Tap editable text or images to open Edit your page and bring the matching input into view. Previously built templates use this modal editing flow too. Edit the available headings, descriptions, images and button destinations; controls vary by theme. The preview keeps rounded corners and can scroll without a visible scrollbar.' : step);
+  item.updated='2026-11-12';
+ }
+}
+
 export const supportRoutes=[...new Set(knowledge.map(a=>a.route).concat(['/v1-1/pages?action=choose-template','/v1-1/register','/v1-1/settings/profile?section=email','/v1-1/pages/create','/v1-1/pages/builder','/v1-1/pages/editor','/v1-1/analytics','/v1-1/store/settings','/v1-1/store/settings?tab=inventory','/store/products','/store/orders','/store/design','/dashboard/analytics','/FAQ','/store-tutorial']))];
 export function resolveVersion(question,saved){
  if(/\b(previous|legacy|old)\s+(dashboard|version)\b/i.test(question))return 'legacy';

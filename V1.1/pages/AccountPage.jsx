@@ -1,3 +1,5 @@
+import DeleteAccount from '../components/DeleteAccount';
+import RenewalSettings from "../components/RenewalSettings";
 import {businessFocusLabels} from '../store/themeRecommendations';
 import EmailPreferences from "../components/EmailPreferences";
 import {ColorPicker} from "../landing/EditorInputs";
@@ -110,7 +112,7 @@ export function AccountPage({ user, refreshSession }) {
         <section id="settings-plan" className={skin.card}>
           {heading(Crown,'Billing and Payments','Your current subscription and billing.','gold')}
           <div className={skin.plan}><span className={skin.planIcon}><Crown size={30}/></span><div><h3>{isFree?"Free":(plan.includes("pro")?"Pro":"Standard")+" "+(plan.includes("year")?"yearly":"monthly")+" plan"}</h3>{!isFree&&<p className={skin.expiry}>{expiry?`Expires ${expiry}`:"Expiry date unavailable"}</p>}<PlanBadge plan={user.plan}/></div></div>
-          <div className={skin.planActions}><Button variant="secondary" onClick={()=>openSubscription({mode:isFree?'upgrade':'change'})}>Change plan</Button><Button disabled={isFree} onClick={()=>openSubscription({mode:'renew',preselected:plan.includes('pro')?'pro':'standard',plan})}>Renew plan</Button></div><button className={skin.historyLink} onClick={()=>setDialog('billing')}>Payment history <ChevronRight size={13}/></button>
+          <div className={skin.planActions}><Button variant="secondary" onClick={()=>openSubscription({mode:isFree?'upgrade':'change'})}>Change plan</Button><Button disabled={isFree} onClick={()=>openSubscription({mode:'renew',preselected:plan.includes('pro')?'pro':'standard',plan})}>Renew plan</Button></div><RenewalSettings user={user}/><button className={skin.historyLink} onClick={()=>setDialog('billing')}>Payment history <ChevronRight size={13}/></button>
         </section>
         <section id="settings-business" className={skin.card}>
           {heading(Store,'Business Information','Used for your stores, pages and public profile.','teal')}
@@ -140,6 +142,7 @@ export function AccountPage({ user, refreshSession }) {
           <button className={skin.actionRow} onClick={()=>setDialog("integrations")}><span className={skin.rowIcon}><Link2 size={20}/></span><span><b>Connected services</b><small>Manage your account integrations.</small></span><ChevronRight size={18}/></button>
         </section>
         <section id="settings-email" className={skin.card}>{heading(Sparkles,'Email preferences','Personalized guidance for your business.','teal')}<EmailPreferences/></section>
+        <DeleteAccount user={user}/>
       </div>
     </div>
     {categoryOpen&&<CategoryPicker selected={workspaceDraft.categoryId} onClose={()=>setCategoryOpen(false)} onSelect={c=>setWorkspaceDraft(current=>({...current,categoryId:c.id,categoryLabel:c.label,customCategory:""}))}/>}

@@ -35,3 +35,5 @@
 .surface[data-popup-tone="snapchat"] header a{color:#171717!important}.surface[data-popup-tone="blue"] header a{color:#1769df!important}.surface header img{filter:none!important;opacity:1!important}
 
 .surface[data-popup-tone="google"]{--popup-start:#dceaff;--popup-mid:#fff3d2;--popup-end:#e3f6eb;--popup-accent:#2769d8;--popup-accent-end:#4285f4;--popup-ink:#174d94;--popup-muted:#557696}
+
+.surface[data-popup-tone="red"]{--popup-start:#fecaca;--popup-mid:#ffe0df;--popup-end:#fff0ed;--popup-accent:#be2435;--popup-accent-end:#db3c49;--popup-ink:#801b2a;--popup-muted:#9b4650}
