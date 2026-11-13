@@ -1,3 +1,5 @@
+@layer ios-input-safety;
+
 /* GLOBAL BASE STYLES */
 html,
 body {
@@ -222,19 +224,20 @@ body {
   box-sizing: border-box;
 }
 
-/* iOS focus-zoom prevention across app routes, public forms and portalled dialogs.
-   Important rules in this dedicated layer override compact component input sizes.
-   Keep viewport zoom enabled so users can still pinch to magnify the page. */
+/* Mobile focus-zoom prevention for public forms, dashboards and portalled dialogs.
+   Do not depend on a vendor-specific support check: embedded iPhone browsers
+   must receive the same protection. Keep pinch zoom enabled. */
 @layer ios-input-safety {
-  @supports (-webkit-touch-callout: none) {
-    @media (any-pointer: coarse) {
-      input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="hidden"]):not([type="file"]):not([type="button"]):not([type="submit"]):not([type="reset"]),
-      textarea, select, [contenteditable="true"] {
-        font-size: 16px !important;
-      }
-      input::placeholder, textarea::placeholder {
-        font-size: 16px !important;
-      }
+  @media (any-pointer: coarse), (max-width: 767px) {
+    input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="hidden"]):not([type="file"]):not([type="button"]):not([type="submit"]):not([type="reset"]),
+    textarea,
+    select,
+    [contenteditable]:not([contenteditable="false"]),
+    [contenteditable]:not([contenteditable="false"]) :is(p,div,span,li) {
+      font-size: 16px !important;
+    }
+    input::placeholder, textarea::placeholder {
+      font-size: 16px !important;
     }
   }
 }
