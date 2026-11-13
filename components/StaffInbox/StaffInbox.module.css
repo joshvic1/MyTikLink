@@ -241,3 +241,23 @@
  .rowCopy strong{font-size:12px}.rowCopy .rowPreview p{font-size:11px}
  .bubble p,.whatsappThread .bubble p{font-size:13px}
 }
+
+/* Customer profile shares the desktop workspace; only small screens use a dialog. */
+@media(min-width:1100px){
+ .columns.profileVisible{grid-template-columns:248px minmax(0,1fr) 250px}
+ .profileColumn{min-width:0;min-height:0;display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--line);border-radius:14px;background:#fff}
+ .profileColumn>header{height:54px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-bottom:1px solid var(--line)}
+ .profileColumn h2{font-size:11px;margin:0}.profileColumn>header .iconButton{width:28px;height:28px;padding:5px;border:0}
+ .profileScroll{overflow:auto;min-height:0;padding:12px 10px;scrollbar-width:thin;scrollbar-color:#e6dfef transparent}
+ .profileColumn .contactIdentity{padding:6px 6px 12px}.profileColumn .contactIdentity .avatar{width:44px;height:44px;font-size:14px}
+ .profileColumn .contactIdentity h3{font-size:12px;margin:10px 0 4px}
+ .profileColumn .contactSheet>details>label{display:flex;flex-direction:column;gap:5px;padding:5px 12px;font-size:10px;color:var(--muted)}
+ .profileColumn input{width:100%;min-width:0;border:1px solid var(--line);border-radius:7px;padding:7px;font:inherit;color:var(--ink);background:#faf8fd}
+ .profileColumn .privacy{margin:12px 0;padding:9px}.profileColumn .privacy p{font-size:8px}
+}
+@media(min-width:701px){
+ .rail{align-items:center;padding-left:6px;padding-right:6px}
+ .rail button{padding:0;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-left:auto;margin-right:auto}
+ .rail button>svg{display:block;margin:0;flex-shrink:0}
+ .railEnd{width:100%;align-items:center}
+}
