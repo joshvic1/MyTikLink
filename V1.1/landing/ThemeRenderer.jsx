@@ -1,3 +1,4 @@
+import BrandCredit from "../../components/marketing/BrandCredit";
 import {visibleText} from "./textVisibility";
 import ProductProfile from "./ProductProfile";
 import FormProfile from "./FormProfile";
@@ -44,6 +45,6 @@ export default function ThemeRenderer({ instance, page, preview = false }) {
       if (section.type === "about") return <section className={styles.about} id={preview ? undefined : section.id} key={section.id}><span className={styles.eyebrow}>{section.eyebrow}</span><h2>{section.title}</h2><p>{section.description}</p>{section.image && <Art section={section} family={instance.family}/>}<Action url={section.url === "owner" ? ownerUrl : section.url || ownerUrl} secondary preview={preview}>{section.label}</Action></section>;
       return null;
     })}
-    <footer className={styles.footer}>{instance.name}<span>Made with MyTikLink</span></footer>
+    <footer className={styles.footer}>{instance.name}<span><BrandCredit preview={preview}>Made with MyTikLink</BrandCredit></span></footer>
   </article>;
 }

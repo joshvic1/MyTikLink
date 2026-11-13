@@ -76,6 +76,7 @@ export default function App({ Component, pageProps }) {
   // Public pages, dashboards, admin pages, stores, and custom domains
   // should render without the global marketing Layout/menu.
   if (
+    router.pathname.startsWith("/made-with/") ||
     isRedirectPage ||
     isPageRoute ||
     isPublicStoreRoute ||

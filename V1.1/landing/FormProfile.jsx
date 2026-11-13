@@ -1,3 +1,4 @@
+import BrandCredit from "../../components/marketing/BrandCredit";
 import { MessageCircle } from "lucide-react";
 import { Photo } from "./UniversalProfile";
 import LeadForm from "./ThemeLeadForm";
@@ -16,7 +17,7 @@ export default function FormProfile({instance,page,preview=false}) {
  {side && <p className={styles.shortHeadline}>{data._hidden?.headline ? "" : data.headline || "A quick call. A fresh start."}</p>}
  </div>{side && data.visibility?.cover !== false && photo}</div>
  <div className={styles.body}>{data.visibility?.description === true && <p className={styles.description}>{data.description}</p>}<div className={styles.panel}><LeadForm compact interactivePreview className={styles.form} section={{formTitle:sheet?"Request a callback":"Fill the form below",submitLabel:sheet?"Send my details":"Request a call",...data.form,showConsent:false}} page={page} preview={preview || !page?.slug}/></div></div>
- <footer className={styles.footer}>Made with <strong>MyTikLink</strong></footer>
+ <footer className={styles.footer}><BrandCredit preview={preview}>Made with <strong>MyTikLink</strong></BrandCredit></footer>
  </article></div>;
  return <div className={styles.canvas} data-design={desk?"desk":"intro"} style={{"--accent":tokens.accent,"--on-accent":tokens.onAccent,"--soft":tokens.soft}}><article className={styles.page} data-template={instance.themeId}>
   <header className={styles.header}>{data.visibility?.avatar !== false && <div className={styles.logo}><Photo avatar url={data.profileImageUrl} assets={data.categoryAssets} name={data.displayName} fit={data.profileFit}/></div>}<strong>{data.displayName}</strong></header>
@@ -25,6 +26,6 @@ export default function FormProfile({instance,page,preview=false}) {
   {!desk && data.visibility?.cover !== false && photo}
   <div className={styles.body}>{data.visibility?.description !== false && <p className={styles.description}>{data.description}</p>}
    <div className={styles.panel}>{desk && <MessageCircle className={styles.chatIcon} size={25} aria-hidden="true"/>}<LeadForm compact interactivePreview className={styles.form} section={{formTitle:"Fill the form below",submitLabel:desk?"Send my details":"Send enquiry",...data.form,showConsent:false}} name={data.displayName} page={page} preview={preview || !page?.slug}/></div>
-  </div><footer className={styles.footer}>Made with <strong>MyTikLink</strong></footer>
+  </div><footer className={styles.footer}><BrandCredit preview={preview}>Made with <strong>MyTikLink</strong></BrandCredit></footer>
  </article></div>;
 }

@@ -1,3 +1,4 @@
+import BrandCredit from "../../components/marketing/BrandCredit";
 import {getCategoryCover} from "../media/categoryImages";
 import ActionIcon from "./ActionIcon";
 import { useState } from "react";
@@ -41,7 +42,7 @@ export default function UniversalProfile({ instance, preview = false, verified =
         {visible.description !== false && data.description && <p className={styles.description}>{data.description}</p>}
         <nav className={styles.actions} aria-label="Profile links">{actions.map((action,index)=>preview ? <span data-editor-button={action.label} key={`${action.id}-${index}`} className={styles.button} data-style={action.style}><ActionIcon action={action}/><span>{action.label}</span></span> : <a key={`${action.id}-${index}`} className={styles.button} data-style={action.style} href={actionDestination(action,data)} rel="noopener noreferrer"><ActionIcon action={action}/><span>{action.label}</span></a>)}</nav>
         {spotlight && data.highlights?.length > 0 && <div className={styles.highlights}>{data.highlights.filter(item=>item.label?.trim()).slice(0,4).map((item,index)=><div key={index}><ActionIcon action={{icon:item.icon || "link"}} size={18}/><span>{item.label}</span></div>)}</div>}
-        <footer className={styles.footer}>Made with <strong>MyTikLink</strong></footer>
+        <footer className={styles.footer}><BrandCredit preview={preview}>Made with <strong>MyTikLink</strong></BrandCredit></footer>
       </div>
     </article>
   </div>;

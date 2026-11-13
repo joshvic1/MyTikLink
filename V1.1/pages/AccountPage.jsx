@@ -141,7 +141,7 @@ export function AccountPage({ user, refreshSession }) {
           {heading(Link2,'Integrations','Connect your account with other services.','teal')}
           <button className={skin.actionRow} onClick={()=>setDialog("integrations")}><span className={skin.rowIcon}><Link2 size={20}/></span><span><b>Connected services</b><small>Manage your account integrations.</small></span><ChevronRight size={18}/></button>
         </section>
-        <section id="settings-email" className={skin.card}>{heading(Sparkles,'Email preferences','Personalized guidance for your business.','teal')}<EmailPreferences/></section>
+        <section id="settings-email" className={skin.card}>{heading(Sparkles,'Message preferences','Email and WhatsApp guidance for your business.','teal')}<EmailPreferences/></section>
         <DeleteAccount user={user}/>
       </div>
     </div>

@@ -1,3 +1,4 @@
+import {safeLeadDestination} from "./leadDestination.mjs";
 import {trackingData,announceTracking} from "../tracking/browser";
 import { Send } from "lucide-react";
 import { useId, useState, useRef } from "react";
@@ -23,7 +24,10 @@ export default function ThemeLeadForm({ section, page, preview, name, className 
       if (result?.success !== true) throw new Error("Your enquiry was not confirmed. Please try again.");
       try { if (typeof document !== "undefined") document.dispatchEvent(new Event("v11:lead-success")); } catch {}
       announceTracking("page",page.slug,"lead",result.eventId);
-      setDone(true);setStatus(section.successMessage || "Thank you. Your enquiry has been received.");
+      setDone(true);
+      const destination=safeLeadDestination(result.redirectUrl);
+      setStatus(destination ? "Your details have been saved. Redirecting…" : section.successMessage || "Thank you. Your enquiry has been received.");
+      if(destination)window.location.assign(destination);
     } catch(error) {setStatus(error.message || "Unable to send. Please try again.");} finally {inFlight.current = false;setBusy(false);}
   };
   const buttonLabel = busy ? "Sending…" : done ? "Enquiry received" : section.submitLabel;

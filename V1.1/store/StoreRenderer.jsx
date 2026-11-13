@@ -1,3 +1,4 @@
+import BrandCredit from "../../components/marketing/BrandCredit";
 import {useDisplayCurrency,CurrencySelector} from "./DisplayCurrency";
 import AnnouncementBar from "./AnnouncementBar";
 import AtelierStore from "./AtelierStore";
@@ -31,7 +32,7 @@ function StandardStoreRenderer({detail,design,store={},products=[],preview=false
  case "announcement":return content(s.text)?<div key={s.id} className={styles.announcement}>{content(s.text)}</div>:null;
  case "about":return <section key={s.id} data-store-section="about" className={styles.section}><h2>{content(s.title)}</h2>{s.image&&<img className={styles.aboutImage} src={s.image} alt=""/>}<p>{content(s.text)}</p></section>;
  case "faq":return <section key={s.id} data-store-section="faq" className={styles.section}><h2>{content(s.title)}</h2>{s.items.map((item,i)=><details key={i}><summary>{item.question}</summary><p>{item.answer}</p></details>)}</section>;
- case "footer":return <footer key={s.id} data-store-section="footer" className={styles.footer}><strong>{store.name||"Your store"}</strong>{content(s.text)&&<p>{content(s.text)}</p>}{store.address&&<address>{store.address}</address>}<div>{store.phone&&<a href={`tel:${store.phone.replace(/[^+0-9]/g,"")}`}><Phone size={13}/> Contact</a>}{store.email&&<a href={`mailto:${store.email}`}><Mail size={13}/> Email</a>}</div><small>Powered by MyTikLink</small></footer>;
+ case "footer":return <footer key={s.id} data-store-section="footer" className={styles.footer}><strong>{store.name||"Your store"}</strong>{content(s.text)&&<p>{content(s.text)}</p>}{store.address&&<address>{store.address}</address>}<div>{store.phone&&<a href={`tel:${store.phone.replace(/[^+0-9]/g,"")}`}><Phone size={13}/> Contact</a>}{store.email&&<a href={`mailto:${store.email}`}><Mail size={13}/> Email</a>}</div><small><BrandCredit store preview={preview}>Powered by MyTikLink</BrandCredit></small></footer>;
  default:return null;}})}
  {theme==="essential"&&<nav className={styles.bottomNav} aria-label="Store navigation"><a href="#store-catalogue"><Home size={18}/><span>Shop</span></a><button disabled={preview} onClick={onCart}><ShoppingBag size={18}/><span>Cart</span></button>{store.phone&&<a href={`tel:${store.phone.replace(/[^+0-9]/g,"")}`}><Phone size={18}/><span>Contact</span></a>}</nav>}
  </div>;
