@@ -12,7 +12,7 @@ import dynamic from "next/dynamic";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { DM_Sans, Manrope } from "next/font/google";
+
 import { Shell } from "./components/Shell";
 import { CreateLinkModal } from "./components/CreateLinkModal";
 import { LeadsModal } from "./components/LeadsModal";
@@ -50,8 +50,8 @@ const OrdersManager = dynamic(() => import("./store/OrdersManager"), { ssr: fals
 const StoreSettings = dynamic(() => import("./store/StoreSettings"), { ssr: false, loading: () => <PageSkeleton/> });
 const StoreDesign = dynamic(() => import("./store/StoreStudio"), { ssr: false, loading: () => <PageSkeleton/> });
 const StoreSetup = dynamic(() => import("./pages/StoreSetupPage"), { ssr: false, loading: () => <PageSkeleton/> });
-const dmSans = DM_Sans({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-v11-body" });
-const manrope = Manrope({ subsets: ["latin"], weight: ["600", "700", "800"], variable: "--font-v11-heading" });
+const dmSans = {variable:"bundled-dm-sans"};
+const manrope = {variable:"bundled-manrope"};
 const preparingLabel = (path) => {
   if (path.endsWith("/pages") || path.includes("/pages/")) return "Preparing landing pages…";
   if (path.endsWith("/links") || path.endsWith("/analytics") || path.endsWith("/insights")) return "Preparing redirect links…";

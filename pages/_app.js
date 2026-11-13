@@ -4,7 +4,7 @@ import "@/styles/globals.css";
 import { Toaster } from "react-hot-toast";
 import Layout from "@/components/Layout";
 import { useRouter } from "next/router";
-import { Plus_Jakarta_Sans } from "next/font/google";
+import "@/styles/app-fonts.css";
 import dynamic from "next/dynamic";
 
 const SmartAssistant = dynamic(
@@ -14,12 +14,8 @@ const SmartAssistant = dynamic(
   },
 );
 
-// Load the app font once at module level.
-// Next.js font loaders must stay outside the component.
-const plusJakarta = Plus_Jakarta_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-});
+// Font assets are served locally, independent of build-time Google responses.
+const plusJakarta = {className:"bundled-jakarta"};
 
 export default function App({ Component, pageProps }) {
   const router = useRouter();
