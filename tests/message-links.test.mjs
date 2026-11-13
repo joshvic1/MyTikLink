@@ -1,0 +1,3 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {messageParts} from '../components/StaffInbox/messageLinks.mjs';
+test('links preserve text, newlines, punctuation and video query parameters',()=>{const text='Guide: https://youtu.be/O5rEXOKTHfU?si=FKDRq5_aVArmkLhU\nRegister https://mytiklink.com. (www.example.com)';const parts=messageParts(text);assert.equal(parts.map(p=>p.text).join(''),text);assert.deepEqual(parts.filter(p=>p.href).map(p=>p.href),['https://youtu.be/O5rEXOKTHfU?si=FKDRq5_aVArmkLhU','https://mytiklink.com','https://www.example.com']);});
+test('unsafe schemes and credentials remain plain text',()=>{assert.equal(messageParts('javascript:alert(1) data:text/html,test https://user:secret@example.com').some(p=>p.href),false);});

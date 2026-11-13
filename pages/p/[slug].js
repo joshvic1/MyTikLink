@@ -1,4 +1,6 @@
 "use client";
+import useLeadReceipt from "../../V1.1/landing/useLeadReceipt";
+import {readLeadReceipt,rememberLeadReceipt,showLeadReceipt} from "../../V1.1/landing/leadReceipt.mjs";
 
 import usePageAnalytics from "@/V1.1/lib/usePageAnalytics";
 import PublicTracking from "../../V1.1/tracking/PublicTracking";
@@ -416,20 +418,7 @@ export default function PublicPage({initialPage=null,initialInactive=null,initia
   usePageAnalytics(page,{legacy:true});
   const [inactive,setInactive]=useState(initialInactive);
   const [loading, setLoading] = useState(!initialPage&&!initialInactive&&!initialError);
-  const COOLDOWN_MS = 2 * 60 * 1000; // 2 minutes
-  const [cooldownActive, setCooldownActive] = useState(false);
-  // =========================
-  // Detect cooldown
-  // =========
-  useEffect(() => {
-    if (!slug) return;
-
-    const last = localStorage.getItem("submitted_" + slug);
-    if (last && Date.now() - Number(last) < COOLDOWN_MS) {
-      setCooldownActive(true);
-    }
-  }, [slug]);
-
+  useLeadReceipt(page);
   /* =========================
      FETCH PAGE
   ========================= */
@@ -474,20 +463,8 @@ export default function PublicPage({initialPage=null,initialInactive=null,initia
 
     const form = document.querySelector("[data-lead-form='true']");
 
-    if (cooldownActive && form) {
-      const link = document.createElement("a");
-      link.href = page.redirectUrl;
-      link.innerText = "👉 Tap here to join";
-      link.style.display = "block";
-      link.style.fontWeight = "700";
-      link.style.marginTop = "16px";
-      link.style.color = "#22c55e";
-      link.style.textAlign = "center";
-      link.style.fontSize = "16px";
-
-      form.replaceWith(link);
-      return;
-    }
+    const receipt=readLeadReceipt(page);
+    if(receipt&&form){showLeadReceipt(form,receipt);return;}
 
     if (!form) return; // 👈 pages without form will skip this entirely
 
@@ -523,7 +500,8 @@ export default function PublicPage({initialPage=null,initialInactive=null,initia
     const handleSubmit = async (e) => {
       e.preventDefault();
 
-      if (cooldownActive) return;
+      const receipt=readLeadReceipt(page);
+      if(receipt){showLeadReceipt(form,receipt);return;}
 
       const name = nameInput.value.trim();
       const whatsapp = whatsappInput.value.trim();
@@ -545,10 +523,13 @@ export default function PublicPage({initialPage=null,initialInactive=null,initia
           { name, whatsapp, company, tracking:trackingData("page",slug) },
         );
 
+        if(res.data.success!==true)throw new Error("Your details were not confirmed. Please try again.");
+        const receipt=rememberLeadReceipt(page,res.data.redirectUrl);
+        showLeadReceipt(form,receipt);
+        if(res.data.alreadySubmitted)return;
         announceTracking("page",slug,"lead",res.data.eventId);
         // ✅ SAVE COOLDOWN
-        localStorage.setItem("submitted_" + slug, Date.now());
-        setCooldownActive(true);
+
 
         if (res.data.redirectUrl) {
           const redirectUrl = res.data.redirectUrl;
@@ -561,7 +542,7 @@ export default function PublicPage({initialPage=null,initialInactive=null,initia
           }
 
           // If TikTok → show button instead
-          showRedirectButton(form, redirectUrl);
+          showLeadReceipt(form, receipt);
         }
       } catch (err) {
         console.error(err);

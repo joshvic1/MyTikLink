@@ -1,4 +1,5 @@
 "use client";
+import {readLeadReceipt,rememberLeadReceipt,showLeadReceipt} from "../../../V1.1/landing/leadReceipt.mjs";
 import {trackingData,announceTracking} from "../../../V1.1/tracking/browser";
 
 import { normalizeHtml } from "../utils/htmlSanitizer";
@@ -153,6 +154,8 @@ export default function RenderHtml({ element, page }) {
 
     event.preventDefault();
 
+    const receipt=readLeadReceipt(page);
+    if(receipt){showLeadReceipt(form,receipt);return;}
     const name = form.querySelector("[name='name']")?.value?.trim();
     const whatsapp =
       form.querySelector("[name='whatsapp']")?.value?.trim() ||
@@ -196,6 +199,9 @@ export default function RenderHtml({ element, page }) {
         throw new Error(data?.message || "Failed to submit");
       }
 
+      if(data.success!==true)throw new Error("Your details were not confirmed. Please try again.");
+      showLeadReceipt(form,rememberLeadReceipt(page,data.redirectUrl));
+      if(data.alreadySubmitted)return;
       announceTracking("page",page.slug,"lead",data.eventId);
 
       if (data.redirectUrl) {

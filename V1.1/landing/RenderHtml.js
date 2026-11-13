@@ -1,4 +1,5 @@
 "use client";
+import {readLeadReceipt,rememberLeadReceipt,showLeadReceipt} from "./leadReceipt.mjs";
 import { v11ApiBase } from "../lib/apiBase";
 
 import { useRef } from "react";
@@ -157,6 +158,8 @@ export default function RenderHtml({ element, page }) {
 
     event.preventDefault();
 
+    const receipt=readLeadReceipt(page);
+    if(receipt){showLeadReceipt(form,receipt);return;}
     const name = form.querySelector("[name='name']")?.value?.trim();
     const phoneInput = form.querySelector("[name='whatsapp']") || form.querySelector("[name='phone']");
     const whatsapp = phoneInput?.value?.trim();
@@ -200,6 +203,9 @@ export default function RenderHtml({ element, page }) {
         throw new Error(data?.message || "Failed to submit");
       }
 
+      if(data.success!==true)throw new Error("Your details were not confirmed. Please try again.");
+      showLeadReceipt(form,rememberLeadReceipt(page,data.redirectUrl));
+      if(data.alreadySubmitted)return;
       announceTracking("page", page.slug, "lead", data.eventId);
 
       if (data.redirectUrl) {
