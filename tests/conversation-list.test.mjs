@@ -1,0 +1,4 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {mergeConversationRows} from '../components/StaffInbox/conversationList.mjs';
+test('older pages do not overwrite a newer live preview',()=>{const newer={_id:'a',lastMessageAt:'2026-11-13',preview:'new'};assert.equal(mergeConversationRows([newer],[{...newer,lastMessageAt:'2026-11-12',preview:'old'}])[0].preview,'new')});
+test('email threads remain one row when the latest thread changes',()=>{const a={_id:'a',channel:'email',mailbox:'support',contactEmail:'EXAMPLE@test.com',lastMessageAt:'2026-11-12'},b={...a,_id:'b',contactEmail:'example@test.com',lastMessageAt:'2026-11-13'};const rows=mergeConversationRows([a],[b]);assert.equal(rows.length,1);assert.equal(rows[0]._id,'b')});
+test('equal timestamps use stable id ordering',()=>{assert.deepEqual(mergeConversationRows([],[{_id:'a',lastMessageAt:'2026-11-13'},{_id:'b',lastMessageAt:'2026-11-13'}]).map(x=>x._id),['b','a'])});

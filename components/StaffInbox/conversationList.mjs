@@ -1,0 +1,2 @@
+const key=row=>row.channel==='email'&&row.contactEmail?.trim()?String(row.mailbox||'support')+':'+row.contactEmail.trim().toLowerCase():String(row._id);
+export function mergeConversationRows(previous,incoming){const rows=new Map(previous.map(row=>[key(row),row]));for(const row of incoming){const old=rows.get(key(row));if(!old||new Date(row.lastMessageAt||0)>=new Date(old.lastMessageAt||0))rows.set(key(row),row);}return [...rows.values()].sort((a,b)=>new Date(b.lastMessageAt||0)-new Date(a.lastMessageAt||0)||String(b._id).localeCompare(String(a._id)));}

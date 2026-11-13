@@ -1,3 +1,4 @@
+import AutoRenewals from './AutoRenewals';
 import WhatsAppAutomations from './WhatsAppAutomations';
 import FeatureSuggestions from './FeatureSuggestions';
 import Adoption from './Adoption';
@@ -8,4 +9,4 @@ const Overview=dynamic(()=>import('./Overview'),{loading:Loading});
 const Records=dynamic(()=>import('./Records'),{loading:Loading});
 const Staff=dynamic(()=>import('./Staff'),{loading:Loading});
 const Special=dynamic(()=>import('./Special'),{loading:Loading});
-export default function ControlApp({module='overview'}){return <Shell module={module}>{module==='whatsapp-automations'?<WhatsAppAutomations/>:module==='feature-suggestions'?<FeatureSuggestions/>:module==='adoption'?<Adoption/>:['overview','analytics','revenue'].includes(module)?<Overview key={module} module={module}/>:module==='staff'?<Staff/>:['plans','health','inbox','automations','roles','settings','themes'].includes(module)?<Special key={module} module={module}/>:<Records key={module} module={module}/>}</Shell>;}
+export default function ControlApp({module='overview'}){return <Shell module={module}>{module==='auto-renewals'?<AutoRenewals/>:module==='whatsapp-automations'?<WhatsAppAutomations/>:module==='feature-suggestions'?<FeatureSuggestions/>:module==='adoption'?<Adoption/>:['overview','analytics','revenue'].includes(module)?<Overview key={module} module={module}/>:module==='staff'?<Staff/>:['plans','health','inbox','automations','roles','settings','themes'].includes(module)?<Special key={module} module={module}/>:<Records key={module} module={module}/>}</Shell>;}
