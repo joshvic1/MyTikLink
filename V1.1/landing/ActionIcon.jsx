@@ -1,8 +1,10 @@
 import { ShoppingBag, CalendarDays, Utensils, Globe, Mail, Link, MapPin, Download, Play, BriefcaseBusiness } from "lucide-react";
-import { FaInstagram, FaWhatsapp, FaTiktok, FaFacebook, FaXTwitter, FaYoutube, FaTelegram } from "react-icons/fa6";
+import { FaInstagram, FaWhatsapp, FaTiktok, FaFacebook, FaXTwitter, FaYoutube, FaTelegram, FaDeezer, FaAmazon } from "react-icons/fa6";
+
+import { SiSpotify, SiApplemusic, SiYoutubemusic, SiAudiomack, SiSoundcloud, SiTidal } from "react-icons/si";
 
 // Shared by template designs. Prefer explicit icon IDs; infer older saved actions safely.
-const icons = {shop:ShoppingBag,booking:CalendarDays,menu:Utensils,website:Globe,email:Mail,link:Link,directions:MapPin,download:Download,content:Play,portfolio:BriefcaseBusiness,instagram:FaInstagram,whatsapp:FaWhatsapp,tiktok:FaTiktok,facebook:FaFacebook,x:FaXTwitter,youtube:FaYoutube,telegram:FaTelegram};
+const icons = {spotify:SiSpotify,applemusic:SiApplemusic,youtubemusic:SiYoutubemusic,audiomack:SiAudiomack,soundcloud:SiSoundcloud,tidal:SiTidal,deezer:FaDeezer,amazonmusic:FaAmazon,shop:ShoppingBag,booking:CalendarDays,menu:Utensils,website:Globe,email:Mail,link:Link,directions:MapPin,download:Download,content:Play,portfolio:BriefcaseBusiness,instagram:FaInstagram,whatsapp:FaWhatsapp,tiktok:FaTiktok,facebook:FaFacebook,x:FaXTwitter,youtube:FaYoutube,telegram:FaTelegram};
 export function actionIconId(action) {
  if (icons[action.icon]) return action.icon;
  if (action.kind === "whatsapp") return "whatsapp";

@@ -1,4 +1,4 @@
-import { universalProfileTemplate, spotlightProfileTemplate, serviceProfileTemplate, campaignProfileTemplate, rhythmGridTemplate, studioPassTemplate, personalIntroTemplate, enquiryDeskTemplate, contactSheetTemplate, sideNoteTemplate, productSpotlightTemplate, curatedShelfTemplate } from "./universalTemplate";
+import { musicArtistTemplate, universalProfileTemplate, spotlightProfileTemplate, serviceProfileTemplate, campaignProfileTemplate, rhythmGridTemplate, studioPassTemplate, personalIntroTemplate, enquiryDeskTemplate, contactSheetTemplate, sideNoteTemplate, productSpotlightTemplate, curatedShelfTemplate } from "./universalTemplate";
 import { shortThemes } from "./shortThemeLibrary";
 import { themeScore } from "./themeModel";
 export const themeLibraryVersion = 1;
@@ -27,7 +27,7 @@ export const phaseOneThemes = definitions.map(([id,title,variant,family,category
   ],
 }));
 export { shortThemes } from "./shortThemeLibrary";
-export const allThemes = [...phaseOneThemes, ...shortThemes, universalProfileTemplate, spotlightProfileTemplate, serviceProfileTemplate, campaignProfileTemplate, rhythmGridTemplate, studioPassTemplate, personalIntroTemplate, enquiryDeskTemplate, contactSheetTemplate, sideNoteTemplate, productSpotlightTemplate, curatedShelfTemplate];
+export const allThemes = [...phaseOneThemes, ...shortThemes, musicArtistTemplate, universalProfileTemplate, spotlightProfileTemplate, serviceProfileTemplate, campaignProfileTemplate, rhythmGridTemplate, studioPassTemplate, personalIntroTemplate, enquiryDeskTemplate, contactSheetTemplate, sideNoteTemplate, productSpotlightTemplate, curatedShelfTemplate];
 export function recommendedThemes({batch = "1", categoryId = "", query = "", form = "all", registry = []} = {}) {
   const term = query.trim().toLowerCase();
   const matches = registry.filter(c => `${c.label} ${(c.aliases || []).join(" ")} ${(c.keywords || []).join(" ")}`.toLowerCase().includes(term));

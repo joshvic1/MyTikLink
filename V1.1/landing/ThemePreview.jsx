@@ -12,6 +12,7 @@ function Miniature({children}) {
 }
 export function ThemePreview({ theme, instance, profile = {}, registry = [] }) {
  const [failedImage,setFailedImage]=useState("");
+ if(theme?.id === "music-artist") return <Miniature><ThemeRenderer instance={instance || createThemeInstance(theme,profile,registry)} preview/></Miniature>;
  if(theme?.renderer === "short-form") {
  const page=instance || createThemeInstance(theme,profile,registry);
  const colors=brandTokens(page.colorOverride || page.profileColor || theme.defaultTokens?.accent);

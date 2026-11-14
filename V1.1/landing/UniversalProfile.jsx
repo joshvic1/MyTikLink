@@ -20,6 +20,7 @@ export default function UniversalProfile({ instance, preview = false, verified =
   const currentAsset=getCategoryCover(saved.categoryId,{allowParent:true});
   const data={...saved,categoryAssets:currentAsset?[currentAsset,...(saved.categoryAssets||[]).filter(a=>a.categoryId!==currentAsset.categoryId)]:saved.categoryAssets};
   const spotlight=instance.templateId === "spotlight-profile" || instance.themeId === "spotlight-profile";
+  const music=instance.themeId === "music-artist";
   const studio=instance.themeId === "studio-pass";
   const HeadlineTag=studio ? "h1" : "h2";
   const rhythm=instance.themeId === "rhythm-grid";
@@ -28,16 +29,16 @@ export default function UniversalProfile({ instance, preview = false, verified =
   const tokens = brandTokens(instance.colorOverride || data.brandColor);
   const visible = data.visibility || {};
   const candidates = (campaign || rhythm || studio) ? (data.actions || []).filter(action=>action.kind === "whatsapp").slice(0,1) : (data.actions || []);
-  const actions = candidates.filter(action=>action.visible !== false && action.label?.trim() && (actionDestination(action,data) || (preview && action.kind === "whatsapp")));
-  return <div className={styles.canvas} data-design={studio?"studio":rhythm?"rhythm":campaign?"campaign":service?"service":spotlight?"spotlight":"signature"} style={{"--brandPrimary":tokens.accent,"--brandPrimaryHover":tokens.hover,"--brandSoft":tokens.soft,"--brandContrast":tokens.onAccent,"--brandBorder":tokens.accent,"--surface":"#ffffff","--textPrimary":"#212126","--textSecondary":"#60606a"}}>
-    <article className={styles.profile} data-template={studio?"studio-pass":rhythm?"rhythm-grid":campaign?"campaign-profile":service?"service-profile":spotlight?"spotlight-profile":"universal-profile"}>
+  const actions = candidates.filter(action=>action.visible !== false && action.label?.trim() && (actionDestination(action,data) || (preview && (music || action.kind === "whatsapp"))));
+  return <div className={styles.canvas} data-design={music?"music":studio?"studio":rhythm?"rhythm":campaign?"campaign":service?"service":spotlight?"spotlight":"signature"} style={{"--brandPrimary":tokens.accent,"--brandPrimaryHover":tokens.hover,"--brandSoft":tokens.soft,"--brandContrast":tokens.onAccent,"--brandBorder":tokens.accent,"--surface":"#ffffff","--textPrimary":"#212126","--textSecondary":"#60606a"}}>
+    <article className={styles.profile} data-template={music?"music-artist":studio?"studio-pass":rhythm?"rhythm-grid":campaign?"campaign-profile":service?"service-profile":spotlight?"spotlight-profile":"universal-profile"}>
       {(spotlight || service) && <div className={styles.topline}><span>{data.categoryLabel || "Welcome"}</span><small>{service?"SERVICE PAGE":"LINKS & MORE"}</small></div>}
       {!rhythm && !service && visible.cover !== false && <div className={styles.cover}><Photo url={data.coverImageUrl} assets={data.categoryAssets} name={data.displayName} position={data.imagePosition}/></div>}
       {studio && <header className={styles.studioHeader}><strong>{data.displayName}</strong><span>{data.categoryLabel}</span></header>}
       <div className={styles.content}>
         {!studio && !rhythm && visible.avatar !== false && <div className={styles.avatar} data-overlap={!campaign && !service && visible.cover !== false}><Photo avatar url={(service || campaign) ? "" : data.profileImageUrl} assets={data.categoryAssets} name={data.displayName} fit={data.profileFit || "contain"}/></div>}
         {!studio && !data._hidden?.displayName && <h1>{data.displayName}{verified && <span aria-label="Verified account" className={styles.verified}>✓</span>}</h1>}
-        {!data._hidden?.headline && (campaign || rhythm || studio) && <HeadlineTag className={styles.headline}>{data.headline || data.categoryLabel || data.displayName}</HeadlineTag>}
+        {!data._hidden?.headline && (music || campaign || rhythm || studio) && <HeadlineTag className={styles.headline}>{data.headline || data.categoryLabel || data.displayName}</HeadlineTag>}
         {rhythm && visible.cover !== false && <div className={styles.mosaic}>{[0,1,2].map(index=><div key={index} data-media-slot={index}><Photo url={data.media?.[index]?.url || (index === 0 ? data.coverImageUrl : "")} assets={data.categoryAssets} name={data.displayName} position={data.media?.[index]?.position || ["center","left","right"][index]}/></div>)}</div>}
         {visible.description !== false && data.description && <p className={styles.description}>{data.description}</p>}
         <nav className={styles.actions} aria-label="Profile links">{actions.map((action,index)=>preview ? <span data-editor-button={action.label} key={`${action.id}-${index}`} className={styles.button} data-style={action.style}><ActionIcon action={action}/><span>{action.label}</span></span> : <a key={`${action.id}-${index}`} className={styles.button} data-style={action.style} href={actionDestination(action,data)} rel="noopener noreferrer"><ActionIcon action={action}/><span>{action.label}</span></a>)}</nav>

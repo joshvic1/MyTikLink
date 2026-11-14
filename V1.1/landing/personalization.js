@@ -1,8 +1,9 @@
+import { musicActions, musicPlatforms } from "./musicPlatforms";
 import { getCategoryActions } from "./categoryActions";
 import categoryDescriptions from "./categoryDescriptions.generated.json";
 import { getCategoryCover, coverSources, relatedCategoryCovers } from "../media/categoryImages";
 
-export const socialPlatforms = ["instagram", "tiktok", "facebook", "x", "youtube", "telegram", "website", "email"];
+export const socialPlatforms = ["instagram", "tiktok", "facebook", "x", "youtube", "telegram", "website", "email", ...musicPlatforms.map(([id])=>id).filter(id=>id!=="youtube")];
 export function validDestination(value, platform = "") {
   const text = String(value || "").trim();
   if (platform === "email") return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text.replace(/^mailto:/i, "")) ? `mailto:${text.replace(/^mailto:/i, "")}` : "";
@@ -34,7 +35,7 @@ export function suggestedActions(category) {
 // Called only when creating a page. Renderers consume the persisted snapshot, never an account.
 export function resolvePersonalization({ template, profile = {}, registry = [], overrides = {} }) {
   const account = profile.data || profile.onboarding || profile;
-  const category = registry.find(item => item.id === account.category?.id) || account.category || {};
+  const category = template.id === "music-artist" ? {id:"media-entertainment/music-artists",label:"Music artist"} : registry.find(item => item.id === account.category?.id) || account.category || {};
   const displayName = account.publicName || template.fallbackName || "Your brand";
   const assets = categoryAssets(category, registry);
   const suggestions = getCategoryActions(category);
@@ -59,7 +60,7 @@ export function resolvePersonalization({ template, profile = {}, registry = [], 
     highlights:[],
     ...(template.id === "rhythm-grid" ? {media:[{url:"",position:"center"},{url:"",position:"left"},{url:"",position:"right"}]} : {}),
     whatsappNumber:account.whatsappNumber || profile.whatsappNumber || "",socialLinks,actions:template.hasForm ? [] : ["campaign-profile","rhythm-grid","studio-pass"].includes(template.id) ? actions.filter(action=>action.kind === "whatsapp").slice(0,1) : actions,
-    visibility:{cover:true,avatar:true,description:true,...template.defaultVisibility},imagePosition:"",...overrides
+    visibility:{cover:true,avatar:true,description:true,...template.defaultVisibility},imagePosition:"",...(template.id === "music-artist" ? {headline:"Listen to my latest release",description:account.brand?.description?.trim() || "Choose your favourite platform. Press play.",actions:musicActions(socialLinks)} : {}),...overrides
   }));
 }
 export function resolvedCoverUrl(data) { return validDestination(data.coverImageUrl) || coverSources(data.categoryAssets?.[0])?.src || ""; }

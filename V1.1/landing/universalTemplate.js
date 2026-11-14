@@ -96,3 +96,15 @@ export const sideNoteTemplate = {
 
 export const productSpotlightTemplate={...universalProfileTemplate,id:"product-spotlight",title:"Product Spotlight",name:"Product Spotlight",family:"product-spotlight",productLayout:true,defaultTokens:{accent:"#292826"},copy:"One featured product with a clear enquiry action.",preview:{cardLayout:"product-spotlight",image:""},editableProperties:[...universalProfileTemplate.editableProperties,"products","enquiryUrl"],supportedFields:[...universalProfileTemplate.supportedFields,"products","enquiryUrl"]};
 export const curatedShelfTemplate={...productSpotlightTemplate,id:"curated-shelf",title:"Curated Shelf",name:"Curated Shelf",family:"curated-shelf",defaultTokens:{accent:"#234b36"},copy:"A compact product collection with a selection basket and one enquiry action.",preview:{cardLayout:"curated-shelf",image:""}};
+
+export const musicArtistTemplate = {
+ ...universalProfileTemplate,
+ id:"music-artist",title:"Soundstage · Music Artist",name:"Soundstage",family:"music-artist",
+ fallbackName:"Your artist name",categoryIds:["media-entertainment/music-artists"],
+ tags:["music","artist","musician","singer","album","spotify","apple music","streaming","youtube"],
+ copy:"Your music, everywhere. Album artwork and editable links to your favourite streaming platforms.",
+ defaultTokens:{accent:"#b5ef63"},defaultVisibility:{avatar:false},
+ supportedFields:[...universalProfileTemplate.supportedFields,"headline"],
+ editableProperties:[...universalProfileTemplate.editableProperties,"headline"],
+ preview:{cardLayout:"music",renderer:"ThemeRenderer",label:"Soundstage music artist preview",image:""}
+};
