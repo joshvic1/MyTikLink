@@ -22,10 +22,15 @@ function load(filename) {
 (async()=>{
  await swc.loadBindings();
  const {createThemeInstance}=load(path.join(root,'V1.1/landing/themeModel.js'));
- const {allThemes}=load(path.join(root,'V1.1/landing/themeLibrary.js'));
+ const {allThemes,recommendedThemes}=load(path.join(root,'V1.1/landing/themeLibrary.js'));
  const {actionDestination}=load(path.join(root,'V1.1/landing/personalization.js'));
  const Renderer=load(path.join(root,'V1.1/landing/UniversalProfile.jsx')).default;
  const theme=allThemes.find(t=>t.id==='music-artist');
+ test('new artist template stays last for all personalized profile categories',()=>{
+  for(const categoryId of ['', 'media-entertainment/music-artists','food-beverages']) {
+   assert.equal(recommendedThemes({batch:'universal',categoryId}).at(-1).id,'music-artist');
+  }
+ });
  test('artist template persists nine independent streaming buttons',()=>{
   assert.ok(theme);const a=createThemeInstance(theme,{publicName:'Test artist'}),b=createThemeInstance(theme);
   assert.equal(a.personalization.displayName,'Test artist');assert.equal(a.personalization.actions.length,9);
