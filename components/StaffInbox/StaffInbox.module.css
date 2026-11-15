@@ -261,3 +261,10 @@
  .rail button>svg{display:block;margin:0;flex-shrink:0}
  .railEnd{width:100%;align-items:center}
 }
+
+/* A quiet white list; only unread conversations have a tinted background. */
+.listPanel,.rows{background:#fff}
+.app .row,.app .row.selected,.app .row.privateRow{background:#fff!important;border-color:transparent;box-shadow:none}
+.app .row:hover:not(:disabled){background:#fff!important;transform:none}
+.app .row.unreadRow,.app .row.unreadRow:hover:not(:disabled){background:#f2f5fb!important}
+.app .row.selected{border-left-color:#8a65c7}
