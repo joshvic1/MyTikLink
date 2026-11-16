@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  webpack(config) { if (process.env.TIKLINK_NO_BUILD_CACHE === 'true') config.cache = false; return config; },
   // Allow isolated verification builds without disturbing the running dev server.
   distDir: process.env.TIKLINK_BUILD_DIR || ".next",
   async redirects() {

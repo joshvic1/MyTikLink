@@ -19,3 +19,8 @@ test('all creation choices survive the proxy; unapproved and array parameters do
  for(const intent of ['storefront','landing_page','redirect_link','not_sure','unrecorded',''])assert.equal((await forward({intent})).searchParams.get('intent'),intent);
  const url=await forward({intent:['storefront','landing_page'],unknown:'value'});assert.equal(url.searchParams.has('intent'),false);assert.equal(url.searchParams.has('unknown'),false);
 });
+
+test('subscriber report view and date/plan filters reach the analytics endpoint',async()=>{
+ const url=await forward({path:['subscriber-analytics'],view:'retention',plan:'pro_yearly',from:'2026-01-01',to:'2026-11-16'});
+ assert.equal(url.pathname,'/api/control/subscriber-analytics');assert.equal(url.searchParams.get('view'),'retention');assert.equal(url.searchParams.get('plan'),'pro_yearly');assert.equal(url.searchParams.get('from'),'2026-01-01');
+});

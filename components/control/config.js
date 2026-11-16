@@ -6,6 +6,10 @@ export const groups=[
 
  {name:'Accounts',items:[['users','All users',Users,'users.view'],['first-choice','First creation choice',PanelsTopLeft,'users.view'],['adoption','V1.1 adoption',BarChart3,'users.view'],['feature-suggestions','Feature suggestions',MessageCircle,'users.view']]},
 
+ {name:'Subscriber analytics',items:[['subscriber-overview', 'Subscriber overview'], ['subscriber-new', 'New subscribers'], ['subscriber-repeat', 'Repeat subscribers'], ['subscriber-retention', 'Retention'], ['subscriber-loyal', 'Long-term subscribers'], ['subscriber-risk', 'Expiry risk'], ['subscriber-cancellations', 'Cancellations'], ['subscriber-value', 'Revenue & customer value']].map(([id,label])=>[id,label,BarChart3,'billing.view'])},
+
+ {name:'Affiliate program',items:[['affiliate','Affiliate management',Users,'super']]},
+
  {name:'Billing',items:[['subscriptions','Subscriptions',CreditCard,'billing.view'],['auto-renewals','Auto-renewal',CreditCard,'billing.view'],['transactions','Transactions',FileClock,'billing.view'],['recovery','Payment recovery',Workflow,'billing.view'],['recovery-emails','Recovery email history',Mail,'billing.view'],['plans','Plans & entitlements',Layers,'billing.view'],['revenue','Revenue',BarChart3,'overview.view']]},
 
  {name:'Products',items:[['pages','Landing pages',PanelsTopLeft,'pages.view'],['links','Redirect links',Link2,'links.view'],['stores','Storefronts',Store,'stores.view'],['products','Products',Package,'products.view'],['collections','Collections',Layers,'products.view'],['discounts','Discounts',Tag,'stores.view'],['orders','Orders',ShoppingBag,'orders.view'],['leads','Page leads',Contact,'leads.view'],['store-leads','Store subscribers',Contact,'leads.view'],['templates','Template library',Layers,'templates.view']]},

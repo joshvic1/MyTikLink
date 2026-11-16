@@ -20,6 +20,7 @@ import { PageTemplateModal } from "./components/PageTemplateModal";
 import { ErrorState, LoadingState, Modal } from "./components/UI";
 import { useV11Session } from "./lib/useV11Session";
 import { useOnboarding } from "./hooks/useOnboarding";
+const AffiliatePage=dynamic(()=>import('./affiliate/AffiliatePage'),{loading:()=> <PageSkeleton/>});
 const OnboardingWizard = dynamic(() => import("./components/onboarding/OnboardingWizard").then(module => module.OnboardingWizard), {loading: () => <PageSkeleton/>});
 import { V11AuthPage } from "./components/auth/V11AuthPage";
 import { V11PasswordPage } from "./components/auth/V11PasswordPage";
@@ -140,7 +141,7 @@ function V11Content() {
   else if (path.endsWith("/settings/security")) content = <SecurityPage user={session.user}/>;
   else if (path.endsWith("/settings/plan")) content = <BillingPage user={session.user}/>;
   else if (path.endsWith("/settings/profile") || path.endsWith("/settings")) content = <AccountPage user={session.user} refreshSession={session.refresh}/>;
-  else if (path.endsWith("/affiliate")) content = <InProgressPage title="Affiliate"/>;
+  else if (path.endsWith("/affiliate")) content = <AffiliatePage/>;
   else if (path.endsWith("/integrations")) content = <InProgressPage title="Integrations"/>;
   else if (path.endsWith("/help")) content = <HelpPage/>;
   else content = <HomePage user={session.user} data={workspace} onCreate={setModal}/>;
