@@ -1,4 +1,5 @@
 const visuals = {
+  referral: {image:"/images/affiliate/referral-hero.webp",tone:"landing",productType:"affiliate",dismissalType:"suggestion"},
  "store-ready": {image:"/v1-1/up-next/up-next-storefront-draft.webp",tone:"store",productType:"storefront",dismissalType:"suggestion"},
  "redirect-upgrade": {image:"/v1-1/up-next/up-next-smartlink-draft.webp",tone:"link",productType:"smart-link",dismissalType:"suggestion"},
   "store-upgrade": { image: "/v1-1/up-next/up-next-storefront-draft.webp", tone: "store", productType: "storefront", dismissalType: "suggestion" },
@@ -52,4 +53,8 @@ export function getFallbackUpNext({ pendingOrders, drafts, store, products, link
   if (links.length) return decorateUpNext({ kind: "link-share", title: "Your redirect link is ready", description: "Copy your link and start using it anywhere you need it.", ctaLabel: "Get link", href: routes.links });
   if (publishedPages.length) return decorateUpNext({ kind: "share", title: "Your page is ready to share", description: "Get your link and start sharing it with your audience.", ctaLabel: "View your pages", href: routes.pages });
   return decorateUpNext({ kind: "create", title: "Create something to share", description: "Start with a landing page, storefront or redirect link.", ctaLabel: "Create now", href: routes.home });
+}
+
+export function appendReferralSuggestion(actions) {
+  return [...actions.filter(action=>action.kind!=="referral"), decorateUpNext({kind:"referral",title:"Refer 1 person, earn ₦1,000",description:"Invite someone to MyTikLink. Earn ₦1,000 when they make their first Pro Monthly purchase.",ctaLabel:"Get your referral link",href:"/v1-1/affiliate"})];
 }

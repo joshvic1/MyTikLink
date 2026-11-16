@@ -1,1 +1,88 @@
-export const affiliateTerms=[["Program overview", "Earn rewards for genuine, verified MyTikLink subscription purchases referred through your unique link. Registration alone earns nothing. These terms apply to Nigerian operations."], ["Eligibility", "You must be at least 18, legally able to contract, and hold an account in good standing. Provide accurate identity and payout information. Employees and commercial partners must disclose conflicting arrangements."], ["Joining the program", "Activate your referral link after reviewing the current terms. We record the terms version and your affirmative activation. There is no fee to join and no reward for recruitment alone."], ["Attribution", "The last valid referral click within 30 days before registration wins. A valid manually entered code overrides that attribution. Once the account is created, its referrer is locked. Cross-device attribution is not guaranteed."], ["Qualifying purchases", "Only successfully verified, genuine MyTikLink subscriptions qualify. Failed, pending, free, cancelled, fraudulent, refunded or reversed payments do not qualify."], ["First-purchase rewards", "Launch direct-referral rates are ₦200 for Standard Monthly, ₦1,000 for Pro Monthly, ₦2,000 for Standard Yearly and ₦8,000 for Pro Yearly. The first successful paid subscription determines the initial reward. The rate version recorded when earned governs that reward."], ["Subsequent rewards", "Subsequent qualifying renewals or upgrades earn ₦500 at launch. A transaction never earns both a first-purchase and a subsequent reward. Duplicate notifications do not create additional rewards."], ["Two referral levels", "Your direct referrals may refer other people. We may show these second-level relationships. No second-level monetary reward exists unless specific rates are expressly approved and published. There are no further earning levels."], ["Holding period", "Commissions are pending for 14 days at launch, or the holding period recorded when earned. Verification and risk review may delay availability. A converted referral can still have pending earnings."], ["Refunds and reversals", "Invalidated purchases reverse associated commissions. If funds were already paid, an auditable amount owed may offset future earnings. No penalty or deduction beyond contractual and lawful recovery is implied."], ["Fraud review", "Self-referrals, duplicate identities, artificial transactions, collusion, referral loops and fabricated conversions are prohibited. Shared devices or IP addresses alone are not proof of fraud. We may request information and provide a review route."], ["Promotion standards", "Do not spam, impersonate MyTikLink, make misleading earnings claims, invent customer discounts, or use unlawful advertising. Explain that rewards depend on qualifying paid subscriptions. Follow applicable advertising and platform rules."], ["WhatsApp privacy", "A referred person must separately opt in before their WhatsApp number is shared. They may withdraw consent in their account. Stop contact when requested; do not export, resell or use contact details for unrelated marketing."], ["Affiliate responsibilities", "Protect your account, report mistakes promptly, keep bank details current, and retain records relevant to your taxes and promotional activity. You are not an employee or agent authorized to bind MyTikLink."], ["Withdrawals", "Available cash commissions may be withdrawn, subject to identity, bank, fraud and payment checks. The launch minimum is ₦5,000. Requests reserve the amount; reserved money cannot be requested twice."], ["Bank verification", "Nigerian bank account names must be resolved through the payment provider. We may review mismatches or reused bank accounts. Never submit another person’s banking information without lawful authority."], ["Payout processing", "Withdrawals are manually reviewed at launch. Approval is not payment. Payment is recorded only after a verified transfer or documented manual payment confirmation. Failed or rejected payouts release reserved funds unless a lawful hold applies. No guaranteed processing time is promised."], ["Taxes and deductions", "You remain responsible for applicable taxes. MyTikLink may make legally required withholding or other lawful, disclosed deductions and retain supporting records. Tax treatment requires professional review."], ["Suspension", "We may suspend new referrals, accrual or withdrawals for documented compliance, security or fraud concerns. Restrictions do not automatically erase valid earnings. Contact support to request review."], ["Termination", "You or MyTikLink may end participation. We may discontinue the program subject to applicable law. Referral creation and future earnings may stop, but valid accrued rights survive."], ["Changes to rates and conditions", "Subject to applicable law and existing accrued rights, MyTikLink may change commission rates, eligibility requirements, withdrawal rules for future earnings and other program conditions, or suspend or discontinue the program. Individual advance notice is not promised in every circumstance where law permits, but legally required notice will be provided."], ["Protection of earned commissions", "All valid commissions earned before a program change or termination will remain payable according to the applicable terms, subject to verification, fraud checks, refunds, and lawful deductions. Program shutdown does not erase legitimate accrued commissions."], ["Future platform credits", "Future earnings may use a cash, platform-credit or mixed policy only under clearly recorded prospective terms. Existing cash commissions will not silently become non-withdrawable credits. Credit-only mode is not active at launch."], ["Records and data", "We retain attribution, financial and audit records as necessary for program administration, legal obligations and disputes. Access is restricted. Privacy rights and withdrawal of optional contact consent remain available under the applicable privacy policy and Nigerian law."], ["Errors and disputes", "Report a missing reward or payout with the relevant reference to support@mytiklink.com. We will review available records and explain the outcome. Escalation and dispute-resolution procedures must be legally reviewed before publication; statutory rights are not excluded."], ["Governing law and liability", "Nigerian law applies, subject to mandatory rights and jurisdiction rules. Nothing excludes liability that cannot lawfully be excluded. The contracting entity, address, courts, liability provisions and dispute process require Nigerian legal review before launch."], ["Contact", "For program, privacy and payment questions, contact support@mytiklink.com. Never send passwords, verification codes or complete banking credentials by email."]];
+export const affiliateTerms = [
+  [
+    "How it works",
+    "Invite someone to MyTikLink with your referral link. When they make a qualifying paid subscription purchase, you earn a reward. Signing up alone does not earn a reward."
+  ],
+  [
+    "Who can join",
+    "You must be at least 18, legally able to accept these terms, and have a MyTikLink account in good standing. Please use your correct details, including your payment information."
+  ],
+  [
+    "Getting started",
+    "Read these terms and click Accept and activate to start using your referral link. Joining is free. We save the date and version of the terms you accepted."
+  ],
+  [
+    "When a referral counts",
+    "The person you invite needs to register within 30 days after clicking your referral link for you to be eligible for rewards from their qualifying purchases. If they click another valid referral link before registering, the most recent valid link counts. If they enter a valid referral code themselves, that code takes priority. Once they register, their referrer cannot be changed. If they switch devices or clear their browser cookies, the referral may not be recorded."
+  ],
+  [
+    "Purchases that qualify",
+    "Rewards apply only to genuine subscription payments that MyTikLink has successfully verified. Free plans, failed or pending payments, cancelled payments, refunds and reversed payments do not qualify."
+  ],
+  [
+    "Your first reward",
+    "For the first qualifying purchase by someone you refer, you earn ₦200 for Standard Monthly, ₦1,000 for Pro Monthly, ₦2,000 for Standard Yearly, or ₦8,000 for Pro Yearly. The plan they pay for determines your reward. We keep a record of the rate that applied when you earned it."
+  ],
+  [
+    "Rewards after the first purchase",
+    "For each qualifying renewal or upgrade after the first purchase, you earn ₦100 for Standard Monthly, ₦500 for Pro Monthly, ₦1,000 for Standard Yearly, or ₦4,000 for Pro Yearly. The plan paid for in that transaction determines the reward. Changing plans does not earn another first-purchase reward. Each verified payment earns one reward only."
+  ],
+  [
+    "When your reward becomes available",
+    "Rewards are normally held for 14 days before they become available to withdraw. This gives us time to verify the payment and check for refunds or misuse. A reward may take longer if it needs review. Any updated holding period applies according to the terms recorded for that reward."
+  ],
+  [
+    "Refunds and reversed payments",
+    "If a purchase is refunded, reversed or found to be invalid, the reward for that purchase will be cancelled. If it has already been paid to you, we may recover that amount from future earnings or seek repayment where permitted by law. We keep a record of these adjustments."
+  ],
+  [
+    "Self-referrals and manipulation",
+    "Do not refer yourself, create duplicate accounts to earn rewards, arrange fake purchases, or manipulate the referral system in any other way. If we confirm this behaviour, rewards connected to the misuse will be cancelled, and your account or participation may be suspended. Sharing a device or internet connection alone does not prove misuse. You can contact support if you believe a decision is wrong."
+  ],
+  [
+    "Sharing your link responsibly",
+    "Share your link honestly. Do not spam people, pretend to be MyTikLink, promise guaranteed earnings, or advertise discounts we have not offered. Make it clear that rewards depend on qualifying paid subscriptions. Follow applicable laws and the rules of the platforms you use. Do not send unsolicited bulk messages, harass referrals, sell their contact details, share referral information with third parties, or use it for unrelated marketing. Only contact a referral on WhatsApp when they have authorised it, and stop if they withdraw permission."
+  ],
+  [
+    "Your account and bank details",
+    "Keep your account secure and your details up to date. We verify Nigerian bank account names through our payment provider. Incorrect details, name mismatches or reused bank accounts may need further review. Only provide banking information you are authorised to use."
+  ],
+  [
+    "Withdrawing your earnings",
+    "You can request a withdrawal when your available earnings reach ₦5,000. Pending rewards cannot be withdrawn. Once you request a withdrawal, that amount is reserved so it cannot be requested again while we process it."
+  ],
+  [
+    "How payouts are handled",
+    "We review withdrawal requests before paying them. Approval means your request has passed review; it does not mean the money has already reached your bank. We record a payout as paid after confirming the transfer. If a request fails or is rejected, the reserved amount becomes available again unless a lawful hold applies. We do not promise a fixed processing time."
+  ],
+  [
+    "Taxes and lawful deductions",
+    "You are responsible for taxes that apply to your earnings. Where the law requires MyTikLink to withhold tax or make another lawful deduction, we may do so and keep the relevant records. Any other deduction must be lawful and disclosed."
+  ],
+  [
+    "Pausing or ending participation",
+    "You can stop participating at any time. We may pause referrals, rewards or withdrawals, or end participation, for security, fraud or legal reasons. We may also close the program. A pause or closure does not automatically cancel valid rewards you have already earned. Contact support if you need a decision reviewed."
+  ],
+  [
+    "Changes to the program",
+    "MyTikLink may change future reward rates, eligibility, holding periods or withdrawal rules, or pause or end the program, subject to applicable law. We will provide any notice required by law. Valid rewards earned before a change remain payable under the terms that applied when they were earned, subject to payment verification, refunds, fraud checks and lawful deductions."
+  ],
+  [
+    "Cash rewards and future credits",
+    "If we introduce platform credits for future rewards, we will state the rules clearly. Cash rewards you have already earned will not quietly be changed into credits that you cannot withdraw. Credit-only rewards are not currently active."
+  ],
+  [
+    "Your records and information",
+    "We keep the referral, payment and review records needed to run the program, resolve disputes and meet legal obligations. Access is restricted, and your information is handled under our privacy policy and applicable Nigerian law."
+  ],
+  [
+    "Questions, mistakes and disputes",
+    "If a referral, reward or payout looks wrong, email support@mytiklink.com with the relevant reference. We will check the records and explain the outcome. These terms are governed by Nigerian law and do not take away rights or remedies the law gives you, or exclude liability that cannot legally be excluded. Never send your password or verification code to support."
+  ]
+];
+export function termsForRates(rates){
+ if(!rates)return affiliateTerms;
+ const plans=[['standard_monthly','Standard Monthly'],['pro_monthly','Pro Monthly'],['standard_yearly','Standard Yearly'],['pro_yearly','Pro Yearly']];
+ const money=n=>new Intl.NumberFormat('en-NG',{style:'currency',currency:'NGN',maximumFractionDigits:0}).format(n/100);
+ return affiliateTerms.map(([title,text])=>[title,title==='Your first reward'?'For the first qualifying purchase by someone you refer, you earn '+plans.map(([key,name])=>money(rates[key])+' for '+name).join(', ')+'. We keep the rate and rule version recorded when you earn it.':title==='Rewards after the first purchase'?'For each qualifying renewal or upgrade after the first purchase, you earn '+plans.map(([key,name])=>money(rates['subsequent_'+key]??rates.subsequent??0)+' for '+name).join(', ')+'. The plan paid for in that transaction determines your reward. Changing plans does not earn another first-purchase reward. Each verified payment earns one reward only.':text]);
+}

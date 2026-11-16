@@ -11,6 +11,12 @@ export default function TermsAndConditions() {
           Last Updated: <span>[28/11/2025]</span>
         </p>
 
+        <section id="referral-program" style={{scrollMarginTop:100,padding:'20px',border:'1px solid #e6dcf3',borderRadius:16,background:'#faf7ff',marginBottom:24}}>
+          <h2 className={styles.sectionTitle}>Referrals and your information</h2>
+          <p className={styles.text}>When you register using a referral link or code, MyTikLink may share your name, business name, joining date, subscription plan and referral conversion status with the person who referred you. They can also see the reward earned from your qualifying purchases. Your email address is not shared through the referral list.</p>
+          <p className={styles.text}>Your WhatsApp number is shared only if you separately allow referral-related contact in Affiliate &amp; referrals → Your referral contact preference. We use the WhatsApp number already saved to your account. Agreeing to these terms or receiving MyTikLink marketing emails does not grant that permission. You can turn it off at any time; your number will no longer be available to your referrer through MyTikLink.</p>
+          <p className={styles.text}>Referrers may use authorised contact details only to help you with MyTikLink. Harassment, spam, resale, third-party sharing and unrelated marketing are prohibited. They must stop contacting you when you withdraw permission. Contact support@mytiklink.com to object to contact or report misuse. <a href="/privacy#referral-program">Read the referral privacy provisions.</a></p>
+        </section>
         {/* Body */}
         <section>
           <p className={styles.text}>

@@ -26,6 +26,7 @@ import { PlanBadge } from "../components/PlanBadge";
 import { creationFeatures } from "../config/features";
 import { v11Routes } from "../config/routes";
 import {
+  appendReferralSuggestion,
   createUpNextDismissal,
   decorateUpNext,
   getFallbackUpNext,
@@ -270,7 +271,7 @@ export function HomePage({ user, data, onCreate }) {
             href: "/v1-1/settings/tracking",
           }),
         ];
-  const upNextActions = dashboardSuggestions(
+  const upNextActions = appendReferralSuggestion(dashboardSuggestions(
     user,
     starter,
     [
@@ -287,7 +288,7 @@ export function HomePage({ user, data, onCreate }) {
     ],
     data.store,
     data.links,
-  )
+  ))
     .map(decorateUpNext)
     .filter(
       (item, index, items) =>

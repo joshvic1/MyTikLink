@@ -51,3 +51,16 @@ test("old upgrade dismissals are shortened without changing other suggestions",(
  assert.equal(normalizeUpNextDismissals(JSON.stringify(records),2000)[0].expiresAt,86401000);
  assert.deepEqual(normalizeUpNextDismissals(JSON.stringify(records),86401000),[records[1]]);
 });
+import {appendReferralSuggestion} from './upNextActions.js';
+test('referral promotion stays last without changing existing priority',()=>{
+ const original=[{kind:'orders'},{kind:'draft'},{kind:'tracking'}];
+ const result=appendReferralSuggestion(original);
+ assert.deepEqual(result.map(x=>x.kind),['orders','draft','tracking','referral']);
+ assert.equal(original.length,3);
+ assert.equal(result.at(-1).href,'/v1-1/affiliate');
+ assert.equal(result.at(-1).ctaLabel,'Get your referral link');
+});
+test('referral promotion works alone and is not duplicated',()=>{
+ assert.deepEqual(appendReferralSuggestion([]).map(x=>x.kind),['referral']);
+ assert.deepEqual(appendReferralSuggestion([{kind:'referral'},{kind:'orders'}]).map(x=>x.kind),['orders','referral']);
+});
