@@ -59,7 +59,8 @@ export default function App({ Component, pageProps }) {
   const isV2Route = router.pathname.startsWith("/v2");
   const isV2DashboardRoute = router.pathname.startsWith("/v2.1");
 
-  if (router.pathname === "/v1-1" || router.pathname.startsWith("/v1-1/")) {
+  // The public referral signup URL uses the same standalone shell as V1.1.
+  if (router.pathname === "/register" || router.pathname === "/v1-1" || router.pathname.startsWith("/v1-1/")) {
     return <main className={plusJakarta.className} style={{ minHeight: "100dvh", background: "#fff" }}>
       <KeyboardViewport /><Component {...pageProps} /><SmartAssistant hideLauncher /><V11Toaster />
     </main>;
