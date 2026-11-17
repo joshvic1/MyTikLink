@@ -24,3 +24,8 @@ test('subscriber report view and date/plan filters reach the analytics endpoint'
  const url=await forward({path:['subscriber-analytics'],view:'retention',plan:'pro_yearly',from:'2026-01-01',to:'2026-11-16'});
  assert.equal(url.pathname,'/api/control/subscriber-analytics');assert.equal(url.searchParams.get('view'),'retention');assert.equal(url.searchParams.get('plan'),'pro_yearly');assert.equal(url.searchParams.get('from'),'2026-01-01');
 });
+
+test('CRM proxy forwards combined filters and pagination',async()=>{
+const filters={assignedStaff:'123456789012345678901234',followup:'overdue',whatsapp:'received',registration:'registered',storeStatus:'published',source:'TikTok Instant Form',campaign:'Storefront launch',temperature:'Hot',category:'Beauty',status:'Contacted',plan:'pro',limit:'100',page:'2'};
+const url=await forward({path:['crm'],...filters});assert.equal(url.pathname,'/api/control/crm');for(const [key,value]of Object.entries(filters))assert.equal(url.searchParams.get(key),value,key);
+});
