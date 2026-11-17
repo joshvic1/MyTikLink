@@ -5,8 +5,8 @@ import styles from "../styles/v11.module.css";
 import card from "./UpNext.module.css";
 
 export function UpNext({ action, onAction, onDismiss, onSecondary, page, thumbnail, secondaryLabel="Preview" }) {
-  if (action.kind === "referral") return <section className={`${styles.upNextCard} ${card.referralBanner}`} aria-label="Referral invitation">
-    <div className={card.referralComposition}><img className={card.referralArtwork} src="/images/affiliate/referral-dashboard-v2.webp" alt="Refer 1 person, earn ₦1,000. Invite someone to MyTikLink. Earn ₦1,000 when they make their first Pro Monthly purchase." width="1200" height="600" decoding="async"/>
+  if (["referral","delivery-setup"].includes(action.kind)) return <section className={`${styles.upNextCard} ${card.referralBanner}`} aria-label={action.kind === "referral" ? "Referral invitation" : "Add delivery fees"}>
+    <div className={card.referralComposition}><img className={card.referralArtwork} src={action.kind === "referral" ? "/images/affiliate/referral-dashboard-v2.webp" : action.image} alt={action.kind === "referral" ? "Refer 1 person, earn ₦1,000. Invite someone to MyTikLink. Earn ₦1,000 when they make their first Pro Monthly purchase." : "Up next: Add delivery fees to your store"} width="1200" height="600" decoding="async"/>
     <button className={`${styles.upNextDismiss} ${card.referralDismiss}`} type="button" aria-label="Dismiss this suggestion" onClick={onDismiss}><X/></button>
     <div className={card.referralCta}><Button onClick={onAction}>{action.ctaLabel || 'Get your referral link'}<ArrowRight size={14}/></Button></div></div>
   </section>;

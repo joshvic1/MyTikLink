@@ -16,3 +16,5 @@
 
 /* Unboxed storefront creation action. */
 .pickerSheet>footer{background:transparent!important;border:0!important;box-shadow:none!important;backdrop-filter:none!important;padding:10px 16px 16px!important;justify-content:flex-end!important}
+
+a.preview{box-sizing:border-box;text-decoration:none}

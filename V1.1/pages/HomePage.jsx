@@ -1,3 +1,5 @@
+import useStoreSetup from '../store/useStoreSetup';
+import {deliveryAction} from '../store/setupProgress.mjs';
 import {
   DesktopDashboardHelp,
   DashboardSuggestionsRail,
@@ -43,6 +45,7 @@ const dateValue = (item) =>
   new Date(item?.updatedAt || item?.createdAt || 0).getTime();
 export function HomePage({ user, data, onCreate }) {
   const router = useRouter();
+  const setupProgress=useStoreSetup(data.store?._id);
   const { openSubscription } = useSubscription();
   const [starterPreview, setStarterPreview] = useState(null);
   const [storePreview, setStorePreview] = useState(false),
@@ -277,6 +280,7 @@ export function HomePage({ user, data, onCreate }) {
     [
       nextAction,
       ...pixelSuggestion,
+      ...(setupProgress?.physicalProducts&&!setupProgress.delivery?[deliveryAction]:[]),
       ...(publishing ? remainingAttention : []).map(
         ({ tone: _tone, ...item }) =>
           decorateUpNext({

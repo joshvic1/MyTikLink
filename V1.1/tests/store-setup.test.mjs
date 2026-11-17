@@ -1,0 +1,5 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {setupTasks,shouldShowSetup,OPTIONAL_SETUP_SNOOZE} from '../store/setupProgress.mjs';
+test('delivery is a core task only for physical product stores',()=>{assert.equal(setupTasks({physicalProducts:true}).find(t=>t.id==='delivery').required,true);assert.equal(setupTasks({physicalProducts:false}).some(t=>t.id==='delivery'),false)});
+test('unfinished core tasks return on reload despite saved dismissal',()=>{assert.equal(shouldShowSetup(setupTasks({physicalProducts:true,product:true,categories:true}),100,101),true)});
+test('optional currencies can be snoozed for seven days',()=>{const tasks=setupTasks({physicalProducts:true,product:true,categories:true,delivery:true});assert.equal(shouldShowSetup(tasks,100,101),false);assert.equal(shouldShowSetup(tasks,100,100+OPTIONAL_SETUP_SNOOZE),true)});
+test('completed stores do not see setup checklist',()=>assert.equal(shouldShowSetup(setupTasks({physicalProducts:true,product:true,categories:true,delivery:true,currencies:true}),0),false));

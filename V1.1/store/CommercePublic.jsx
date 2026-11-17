@@ -272,6 +272,7 @@ export function CommerceCheckout({ store, config: initialConfig, fulfillment: in
     ? fulfillment.deliveryAvailable
     : legacyDeliveryAvailable;
   const pickupAvailable = false;
+  const needsDelivery = physical && deliveryAvailable;
   const availableFulfillment = [
     ...(deliveryAvailable ? ["delivery"] : []),
     ...(pickupAvailable ? ["pickup"] : []),
@@ -333,12 +334,12 @@ export function CommerceCheckout({ store, config: initialConfig, fulfillment: in
       displayCurrency:display.code,
       // The existing order API deliberately treats an omitted/blank method as
       // a digital checkout. Do not send a new "digital" enum to legacy APIs.
-      fulfillmentMethod: physical ? form.fulfillmentMethod : "",
-      address: {
+      fulfillmentMethod: needsDelivery ? form.fulfillmentMethod : "",
+      address: needsDelivery ? {
         ...form.address,
         line: form.address.streetAddress || form.address.line || "",
         streetAddress: form.address.streetAddress || form.address.line || "",
-      },
+      } : {},
       tracking:trackingData("store",store.slug),
       items: items.map((p) => ({
         productId: p._id,
@@ -408,15 +409,15 @@ export function CommerceCheckout({ store, config: initialConfig, fulfillment: in
         .flatMap((zone) => zoneAreas(zone).map((name) => ({ id: name, name })))
         .filter((item, index, list) => list.findIndex((candidate) => candidate.id === item.id) === index);
   const activePickup = pickups.find((pickup) => pickup.id === form.pickupId);
-  const detailsReady = !physical || (
+  const detailsReady = !needsDelivery || (
     form.fulfillmentMethod === "pickup"
       ? Boolean(activePickup)
       : form.fulfillmentMethod === "delivery" && deliveryLocationReady
   );
-  const fieldErrors = checkoutErrors({form,physical,requireEmail:config.checkout.requireEmail,validPhone:normalizeLeadPhone(form.customerPhone,'NG'),activePickup,showRegionSelector,deliveryLocationReady,countryProfile});
+  const fieldErrors = checkoutErrors({form,physical,needsDelivery,requireEmail:config.checkout.requireEmail,validPhone:normalizeLeadPhone(form.customerPhone,'NG'),activePickup,showRegionSelector,deliveryLocationReady,countryProfile});
   const fieldError=name=>attemptedCheckout?fieldErrors[name]:undefined;
   const fieldProps=name=>({name,'aria-invalid':Boolean(fieldError(name))});
-  const canRequestQuote = physical && step === "details" && !settingsBusy && !settingsError && (
+  const canRequestQuote = needsDelivery && step === "details" && !settingsBusy && !settingsError && (
     form.fulfillmentMethod === "pickup"
       ? Boolean(activePickup)
       : form.fulfillmentMethod === "delivery" && deliveryLocationReady
@@ -455,7 +456,7 @@ export function CommerceCheckout({ store, config: initialConfig, fulfillment: in
 
   useEffect(() => {
     let active = true;
-    if(!physical)return;
+    if(!needsDelivery)return;
     deliveryLocations("countries")
       .then((items) => {
         if (active) setCountries(items);
@@ -464,7 +465,7 @@ export function CommerceCheckout({ store, config: initialConfig, fulfillment: in
         // Existing storefronts keep working while the new location library is rolled out.
       });
     return () => { active = false; };
-  }, []);
+  }, [needsDelivery]);
 
   useEffect(() => {
     if (!form.address.countryCode || !countryItems.length) return;
@@ -485,7 +486,7 @@ export function CommerceCheckout({ store, config: initialConfig, fulfillment: in
 
   useEffect(() => {
     const country = form.address.countryCode;
-    if (!physical || !country) {
+    if (!needsDelivery || !country) {
       setRegions([]);
       return undefined;
     }
@@ -499,11 +500,11 @@ export function CommerceCheckout({ store, config: initialConfig, fulfillment: in
         if (active) setRegions([]);
       });
     return () => { active = false; };
-  }, [form.address.countryCode]);
+  }, [form.address.countryCode,needsDelivery]);
 
   useEffect(() => {
     const region = form.address.regionId;
-    if (!physical || !region || countryProfile) {
+    if (!needsDelivery || !region || countryProfile) {
       setAreas([]);
       return undefined;
     }
@@ -533,17 +534,17 @@ export function CommerceCheckout({ store, config: initialConfig, fulfillment: in
 
   useEffect(() => {
     if (step !== "details") return undefined;
-    if (physical && !form.fulfillmentMethod) {
+    if (needsDelivery && !form.fulfillmentMethod) {
       setQuoteBusy(false);
       setQuote(null);
       setQuoteError("This store has not enabled a delivery or pickup option for physical products.");
       return undefined;
     }
-    if (settingsBusy || settingsError || (physical && !canRequestQuote)) {
+    if (settingsBusy || settingsError || (needsDelivery && !canRequestQuote)) {
       setQuoteBusy(false);
       setQuote(null);
       setQuoteError(
-        form.fulfillmentMethod === "pickup"
+        !needsDelivery || settingsBusy ? "" : form.fulfillmentMethod === "pickup"
           ? "Choose a pickup location to see your total."
           : !form.address.countryCode
             ? "Choose your country to see delivery options."
@@ -566,7 +567,7 @@ export function CommerceCheckout({ store, config: initialConfig, fulfillment: in
         .catch((nextError) => {
           if (active) {
             setQuote(null);
-            setQuoteError(nextError.message || "Delivery is not available for this location.");
+            setQuoteError(nextError.message || "We could not calculate your order total. Please try again.");
           }
         })
         .finally(() => {
@@ -579,6 +580,9 @@ export function CommerceCheckout({ store, config: initialConfig, fulfillment: in
     };
   }, [
     physical,
+    needsDelivery,
+    settingsBusy,
+    settingsError,
     step,
     form.fulfillmentMethod,
     form.pickupId,
@@ -614,7 +618,7 @@ export function CommerceCheckout({ store, config: initialConfig, fulfillment: in
     const phone=normalizeLeadPhone(form.customerPhone,'NG');
     if(!phone){setError('Enter a valid WhatsApp number with its country code.');return;}
     if(!methods.includes(form.paymentMethod)){setError('This store has no available payment method for this order.');return;}
-    if(physical&&!detailsReady){setError('Choose your delivery location.');return;}
+    if(needsDelivery&&!detailsReady){setError('Choose your delivery location.');return;}
     if(quoteBusy||!quote||quoteError){setError(quoteError||'Please wait for your order total to finish updating, then confirm again.');return;}
     lock.current=true;setBusy(true);setError('');
     if(!key.current)key.current=crypto.randomUUID();
@@ -655,7 +659,7 @@ export function CommerceCheckout({ store, config: initialConfig, fulfillment: in
     .replace(/\D/g, "")
     .replace(/^0(?=\d{10}$)/, "234");
   const summary = done
-    ? `Hello ${store.name}, my order is ${done.orderNumber}.\n${done.lines.map((l) => `${l.productType === "digital" ? "" : l.quantity+" × "}${l.name}`).join("\n")}\nTotal: ${formatBaseMoney(done.totals.totalMinor, done.totals.currency)}\nName: ${form.customerName}\nWhatsApp: ${form.customerPhone}${form.customerEmail?`\nEmail: ${form.customerEmail}`:""}${physical?`\nDelivery: ${form.fulfillmentMethod}\n${[form.address.line,form.address.state,form.address.country].filter(Boolean).join(", ")}`:""}`
+    ? `Hello ${store.name}, my order is ${done.orderNumber}.\n${done.lines.map((l) => `${l.productType === "digital" ? "" : l.quantity+" × "}${l.name}`).join("\n")}\nTotal: ${formatBaseMoney(done.totals.totalMinor, done.totals.currency)}\nName: ${form.customerName}\nWhatsApp: ${form.customerPhone}${form.customerEmail?`\nEmail: ${form.customerEmail}`:""}${needsDelivery?`\nDelivery: ${form.fulfillmentMethod}\n${[form.address.line,form.address.state,form.address.country].filter(Boolean).join(", ")}`:""}`
     : "";
   useEffect(() => {
     let cancelled=false;
@@ -770,7 +774,7 @@ export function CommerceCheckout({ store, config: initialConfig, fulfillment: in
                 onChange={(e) => change("customerEmail", e.target.value)}
               />
             </Field>
-            {physical && (
+            {needsDelivery && (
               <section className={css.fulfillmentSection} aria-labelledby="fulfillment-heading">
                 <div className={css.fulfillmentHeading}>
                   <span className={css.fulfillmentIcon}><Truck size={16} /></span>
@@ -926,7 +930,7 @@ export function CommerceCheckout({ store, config: initialConfig, fulfillment: in
                     {
                       {
                         bank: "Manual Bank Transfer",
-                        cod: "Cash on Delivery",
+                        cod: needsDelivery ? "Cash on Delivery" : "Pay on receipt",
                         whatsapp: "Pay on WhatsApp",
                       }[m]
                     }
@@ -952,8 +956,8 @@ export function CommerceCheckout({ store, config: initialConfig, fulfillment: in
             </Field>
             {settingsError&&<p role="alert">{settingsError} <button type="button" onClick={()=>setSettingsRetry(v=>v+1)}>Retry</button></p>}
             {!methods.length&&<p role="alert">This store has no available payment methods. Contact the store to order.</p>}
-            {!physical&&quoteError&&<p role="alert">{quoteError}</p>}
-            {quote&&<section className={css.checkoutSummary} aria-label="Order summary"><header><h3>Order summary</h3><small>{quote.lines.length} {quote.lines.length===1?'item':'items'}</small></header><ul>{quote.lines.map((line,index)=><li key={index}><div><strong>{line.name}</strong><small>{line.productType==='physical'?`Quantity: ${line.quantity}`:'Digital product'}</small></div><span>{displayMoney(line.unitMinor*line.quantity,quote.totals.currency)}</span></li>)}</ul><dl>{[['subtotalMinor','Subtotal'],['discountMinor','Discount'],['shippingMinor',form.fulfillmentMethod==='pickup'?'Pickup':'Delivery'],['taxMinor',`${config.checkout.taxLabel||'Tax'}${quote.totals.taxInclusive?' (included)':''}`],['totalMinor','Total']].filter(([key])=>(physical||key!=='shippingMinor')&&(!['discountMinor','taxMinor'].includes(key)||Number(quote.totals[key])>0)).map(([key,label])=><div key={key} className={key==='totalMinor'?css.summaryTotal:undefined}><dt>{label}</dt><dd>{key==='discountMinor'?'-':''}{key==='shippingMinor'&&!quote.totals[key]?'Free':displayMoney(quote.totals[key],quote.totals.currency)}</dd></div>)}</dl></section>}
+            {!needsDelivery&&quoteError&&<p role="alert">{quoteError}</p>}
+            {quote&&<section className={css.checkoutSummary} aria-label="Order summary"><header><h3>Order summary</h3><small>{quote.lines.length} {quote.lines.length===1?'item':'items'}</small></header><ul>{quote.lines.map((line,index)=><li key={index}><div><strong>{line.name}</strong><small>{line.productType==='physical'?`Quantity: ${line.quantity}`:'Digital product'}</small></div><span>{displayMoney(line.unitMinor*line.quantity,quote.totals.currency)}</span></li>)}</ul><dl>{[['subtotalMinor','Subtotal'],['discountMinor','Discount'],['shippingMinor',form.fulfillmentMethod==='pickup'?'Pickup':'Delivery'],['taxMinor',`${config.checkout.taxLabel||'Tax'}${quote.totals.taxInclusive?' (included)':''}`],['totalMinor','Total']].filter(([key])=>(needsDelivery||key!=='shippingMinor')&&(!['discountMinor','taxMinor'].includes(key)||Number(quote.totals[key])>0)).map(([key,label])=><div key={key} className={key==='totalMinor'?css.summaryTotal:undefined}><dt>{label}</dt><dd>{key==='discountMinor'?'-':''}{key==='shippingMinor'&&!quote.totals[key]?'Free':displayMoney(quote.totals[key],quote.totals.currency)}</dd></div>)}</dl></section>}
           </form>
         )}
         {step === "review" && quote && (
@@ -968,10 +972,10 @@ export function CommerceCheckout({ store, config: initialConfig, fulfillment: in
             )}
             <h3 className={css.reviewTitle}>Order summary</h3>
             <dl className={`${css.totals} ${css.reviewTotals}`}>
-              {[["subtotalMinor","Subtotal"],["discountMinor","Discount"],["shippingMinor","Delivery"],["taxMinor",`${config.checkout.taxLabel}${quote.totals.taxInclusive?" (included)":""}`],["totalMinor","Total"]].filter(([k])=>physical||k!=="shippingMinor").map(([k,label])=><div key={k}><dt>{label}</dt><dd>{k === "shippingMinor" && Number(quote.totals[k] || 0) === 0 ? "Free" : <>{k === "discountMinor" ? "-" : ""}{displayMoney(quote.totals[k],quote.totals.currency)}</>}</dd></div>)}
+              {[["subtotalMinor","Subtotal"],["discountMinor","Discount"],["shippingMinor","Delivery"],["taxMinor",`${config.checkout.taxLabel}${quote.totals.taxInclusive?" (included)":""}`],["totalMinor","Total"]].filter(([k])=>needsDelivery||k!=="shippingMinor").map(([k,label])=><div key={k}><dt>{label}</dt><dd>{k === "shippingMinor" && Number(quote.totals[k] || 0) === 0 ? "Free" : <>{k === "discountMinor" ? "-" : ""}{displayMoney(quote.totals[k],quote.totals.currency)}</>}</dd></div>)}
             </dl>
-            <p><strong>Amount payable: {formatBaseMoney(quote.totals.totalMinor,quote.totals.currency)}</strong>{display.code!==quote.totals.currency&&<small> · Display prices are estimates. Payment is collected in {quote.totals.currency}.</small>}</p><details className={css.reviewItems}><summary>Items & delivery · {quote.lines.length} {quote.lines.length===1?"item":"items"}</summary><p>{form.customerName} · {form.customerPhone}</p>{quote.lines.map((l,i)=><p key={i}>{l.productType==="physical"?`${l.quantity} × `:""}{l.name} — {displayMoney(l.unitMinor*l.quantity,quote.totals.currency)}</p>)}<p>{physical&&quote.delivery.name}{estimateLabel(quote.delivery.estimate,quote.delivery.estimateLabel) ? ` · ${estimateLabel(quote.delivery.estimate, quote.delivery.estimateLabel)}` : ""}</p></details>
-            {quote.delivery.unconfigured&&<p className={css.transferNote}>Any delivery charges must be arranged with the store separately.</p>}
+            <p><strong>Amount payable: {formatBaseMoney(quote.totals.totalMinor,quote.totals.currency)}</strong>{display.code!==quote.totals.currency&&<small> · Display prices are estimates. Payment is collected in {quote.totals.currency}.</small>}</p><details className={css.reviewItems}><summary>{needsDelivery ? "Items & delivery" : "Items"} · {quote.lines.length} {quote.lines.length===1?"item":"items"}</summary><p>{form.customerName} · {form.customerPhone}</p>{quote.lines.map((l,i)=><p key={i}>{l.productType==="physical"?`${l.quantity} × `:""}{l.name} — {displayMoney(l.unitMinor*l.quantity,quote.totals.currency)}</p>)}<p>{needsDelivery&&quote.delivery.name}{estimateLabel(quote.delivery.estimate,quote.delivery.estimateLabel) ? ` · ${estimateLabel(quote.delivery.estimate, quote.delivery.estimateLabel)}` : ""}</p></details>
+
           </section>
         )}
         {step === "proof" && <section ref={reviewRef} tabIndex={-1} className={css.proofPanel}><h3>Upload your transfer receipt</h3><p>{store.name} will review your payment before confirming the order.</p><label className={css.proofPicker}><Copy size={24}/><strong>{proofFile?proofFile.name:"Choose payment proof"}</strong><span>JPG, PNG or WebP · up to 5 MB</span><input type="file" accept="image/jpeg,image/png,image/webp" disabled={busy} onChange={event=>{const file=event.target.files?.[0];if(!file)return;if(!["image/jpeg","image/png","image/webp"].includes(file.type)||file.size>5*1024*1024){setError("Choose a JPG, PNG or WebP image smaller than 5 MB.");event.target.value="";return;}setProofFile(file);uploadedProof.current="";setProofUploaded(false);setUploadPercent(0);setError("");}}/></label><p className={css.transferNote}>Make sure the amount, date and transaction reference are readable.</p></section>}

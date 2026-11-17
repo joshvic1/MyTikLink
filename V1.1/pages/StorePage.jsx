@@ -1,3 +1,7 @@
+import useStoreSetup from '../store/useStoreSetup';
+import StoreSetupChecklist from '../store/StoreSetupChecklist';
+import {deliveryAction} from '../store/setupProgress.mjs';
+import {UpNext} from '../components/UpNext';
 import StoreSetupPage from "./StoreSetupPage";
 import StoreReadyPreview,{StoreReadyThumbnail} from "../components/StoreReadyPreview";
 import {useSubscription} from "../components/SubscriptionModal";
@@ -39,6 +43,8 @@ function StoreStatusCard({ live, url, onCopy, onDesign, onVisit }) {
 
 export function StorePage({ data,user }) {
   const router = useRouter();
+  const setupProgress=useStoreSetup(data.store?._id);
+  const [deliveryDismissed,setDeliveryDismissed]=useState(false);
   const [choosing,setChoosing]=useState(false);
   const {openSubscription}=useSubscription();
   const [preview,setPreview]=useState(false);
@@ -71,6 +77,8 @@ export function StorePage({ data,user }) {
       <article><span><Package/></span><div><small>Products</small><b>{data.products.filter(p=>!p.isDemo).length}</b></div></article>
       <article><span><ArrowRight/></span><div><small>Pending orders</small><b>{pending.length}</b></div></article>
     </section>
+    <StoreSetupChecklist progress={setupProgress}/>
+    {setupProgress?.physicalProducts&&!setupProgress.delivery&&!deliveryDismissed&&<div style={{marginBottom:20}}><UpNext action={deliveryAction} onAction={()=>router.push(deliveryAction.href)} onDismiss={()=>setDeliveryDismissed(true)}/></div>}
     <div className={styles.storeOverviewGrid}>
       <section className={styles.storeOverviewSection}><div className={styles.sectionTitle}><h2>Needs attention</h2><button type="button" onClick={() => router.push(v11Routes.orders)}>View orders <ArrowRight/></button></div><div className={styles.taskList}>{pending.length > 0 && <button onClick={() => router.push(v11Routes.orders)}><span>{pending.length}</span><div><b>Orders waiting for review</b><p>Check payment and keep customers updated.</p></div><strong>Review <ArrowRight/></strong></button>}{lowStock.length > 0 && <button onClick={() => router.push(v11Routes.products)}><span>{lowStock.length}</span><div><b>Products low in stock</b><p>Update inventory before customers order.</p></div><strong>Update <ArrowRight/></strong></button>}{!pending.length && !lowStock.length && <div className={styles.quietTask}>Everything is up to date. Your store has no urgent tasks.</div>}</div></section>
       <section className={styles.storeOverviewSection}><div className={styles.sectionTitle}><h2>Recent orders</h2><button type="button" onClick={() => router.push(v11Routes.orders)}>View all <ArrowRight/></button></div>{recentOrders.length ? <div className={styles.storeRecentOrders}>{recentOrders.map(order => <button key={order._id} onClick={() => router.push(v11Routes.orders)}><span>{order.reference || order.orderNumber || "Order"}</span><small>{order.customer?.name || order.customerName || "Customer"} · ₦{Number(order.total || order.amount || 0).toLocaleString()}</small><Badge tone={String(order.status).toLowerCase() === "completed" ? "success" : "warning"}>{order.status || "Pending"}</Badge></button>)}</div> : <div className={styles.quietTask}>Orders will appear here when customers start purchasing.</div>}</section>
