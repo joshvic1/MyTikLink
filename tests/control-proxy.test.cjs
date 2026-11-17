@@ -29,3 +29,7 @@ test('CRM proxy forwards combined filters and pagination',async()=>{
 const filters={assignedStaff:'123456789012345678901234',followup:'overdue',whatsapp:'received',registration:'registered',storeStatus:'published',source:'TikTok Instant Form',campaign:'Storefront launch',temperature:'Hot',category:'Beauty',status:'Contacted',plan:'pro',limit:'100',page:'2'};
 const url=await forward({path:['crm'],...filters});assert.equal(url.pathname,'/api/control/crm');for(const [key,value]of Object.entries(filters))assert.equal(url.searchParams.get(key),value,key);
 });
+
+test('CRM progress stage zero, other stages and review filter reach the backend',async()=>{
+ for(const stage of ['0','1','2','3','4','5','review']){const url=await forward({path:['crm'],stage,source:'Manual Entry',plan:'free'});assert.equal(url.searchParams.get('stage'),stage);assert.equal(url.searchParams.get('source'),'Manual Entry');assert.equal(url.searchParams.get('plan'),'free');}
+});
