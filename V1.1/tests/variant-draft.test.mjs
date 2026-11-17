@@ -19,3 +19,8 @@ test('combination limit applies before expanding rows and removing all options c
  assert.ok(buildVariants([{name:'A',optionsText:values},{name:'B',optionsText:values}]).error);
  assert.deepEqual(buildVariants([]),{groups:[],inventory:[]});
 });
+
+test('colour thumbnails persist for selected values only',()=>{
+ const result=buildVariants([{name:'Color',kind:'color',options:['Red'],swatches:[{value:'Red',hex:'#ff0000'},{value:'Blue',hex:'#0000ff'}]}]);
+ assert.equal(result.groups[0].kind,'color');assert.deepEqual(result.groups[0].swatches,[{value:'Red',hex:'#ff0000'}]);
+});

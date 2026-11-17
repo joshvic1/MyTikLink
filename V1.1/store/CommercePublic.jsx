@@ -1,3 +1,4 @@
+import {isColor,colorHex} from './optionLibrary.mjs';
 import FlagIcon from '../components/FlagIcon';
 import {checkoutErrors} from "./checkoutValidation.mjs";
 import {currencyDigits} from "./currencies.mjs";
@@ -143,7 +144,7 @@ export function ProductDetails({
             </del>
           )}
 
-          <div ref={optionsRef}>{groups.map((g) => quick?<fieldset className={css.optionGroup} key={g.name} aria-invalid={attempted&&!variants[g.name]||undefined}><legend>{g.name}</legend><div>{g.options.map(v=><button type="button" key={v} aria-pressed={variants[g.name]===v} onClick={()=>setVariants(previous=>({...previous,[g.name]:v}))}>{v}</button>)}</div>{attempted&&!variants[g.name]&&<small className={css.optionError}>Please select {g.name}.</small>}</fieldset>:(
+          <div ref={optionsRef}>{groups.map((g) => (quick||isColor(g))?<fieldset className={css.optionGroup} key={g.name} aria-invalid={attempted&&!variants[g.name]||undefined}><legend>{g.name}</legend><div>{g.options.map(v=><button type="button" key={v} aria-pressed={variants[g.name]===v} onClick={()=>setVariants(previous=>({...previous,[g.name]:v}))}>{isColor(g)&&<span aria-hidden="true" style={{display:"inline-block",width:16,height:16,borderRadius:"50%",background:colorHex(g,v),border:"1px solid #0003",marginRight:6,verticalAlign:"middle"}}/>}{v}</button>)}</div>{attempted&&!variants[g.name]&&<small className={css.optionError}>Please select {g.name}.</small>}</fieldset>:(
             <Field key={g.name} label={g.name}>
               <select
                 aria-invalid={attempted&&!variants[g.name]||undefined}

@@ -1,127 +1,34 @@
-import {Plus} from 'lucide-react';
-import styles from '../styles/v11.module.css';
+import {flushSync} from 'react-dom';
+import {useEffect,useRef,useState} from 'react';
+import {Plus,X,Trash2,Pencil,Layers,Palette} from 'lucide-react';
+import NumericInput from '../components/NumericInput';
 import {buildVariants} from './variantDraft.mjs';
-import NumericInput from "../components/NumericInput";
-import { useRef, useState } from "react";
-import { Button, Field } from "../components/UI";
-export default function VariantEditor({ form, set }) {
-  const [draft, setDraft] = useState(() => form.variantGroups || []),
-    [error, setError] = useState("");
-  const cache=useRef(new Map());
-  const changeDraft=next=>{
-    for(const row of form.inventory||[])cache.current.set(JSON.stringify(row.values),row);
-    setDraft(next);
-    const result=buildVariants(next,[...cache.current.values()]);
-    setError(result.error||'');set('variantError',result.error||'');
-    if(result.error)return;
-    set('variantGroups',result.groups);set('inventory',result.inventory);
-    if(result.inventory.length)set('stock',result.inventory.reduce((sum,row)=>sum+Number(row.stock||0),0));
-  };
-  return (
-    <section className={styles.variantEditor}>
-      <h3>Product options</h3>
-      <p>Available stock excludes units held by unpaid orders.</p>
-      <label className={styles.productCheckbox}>
-        <input
-          type="checkbox"
-          checked={form.trackStock !== false}
-          onChange={(e) => set("trackStock", e.target.checked)}
-        />{" "}
-        <span>Track available stock</span>
-      </label>
-      {draft.map((g, i) => (
-        <div key={i}>
-          <Field label={`Option ${i + 1} name`}>
-            <input
-              value={g.name}
-              placeholder="Size"
-              onChange={(e) =>
-                changeDraft(
-                  draft.map((v, n) =>
-                    n === i ? { ...v, name: e.target.value } : v,
-                  ),
-                )
-              }
-            />
-          </Field>
-          <Field label="Values, separated by commas">
-            <input
-              value={g.optionsText ?? g.options.join(", ")}
-              placeholder="Small, Medium, Large"
-              onChange={(e) =>
-                changeDraft(
-                  draft.map((v, n) =>
-                    n === i ? { ...v, optionsText: e.target.value } : v,
-                  ),
-                )
-              }
-            />
-          </Field>
-          <Button
-            type="button"
-            variant="secondary"
-            onClick={() => changeDraft(draft.filter((_, n) => n !== i))}
-          >
-            Remove option
-          </Button>
-        </div>
-      ))}
-      <div style={{ display: "flex", gap: 8, margin: "12px 0" }}>
-        <Button
-          type="button"
-          variant="secondary"
-          className={styles.addProductOption}
-          disabled={draft.length >= 4}
-          onClick={() => changeDraft([...draft, { name: "", options: [] }])}
-        >
-          <Plus size={16}/> Add option
-        </Button>
-      </div>
-      {error && <p role="alert">{error}</p>}
-      {form.inventory?.map((row, i) => (
-        <div
-          key={i}
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 90px 1fr",
-            gap: 10,
-            alignItems: "center",
-            marginBottom: 8,
-          }}
-        >
-          <strong>{Object.values(row.values).join(" / ")}</strong>
-          <Field label="Stock">
-            <NumericInput
-              type="number"
-              min={0}
-              value={row.stock}
-              onChange={(e) => {
-                const rows = form.inventory.map((v, n) =>
-                  n === i ? { ...v, stock: Number(e.target.value) } : v,
-                );
-                set("inventory", rows);
-                set(
-                  "stock",
-                  rows.reduce((n, v) => n + Number(v.stock), 0),
-                );
-              }}
-            />
-          </Field>
-          <Field label="SKU">
-            <input
-              value={row.sku || ""}
-              onChange={(e) =>
-                set(
-                  "inventory",
-                  form.inventory.map((v, n) =>
-                    n === i ? { ...v, sku: e.target.value } : v,
-                  ),
-                )
-              }
-            />
-          </Field>
-        </div>
-      ))}
-    </section>
-  );
+import {optionPresets,isColor,colorHex} from './optionLibrary.mjs';
+import styles from '../styles/v11.module.css';
+import css from './VariantEditor.module.css';
+export default function VariantEditor({form,set}){
+ const [draft,setDraft]=useState(()=>form.variantGroups||[]),[library,setLibrary]=useState(false),[editing,setEditing]=useState(null),[value,setValue]=useState(''),[custom,setCustom]=useState(''),[error,setError]=useState('');
+ const cache=useRef(new Map()),cards=useRef([]),libraryRef=useRef(null),valueInput=useRef(null),customInput=useRef(null);
+ const [customOpen,setCustomOpen]=useState(false),[valueOpen,setValueOpen]=useState(false);
+ const reveal=(node,block='center')=>node?.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block});
+ useEffect(()=>{if(library)reveal(libraryRef.current);},[library]);
+ useEffect(()=>{if(editing!==null)reveal(cards.current[editing],'start');},[editing]);
+ useEffect(()=>{const outside=e=>{if(editing!==null&&!cards.current[editing]?.contains(e.target)){setEditing(null);setValueOpen(false);}};document.addEventListener('pointerdown',outside);return()=>{document.removeEventListener('pointerdown',outside);};},[editing]);
+ function showValue(){flushSync(()=>{setValueOpen(true);setValue('');});valueInput.current?.focus({preventScroll:true});reveal(valueInput.current,'center');}
+ function showCustom(){flushSync(()=>setCustomOpen(true));customInput.current?.focus({preventScroll:true});reveal(customInput.current,'center');}
+
+ function change(next){for(const row of form.inventory||[])cache.current.set(JSON.stringify(row.values),row);setDraft(next);const result=buildVariants(next,[...cache.current.values()]);setError(result.error||'');set('variantError',result.error||'');if(result.error)return;set('variantGroups',result.groups);set('inventory',result.inventory);if(result.inventory.length)set('stock',result.inventory.reduce((n,row)=>n+Number(row.stock||0),0));}
+ const update=(i,patch)=>change(draft.map((g,n)=>n===i?{...g,...patch}:g));
+ function addGroup(name){name=name.trim();if(!name)return;if(draft.some(g=>g.name.toLowerCase()===name.toLowerCase())){setError('That option is already added.');return;}const next=[...draft,{name,options:[],...(isColor({name})?{kind:'color'}:{})}];change(next);setEditing(next.length-1);setLibrary(false);setCustomOpen(false);setValueOpen(false);setCustom('');setValue('');}
+ function addValue(i,text){text=text.trim();if(!text||draft[i].options.includes(text))return;if(draft[i].options.length>=20){setError('Use up to 20 values per option.');return;}update(i,{options:[...draft[i].options,text]});setValue('');setValueOpen(false);}
+ function stock(i,key,v){const rows=form.inventory.map((row,n)=>n===i?{...row,[key]:v}:row);set('inventory',rows);if(key==='stock')set('stock',rows.reduce((n,row)=>n+Number(row.stock||0),0));}
+ return <section className={css.editor}><h3>Product options</h3>{form.productType==='physical'&&<><label className={styles.productCheckbox}><input type="checkbox" checked={form.trackStock!==false} onChange={e=>set('trackStock',e.target.checked)}/><span>Track available stock</span></label><p className={css.hint}>Available stock excludes units held by unpaid orders.</p></>}
+ {draft.map((g,i)=><section className={css.group} key={i} ref={node=>{cards.current[i]=node;}}><header><span className={css.icon}>{isColor(g)?<Palette size={18}/>:<Layers size={18}/>}</span><div><strong>{g.name}</strong><small>{g.options.length} values</small></div><button type="button" aria-label={`Edit ${g.name}`} onClick={()=>{setEditing(editing===i?null:i);setValue('');}}><Pencil size={15}/></button><button type="button" aria-label={`Remove ${g.name}`} onClick={()=>{change(draft.filter((_,n)=>n!==i));setEditing(null);}}><Trash2 size={15}/></button></header>{editing!==i&&<div className={css.values}>{g.options.map(v=><button type="button" className={css.chip} key={v} aria-label={`Edit ${g.name}: ${v}`} onClick={()=>{setValueOpen(false);setEditing(i);}}>{isColor(g)&&<i style={{background:colorHex(g,v)}}/>}{v}</button>)}</div>}
+ {editing===i&&<div className={css.edit}><label>Option name<input maxLength={60} value={g.name} onChange={e=>update(i,{name:e.target.value})}/></label><div className={`${css.presets} ${isColor(g)?css.colorChoices:''}`}>{[...new Set([...(optionPresets[g.name]||[]),...g.options])].map(v=><button type="button" key={v} aria-pressed={g.options.includes(v)} className={g.options.includes(v)?css.selectedValue:undefined} onClick={()=>g.options.includes(v)?update(i,{options:g.options.filter(x=>x!==v)}):addValue(i,v)}>{isColor(g)&&<i style={{background:colorHex(g,v)}}/>}{g.options.includes(v)?<X size={12}/>:<Plus size={12}/>} {v}</button>)}</div><button type="button" className={css.customValueTrigger} onClick={showValue}><Plus size={15}/> Add custom {g.name.toLowerCase()||'value'}</button>{valueOpen&&<label>Custom {g.name.toLowerCase()}<div className={css.custom}><input ref={valueInput} maxLength={100} placeholder="Type one value" value={value} onChange={e=>setValue(e.target.value)} onKeyDown={e=>{if(e.key==='Enter'){e.preventDefault();addValue(i,value);}}}/><button type="button" onClick={()=>addValue(i,value)} disabled={!value.trim()}>Add</button></div></label>}{isColor(g)&&g.options.length>0&&<div className={css.colorPalette}><small>Tap a swatch to adjust its colour</small><div>{g.options.map(v=><label className={css.colorTile} key={v} title={`Adjust ${v}`}><input type="color" aria-label={`${v} colour thumbnail`} value={colorHex(g,v)} onChange={e=>update(i,{swatches:[...(g.swatches||[]).filter(s=>s.value!==v),{value:v,hex:e.target.value}]})}/><span>{v}</span></label>)}</div></div>}</div>}</section>)}
+
+ {error&&<p role="alert" className={css.error}>{error}</p>}{library&&<section className={css.library} ref={libraryRef}><strong>Choose an option</strong><div className={css.presets}>{Object.keys(optionPresets).filter(name=>!draft.some(g=>g.name.toLowerCase()===name.toLowerCase())).map(name=><button type="button" key={name} onClick={()=>addGroup(name)}>{name}</button>)}<button type="button" className={css.ownOption} onClick={showCustom}><Plus size={16}/> Add your own</button></div>{customOpen&&<label>Create your own option<div className={css.custom}><input ref={customInput} placeholder="e.g. Pattern" maxLength={60} value={custom} onChange={e=>setCustom(e.target.value)} onKeyDown={e=>{if(e.key==='Enter'){e.preventDefault();addGroup(custom);}}}/><button type="button" disabled={!custom.trim()} onClick={()=>addGroup(custom)}>Add</button></div></label>}</section>}
+ {!library&&<button type="button" className={css.addOption} disabled={draft.length>=4} onClick={()=>{setEditing(null);setValueOpen(false);setLibrary(v=>!v);}}><Plus size={17}/> Add option</button>}
+
+ {Boolean(form.inventory?.length)&&<><div className={css.combinations}><Layers size={17}/><strong>Stock for each option</strong><small>{form.inventory.length} combinations</small></div><div className={css.table}><div className={css.row}><b>Option</b><b>SKU</b><b>Stock</b></div>{form.inventory.map((row,i)=>{const color=draft.find(isColor);return <div className={css.row} key={JSON.stringify(row.values)}><span>{color&&row.values[color.name]&&<i className={css.swatch} style={{background:colorHex(color,row.values[color.name])}}/>}{Object.values(row.values).join(' / ')}</span><input aria-label={`SKU for ${Object.values(row.values).join(' / ')}`} value={row.sku||''} onChange={e=>stock(i,'sku',e.target.value)}/><NumericInput type="number" min={0} aria-label={`Stock for ${Object.values(row.values).join(' / ')}`} value={row.stock} onChange={e=>stock(i,'stock',Number(e.target.value))}/></div>})}</div></>}
+ </section>;
 }
