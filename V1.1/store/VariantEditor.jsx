@@ -1,72 +1,33 @@
+import {Plus} from 'lucide-react';
+import styles from '../styles/v11.module.css';
+import {buildVariants} from './variantDraft.mjs';
 import NumericInput from "../components/NumericInput";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button, Field } from "../components/UI";
 export default function VariantEditor({ form, set }) {
   const [draft, setDraft] = useState(() => form.variantGroups || []),
     [error, setError] = useState("");
-  const generate = () => {
-    const names = new Set();
-    let rows = [{}];
-    for (const g of draft) {
-      const name = g.name.trim(),
-        options = [
-          ...new Set(
-            (g.optionsText ?? g.options.join(","))
-              .split(",")
-              .map((v) => v.trim())
-              .filter(Boolean),
-          ),
-        ];
-      if (!name || names.has(name) || !options.length) {
-        setError("Give every option a unique name and at least one value.");
-        return;
-      }
-      names.add(name);
-      rows = rows.flatMap((r) => options.map((v) => ({ ...r, [name]: v })));
-      if (rows.length > 100) {
-        setError("Use no more than 100 combinations.");
-        return;
-      }
-    }
-    const groups = draft.map((g) => ({
-      name: g.name.trim(),
-      options: [
-        ...new Set(
-          (g.optionsText ?? g.options.join(","))
-            .split(",")
-            .map((v) => v.trim())
-            .filter(Boolean),
-        ),
-      ],
-    }));
-    const inventory = groups.length
-      ? rows.map(
-          (values) =>
-            form.inventory?.find(
-              (r) => JSON.stringify(r.values) === JSON.stringify(values),
-            ) || { values, stock: 0, sku: "" },
-        )
-      : [];
-    set("variantGroups", groups);
-    set("inventory", inventory);
-    if (inventory.length)
-      set(
-        "stock",
-        inventory.reduce((n, r) => n + Number(r.stock), 0),
-      );
-    setError("");
+  const cache=useRef(new Map());
+  const changeDraft=next=>{
+    for(const row of form.inventory||[])cache.current.set(JSON.stringify(row.values),row);
+    setDraft(next);
+    const result=buildVariants(next,[...cache.current.values()]);
+    setError(result.error||'');set('variantError',result.error||'');
+    if(result.error)return;
+    set('variantGroups',result.groups);set('inventory',result.inventory);
+    if(result.inventory.length)set('stock',result.inventory.reduce((sum,row)=>sum+Number(row.stock||0),0));
   };
   return (
-    <section>
+    <section className={styles.variantEditor}>
       <h3>Product options</h3>
       <p>Available stock excludes units held by unpaid orders.</p>
-      <label>
+      <label className={styles.productCheckbox}>
         <input
           type="checkbox"
           checked={form.trackStock !== false}
           onChange={(e) => set("trackStock", e.target.checked)}
         />{" "}
-        Track available stock
+        <span>Track available stock</span>
       </label>
       {draft.map((g, i) => (
         <div key={i}>
@@ -75,8 +36,8 @@ export default function VariantEditor({ form, set }) {
               value={g.name}
               placeholder="Size"
               onChange={(e) =>
-                setDraft((d) =>
-                  d.map((v, n) =>
+                changeDraft(
+                  draft.map((v, n) =>
                     n === i ? { ...v, name: e.target.value } : v,
                   ),
                 )
@@ -88,8 +49,8 @@ export default function VariantEditor({ form, set }) {
               value={g.optionsText ?? g.options.join(", ")}
               placeholder="Small, Medium, Large"
               onChange={(e) =>
-                setDraft((d) =>
-                  d.map((v, n) =>
+                changeDraft(
+                  draft.map((v, n) =>
                     n === i ? { ...v, optionsText: e.target.value } : v,
                   ),
                 )
@@ -99,7 +60,7 @@ export default function VariantEditor({ form, set }) {
           <Button
             type="button"
             variant="secondary"
-            onClick={() => setDraft((d) => d.filter((_, n) => n !== i))}
+            onClick={() => changeDraft(draft.filter((_, n) => n !== i))}
           >
             Remove option
           </Button>
@@ -109,13 +70,11 @@ export default function VariantEditor({ form, set }) {
         <Button
           type="button"
           variant="secondary"
+          className={styles.addProductOption}
           disabled={draft.length >= 4}
-          onClick={() => setDraft((d) => [...d, { name: "", options: [] }])}
+          onClick={() => changeDraft([...draft, { name: "", options: [] }])}
         >
-          Add option
-        </Button>
-        <Button type="button" variant="secondary" onClick={generate}>
-          Apply options
+          <Plus size={16}/> Add option
         </Button>
       </div>
       {error && <p role="alert">{error}</p>}

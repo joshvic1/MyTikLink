@@ -268,3 +268,5 @@
 .app .row:hover:not(:disabled){background:#fff!important;transform:none}
 .app .row.unreadRow,.app .row.unreadRow:hover:not(:disabled){background:#f2f5fb!important}
 .app .row.selected{border-left-color:#8a65c7}
+
+.leadDetailsCard{display:flex;align-items:center;gap:12px;width:100%;padding:16px;margin:12px 0;border:1px solid #e0d5f1;border-radius:16px;background:linear-gradient(115deg,#f4edff,#fff);color:#684393;text-align:left;cursor:pointer}.leadDetailsCard>span{display:grid;gap:4px;flex:1}.leadDetailsCard strong{font-size:13px}.leadDetailsCard small{font-size:11px;color:#8b7b9d;line-height:1.4}.leadDetailsCard>svg{flex:none}.leadDetailsCard:hover{background:#eee4fb}.leadDetailsCard:focus-visible{outline:3px solid #b390db;outline-offset:2px}
