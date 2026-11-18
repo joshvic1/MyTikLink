@@ -270,3 +270,5 @@
 .app .row.selected{border-left-color:#8a65c7}
 
 .leadDetailsCard{display:flex;align-items:center;gap:12px;width:100%;padding:16px;margin:12px 0;border:1px solid #e0d5f1;border-radius:16px;background:linear-gradient(115deg,#f4edff,#fff);color:#684393;text-align:left;cursor:pointer}.leadDetailsCard>span{display:grid;gap:4px;flex:1}.leadDetailsCard strong{font-size:13px}.leadDetailsCard small{font-size:11px;color:#8b7b9d;line-height:1.4}.leadDetailsCard>svg{flex:none}.leadDetailsCard:hover{background:#eee4fb}.leadDetailsCard:focus-visible{outline:3px solid #b390db;outline-offset:2px}
+
+.followupAlertDetails{display:flex!important;align-items:center;flex-wrap:wrap;gap:10px;margin-top:8px}.followupAlertDetails em{font-style:normal;font-size:11px;font-weight:700;border:1px solid #e2d5ef;border-radius:20px;padding:3px 10px;background:#f3eafa;color:#764c98}.followupAlertDetails strong{font-size:12px;font-weight:600;color:#554866;user-select:text}
