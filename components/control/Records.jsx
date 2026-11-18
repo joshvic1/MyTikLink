@@ -6,7 +6,7 @@ import {RecordVisual,CopyLink,TemplatePreview} from './RecordVisuals';
 
 
 
-import {useState,useEffect,useCallback} from 'react';
+import {useState,useEffect,useCallback,useRef} from 'react';
 
 
 
@@ -54,7 +54,7 @@ export default function Records({module}){
 
 
 
- useEffect(()=>{const c=new AbortController();setLoading(true);setError('');const params=new URLSearchParams({page:String(page),search:debounced,status,plan,cycle,sort,...(ownerTerm?{ownerSearch:ownerTerm}:{}),...Object.fromEntries(['owner','account','template','recovery','from','to','productType','paymentStatus','provider'].filter(k=>router.query[k]).map(k=>[k,router.query[k]]))});request(`/control/records/${module}?${params}`,{signal:c.signal}).then(setData).catch(e=>{if(e.name!=='AbortError'){setError(e.message);setData(null);}}).finally(()=>{if(!c.signal.aborted)setLoading(false);});return()=>c.abort();},[module,page,debounced,status,plan,cycle,sort,tick,ownerTerm,router.query.owner,router.query.account,router.query.template,router.query.recovery,router.query.from,router.query.to,router.query.productType,router.query.paymentStatus,router.query.provider]);
+ useEffect(()=>{const c=new AbortController();setLoading(true);setError('');const params=new URLSearchParams({page:String(page),search:debounced,status,plan,cycle,sort,...(ownerTerm?{ownerSearch:ownerTerm}:{}),...Object.fromEntries(['owner','account','template','recovery','from','to','productType','paymentStatus','provider','minProducts','maxProducts'].filter(k=>router.query[k]).map(k=>[k,router.query[k]]))});request(`/control/records/${module}?${params}`,{signal:c.signal}).then(setData).catch(e=>{if(e.name!=='AbortError'){setError(e.message);setData(null);}}).finally(()=>{if(!c.signal.aborted)setLoading(false);});return()=>c.abort();},[module,page,debounced,status,plan,cycle,sort,tick,ownerTerm,router.query.owner,router.query.account,router.query.template,router.query.recovery,router.query.from,router.query.to,router.query.productType,router.query.paymentStatus,router.query.provider,router.query.minProducts,router.query.maxProducts]);
 
 
 
@@ -86,7 +86,7 @@ export default function Records({module}){
 
 
 
- return <><div className={s.filterBar}><label className={s.search}><Search size={17}/><input aria-label="Search records" placeholder={`Search ${module.replace(/-/g,' ')}…`} value={search} onChange={e=>{setSearch(e.target.value);setPage(1);}}/></label>
+ return <><div className={`${s.filterBar} ${module==='stores'?s.storeFilters:''}`}><label className={s.search}><Search size={17}/><input aria-label="Search records" placeholder={`Search ${module.replace(/-/g,' ')}…`} value={search} onChange={e=>{setSearch(e.target.value);setPage(1);}}/></label>
 
 
 
@@ -94,11 +94,11 @@ export default function Records({module}){
 
 
 
- {statuses[module]&&<label className={s.selectLabel}><SlidersHorizontal size={15}/><select aria-label="Filter status" value={status} onChange={e=>filter(setStatus,e.target.value)}><option value="">All statuses</option>{statuses[module].map(v=><option key={v} value={v}>{v==='true'?'Yes':v==='false'?'No':display(v)}</option>)}</select></label>}
+ {statuses[module]&&<label className={s.selectLabel}><SlidersHorizontal size={15}/><select aria-label="Filter status" value={status} onChange={e=>filter(setStatus,e.target.value)}><option value="">{module==='stores'?'All access statuses':'All statuses'}</option>{statuses[module].map(v=><option key={v} value={v}>{v==='true'?(module==='stores'?'Accessible':'Yes'):v==='false'?(module==='stores'?'Unavailable':'No'):display(v)}</option>)}</select></label>}
 
 
 
- {['users','subscriptions'].includes(module)&&<><select aria-label="Filter plan" value={plan} onChange={e=>filter(setPlan,e.target.value)}><option value="">All plans</option>{['free','standard_monthly','standard_yearly','pro_monthly','pro_yearly'].map(p=><option key={p} value={p}>{display(p)}</option>)}</select><select aria-label="Billing cycle" value={cycle} onChange={e=>filter(setCycle,e.target.value)}><option value="">All cycles</option><option value="monthly">Monthly</option><option value="yearly">Yearly</option></select></>}
+ {['users','subscriptions','stores'].includes(module)&&<><select aria-label="Filter plan" value={plan} onChange={e=>filter(setPlan,e.target.value)}><option value="">All plans</option>{['free','standard_monthly','standard_yearly','pro_monthly','pro_yearly'].map(p=><option key={p} value={p}>{display(p)}</option>)}</select><select aria-label="Billing cycle" value={cycle} onChange={e=>filter(setCycle,e.target.value)}><option value="">All cycles</option><option value="monthly">Monthly</option><option value="yearly">Yearly</option></select></>}
 
 
 
@@ -106,7 +106,8 @@ export default function Records({module}){
 
  {[["productType",module==='products'?['physical','digital','service']:[]],["paymentStatus",module==='orders'?['pending','paid','refunded']:[]],["provider",module==='transactions'?['current','legacy']:[]]].filter(([,values])=>values.length).map(([key,values])=><select key={key} aria-label={key} value={router.query[key]||''} onChange={e=>{setPage(1);router.push({pathname:router.pathname,query:{...router.query,[key]:e.target.value,page:1}},undefined,{shallow:true});}}><option value="">All {key==='provider'?'Paystack accounts':key==='productType'?'product types':'payment statuses'}</option>{values.map(v=><option key={v} value={v}>{v}</option>)}</select>)}
 
- {['from','to'].map(key=><label key={key}>{key==='from'?'From':'To'}<input type="date" value={router.query[key]||''} onChange={e=>{setPage(1);router.push({pathname:router.pathname,query:{...router.query,[key]:e.target.value,page:1}},undefined,{shallow:true});}}/></label>)}
+ {module==='stores'&&<>{[['minProducts','Min. real products'],['maxProducts','Max. real products']].map(([key,label])=><label key={key}>{label}<input type="number" min="0" step="1" placeholder="Any" value={router.query[key]||''} onChange={e=>{setPage(1);router.push({pathname:router.pathname,query:{...router.query,[key]:e.target.value,page:1}},undefined,{shallow:true});}}/></label>)}</>}
+ {['from','to'].map(key=><label key={key}>{key==='from'?'Created from':'Created to'}<input type="date" value={router.query[key]||''} onChange={e=>{setPage(1);router.push({pathname:router.pathname,query:{...router.query,[key]:e.target.value,page:1}},undefined,{shallow:true});}}/></label>)}
 
  <button className={s.button} onClick={()=>{setSort('newest');setSearch('');setOwnerSearch('');setStatus('');setPlan('');setCycle('');setPage(1);router.push(href(module));}}>Reset filters</button><select aria-label="Sort records" value={sort} onChange={e=>filter(setSort,e.target.value)}><option value="newest">Newest first</option><option value="oldest">Oldest first</option></select><button onClick={()=>setTick(n=>n+1)} className={s.iconButton} aria-label="Refresh records"><RefreshCw size={17}/></button></div>
 
@@ -132,7 +133,7 @@ export default function Records({module}){
 
 
 
- {error?<ErrorBox error={error} retry={()=>setTick(n=>n+1)}/>:<section className={s.panel}><div className={s.tableHeading}><span><strong>{data?.total?.toLocaleString()??'—'}</strong> records</span><small>Server-side search · 25 per page</small></div>{loading?<Loading/>:!data?.items.length?<Empty/>:<div className={s.tableWrap}><table className={s.table}><thead><tr>{cols.map(([key,label])=><th key={key}>{label}</th>)}<th><span className={s.srOnly}>Actions</span></th></tr></thead><tbody>{data.items.map(row=><tr key={row._id}>{cols.map(([key,label],i)=><td key={key} data-label={label}>{i===0?<div className={s.recordIdentity}><RecordVisual module={module} record={row}/><div className={s.identityText}><button className={s.recordLink} onClick={()=>inspect(row)}>{display(get(row,key),key)}</button><CreatedAt value={row.createdAt} label={module==="users"?"Joined":module==="subscriptions"?"Account created":["audit","activity"].includes(module)?"Recorded":"Created"}/>{module==='pages'&&row.templateInfo&&<small className={s.cellSub}>Template: {row.templateInfo.name}</small>}{module==='products'&&row.storeInfo&&<small className={s.cellSub}>{row.storeInfo.name}</small>}</div></div>:['status','plan','isActive','isPublished','enabled','v11Disabled','paymentStatus'].includes(key)?<Badge value={get(row,key)}/>:key.startsWith('ownerLabel.')&&row.ownerId&&allowed(actor,'users.view')?<Link className={s.contextLink} href={recordHref('users',row.ownerId)}>{display(get(row,key),key)}</Link>:key==='store'&&row.store&&allowed(actor,'stores.view')?<Link className={s.contextLink} href={recordHref('stores',row.store)}>{row.storeInfo?.name||row.store}{row.storeInfo?.name&&<small className={s.cellSub}>{row.store}</small>}</Link>:<span title={display(get(row,key),key)}>{display(get(row,key),key)}</span>}</td>)}<td data-label="Details"><button className={s.iconButton} aria-label={`Inspect ${get(row,cols[0]?.[0])||'record'}`} onClick={()=>inspect(row)}><ArrowUpRight size={17}/></button></td></tr>)}</tbody></table></div>}<div className={s.pagination}><span>Page {page} of {Math.max(1,Math.ceil((data?.total||0)/25))}</span><div><button disabled={page===1||loading} onClick={()=>setPage(p=>p-1)} className={s.button}><ChevronLeft size={15}/>Previous</button><button disabled={loading||page*25>=(data?.total||0)} onClick={()=>setPage(p=>p+1)} className={s.button}>Next<ChevronRight size={15}/></button></div></div></section>}
+ {error?<ErrorBox error={error} retry={()=>setTick(n=>n+1)}/>:<section className={s.panel}><div className={s.tableHeading}><span><strong>{data?.total?.toLocaleString()??'—'}</strong> records</span><small>Server-side search · 25 per page</small></div>{loading?<Loading/>:!data?.items.length?<Empty/>:<div className={s.tableWrap}><table className={s.table}><thead><tr>{cols.map(([key,label])=><th key={key}>{label}</th>)}<th><span className={s.srOnly}>Actions</span></th></tr></thead><tbody>{data.items.map(row=><tr key={row._id}>{cols.map(([key,label],i)=><td key={key} data-label={label}>{i===0?<div className={s.recordIdentity}><RecordVisual module={module} record={row}/><div className={s.identityText}><button className={s.recordLink} onClick={()=>inspect(row)}>{display(get(row,key),key)}</button><CreatedAt value={row.createdAt} label={module==="users"?"Joined":module==="subscriptions"?"Account created":["audit","activity"].includes(module)?"Recorded":"Created"}/>{module==='pages'&&row.templateInfo&&<small className={s.cellSub}>Template: {row.templateInfo.name}</small>}{module==='products'&&row.storeInfo&&<small className={s.cellSub}>{row.storeInfo.name}</small>}</div></div>:['availability','ownerPlan','status','plan','isActive','isPublished','enabled','v11Disabled','paymentStatus'].includes(key)?<Badge value={get(row,key)}/>:key.startsWith('ownerLabel.')&&row.ownerId&&allowed(actor,'users.view')?<Link className={s.contextLink} href={recordHref('users',row.ownerId)}>{display(get(row,key),key)}</Link>:key==='store'&&row.store&&allowed(actor,'stores.view')?<Link className={s.contextLink} href={recordHref('stores',row.store)}>{row.storeInfo?.name||row.store}{row.storeInfo?.name&&<small className={s.cellSub}>{row.store}</small>}</Link>:<span title={display(get(row,key),key)}>{display(get(row,key),key)}</span>}</td>)}<td data-label="Details"><button className={s.iconButton} aria-label={`Inspect ${get(row,cols[0]?.[0])||'record'}`} onClick={()=>inspect(row)}><ArrowUpRight size={17}/></button></td></tr>)}</tbody></table></div>}<div className={s.pagination}><span>Page {page} of {Math.max(1,Math.ceil((data?.total||0)/25))}</span><div><button disabled={page===1||loading} onClick={()=>setPage(p=>p-1)} className={s.button}><ChevronLeft size={15}/>Previous</button><button disabled={loading||page*25>=(data?.total||0)} onClick={()=>setPage(p=>p+1)} className={s.button}>Next<ChevronRight size={15}/></button></div></div></section>}
 
 
 
@@ -149,6 +150,10 @@ export default function Records({module}){
 
 
 function Detail({module,record,onClose,onUpdated,actor}){
+ const [ownerRecord,setOwnerRecord]=useState(null),[ownerError,setOwnerError]=useState(''),[ownerLoading,setOwnerLoading]=useState(false);
+ const ownerRequest=useRef(0);useEffect(()=>()=>{ownerRequest.current++;},[]);
+ const closeOwner=useCallback(()=>{ownerRequest.current++;setOwnerRecord(null);setOwnerError('');setOwnerLoading(false);},[]);
+ async function openOwner(id){const version=++ownerRequest.current;setOwnerLoading(true);setOwnerError('');try{const result=await request('/control/records/users/'+encodeURIComponent(id));if(version===ownerRequest.current)setOwnerRecord(result.item);}catch(e){if(version===ownerRequest.current)setOwnerError(e.message);}finally{if(version===ownerRequest.current)setOwnerLoading(false);}}
 
 
 
@@ -282,7 +287,9 @@ function Detail({module,record,onClose,onUpdated,actor}){
 
 
 
- <RecordRelations module={module} record={record} actor={actor}/>
+ <RecordRelations module={module} record={record} actor={actor} onOpenOwner={module==='stores'?openOwner:undefined}/>
+ {ownerRecord&&<Detail module="users" record={ownerRecord} actor={actor} onClose={closeOwner} onUpdated={onUpdated}/>}
+ {(ownerLoading||ownerError)&&<Dialog title="Store owner" onClose={closeOwner}>{ownerLoading?<Loading/>:<ErrorBox error={ownerError} retry={()=>openOwner(record.ownerId||record.user)}/>}</Dialog>}
 
 
 

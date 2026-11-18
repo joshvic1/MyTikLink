@@ -46,7 +46,7 @@ export const columns={
 
  links:[['title','Link'],['ownerLabel.email','Owner'],['linkId','Slug'],['redirectCount','Clicks'],['maxRedirects','Click limit'],['v11Disabled','Disabled']],
 
- stores:[['name','Store'],['ownerLabel.email','Owner'],['businessType','Type'],['theme','Theme'],['isPublished','Legacy published'],['paymentMethod','Payment method']],
+ stores:[['name','Store'],['ownerLabel.email','Owner'],['businessType','Type'],['ownerPlan','Owner plan'],['availability','Store access'],['productsCount','Real products']],
 
  products:[['name','Product'],['productType','Type'],['price','Price'],['status','Status'],['category','Category']],
 

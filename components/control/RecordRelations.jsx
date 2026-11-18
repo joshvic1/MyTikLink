@@ -5,7 +5,7 @@ import {Badge} from './Shared';
 import {RecordVisual} from './RecordVisuals';
 import s from './Control.module.css';
 export const recordHref=(module,id)=>`${href(module)}?record=${encodeURIComponent(id)}`;
-export default function RecordRelations({module,record,actor}){
+export default function RecordRelations({module,record,actor,onOpenOwner}){
  const links=[];
  const add=(label,kind,id,permission)=>{if(id&&allowed(actor,permission))links.push([label,recordHref(kind,id)]);};
  const owner=record.ownerId||record.user||record.userId||record.owner;
@@ -28,6 +28,6 @@ export default function RecordRelations({module,record,actor}){
  }
  const store=record.storeInfo;
  return <>{record.store&&<section className={s.contextSection}><h3>Store information</h3>{store?<><div className={s.contextIdentity}><RecordVisual module="stores" record={store}/><div><strong>{store.name}</strong><small>{store._id}</small></div><span title="Existing legacy publication flag; V1.1 availability also depends on its page and account"><Badge value={store.isPublished?'Legacy published':'Legacy unpublished'}/></span></div>{record.ownerLabel&&<p className={s.muted}>{record.ownerLabel.name} · {record.ownerLabel.email}</p>}</>:<p className={s.muted}>{allowed(actor,'stores.view')?'Store missing or deleted.':'Store details require storefront access.'}</p>}</section>}
- {links.length>0&&<nav className={s.related} aria-label="Related records">{links.map(([label,url])=><Link key={label} href={url}>{label}<ArrowUpRight size={14}/></Link>)}</nav>}
+ {links.length>0&&<nav className={s.related} aria-label="Related records">{links.map(([label,url])=>onOpenOwner&&label==='View owner'?<button type="button" key={label} onClick={()=>onOpenOwner(owner)}>{label}<ArrowUpRight size={14}/></button>:<Link key={label} href={url}>{label}<ArrowUpRight size={14}/></Link>)}</nav>}
  {module==='orders'&&record.items?.length>0&&<section className={s.contextSection}><h3>Ordered products</h3>{record.items.map((item,i)=><div className={s.orderItem} key={`${item.productId}-${i}`}><RecordVisual module="products" record={{name:item.name,images:[item.image]}}/><div>{item.productId&&allowed(actor,'products.view')?<Link href={recordHref('products',item.productId)}>{item.name||'View product'}<ArrowUpRight size={12}/></Link>:<strong>{item.name||'Product'}</strong>}<small>{item.quantity} × {item.price?.toLocaleString()} NGN</small></div></div>)}</section>}</>;
 }
