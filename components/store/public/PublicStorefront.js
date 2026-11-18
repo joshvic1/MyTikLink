@@ -102,7 +102,8 @@ export default function PublicStorefront({ customDomain }) {
         sections={store.storefrontPage?.customContent || []}
         page={{
           ...store.storefrontPage,
-          products,
+          products:store.serviceBusiness?[]:products,
+          serviceBusiness:store.serviceBusiness,
           storeSlug:store.slug,
           builder: false,
         }}

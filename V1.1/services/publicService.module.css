@@ -25,3 +25,5 @@
 .modal[data-popup-tone]>header h2{font-family:var(--store-heading)!important;color:var(--store-ink)!important;font-weight:var(--service-heading-weight,650)!important;font-size:20px!important;letter-spacing:normal}
 .modal[data-popup-tone]>footer{display:block!important;background:var(--store-paper)!important;border-top:1px solid var(--store-line)!important}
 .modal[data-popup-tone]>footer>.primary{display:flex;width:100%!important;max-width:none;box-sizing:border-box;grid-column:1/-1;flex:1;min-height:46px}
+
+.detail .primary,.modal .primary{background:var(--store-accent,#194d46)!important;color:var(--store-on-accent,#fff)!important;width:100%;border-color:var(--store-accent,#194d46)!important}

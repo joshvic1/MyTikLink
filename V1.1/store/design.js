@@ -44,9 +44,15 @@ export function validateSetup(input){
  if(!/^\d{10,34}$/.test(data.accountNumber))throw Error("Enter a bank account number containing 10–34 digits.");
  if(!["physical","digital"].includes(input.businessType))throw Error("Choose what you sell.");return {...data,businessType:input.businessType};
 }
-export function changeTheme(design,theme){const preset=defaultDesign(theme);const next={...design,theme:preset.theme,themeVersion:1,brand:{...design.brand,accent:design.brand.accent,background:preset.brand.background,font:preset.brand.font,headingFont:preset.brand.font,bodyFont:preset.brand.font,headingWeight:["streetline","streetline-services"].includes(theme)?700:400,bodyWeight:400,radius:preset.brand.radius},layout:preset.layout,sections:design.sections.map(s=>s.type==="hero"?{...s,visible:theme!=="essential",title:["Discover something you’ll love","Discover something you'll love"].includes(s.title)?"{{store.name}}":s.title}:s)};if(['forme','roselle'].includes(theme)){next.brand={...next.brand,surface:preset.brand.surface,text:preset.brand.text,border:preset.brand.border,secondary:preset.brand.secondary,headingFont:preset.brand.headingFont,bodyFont:preset.brand.bodyFont};next.sections=next.sections.map(s=>s.type==='hero'?{...s,settings:{...s.settings,buttonStyle:'brand'}}:s.type==='categories'?{...s,visible:false}:s);return next;}if(['atelier-services','streetline-services','digital-library','launchpad','signal-studio','dataflow'].includes(theme)){
- next.sections=next.sections.map(s=>{const source=preset.sections.find(p=>p.type===s.type);if(!source)return s;if(s.type==='categories')return {...s,visible:false};if(s.type==='hero')return {...s,settings:{...s.settings,ctaLabel:theme==='launchpad'?'Explore the resources':theme==='digital-library'?'Find something helpful':'Explore services',ctaType:'catalogue'},text:s.text||source.text};if(s.type==='catalogue'&&['Shop our products','The collection'].includes(s.title))return {...s,title:source.title};if(s.type==='category-grid'&&s.title==='Shop by category')return {...s,title:source.title};if(s.type==='featured'&&s.title==='Featured products')return {...s,title:source.title};return s;});return next;
- }return ["atelier","streetline"].includes(theme)?applyAtelierHero(next):next;}
+export function changeTheme(design,theme){
+ const preset=defaultDesign(theme);
+ const contentKeys=['title','text','image','items','productIds','links'];
+ const used=new Set();
+ const sections=preset.sections.map(section=>{const old=(design.sections||[]).find(s=>s.type===section.type&&!used.has(s.id));if(!old)return section;used.add(old.id);const content=Object.fromEntries(contentKeys.filter(k=>old[k]!==undefined).map(k=>[k,old[k]]));return {...section,...content,id:old.id};});
+ // Keep merchant-added sections without carrying the old theme's layout defaults.
+ sections.splice(Math.max(0,sections.length-1),0,...(design.sections||[]).filter(s=>!used.has(s.id)&&!preset.sections.some(p=>p.type===s.type)));
+ return {...design,...preset,brand:{...preset.brand,logo:design.brand?.logo||'',favicon:design.brand?.favicon||'',accentSource:'custom'},sections};
+}
 
 export function resolveStoreText(value,store={}){return String(value||"").replace(/\{\{store\.(name|description|category|phone|email|address)\}\}/g,(_,key)=>String(store[key]||""));}
 export function validatePreferences(input={}){return {address:text(input.address,300).trim(),description:text(input.description,600).trim(),showFeatured:input.showFeatured===true};}

@@ -245,8 +245,7 @@ export function Shell({ user, onLogout, children, onCreate, onAddProduct, hasSto
   }, [isStoreManagement]);
   const serviceBusiness=servicesEnabled&&['physical_services','digital_services'].includes(user?.onboarding?.businessFocus);
   const [hasExistingServices,setHasExistingServices]=useState(false),[productHistory,setProductHistory]=useState(true);
-  useEffect(()=>{if(!servicesEnabled||!hasStore)return;let active=true;serviceApi('/summary').then(d=>{if(active){setHasExistingServices(d.services>0);setProductHistory(d.hasProducts||d.hasOrders);}}).catch(()=>{});return()=>{active=false;};},[hasStore,activePath]);
-  const hasServices=serviceBusiness||hasExistingServices;
+  const hasServices=serviceBusiness;
   const serviceDock=storeMobileItems.map(item=>item.key==='products'?{...item,key:'services',label:'Services',mobileLabel:'Services',href:'/v1-1/store/services'}:item.key==='orders'?{...item,key:'bookings',label:'Bookings',mobileLabel:'Bookings',href:'/v1-1/store/bookings'}:item);
   const dockItems = isStoreManagement ? serviceBusiness?serviceDock:storeMobileItems : mobileItems;
   const [menuOpen, setMenuOpen] = useState(false),
@@ -336,7 +335,7 @@ export function Shell({ user, onLogout, children, onCreate, onAddProduct, hasSto
           <VersionBadge/>
         </Link>
         <nav>
-          <NavItems hasStore={hasStore} hasServices={hasServices} showProductLinks={!serviceBusiness||productHistory}
+          <NavItems hasStore={hasStore} hasServices={hasServices} showProductLinks={!serviceBusiness}
             current={current}
             storeExpanded={
               storeExpanded ||
@@ -425,9 +424,9 @@ export function Shell({ user, onLogout, children, onCreate, onAddProduct, hasSto
             isStoreManagement ? "Storefront navigation" : "MyTikLink navigation"
           }
         >
-          <NavItems hasStore={hasStore} hasServices={hasServices} showProductLinks={!serviceBusiness||productHistory} compact current={current} items={dockItems.slice(0, 2)} />
+          <NavItems hasStore={hasStore} hasServices={hasServices} showProductLinks={!serviceBusiness} compact current={current} items={dockItems.slice(0, 2)} />
           <span className={styles.mobileNavCenter} aria-hidden="true" />
-          <NavItems hasStore={hasStore} hasServices={hasServices} showProductLinks={!serviceBusiness||productHistory} compact current={current} items={dockItems.slice(2)} />
+          <NavItems hasStore={hasStore} hasServices={hasServices} showProductLinks={!serviceBusiness} compact current={current} items={dockItems.slice(2)} />
         </nav>
         <button
           type="button"
@@ -481,7 +480,7 @@ export function Shell({ user, onLogout, children, onCreate, onAddProduct, hasSto
               </IconButton>
             </header>
             <nav className={styles.drawerNavigation}>
-              <NavItems hasStore={hasStore} hasServices={hasServices} showProductLinks={!serviceBusiness||productHistory}
+              <NavItems hasStore={hasStore} hasServices={hasServices} showProductLinks={!serviceBusiness}
                 current={current}
                 close={closeMenu}
                 storeExpanded={

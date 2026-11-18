@@ -46,7 +46,7 @@ function StoreStatusCard({ live, url, onCopy, onDesign, onVisit }) {
 export function StorePage({ data,user }) {
   const router = useRouter();
   const serviceBusiness=servicesEnabled&&['physical_services','digital_services'].includes(user?.onboarding?.businessFocus);
-  const showProductOverview=!serviceBusiness||data.products.some(p=>!p.isDemo)||data.orders.length>0;
+  const showProductOverview=!serviceBusiness;
   const setupProgress=useStoreSetup(data.store?._id);
   const [deliveryDismissed,setDeliveryDismissed]=useState(false);
   const [choosing,setChoosing]=useState(false);
@@ -73,16 +73,17 @@ export function StorePage({ data,user }) {
 
   return <div className={`${styles.page} ${styles.storefrontOverview}`}>
     <StorefrontHeader name={storeName}/>
-    {!canUseLandingPages(user)?<section className={ready.readyCard}><div className={ready.thumb}><StoreReadyThumbnail detail={publication} store={store}/></div><div><div className={ready.readyCopy}><Badge tone="warning">Start {salesOutcome}</Badge><h2>Your storefront is ready</h2><p>Upgrade to Pro to publish your store, add products and start {salesOutcome}.</p></div><div className={ready.actions}><Button variant="secondary" onClick={()=>setPreview(true)}>Preview your store</Button><Button onClick={upgrade}>Upgrade to Pro</Button></div></div></section>:<StoreStatusCard live={live} url={storeUrl} onCopy={copyStoreUrl} onDesign={() => router.push(v11Routes.storeDesign)} onVisit={() => window.open(storePath, "_blank")}/>}
+
     {preview&&<StoreReadyPreview detail={publication} onClose={()=>setPreview(false)} onUpgrade={()=>{setPreview(false);upgrade();}}/>}
-    <ServiceOverview/>
+    {serviceBusiness&&<ServiceOverview/>}
     {showProductOverview&&<section className={styles.storeOverviewMetrics}>
       <article><span><WalletCards/></span><div><small>Confirmed sales</small><b>₦{Number(stats.totalRevenue || stats.orderValue || 0).toLocaleString()}</b></div></article>
       <article><span><ShoppingBag/></span><div><small>Total orders</small><b>{stats.totalOrders ?? data.orders.length}</b></div></article>
       <article><span><Package/></span><div><small>Products</small><b>{data.products.filter(p=>!p.isDemo).length}</b></div></article>
       <article><span><ArrowRight/></span><div><small>Pending orders</small><b>{pending.length}</b></div></article>
     </section>}
-    {showProductOverview&&<StoreSetupChecklist progress={setupProgress}/>}
+    <StoreSetupChecklist progress={setupProgress?{...setupProgress,serviceBusiness,physicalBusiness:["physical_products","physical_services"].includes(user?.onboarding?.businessFocus)}:null}/>
+    {!canUseLandingPages(user)?<section className={ready.readyCard}><div className={ready.thumb}><StoreReadyThumbnail detail={publication} store={store}/></div><div><div className={ready.readyCopy}><Badge tone="warning">Start {salesOutcome}</Badge><h2>Your storefront is ready</h2><p>Upgrade to Pro to publish your store, add products and start {salesOutcome}.</p></div><div className={ready.actions}><Button variant="secondary" onClick={()=>setPreview(true)}>Preview your store</Button><Button onClick={upgrade}>Upgrade to Pro</Button></div></div></section>:<StoreStatusCard live={live} url={storeUrl} onCopy={copyStoreUrl} onDesign={() => router.push(v11Routes.storeDesign)} onVisit={() => window.open(storePath, "_blank")}/>}
     {setupProgress?.physicalProducts&&!setupProgress.delivery&&!deliveryDismissed&&<div style={{marginBottom:20}}><UpNext action={deliveryAction} onAction={()=>router.push(deliveryAction.href)} onDismiss={()=>setDeliveryDismissed(true)}/></div>}
     {showProductOverview&&<div className={styles.storeOverviewGrid}>
       <section className={styles.storeOverviewSection}><div className={styles.sectionTitle}><h2>Needs attention</h2><button type="button" onClick={() => router.push(v11Routes.orders)}>View orders <ArrowRight/></button></div><div className={styles.taskList}>{pending.length > 0 && <button onClick={() => router.push(v11Routes.orders)}><span>{pending.length}</span><div><b>Orders waiting for review</b><p>Check payment and keep customers updated.</p></div><strong>Review <ArrowRight/></strong></button>}{lowStock.length > 0 && <button onClick={() => router.push(v11Routes.products)}><span>{lowStock.length}</span><div><b>Products low in stock</b><p>Update inventory before customers order.</p></div><strong>Update <ArrowRight/></strong></button>}{!pending.length && !lowStock.length && <div className={styles.quietTask}>Everything is up to date. Your store has no urgent tasks.</div>}</div></section>

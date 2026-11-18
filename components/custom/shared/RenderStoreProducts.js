@@ -148,7 +148,7 @@ export default function RenderStoreProducts({
                 ₦{Number(product.price || 0).toLocaleString()}
               </p>
 
-              {product.isService?<span className={styles.cardBtn}>{product.serviceMode==='appointment'?'Book appointment':'Get started'}</span>:<button className={styles.cardBtn}>See More Details</button>}
+              {product.isService?<span className={styles.cardBtn}>{product.serviceMode==='appointment'?'Book appointment':'Book service'}</span>:<button className={styles.cardBtn}>See More Details</button>}
             </div>
           </Link>
         ))}

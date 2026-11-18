@@ -360,7 +360,7 @@ export function CommerceSettingsPanel({ tab, setup = {}, onDirtyChange }) {
           {text("identity", "description", "Store Description", "textarea")}
           {text("identity", "phone", "WhatsApp number")}
           {text("identity", "email", "Contact email", "email")}
-          {text("identity", "address", "Store address", "textarea")}
+          {text("identity", "address", "Store or office address", "textarea")}
           {text("identity", "hours", "Opening hours", "textarea")}
           {check("identity", "showPhone", "Show contact number")}
           {check("identity", "showEmail", "Show contact email")}
