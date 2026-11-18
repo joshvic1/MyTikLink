@@ -58,6 +58,8 @@ export const navigation = [
   },
 ];
 export function activeRoute(pathname = "") {
+  if(pathname.includes("/store/services"))return "services";
+  if(pathname.includes("/store/bookings"))return "bookings";
   if (pathname.includes("/affiliate")) return "affiliate";
   if (pathname.includes("/integrations")) return "integrations";
   if (pathname.includes("/settings/tracking")) return "tracking";

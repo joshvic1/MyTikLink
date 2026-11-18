@@ -30,6 +30,28 @@ function load(filename) {
  await swc.loadBindings();
  const {themes,defaultDesign}=load(path.join(root,'V1.1/store/design.js'));
  const PublicStore=load(path.join(root,'V1.1/store/PublicStore.jsx')).default;
+ test('Forme supports product and service actions without mixing checkout types',()=>{
+  const Renderer=load(path.join(root,'V1.1/store/StoreRenderer.jsx')).default;
+  const store={name:'Mixed business',slug:'mixed',currency:'NGN'};
+  const products=[{_id:'physical',slug:'cream',name:'Face cream',price:1000,images:[],productType:'physical'},{_id:'digital',slug:'guide',name:'Beauty guide',price:2000,images:[],productType:'digital'},{_id:'service',slug:'facial',name:'Facial appointment',price:3000,images:[],isService:true,serviceMode:'appointment',durationMinutes:60}];
+  const html=renderToStaticMarkup(React.createElement(Renderer,{store,design:defaultDesign('forme'),products}));
+  assert.match(html,/Add Face cream to cart/);assert.match(html,/Pay now for Beauty guide/);
+  assert.match(html,/href="\/s\/mixed\/services\/facial"/);assert.match(html,/Book appointment/);
+  assert.doesNotMatch(html,/Add Facial appointment to cart/);assert.match(html,/Customer account/);assert.match(html,/Open cart/);
+  assert.equal(themes.forme.businessFocus.length,4);
+ });
+
+ test('Roselle supports product and service actions without mixing checkout types',()=>{
+  const Renderer=load(path.join(root,'V1.1/store/StoreRenderer.jsx')).default;
+  const store={name:'Mixed business',slug:'mixed',currency:'NGN'};
+  const products=[{_id:'physical',slug:'cream',name:'Face cream',price:1000,images:[],productType:'physical'},{_id:'digital',slug:'guide',name:'Beauty guide',price:2000,images:[],productType:'digital'},{_id:'service',slug:'facial',name:'Facial appointment',price:3000,images:[],isService:true,serviceMode:'appointment',durationMinutes:60}];
+  const html=renderToStaticMarkup(React.createElement(Renderer,{store,design:defaultDesign('roselle'),products}));
+  assert.match(html,/Add Face cream to cart/);assert.match(html,/Pay now for Beauty guide/);
+  assert.match(html,/href="\/s\/mixed\/services\/facial"/);assert.match(html,/Book appointment/);
+  assert.doesNotMatch(html,/Add Facial appointment to cart/);assert.match(html,/Customer account/);assert.match(html,/Open cart/);
+  assert.equal(themes.roselle.businessFocus.length,4);
+ });
+
  test('every storefront theme renders recommendations once and respects the setting',()=>{
   const product={_id:'p1',slug:'main',name:'Main item',price:100,productType:'physical',stock:10,images:[]};
   const related=[{...product,_id:'p2',slug:'other',name:'Related item'}];

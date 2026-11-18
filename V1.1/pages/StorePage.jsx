@@ -1,3 +1,5 @@
+import ServiceOverview from '../services/ServiceOverview';
+import {servicesEnabled} from '../services/shared';
 import useStoreSetup from '../store/useStoreSetup';
 import StoreSetupChecklist from '../store/StoreSetupChecklist';
 import {deliveryAction} from '../store/setupProgress.mjs';
@@ -43,6 +45,8 @@ function StoreStatusCard({ live, url, onCopy, onDesign, onVisit }) {
 
 export function StorePage({ data,user }) {
   const router = useRouter();
+  const serviceBusiness=servicesEnabled&&['physical_services','digital_services'].includes(user?.onboarding?.businessFocus);
+  const showProductOverview=!serviceBusiness||data.products.some(p=>!p.isDemo)||data.orders.length>0;
   const setupProgress=useStoreSetup(data.store?._id);
   const [deliveryDismissed,setDeliveryDismissed]=useState(false);
   const [choosing,setChoosing]=useState(false);
@@ -71,17 +75,18 @@ export function StorePage({ data,user }) {
     <StorefrontHeader name={storeName}/>
     {!canUseLandingPages(user)?<section className={ready.readyCard}><div className={ready.thumb}><StoreReadyThumbnail detail={publication} store={store}/></div><div><div className={ready.readyCopy}><Badge tone="warning">Start {salesOutcome}</Badge><h2>Your storefront is ready</h2><p>Upgrade to Pro to publish your store, add products and start {salesOutcome}.</p></div><div className={ready.actions}><Button variant="secondary" onClick={()=>setPreview(true)}>Preview your store</Button><Button onClick={upgrade}>Upgrade to Pro</Button></div></div></section>:<StoreStatusCard live={live} url={storeUrl} onCopy={copyStoreUrl} onDesign={() => router.push(v11Routes.storeDesign)} onVisit={() => window.open(storePath, "_blank")}/>}
     {preview&&<StoreReadyPreview detail={publication} onClose={()=>setPreview(false)} onUpgrade={()=>{setPreview(false);upgrade();}}/>}
-    <section className={styles.storeOverviewMetrics}>
+    <ServiceOverview/>
+    {showProductOverview&&<section className={styles.storeOverviewMetrics}>
       <article><span><WalletCards/></span><div><small>Confirmed sales</small><b>₦{Number(stats.totalRevenue || stats.orderValue || 0).toLocaleString()}</b></div></article>
       <article><span><ShoppingBag/></span><div><small>Total orders</small><b>{stats.totalOrders ?? data.orders.length}</b></div></article>
       <article><span><Package/></span><div><small>Products</small><b>{data.products.filter(p=>!p.isDemo).length}</b></div></article>
       <article><span><ArrowRight/></span><div><small>Pending orders</small><b>{pending.length}</b></div></article>
-    </section>
-    <StoreSetupChecklist progress={setupProgress}/>
+    </section>}
+    {showProductOverview&&<StoreSetupChecklist progress={setupProgress}/>}
     {setupProgress?.physicalProducts&&!setupProgress.delivery&&!deliveryDismissed&&<div style={{marginBottom:20}}><UpNext action={deliveryAction} onAction={()=>router.push(deliveryAction.href)} onDismiss={()=>setDeliveryDismissed(true)}/></div>}
-    <div className={styles.storeOverviewGrid}>
+    {showProductOverview&&<div className={styles.storeOverviewGrid}>
       <section className={styles.storeOverviewSection}><div className={styles.sectionTitle}><h2>Needs attention</h2><button type="button" onClick={() => router.push(v11Routes.orders)}>View orders <ArrowRight/></button></div><div className={styles.taskList}>{pending.length > 0 && <button onClick={() => router.push(v11Routes.orders)}><span>{pending.length}</span><div><b>Orders waiting for review</b><p>Check payment and keep customers updated.</p></div><strong>Review <ArrowRight/></strong></button>}{lowStock.length > 0 && <button onClick={() => router.push(v11Routes.products)}><span>{lowStock.length}</span><div><b>Products low in stock</b><p>Update inventory before customers order.</p></div><strong>Update <ArrowRight/></strong></button>}{!pending.length && !lowStock.length && <div className={styles.quietTask}>Everything is up to date. Your store has no urgent tasks.</div>}</div></section>
       <section className={styles.storeOverviewSection}><div className={styles.sectionTitle}><h2>Recent orders</h2><button type="button" onClick={() => router.push(v11Routes.orders)}>View all <ArrowRight/></button></div>{recentOrders.length ? <div className={styles.storeRecentOrders}>{recentOrders.map(order => <button key={order._id} onClick={() => router.push(v11Routes.orders)}><span>{order.reference || order.orderNumber || "Order"}</span><small>{order.customer?.name || order.customerName || "Customer"} · ₦{Number(order.total || order.amount || 0).toLocaleString()}</small><Badge tone={String(order.status).toLowerCase() === "completed" ? "success" : "warning"}>{order.status || "Pending"}</Badge></button>)}</div> : <div className={styles.quietTask}>Orders will appear here when customers start purchasing.</div>}</section>
-    </div>
+    </div>}
   </div>;
 }

@@ -103,6 +103,7 @@ export default function PublicStorefront({ customDomain }) {
         page={{
           ...store.storefrontPage,
           products,
+          storeSlug:store.slug,
           builder: false,
         }}
       />

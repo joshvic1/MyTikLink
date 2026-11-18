@@ -1,0 +1,27 @@
+.detail{padding:24px clamp(16px,3vw,40px);max-width:1280px;margin:auto;box-sizing:border-box;font-family:var(--store-body);color:var(--store-ink);background:var(--store-paper)}.back{display:inline-block;margin-bottom:24px;color:inherit;text-decoration:none;font-size:13px}.columns{display:grid;grid-template-columns:1fr 1fr;gap:40px}.gallery{display:grid;gap:12px;align-content:start}.gallery img{width:100%;border-radius:var(--store-radius);object-fit:cover}.gallery img:not(:first-child){max-height:280px}.placeholder{display:grid;place-items:center;min-height:300px;background:var(--store-accent);color:var(--store-on-accent);font-size:80px;border-radius:var(--store-radius)}.description{display:grid;gap:18px;align-content:start}.description h1{font-family:var(--store-heading);font-size:clamp(24px,3vw,40px);line-height:1.15;margin:0}.description p{font-size:14px;line-height:1.65;margin:0}.tag{font-size:12px;opacity:.7}.price{font-size:23px}.text{white-space:pre-wrap}.primary{display:flex;justify-content:center;align-items:center;min-height:44px;padding:13px 22px;background:var(--store-accent);color:var(--store-on-accent)!important;border:1px solid var(--store-theme-border);border-radius:var(--store-radius);font:inherit;font-weight:650;cursor:pointer;text-decoration:none}.primary:disabled{opacity:.5;cursor:default}.modal{background:var(--store-paper)!important;color:var(--store-ink)!important;font-family:var(--store-body)!important}.scope input,.scope textarea,.scope select{border-color:var(--store-line);border-radius:var(--store-radius);color:var(--store-ink);background:var(--store-paper)}.loading{max-width:700px;padding:32px;margin:60px auto}.scope h2{font-size:21px}.scope p{line-height:1.6}.scope a{overflow-wrap:anywhere}@media(max-width:640px){.columns{grid-template-columns:1fr;gap:24px}.detail{padding:18px 16px}.gallery img{max-height:420px}.description{gap:14px}}
+
+.modal>header{background:var(--store-paper)!important;border-bottom:1px solid var(--store-line);color:var(--store-ink)!important}.modal>header h2{color:var(--store-ink)!important}.scope p{margin:0}.scope h2{margin:0}.modal>header:before,.modal>header:after{display:none!important}
+
+/* Portal content inherits the storefront tokens explicitly, not dashboard colours. */
+.modal{border:1px solid var(--store-theme-border)!important;border-radius:var(--store-radius)!important;color-scheme:normal}
+.modal>header,.modal>footer{background:var(--store-paper)!important;color:var(--store-ink)!important;border-color:var(--store-line)!important}
+.modal>header h2,.scope h2{font-family:var(--store-heading)!important}
+.modal>header button{background:var(--store-paper)!important;color:var(--store-ink)!important;border:1px solid var(--store-line)!important;border-radius:var(--store-radius)}
+.modal>footer{border-top:1px solid var(--store-line)}
+.modal>footer .primary{width:100%;font-family:var(--store-body)}
+.modal .scope label>span,.modal .scope label>small{color:var(--store-ink)}
+.modal .scope label>small{opacity:.7}
+.modal .scope input,.modal .scope textarea,.modal .scope select{font-family:var(--store-body);border:1px solid var(--store-line);border-radius:var(--store-radius);color:var(--store-ink);background:var(--store-paper);accent-color:var(--store-accent)}
+.modal .scope input:focus,.modal .scope textarea:focus,.modal .scope select:focus{outline:2px solid var(--store-accent);outline-offset:2px;box-shadow:none;border-color:var(--store-accent)}
+.modal .summary{background:var(--store-paper);color:var(--store-ink);border-color:var(--store-line);border-radius:var(--store-radius)}
+.modal .notice{background:color-mix(in srgb,var(--store-accent) 8%,var(--store-paper));color:var(--store-ink);border:1px solid var(--store-line);border-radius:var(--store-radius)}
+.modal .times button{font-family:var(--store-body);border-radius:var(--store-radius);border-color:var(--store-line);background:var(--store-paper);color:var(--store-ink)}
+.modal .times button[aria-pressed=true]{background:var(--store-accent);color:var(--store-on-accent);border-color:var(--store-accent)}
+.modal button:focus-visible{outline:2px solid var(--store-accent);outline-offset:3px}
+
+/* Outrank the shared dashboard popup chrome, including its mobile rules. */
+.modal[data-popup-tone]{--popup-start:var(--store-paper);--popup-mid:var(--store-paper);--popup-end:var(--store-paper);--popup-ink:var(--store-ink);--popup-muted:var(--store-ink);--popup-accent:var(--store-accent);--popup-accent-end:var(--store-accent)}
+.modal[data-popup-tone]>header{background:var(--store-paper)!important;border-bottom:1px solid var(--store-theme-border)!important;padding:18px 20px!important}
+.modal[data-popup-tone]>header h2{font-family:var(--store-heading)!important;color:var(--store-ink)!important;font-weight:var(--service-heading-weight,650)!important;font-size:20px!important;letter-spacing:normal}
+.modal[data-popup-tone]>footer{display:block!important;background:var(--store-paper)!important;border-top:1px solid var(--store-line)!important}
+.modal[data-popup-tone]>footer>.primary{display:flex;width:100%!important;max-width:none;box-sizing:border-box;grid-column:1/-1;flex:1;min-height:46px}

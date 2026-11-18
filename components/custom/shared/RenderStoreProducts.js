@@ -88,7 +88,7 @@ export default function RenderStoreProducts({
       >
         {displayProducts.map((product, i) => (
           <Link
-            href={builder ? "#" : `/s/${product.storeSlug}/${product.slug}`}
+            href={builder ? "#" : product.isService?`/s/${product.storeSlug}/services/${product.slug}`:`/s/${product.storeSlug}/${product.slug}`}
             key={product._id || i}
             className={`${styles.card} ${builder ? styles.builderCard : ""}`}
             onClick={(e) => {
@@ -97,6 +97,7 @@ export default function RenderStoreProducts({
                 return;
               }
 
+              if(product.isService)return;
               trackBoth(
                 "ClickButton",
                 {
@@ -147,7 +148,7 @@ export default function RenderStoreProducts({
                 ₦{Number(product.price || 0).toLocaleString()}
               </p>
 
-              <button className={styles.cardBtn}>See More Details</button>
+              {product.isService?<span className={styles.cardBtn}>{product.serviceMode==='appointment'?'Book appointment':'Get started'}</span>:<button className={styles.cardBtn}>See More Details</button>}
             </div>
           </Link>
         ))}

@@ -1,3 +1,4 @@
+import ServiceCatalogue from '@/V1.1/services/ServiceCatalogue';
 // /renderer/RenderElement
 import RenderText from "../shared/RenderText";
 import RenderButton from "../shared/RenderButton";
@@ -53,12 +54,14 @@ export default function RenderElement({
       return <RenderHero element={el} />;
 
     case "store-products":
-      return (
+      if(page?.serviceDetail)return page.serviceDetail;
+      return (<><ServiceCatalogue showTitle={false} slug={page?.storeSlug} renderItems={services=><RenderStoreProducts element={{...el,title:'Services',badgeText:'',badgeIcon:''}} products={services.map(s=>({...s,storeSlug:page.storeSlug}))}/>}/>
+
         <RenderStoreProducts
           element={el}
           products={page?.products || []}
           builder={page?.builder}
-        />
+        /></>
       );
     default:
       return null;

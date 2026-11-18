@@ -1,0 +1,1564 @@
+{
+  "agriculture-farming": {
+    "products": [
+      "Fresh harvest basket",
+      "Seasonal vegetable box",
+      "Farm pantry pack",
+      "Weekly produce bundle"
+    ],
+    "services": [
+      "Farm visit",
+      "Garden setup",
+      "Harvest support",
+      "Produce sourcing"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/28996784/pexels-photo-28996784.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/bountiful-harvest-of-farm-fresh-vegetables-28996784/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/31404683/pexels-photo-31404683.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/fresh-farm-vegetables-at-market-display-31404683/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/4975362/pexels-photo-4975362.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/elderly-farmer-collecting-vegetables-on-farm-4975362/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/29181510/pexels-photo-29181510.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/fresh-vegetables-and-berries-at-farmers-market-29181510/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "food-beverages": {
+    "products": [
+      "Party jollof rice",
+      "Grilled chicken platter",
+      "Plantain and rice bowl",
+      "Family meal tray"
+    ],
+    "services": [
+      "Small event catering",
+      "Weekly meal preparation",
+      "Private chef session",
+      "Office lunch delivery"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/18805640/pexels-photo-18805640.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/a-dish-with-rice-vegetables-and-eggs-18805640/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/38936634/pexels-photo-38936634.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/delicious-west-african-jollof-rice-and-grilled-fish-meal-38936634/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/38644467/pexels-photo-38644467.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/delicious-fried-chicken-with-plantains-and-fries-38644467/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/6210449/pexels-photo-6210449.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/fried-plantains-and-corn-6210449/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ],
+    "servicePhotos": [
+      {
+        "url": "https://images.pexels.com/photos/32611697/pexels-photo-32611697.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/colorful-gourmet-buffet-spread-with-appetizers-32611697/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/38881945/pexels-photo-38881945.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/elegant-salad-buffet-display-at-event-38881945/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/18281682/pexels-photo-18281682.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/food-on-the-buffet-table-18281682/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "fashion-textiles": {
+    "products": [
+      "Everyday cotton set",
+      "Weekend outfit",
+      "Signature two-piece",
+      "Occasion outfit"
+    ],
+    "services": [
+      "Personal styling",
+      "Made-to-measure fitting",
+      "Wardrobe refresh",
+      "Clothing alterations"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/8386650/pexels-photo-8386650.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/clothes-and-shoes-on-shelves-and-hangers-in-a-clothing-store-8386650/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/3927390/pexels-photo-3927390.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/flat-lay-of-clothing-and-accessories-3927390/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/8387835/pexels-photo-8387835.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/clothes-and-sandals-on-clothing-rack-8387835/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "beauty-cosmetics": {
+    "products": [
+      "Daily care kit",
+      "Soft glow collection",
+      "Travel beauty set",
+      "Essential beauty bundle"
+    ],
+    "services": [
+      "Everyday makeup",
+      "Occasion makeup",
+      "Personal beauty consultation",
+      "Bridal trial session"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/3735625/pexels-photo-3735625.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/beauty-products-on-shelves-3735625/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/17545641/pexels-photo-17545641.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/close-up-of-cosmetics-17545641/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/8945932/pexels-photo-8945932.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/a-woman-in-white-robe-holding-a-skincare-product-8945932/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/6476073/pexels-photo-6476073.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/smiling-teenager-applying-a-facial-cream-on-her-face-6476073/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "hair-grooming": {
+    "products": [
+      "Hair care essentials",
+      "Protective style kit",
+      "Hair accessories set",
+      "Wash day bundle"
+    ],
+    "services": [
+      "Braiding appointment",
+      "Wash and styling",
+      "Protective styling",
+      "Hair consultation"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/36441633/pexels-photo-36441633.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/african-hair-braiding-in-salon-setting-36441633/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/5590972/pexels-photo-5590972.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/a-person-braiding-a-woman-s-hair-5590972/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/13929391/pexels-photo-13929391.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/woman-braiding-her-friends-hair-13929391/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/13212603/pexels-photo-13212603.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/person-braiding-a-woman-s-hair-13212603/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "jewelry-accessories": {
+    "products": [
+      "Everyday accessory set",
+      "Pearl detail necklace",
+      "Occasion jewellery set",
+      "Signature accessory bundle"
+    ],
+    "services": [
+      "Jewellery styling",
+      "Custom accessory design",
+      "Jewellery repair",
+      "Gift selection consultation"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/36229139/pexels-photo-36229139.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/elegant-still-life-of-pearls-and-vintage-accessories-36229139/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/8777633/pexels-photo-8777633.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/glass-jewelry-accessories-on-white-surface-8777633/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/4155247/pexels-photo-4155247.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/gold-accessories-on-white-surface-4155247/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "health-medical": {
+    "products": [
+      "Wellness organiser",
+      "Home care essentials",
+      "First aid pouch",
+      "Care supplies bundle"
+    ],
+    "services": [
+      "Wellness information session",
+      "Care planning consultation",
+      "Workplace wellness talk",
+      "Caregiver training session"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/7789615/pexels-photo-7789615.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/close-up-of-medical-equipment-7789615/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/7108333/pexels-photo-7108333.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/hands-holding-medical-equipment-7108333/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/31188648/pexels-photo-31188648.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/modern-medical-equipment-in-minimalist-setting-31188648/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "fitness-wellness": {
+    "products": [
+      "Exercise starter kit",
+      "Workout journal",
+      "Training accessories",
+      "Home workout bundle"
+    ],
+    "services": [
+      "Personal training session",
+      "Group fitness class",
+      "Movement assessment",
+      "Four-week training plan"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/20594792/pexels-photo-20594792.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/a-man-exercising-at-a-gym-20594792/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/5327476/pexels-photo-5327476.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/a-bodybuilder-working-out-at-the-gym-5327476/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/10754973/pexels-photo-10754973.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/a-man-working-out-at-the-gym-10754973/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/4853333/pexels-photo-4853333.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/man-weightlifting-in-gym-4853333/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "education-training": {
+    "products": [
+      "Learning workbook",
+      "Revision notes pack",
+      "Study planner",
+      "Classroom resource set"
+    ],
+    "services": [
+      "One-to-one tutoring",
+      "Exam preparation session",
+      "Small group lesson",
+      "Skills workshop"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/6929274/pexels-photo-6929274.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/woman-standing-while-holding-books-6929274/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/32063097/pexels-photo-32063097.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/stack-of-open-and-closed-books-for-education-32063097/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/6549351/pexels-photo-6549351.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/a-woman-holding-a-stack-of-books-6549351/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "technology-software": {
+    "products": [
+      "Workspace essentials",
+      "Computer accessory kit",
+      "Desk setup bundle",
+      "Device care kit"
+    ],
+    "services": [
+      "Website setup",
+      "Technical consultation",
+      "Computer setup",
+      "Software support session"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/5380603/pexels-photo-5380603.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/person-using-computer-5380603/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/4709289/pexels-photo-4709289.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/person-in-white-shirt-using-computer-4709289/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/7438090/pexels-photo-7438090.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/man-working-on-a-computer-7438090/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/8108727/pexels-photo-8108727.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/computer-parts-on-a-black-surface-behind-wire-mesh-8108727/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "marketing-advertising": {
+    "products": [
+      "Brand planning workbook",
+      "Campaign planner",
+      "Content prompt cards",
+      "Marketing starter pack"
+    ],
+    "services": [
+      "Social media audit",
+      "Campaign planning",
+      "Brand strategy session",
+      "Monthly content support"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/4342129/pexels-photo-4342129.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/business-meeting-in-the-office-4342129/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/6340631/pexels-photo-6340631.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/people-having-a-business-meeting-6340631/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "media-entertainment": {
+    "products": [
+      "Creator starter kit",
+      "Production planner",
+      "Photo print set",
+      "Media accessories pack"
+    ],
+    "services": [
+      "Portrait photo session",
+      "Product photography",
+      "Video editing package",
+      "Event coverage"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/14525932/pexels-photo-14525932.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/vintage-camera-and-film-photo-14525932/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/16967182/pexels-photo-16967182.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/camera-on-gray-background-16967182/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/6370351/pexels-photo-6370351.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/a-person-holding-a-camera-6370351/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "creators-personal-brands": {
+    "products": [
+      "Creator planning journal",
+      "Signature merchandise",
+      "Content prompt cards",
+      "Creative starter bundle"
+    ],
+    "services": [
+      "Content creation session",
+      "Brand collaboration",
+      "Creative consultation",
+      "Video production"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/14525932/pexels-photo-14525932.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/vintage-camera-and-film-photo-14525932/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/16967182/pexels-photo-16967182.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/camera-on-gray-background-16967182/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/6370351/pexels-photo-6370351.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/a-person-holding-a-camera-6370351/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "events-celebrations": {
+    "products": [
+      "Party decoration kit",
+      "Celebration favour box",
+      "Table styling set",
+      "Event stationery pack"
+    ],
+    "services": [
+      "Event planning session",
+      "Venue styling",
+      "Small event coordination",
+      "Celebration setup"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/12347230/pexels-photo-12347230.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/grayscale-photo-of-people-on-celebrating-an-event-12347230/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "real-estate-property": {
+    "products": [
+      "Home viewing planner",
+      "Property welcome pack",
+      "Moving day kit",
+      "Home organisation bundle"
+    ],
+    "services": [
+      "Property viewing",
+      "Property consultation",
+      "Rental search support",
+      "Property management visit"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/7415010/pexels-photo-7415010.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/people-checking-the-new-house-7415010/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/193667/pexels-photo-193667.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/action-asphalt-auto-automobile-193667/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "construction-engineering": {
+    "products": [
+      "Tool starter set",
+      "Site essentials pack",
+      "Protective work kit",
+      "Project planning pack"
+    ],
+    "services": [
+      "Site consultation",
+      "Project assessment",
+      "Installation support",
+      "Maintenance visit"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/33812295/pexels-photo-33812295.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/assorted-construction-tools-on-concrete-surface-33812295/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/18948978/pexels-photo-18948978.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/tools-in-yard-18948978/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/28906309/pexels-photo-28906309.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/construction-worker-carrying-tools-at-building-site-28906309/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "home-interiors": {
+    "products": [
+      "Home accent set",
+      "Living room essentials",
+      "Decorative table set",
+      "Room refresh bundle"
+    ],
+    "services": [
+      "Interior consultation",
+      "Room styling",
+      "Space planning",
+      "Home organisation session"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/8251244/pexels-photo-8251244.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/wooden-furniture-at-home-8251244/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/8834621/pexels-photo-8834621.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/wooden-furniture-at-home-8834621/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/1757313/pexels-photo-1757313.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/kitchen-interior-1757313/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "electronics-gadgets": {
+    "products": [
+      "Desk gadget bundle",
+      "Device accessories",
+      "Everyday tech kit",
+      "Home office essentials"
+    ],
+    "services": [
+      "Device setup",
+      "Gadget troubleshooting",
+      "Home office setup",
+      "Device maintenance"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/6192127/pexels-photo-6192127.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/modern-electronics-flat-lay-on-black-background-6192127/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/3184435/pexels-photo-3184435.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/people-holding-their-phones-3184435/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "automotive": {
+    "products": [
+      "Car care essentials",
+      "Interior care kit",
+      "Road trip bundle",
+      "Vehicle accessory set"
+    ],
+    "services": [
+      "Car detailing",
+      "Vehicle inspection",
+      "Routine maintenance",
+      "Interior deep cleaning"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/30470930/pexels-photo-30470930.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/automotive-brake-maintenance-in-workshop-30470930/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/30582026/pexels-photo-30582026.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/2025-honda-pilot-suv-at-auto-show-30582026/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/4713817/pexels-photo-4713817.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/modern-blue-car-near-building-in-city-4713817/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "transport-logistics": {
+    "products": [
+      "Parcel packing kit",
+      "Shipping essentials",
+      "Moving supplies bundle",
+      "Storage organiser set"
+    ],
+    "services": [
+      "Local parcel delivery",
+      "Same-day dispatch",
+      "Small move service",
+      "Business delivery support"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/6170464/pexels-photo-6170464.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/person-checking-parcels-inside-a-delivery-van-6170464/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/6407379/pexels-photo-6407379.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/man-in-yellow-vest-holding-a-clipboard-6407379/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/32856481/pexels-photo-32856481.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/urban-scene-with-yellow-delivery-truck-and-worker-32856481/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/32910572/pexels-photo-32910572.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/street-delivery-scene-with-electric-van-32910572/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "travel-hospitality": {
+    "products": [
+      "Travel organiser",
+      "Weekend travel kit",
+      "Guest welcome pack",
+      "Journey essentials"
+    ],
+    "services": [
+      "Trip planning",
+      "Stay planning consultation",
+      "Local experience tour",
+      "Travel itinerary service"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/28962809/pexels-photo-28962809.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/modern-beachfront-hotel-with-palm-trees-and-clear-sky-28962809/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "professional-services": {
+    "products": [
+      "Business planning workbook",
+      "Office essentials",
+      "Client welcome pack",
+      "Project planning journal"
+    ],
+    "services": [
+      "Initial consultation",
+      "Project review",
+      "Implementation support",
+      "Monthly support package"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/4342129/pexels-photo-4342129.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/business-meeting-in-the-office-4342129/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/6340631/pexels-photo-6340631.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/people-having-a-business-meeting-6340631/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "finance-insurance": {
+    "products": [
+      "Budget planner",
+      "Expense tracking workbook",
+      "Savings journal",
+      "Bookkeeping starter pack"
+    ],
+    "services": [
+      "Budget planning session",
+      "Bookkeeping review",
+      "Financial record setup",
+      "Business accounts support"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/8297220/pexels-photo-8297220.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/a-person-working-on-the-documents-using-a-calculator-8297220/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/7651738/pexels-photo-7651738.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/person-using-a-calculator-7651738/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/8296984/pexels-photo-8296984.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/a-person-using-a-calculator-in-computing-8296984/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/9052475/pexels-photo-9052475.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/a-person-using-a-calculator-9052475/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "retail-wholesale": {
+    "products": [
+      "Everyday essentials",
+      "Starter assortment",
+      "Value bundle",
+      "Signature collection"
+    ],
+    "services": [
+      "Personal shopping",
+      "Product sourcing",
+      "Retail display styling",
+      "Inventory organisation"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/6127058/pexels-photo-6127058.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/two-men-standing-in-front-of-a-retail-store-6127058/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/9595286/pexels-photo-9595286.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/hand-of-a-woman-arranging-a-retail-display-in-a-store-9595286/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "manufacturing-industry": {
+    "products": [
+      "Workshop essentials",
+      "Production starter kit",
+      "Packaging supplies",
+      "Workplace organisation set"
+    ],
+    "services": [
+      "Production consultation",
+      "Equipment assessment",
+      "Quality review",
+      "Workshop support"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/32407077/pexels-photo-32407077.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/worker-operating-machinery-in-industrial-factory-32407077/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/8973132/pexels-photo-8973132.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/machinery-in-factory-8973132/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/6034676/pexels-photo-6034676.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/industrial-area-with-various-equipments-in-daytime-6034676/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/27967268/pexels-photo-27967268.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/a-group-of-people-working-in-a-factory-27967268/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "printing-packaging": {
+    "products": [
+      "Business card pack",
+      "Branded label set",
+      "Gift packaging bundle",
+      "Printed stationery set"
+    ],
+    "services": [
+      "Print design service",
+      "Packaging design",
+      "Print setup consultation",
+      "Custom branding service"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/7843978/pexels-photo-7843978.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/close-up-shot-of-a-delivery-package-7843978/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "arts-handmade": {
+    "products": [
+      "Handmade bowl",
+      "Artisan decor piece",
+      "Handcrafted gift set",
+      "Studio collection"
+    ],
+    "services": [
+      "Creative workshop",
+      "Custom commission",
+      "Craft lesson",
+      "Art consultation"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/7559733/pexels-photo-7559733.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/person-at-the-working-table-holding-piece-of-pottery-clay-7559733/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/6611373/pexels-photo-6611373.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/handmade-pottery-on-table-in-workshop-6611373/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "books-stationery": {
+    "products": [
+      "Reading journal",
+      "Notebook collection",
+      "Study stationery set",
+      "Book lovers bundle"
+    ],
+    "services": [
+      "Reading club session",
+      "Manuscript review",
+      "Writing workshop",
+      "Custom stationery design"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/6929274/pexels-photo-6929274.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/woman-standing-while-holding-books-6929274/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/32063097/pexels-photo-32063097.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/stack-of-open-and-closed-books-for-education-32063097/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/6549351/pexels-photo-6549351.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/a-woman-holding-a-stack-of-books-6549351/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "children-family": {
+    "products": [
+      "Playtime activity set",
+      "Family planner",
+      "Learning play bundle",
+      "Children's gift set"
+    ],
+    "services": [
+      "Family activity session",
+      "Play workshop",
+      "Family support consultation",
+      "Children's party planning"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/19875329/pexels-photo-19875329.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/children-playing-with-toys-19875329/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/3661387/pexels-photo-3661387.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/children-playing-with-animal-toys-3661387/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/7156365/pexels-photo-7156365.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/a-group-of-kids-playing-toys-on-the-floor-7156365/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "pets-animals": {
+    "products": [
+      "Pet care essentials",
+      "Playtime accessories",
+      "Pet travel kit",
+      "Comfort bundle"
+    ],
+    "services": [
+      "Pet grooming",
+      "Pet sitting visit",
+      "Dog walking",
+      "Pet care consultation"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/3705254/pexels-photo-3705254.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/photo-of-dog-and-person-walking-on-grass-3705254/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/5482808/pexels-photo-5482808.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/a-person-holding-a-treat-in-front-of-a-dog-5482808/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/5257593/pexels-photo-5257593.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/crop-black-woman-kissing-cute-dog-5257593/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/27176309/pexels-photo-27176309.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/portrait-of-a-german-shorthaired-pointer-with-a-female-owner-27176309/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "cleaning-maintenance": {
+    "products": [
+      "Home cleaning starter kit",
+      "Kitchen care bundle",
+      "Cleaning accessories",
+      "Bathroom care set"
+    ],
+    "services": [
+      "Home deep cleaning",
+      "Office cleaning",
+      "Move-in cleaning",
+      "Maintenance visit"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/3177257/pexels-photo-3177257.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/cleaning-supplies-in-a-bucket-3177257/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/28576626/pexels-photo-28576626.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/minimalist-cleaning-supplies-on-grey-background-28576626/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/7814775/pexels-photo-7814775.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/cleaning-supplies-on-a-white-sheet-7814775/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/5218022/pexels-photo-5218022.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/set-of-cleaning-supplies-on-pink-background-5218022/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "security-safety": {
+    "products": [
+      "Safety essentials kit",
+      "Home security accessories",
+      "Workplace safety pack",
+      "Emergency planning kit"
+    ],
+    "services": [
+      "Security consultation",
+      "Safety assessment",
+      "Camera installation",
+      "Workplace safety training"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/17440970/pexels-photo-17440970.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/security-camera-on-a-building-17440970/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/30546990/pexels-photo-30546990.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/close-up-of-security-camera-overlooking-busy-street-30546990/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/9301020/pexels-photo-9301020.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/security-cameras-mounted-on-the-wall-for-surveillance-9301020/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/25384403/pexels-photo-25384403.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/cctv-camera-on-a-wall-25384403/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "energy-environment": {
+    "products": [
+      "Energy saving kit",
+      "Solar accessories",
+      "Eco essentials",
+      "Home efficiency bundle"
+    ],
+    "services": [
+      "Energy assessment",
+      "Solar consultation",
+      "Installation support",
+      "Environmental review"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/9800003/pexels-photo-9800003.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/close-up-shot-of-solar-panels-9800003/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/11455626/pexels-photo-11455626.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/close-up-of-solar-panels-11455626/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "telecommunications": {
+    "products": [
+      "Phone accessory kit",
+      "Connectivity essentials",
+      "Desk phone bundle",
+      "Device support pack"
+    ],
+    "services": [
+      "Connectivity setup",
+      "Network troubleshooting",
+      "Device setup",
+      "Business communication support"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/6862844/pexels-photo-6862844.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/close-up-shot-of-a-person-calling-on-a-phone-6862844/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/9714444/pexels-photo-9714444.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/a-person-holding-a-landline-phone-9714444/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/6862836/pexels-photo-6862836.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/close-up-shot-of-a-person-calling-on-a-phone-6862836/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/6170654/pexels-photo-6170654.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/person-holding-a-telephone-6170654/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "religion-faith": {
+    "products": [
+      "Reflection journal",
+      "Study notebook",
+      "Community reading pack",
+      "Event stationery set"
+    ],
+    "services": [
+      "Study group session",
+      "Community event support",
+      "Workshop facilitation",
+      "Personal development session"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/6929274/pexels-photo-6929274.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/woman-standing-while-holding-books-6929274/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/32063097/pexels-photo-32063097.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/stack-of-open-and-closed-books-for-education-32063097/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/6549351/pexels-photo-6549351.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/a-woman-holding-a-stack-of-books-6549351/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "nonprofits-community": {
+    "products": [
+      "Community event kit",
+      "Volunteer notebook",
+      "Awareness print pack",
+      "Outreach stationery bundle"
+    ],
+    "services": [
+      "Community workshop",
+      "Volunteer training",
+      "Outreach planning",
+      "Programme consultation"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/6646864/pexels-photo-6646864.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/food-love-people-street-6646864/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/7156161/pexels-photo-7156161.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/close-up-photo-of-group-of-volunteers-7156161/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/6647012/pexels-photo-6647012.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/volunteers-cleaning-the-street-6647012/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/7156175/pexels-photo-7156175.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/happy-group-of-volunteers-7156175/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "government-civic": {
+    "products": [
+      "Civic learning workbook",
+      "Community planning journal",
+      "Information booklet set",
+      "Event resource pack"
+    ],
+    "services": [
+      "Civic education workshop",
+      "Community planning session",
+      "Document organisation",
+      "Public information session"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/35990318/pexels-photo-35990318.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/modern-government-building-in-urban-landscape-35990318/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/25310926/pexels-photo-25310926.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/government-building-in-city-25310926/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/15501420/pexels-photo-15501420.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/photo-of-a-road-and-a-government-building-15501420/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/8175097/pexels-photo-8175097.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/usa-flag-flying-in-front-of-government-building-8175097/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "digital-products-online-business": {
+    "products": [
+      "Creator planning notebook",
+      "Business workbook",
+      "Desk essentials",
+      "Launch planning journal"
+    ],
+    "services": [
+      "Online business audit",
+      "Digital setup session",
+      "Launch planning",
+      "Monthly digital support"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/5380603/pexels-photo-5380603.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/person-using-computer-5380603/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/4709289/pexels-photo-4709289.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/person-in-white-shirt-using-computer-4709289/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/7438090/pexels-photo-7438090.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/man-working-on-a-computer-7438090/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/8108727/pexels-photo-8108727.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/computer-parts-on-a-black-surface-behind-wire-mesh-8108727/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "coaching-personal-development": {
+    "products": [
+      "Goal setting journal",
+      "Reflection workbook",
+      "Habit planner",
+      "Personal growth card set"
+    ],
+    "services": [
+      "Clarity session",
+      "Goal planning session",
+      "Accountability package",
+      "Personal development workshop"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/4342129/pexels-photo-4342129.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/business-meeting-in-the-office-4342129/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/6340631/pexels-photo-6340631.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/people-having-a-business-meeting-6340631/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "sports-recreation": {
+    "products": [
+      "Training essentials",
+      "Sports accessories",
+      "Practice planner",
+      "Activity starter bundle"
+    ],
+    "services": [
+      "Skills coaching",
+      "Group practice session",
+      "Personal training",
+      "Activity workshop"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/20594792/pexels-photo-20594792.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/a-man-exercising-at-a-gym-20594792/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/5327476/pexels-photo-5327476.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/a-bodybuilder-working-out-at-the-gym-5327476/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/10754973/pexels-photo-10754973.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/a-man-working-out-at-the-gym-10754973/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/4853333/pexels-photo-4853333.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/man-weightlifting-in-gym-4853333/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "trades-skilled-services": {
+    "products": [
+      "Trade essentials kit",
+      "Workshop accessories",
+      "Maintenance supplies",
+      "Repair starter set"
+    ],
+    "services": [
+      "Assessment visit",
+      "Installation service",
+      "Repair appointment",
+      "Maintenance package"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/7540625/pexels-photo-7540625.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/close-up-of-tools-7540625/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "science-research": {
+    "products": [
+      "Research notebook",
+      "Lab organisation kit",
+      "Study resource pack",
+      "Experiment planning journal"
+    ],
+    "services": [
+      "Research consultation",
+      "Data review",
+      "Method planning session",
+      "Research training workshop"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/3735780/pexels-photo-3735780.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/scientists-in-laboratory-3735780/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/9243574/pexels-photo-9243574.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/scientists-experimenting-in-the-laboratory-9243574/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/6208709/pexels-photo-6208709.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/students-inside-a-science-laboratory-6208709/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "import-export": {
+    "products": [
+      "Shipping supplies",
+      "Packing essentials",
+      "Trade planning workbook",
+      "Dispatch starter bundle"
+    ],
+    "services": [
+      "Sourcing consultation",
+      "Shipment planning",
+      "Trade document support",
+      "Supplier research"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/6170464/pexels-photo-6170464.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/person-checking-parcels-inside-a-delivery-van-6170464/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/6407379/pexels-photo-6407379.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/man-in-yellow-vest-holding-a-clipboard-6407379/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/32856481/pexels-photo-32856481.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/urban-scene-with-yellow-delivery-truck-and-worker-32856481/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/32910572/pexels-photo-32910572.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/street-delivery-scene-with-electric-van-32910572/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "other-emerging": {
+    "products": [
+      "Starter collection",
+      "Everyday essentials",
+      "Signature selection",
+      "Value bundle"
+    ],
+    "services": [
+      "Introduction session",
+      "Personal consultation",
+      "Project support",
+      "Monthly support package"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/4342129/pexels-photo-4342129.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/business-meeting-in-the-office-4342129/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/6340631/pexels-photo-6340631.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/people-having-a-business-meeting-6340631/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  },
+  "food-beverages/bakeries": {
+    "products": [
+      "Fresh bread loaf",
+      "Breakfast bread basket",
+      "Artisan loaf box",
+      "Family bread bundle"
+    ],
+    "services": [
+      "Bread baking class",
+      "Bakery catering",
+      "Custom bread order",
+      "Bakery menu consultation"
+    ],
+    "photos": [
+      {
+        "url": "https://images.pexels.com/photos/36522640/pexels-photo-36522640.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/freshly-baked-bread-display-in-a-bakery-36522640/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/36445104/pexels-photo-36445104.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/artisan-baker-preparing-fresh-bread-in-bakery-36445104/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/27165969/pexels-photo-27165969.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/bread-in-bakery-27165969/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      },
+      {
+        "url": "https://images.pexels.com/photos/33146548/pexels-photo-33146548.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "source": "https://www.pexels.com/photo/woman-selecting-fresh-bread-at-bakery-33146548/",
+        "license": "https://www.pexels.com/license/",
+        "verified": true
+      }
+    ]
+  }
+}

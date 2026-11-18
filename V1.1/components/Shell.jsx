@@ -1,3 +1,4 @@
+import {servicesEnabled,serviceApi} from '../services/shared';
 import FeatureSuggestion,{requestFeatureSuggestion} from './FeatureSuggestion';
 import {v11Api,getToken} from '../lib/api';
 function warmNavigation(href){if(typeof window==='undefined'||!getToken()||navigator.connection?.saveData)return;const load=href==='/v1-1/pages'?()=>v11Api.pageCollection():href==='/v1-1/dashboard'||href==='/v1-1/store'?()=>v11Api.dashboardV11():href==='/v1-1/links'?()=>v11Api.links():null;if(load)load().catch(()=>{});}
@@ -57,6 +58,8 @@ const glyphs = {
   settings: Settings,
   products: Package,
   orders: ShoppingBag,
+  services: Sparkles,
+  bookings: BookOpen,
 };
 function NavItems({
   current,
@@ -67,6 +70,8 @@ function NavItems({
   storeExpanded,
   onToggleStore,
   hasStore = false,
+  hasServices = false,
+  showProductLinks = true,
 }) {
   return (
     <>
@@ -117,7 +122,8 @@ function NavItems({
                       <Store />
                       Overview
                     </Link>
-                    <Link
+                    {hasServices&&<><Link href="/v1-1/store/services" onClick={close} className={current==='services'?styles.storeNavChildActive:''}><Sparkles/>Services</Link><Link href="/v1-1/store/bookings" onClick={close} className={current==='bookings'?styles.storeNavChildActive:''}><BookOpen/>Bookings</Link></>}
+                    {showProductLinks&&<><Link
                       href={v11Routes.products}
                       onClick={close}
                       className={
@@ -136,7 +142,7 @@ function NavItems({
                     >
                       <ShoppingBag />
                       Orders
-                    </Link>
+                    </Link></>}
                     {hasStore && (<Link
                       href={v11Routes.storeDesign}
                       onClick={close}
@@ -237,7 +243,12 @@ export function Shell({ user, onLogout, children, onCreate, onAddProduct, hasSto
   useEffect(() => {
     if (isStoreManagement) setStoreExpanded(true);
   }, [isStoreManagement]);
-  const dockItems = isStoreManagement ? storeMobileItems : mobileItems;
+  const serviceBusiness=servicesEnabled&&['physical_services','digital_services'].includes(user?.onboarding?.businessFocus);
+  const [hasExistingServices,setHasExistingServices]=useState(false),[productHistory,setProductHistory]=useState(true);
+  useEffect(()=>{if(!servicesEnabled||!hasStore)return;let active=true;serviceApi('/summary').then(d=>{if(active){setHasExistingServices(d.services>0);setProductHistory(d.hasProducts||d.hasOrders);}}).catch(()=>{});return()=>{active=false;};},[hasStore,activePath]);
+  const hasServices=serviceBusiness||hasExistingServices;
+  const serviceDock=storeMobileItems.map(item=>item.key==='products'?{...item,key:'services',label:'Services',mobileLabel:'Services',href:'/v1-1/store/services'}:item.key==='orders'?{...item,key:'bookings',label:'Bookings',mobileLabel:'Bookings',href:'/v1-1/store/bookings'}:item);
+  const dockItems = isStoreManagement ? serviceBusiness?serviceDock:storeMobileItems : mobileItems;
   const [menuOpen, setMenuOpen] = useState(false),
     [menuClosing, setMenuClosing] = useState(false),
     [helpOpen, setHelpOpen] = useState(false),
@@ -325,7 +336,7 @@ export function Shell({ user, onLogout, children, onCreate, onAddProduct, hasSto
           <VersionBadge/>
         </Link>
         <nav>
-          <NavItems hasStore={hasStore}
+          <NavItems hasStore={hasStore} hasServices={hasServices} showProductLinks={!serviceBusiness||productHistory}
             current={current}
             storeExpanded={
               storeExpanded ||
@@ -384,17 +395,17 @@ export function Shell({ user, onLogout, children, onCreate, onAddProduct, hasSto
               />
             </Link>
           </div>
-          <div className={styles.desktopGreeting}>{activePath !== v11Routes.home && <span className={styles.desktopSectionLabel}>{({pages:"Landing pages",links:"Redirect links",store:"Storefront",products:"Products",orders:"Orders",storeSettings:"Store settings",design:"Store design",insights:"Analytics & Insights",tracking:"Pixels & Integrations",settings:"Account settings",affiliate:"Affiliate",integrations:"Integrations"})[current] || "MyTikLink workspace"}</span>}{activePath === v11Routes.home && <><h1>Welcome back{user?.name ? `, ${user.name.trim().split(" ")[0]}` : ""} <span aria-hidden="true">👋</span></h1><p>Here’s what’s happening with your MyTikLink account today.</p></>}</div>
+          <div className={styles.desktopGreeting}>{activePath !== v11Routes.home && <span className={styles.desktopSectionLabel}>{({pages:"Landing pages",links:"Redirect links",store:"Storefront",products:"Products",orders:"Orders",services:"Services",bookings:"Bookings",storeSettings:"Store settings",design:"Store design",insights:"Analytics & Insights",tracking:"Pixels & Integrations",settings:"Account settings",affiliate:"Affiliate",integrations:"Integrations"})[current] || "MyTikLink workspace"}</span>}{activePath === v11Routes.home && <><h1>Welcome back{user?.name ? `, ${user.name.trim().split(" ")[0]}` : ""} <span aria-hidden="true">👋</span></h1><p>Here’s what’s happening with your MyTikLink account today.</p></>}</div>
           <div className={styles.topbarActions}>
             {onAddProduct && (activePath === v11Routes.store || activePath === v11Routes.products || activePath.startsWith(`${v11Routes.products}/`)) && (
               <Button
                 variant="secondary"
                 className={`${styles.topbarCreate} ${showUpgrade ? styles.topbarProductCompact : ""}`}
-                aria-label="Add product"
-                title="Add product"
+                aria-label={serviceBusiness?"Add service":"Add product"}
+                title={serviceBusiness?"Add service":"Add product"}
                 onClick={onAddProduct}
               >
-                <PackagePlus /><span>Add product</span>
+                <PackagePlus /><span>{serviceBusiness?"Add service":"Add product"}</span>
               </Button>
             )}
             {showUpgrade && <Button className={`${styles.topbarUpgrade} ${expiredPlan ? styles.topbarUpgradeExpired : ""}`} onClick={() => openSubscription({ mode: expiredPlan ? "renew" : "upgrade", preselected: expiredPlan ? String(previousPayment?.plan||user?.plan||"pro").split("_")[0].replace("free","pro") : "pro", plan: previousPayment?.plan||user?.plan })}><Sparkles aria-hidden="true" />{expiredPlan ? "Renew" : "Upgrade"}</Button>}
@@ -414,9 +425,9 @@ export function Shell({ user, onLogout, children, onCreate, onAddProduct, hasSto
             isStoreManagement ? "Storefront navigation" : "MyTikLink navigation"
           }
         >
-          <NavItems hasStore={hasStore} compact current={current} items={dockItems.slice(0, 2)} />
+          <NavItems hasStore={hasStore} hasServices={hasServices} showProductLinks={!serviceBusiness||productHistory} compact current={current} items={dockItems.slice(0, 2)} />
           <span className={styles.mobileNavCenter} aria-hidden="true" />
-          <NavItems hasStore={hasStore} compact current={current} items={dockItems.slice(2)} />
+          <NavItems hasStore={hasStore} hasServices={hasServices} showProductLinks={!serviceBusiness||productHistory} compact current={current} items={dockItems.slice(2)} />
         </nav>
         <button
           type="button"
@@ -470,7 +481,7 @@ export function Shell({ user, onLogout, children, onCreate, onAddProduct, hasSto
               </IconButton>
             </header>
             <nav className={styles.drawerNavigation}>
-              <NavItems hasStore={hasStore}
+              <NavItems hasStore={hasStore} hasServices={hasServices} showProductLinks={!serviceBusiness||productHistory}
                 current={current}
                 close={closeMenu}
                 storeExpanded={

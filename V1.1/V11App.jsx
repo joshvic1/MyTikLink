@@ -1,3 +1,4 @@
+import {servicesEnabled} from './services/shared';
 import {adoptionEvent} from './lib/dashboardPreference';
 import PageSkeleton from './components/PageSkeleton';
 import SecurityPage from "./pages/SecurityPage";
@@ -46,6 +47,8 @@ import { notify } from "./components/Notifications";
 const VersionedPublicPage = dynamic(() => import("./landing/PublicPage"), { ssr: false, loading: () => <LoadingState/> });
 const TemplateEditor = dynamic(() => import("./landing/PageEditor"), { ssr: false, loading: () => <PageSkeleton/> });
 const CustomBuilder = dynamic(() => import("./landing/CustomBuilder"), { ssr: false, loading: () => <PageSkeleton/> });
+const ServicesManager = dynamic(() => import('./services/ServicesManager'), {ssr:false,loading:()=> <PageSkeleton/>});
+const BookingsManager = dynamic(() => import('./services/BookingsManager'), {ssr:false,loading:()=> <PageSkeleton/>});
 const ProductsManager = dynamic(() => import("./store/ProductsManager"), { ssr: false, loading: () => <PageSkeleton/> });
 const OrdersManager = dynamic(() => import("./store/OrdersManager"), { ssr: false, loading: () => <PageSkeleton/> });
 const StoreSettings = dynamic(() => import("./store/StoreSettings"), { ssr: false, loading: () => <PageSkeleton/> });
@@ -63,12 +66,12 @@ const preparingLabel = (path) => {
   return "Preparing dashboard…";
 };
 
-function CreateChooser({ onClose, choose }) {
+function CreateChooser({ onClose, choose, isServiceBusiness }) {
   const [hasStore,setHasStore]=useState(null);
   const [storeError,setStoreError]=useState(false);
   useEffect(()=>{let live=true;v11Api.store().then(store=>{if(live)setHasStore(Boolean(store));}).catch(error=>{if(!live)return;if(error.status===404)setHasStore(false);else setStoreError(true);});return()=>{live=false;};},[]);
 
-  return <Modal title="What would you like to create?" onClose={onClose}><div className={styles.createChoices}>{creationFeatures.map(feature=>{const {id,action,title,shortDescription,Icon,modalClass}=feature.id==="storefront"&&hasStore?{...feature,action:"product",title:"Add new product",shortDescription:"Add a product to your existing storefront.",Icon:PackagePlus}:feature;return <article key={id} className={`${styles.createChoiceCard} ${styles[modalClass]}`}><button className={styles.createChoiceMain} disabled={id==="storefront"&&hasStore===null} onClick={()=>choose(action)}><span><Icon/></span><div><b>{title}</b><p>{id==="storefront"&&hasStore===null?(storeError?"Could not check your store. Close and try again.":"Checking your storefront…"):shortDescription}</p></div><ArrowRight/></button></article>;})}</div></Modal>;
+  return <Modal title="What would you like to create?" onClose={onClose}><div className={styles.createChoices}>{creationFeatures.map(feature=>{const {id,action,title,shortDescription,Icon,modalClass}=feature.id==="storefront"&&hasStore?{...feature,action:"product",title:isServiceBusiness?"Add service":"Add new product",shortDescription:isServiceBusiness?"Add a service to your existing storefront.":"Add a product to your existing storefront.",Icon:PackagePlus}:feature;return <article key={id} className={`${styles.createChoiceCard} ${styles[modalClass]}`}><button className={styles.createChoiceMain} disabled={id==="storefront"&&hasStore===null} onClick={()=>choose(action)}><span><Icon/></span><div><b>{title}</b><p>{id==="storefront"&&hasStore===null?(storeError?"Could not check your store. Close and try again.":"Checking your storefront…"):shortDescription}</p></div><ArrowRight/></button></article>;})}</div></Modal>;
 }
 
 function V11Content() {
@@ -125,7 +128,8 @@ function V11Content() {
 
   const needsWorkspace=path===v11Routes.home || path===v11Routes.store;
 
-  const choose = (type) => { setModal(null); if(type === "product"){setProductComposer(true);if(path!==v11Routes.products)router.push(v11Routes.products);} else if (type === "store") router.push(v11Routes.store); else setModal(type); };
+  const isServiceBusiness=servicesEnabled&&['physical_services','digital_services'].includes(session.user?.onboarding?.businessFocus);
+  const choose = (type) => { setModal(null); if(type === "product"){setProductComposer(true);const destination=isServiceBusiness?'/v1-1/store/services':v11Routes.products;if(path!==destination)router.push(destination);} else if (type === "store") router.push(v11Routes.store); else setModal(type); };
   let content;
   if (path.endsWith("/store/settings")) content = <StoreSettings/>;
   else if (path.endsWith("/store/design")) content = <StoreDesign/>;
@@ -133,6 +137,8 @@ function V11Content() {
   else if (path.endsWith("/links")) content = <LinksPage revision={linkRevision} onCreate={() => setModal("link")} onEdit={setEditingLink}/>;
   else if (path.endsWith("/pages") || path.endsWith("/pages/create")) content = <PagesPage onCreate={() => setModal("page")} onLeads={(page, refresh) => setLeadPage({ ...page, refresh })}/>;
   else if (path.endsWith("/analytics") || path.endsWith("/insights")) content = <AnalyticsPage user={session.user} payments={workspace.payments}/>;
+  else if (path.endsWith("/store/services")) content = <ServicesManager openRequested={productComposer} onOpenHandled={()=>setProductComposer(false)}/>;
+  else if (path.endsWith("/store/bookings")) content = <BookingsManager/>;
   else if (path.endsWith("/store/products")) content = <ProductsManager user={session.user} onDataChange={workspace.refresh} openRequested={productComposer} onOpenHandled={() => setProductComposer(false)}/>;
   else if (path.endsWith("/store/orders")) content = <OrdersManager onDataChange={workspace.refresh}/>;
   else if (path.endsWith("/store")) content = <StorePage data={workspace} user={session.user}/>;
@@ -145,7 +151,7 @@ function V11Content() {
   else if (path.endsWith("/integrations")) content = <InProgressPage title="Integrations"/>;
   else if (path.endsWith("/help")) content = <HelpPage/>;
   else content = <HomePage user={session.user} data={workspace} onCreate={setModal}/>;
-  return <SubscriptionProvider user={session.user} refreshSession={session.refresh}><Head><title>MyTikLink V1.1</title></Head><Shell payments={workspace.payments} hasStore={Boolean(workspace.store)} user={session.user} onLogout={session.logout} onCreate={() => setModal("chooser")} onAddProduct={() => { setProductComposer(true); if(path !== v11Routes.products)router.push(v11Routes.products); }}>{!isPagesList && !isLinksList && workspace.warnings.length > 0 && <div className={styles.dataWarning} role="status"><span>Could not load: {workspace.warnings.join(", ")}. Your other data is available.</span><button type="button" onClick={workspace.refresh}>Retry</button></div>}{navigating&&<div className={styles.routeProgress} role="status" aria-label="Opening page"/>}{needsWorkspace&&workspace.loading?<PageSkeleton/>:needsWorkspace&&workspace.error?<ErrorState message={workspace.error.message} onRetry={workspace.refresh}/>:content}</Shell>{modal === "chooser" && <CreateChooser onClose={() => setModal(null)} choose={choose}/>} {modal === "link" && <CreateLinkModal onClose={() => setModal(null)} onSaved={async()=>{setLinkRevision(n=>n+1);if(!isLinksList)await workspace.refresh();}}/>} {editingLink && <CreateLinkModal link={editingLink} onClose={() => setEditingLink(null)} onSaved={async()=>{setLinkRevision(n=>n+1);if(!isLinksList)await workspace.refresh();}}/>} {modal === "page" && <PageTemplateModal user={session.user} onClose={() => setModal(null)}/>} {leadPage && <LeadsModal page={leadPage} leads={workspace.leads} onClose={() => { leadPage.refresh?.(); setLeadPage(null); }}/>}</SubscriptionProvider>;
+  return <SubscriptionProvider user={session.user} refreshSession={session.refresh}><Head><title>MyTikLink V1.1</title></Head><Shell payments={workspace.payments} hasStore={Boolean(workspace.store)} user={session.user} onLogout={session.logout} onCreate={() => setModal("chooser")} onAddProduct={() => { setProductComposer(true);const destination=isServiceBusiness?'/v1-1/store/services':v11Routes.products;if(path!==destination)router.push(destination); }}>{!isPagesList && !isLinksList && workspace.warnings.length > 0 && <div className={styles.dataWarning} role="status"><span>Could not load: {workspace.warnings.join(", ")}. Your other data is available.</span><button type="button" onClick={workspace.refresh}>Retry</button></div>}{navigating&&<div className={styles.routeProgress} role="status" aria-label="Opening page"/>}{needsWorkspace&&workspace.loading?<PageSkeleton/>:needsWorkspace&&workspace.error?<ErrorState message={workspace.error.message} onRetry={workspace.refresh}/>:content}</Shell>{modal === "chooser" && <CreateChooser isServiceBusiness={isServiceBusiness} onClose={() => setModal(null)} choose={choose}/>} {modal === "link" && <CreateLinkModal onClose={() => setModal(null)} onSaved={async()=>{setLinkRevision(n=>n+1);if(!isLinksList)await workspace.refresh();}}/>} {editingLink && <CreateLinkModal link={editingLink} onClose={() => setEditingLink(null)} onSaved={async()=>{setLinkRevision(n=>n+1);if(!isLinksList)await workspace.refresh();}}/>} {modal === "page" && <PageTemplateModal user={session.user} onClose={() => setModal(null)}/>} {leadPage && <LeadsModal page={leadPage} leads={workspace.leads} onClose={() => { leadPage.refresh?.(); setLeadPage(null); }}/>}</SubscriptionProvider>;
 }
 
 export default function V11App() {
