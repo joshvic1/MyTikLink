@@ -300,3 +300,15 @@
 @container(max-width:700px){.roselle .header{padding:14px 18px}.roselle .brand{font-size:24px}.roselleHero{display:flex;flex-direction:column;min-height:0}.roselleHero .roselleImage{height:210px;min-height:0;order:0}.roselleHero .roselleCopy{order:1;padding:18px 20px 20px}.roselleCopy h1{font-size:35px;margin:0 0 10px;max-width:340px}.roselleCopy p{font-size:12px;margin-bottom:16px}.roselleCopy .cta{min-width:175px;min-height:38px;padding:9px 16px;font-size:12px}.roselle .catalogue{padding:15px 12px 24px}.roselle .catalogueHeading{margin:8px 0 18px}.roselle .catalogueHeading h1,.roselle .catalogue h2{font-size:24px;line-height:1.2}.roselle .formeCategories{justify-content:flex-start;gap:6px;margin:0 0 12px}.roselle .formeCategories button{padding:6px 13px;font-size:10px}.roselle .filterToggle{bottom:-17px}.roselle .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.roselle .product{display:flex;flex-direction:column;padding:0;gap:0;border-radius:8px}.roselle .productVisual{min-height:0}.roselle .photo{aspect-ratio:1.5!important;height:auto;min-height:0;border-radius:0}.roselle .product>a{padding:9px;display:flex;flex:1}.roselle .product h3{font-size:17px;line-height:1.15;margin-bottom:10px}.roselle .price{font-size:10px;gap:4px;margin-bottom:10px}.roselle .price small{font-size:9px}.roselle .view{font-size:10px;min-height:31px;padding:5px 3px;white-space:nowrap;border-radius:5px}.roselle .product:last-child:nth-child(odd){grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:8px}.roselle .product:last-child:nth-child(odd) .photo{height:100%;min-height:120px;aspect-ratio:auto!important}.roselleAbout{grid-template-columns:1fr}.roselleAbout .roselleImage{height:150px}.roselleAbout .roselleCopy{padding:20px}.roselleAbout h2{font-size:28px}.roselleAbout p{font-size:12px}.roselle .footerGrid{padding:20px 18px}}
 
 .roselleCopy h1{white-space:pre-line}@container(max-width:700px){.roselle .catalogueHeading h1,.roselle .catalogue h2{font-size:21px}.roselleCopy h1{font-size:32px}}
+
+/* Atelier: one balanced desktop row; mobile keeps its existing menu layout. */
+.atelier .brand{min-width:0}
+.atelier .brand img{flex-shrink:0}
+.atelier .brandName{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@container(min-width:701px){
+ .atelier .header{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:clamp(16px,2.5cqi,40px);padding:18px clamp(20px,2.5cqi,40px)}
+ .atelier .brand{grid-column:1;grid-row:1;justify-content:flex-start;text-align:left;font-size:clamp(18px,2cqi,28px);gap:10px}
+ .atelier .nav{grid-column:2;grid-row:1;align-items:center;flex-wrap:nowrap;gap:clamp(14px,2cqi,25px);white-space:nowrap}
+ .atelier .actions{grid-column:3;grid-row:1;justify-self:end;flex-shrink:0}
+ .atelier .search{grid-row:2}
+}
