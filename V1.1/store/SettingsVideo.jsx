@@ -2,7 +2,7 @@ import {useEffect,useRef,useState} from 'react';
 import {createPortal} from 'react-dom';
 import {Youtube,X} from 'lucide-react';
 import css from './SettingsVideo.module.css';
-const videos={ 'Product categories':'n4jfWIjvpMk', Delivery:'962SSHRX2Zo' };
+const videos={ 'Product categories':'n4jfWIjvpMk', Delivery:'962SSHRX2Zo', 'Physical products':'6mfCzsAmC4A' };
 function VideoOverlay({topic,videoId,onClose}){
  const dialog=useRef(null),close=useRef(null);
  useEffect(()=>{
@@ -11,9 +11,9 @@ function VideoOverlay({topic,videoId,onClose}){
   dialog.current.showModal();close.current.focus();
   return()=>{document.body.style.overflow=overflow;previous?.focus?.();};
  },[]);
- return createPortal(<dialog ref={dialog} className={css.overlay} aria-label={`${topic} video guide`} onCancel={event=>{event.preventDefault();onClose();}}>
+ return createPortal(<dialog ref={dialog} className={css.overlay} onKeyDown={event=>event.stopPropagation()} aria-label={`${topic} video guide`} onCancel={event=>{event.preventDefault();onClose();}}>
   <header className={css.header}><span>{topic} video guide</span><button ref={close} className={css.close} type="button" aria-label="Close video guide" onClick={onClose}><X size={28}/></button></header>
-  <div className={css.stage}><iframe className={css.player} src={`https://www.youtube-nocookie.com/embed/${videoId}?playsinline=1&rel=0`} title={`${topic} YouTube video guide`} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen referrerPolicy="strict-origin-when-cross-origin"/></div>
+  <div className={css.stage}><iframe className={`${css.player} ${topic==='Physical products'?css.landscape:''}`} src={`https://www.youtube-nocookie.com/embed/${videoId}?playsinline=1&rel=0`} title={`${topic} YouTube video guide`} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen referrerPolicy="strict-origin-when-cross-origin"/></div>
  </dialog>,document.body);
 }
 export default function SettingsVideo({topic}){

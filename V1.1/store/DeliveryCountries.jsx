@@ -1,3 +1,4 @@
+import SettingsVideo from "./SettingsVideo";
 import FlagIcon from '../components/FlagIcon';
 import SearchableSelect from '../components/SearchableSelect';
 import NumericInput from "../components/NumericInput";
@@ -98,7 +99,7 @@ export default function DeliveryCountries({ delivery, currency, onSave, busy, di
   const available = [...countries.filter(c => !configured.some(row => row.countryCode === c.code) || entry?.value?.countryCode === c.code)];
   if (entry?.value?.countryCode && !available.some(c => c.code === entry.value.countryCode)) available.push({ code: entry.value.countryCode, name: entry.value.name });
   return <div className={css.root}>
-    <header className={`${settingsCss.panelHeading} ${css.deliveryHeader}`}><div><h2>Delivery <button className={settingsCss.helpButton} type="button" aria-label="About delivery" onClick={()=>setHelp(true)}><CircleHelp size={15}/></button></h2><p>Choose where you deliver and what customers pay.</p></div><button type="button" className={css.offerToggle} role="switch" aria-label="Offer Delivery" aria-checked={!digital&&delivery.enabled===true} aria-disabled={digital||busy} disabled={busy} onClick={()=>digital?setHelp(true):safe({...delivery,enabled:!delivery.enabled},'Delivery setting saved')}><i aria-hidden="true"><span/></i></button></header>
+    <header className={`${settingsCss.panelHeading} ${css.deliveryHeader}`}><div><h2>Delivery <button className={settingsCss.helpButton} type="button" aria-label="About delivery" onClick={()=>setHelp(true)}><CircleHelp size={15}/></button><SettingsVideo topic="Delivery"/></h2><p>Choose where you deliver and what customers pay.</p></div><button type="button" className={css.offerToggle} role="switch" aria-label="Offer Delivery" aria-checked={!digital&&delivery.enabled===true} aria-disabled={digital||busy} disabled={busy} onClick={()=>digital?setHelp(true):safe({...delivery,enabled:!delivery.enabled},'Delivery setting saved')}><i aria-hidden="true"><span/></i></button></header>
     {help&&<Modal title="Delivery" onClose={()=>setHelp(false)}><p>{digital?'This option is only available for physical stores.':'Set a general fee for each country and optional fees for individual states.'}</p></Modal>}
     <div className={css.heading}><h3>Delivery locations</h3><Button variant="secondary" disabled={digital || busy || !countries.length} onClick={() => setEntry({ kind: 'country' })}><Plus size={14} /> Add Delivery Location</Button></div>
     {!configured.length && <div className={css.empty}>Add a country and set one general delivery fee.</div>}

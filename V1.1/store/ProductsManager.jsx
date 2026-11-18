@@ -1,3 +1,4 @@
+import SettingsVideo from "./SettingsVideo";
 import NumericInput from "../components/NumericInput";
 import CompactLoading from "../components/CompactLoading";
 import {useSubscription} from "../components/SubscriptionModal";
@@ -499,7 +500,7 @@ export default function ProductsManager({
   };
   return (
     <div className={`${styles.managementPage} ${ui.page}`}>
-      <PageHeader title="Products"/>
+      <PageHeader title={<>Products{store?.businessType==="physical"&&<SettingsVideo topic="Physical products"/>}</>}/>
       <div className={ui.toolbar}><label className={ui.search}><Search size={18}/><input aria-label="Search products" value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search products…"/></label><button aria-label="Filter products" aria-expanded={filters} className={filters?ui.chosen:''} onClick={()=>setFilters(!filters)}><SlidersHorizontal size={18}/></button></div>
       {filters&&<div className={ui.filters}>{store?.businessType!=="digital"&&<label>Stock<select value={stock} onChange={e=>setStock(e.target.value)}><option value="all">All stock</option><option value="in">In stock</option><option value="out">Out of stock</option></select></label>}<label>Sort by<select value={sort} onChange={e=>setSort(e.target.value)}><option value="newest">Newest</option><option value="oldest">Oldest</option><option value="priceHigh">Highest price</option><option value="priceLow">Lowest price</option><option value="name">Name</option></select></label></div>}
       <div className={ui.tabs} aria-label="Product status">{[['All',summary.total,'all','all'],['Active',metrics.active,'published','all'],['Draft',metrics.drafts,'draft','all'],['Out of stock',metrics.out,'all','out']].filter(row=>store?.businessType!=='digital'||row[3]!=='out').map(([label,count,state,inventory])=><button key={label} aria-pressed={status===state&&stock===inventory} className={status===state&&stock===inventory?ui.tabActive:''} onClick={()=>{setStatus(state);setStock(inventory);}}>{label} ({count})</button>)}</div>

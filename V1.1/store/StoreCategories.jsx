@@ -78,7 +78,7 @@ export function CategoryManager() {
     <>
       <div className={css.panelHeading}>
         <div>
-          <h2>Product categories <SettingsHelp topic="Product categories"/></h2>
+          <h2>CATEGORIES <SettingsHelp topic="Product categories"/></h2>
           <p>Create a category for your products.</p>
         </div>
         <Button onClick={() => setEditing({})}>
