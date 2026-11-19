@@ -1,0 +1,8 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {selectPreviewSection,announcementEntries} from '../V1.1/store/previewSelection.mjs';
+const event=(id,control=false,input=false)=>({target:{closest:q=>q==='[data-store-section]'?{dataset:{storeSection:id}}:q==='a,button'?control:input},preventDefault(){this.prevented=true;},stopPropagation(){this.stopped=true;}});
+test('CTA clicks open the exact duplicated hero and button field, without navigation',()=>{const e=event('hero-copy',true);let selected;selectPreviewSection(e,[{id:'hero',type:'hero'},{id:'hero-copy',type:'hero'}],(...args)=>selected=args);assert.deepEqual(selected,['hero-copy','ctaLabel']);assert.ok(e.prevented&&e.stopped);});
+test('catalogue product actions and form controls keep their own handlers',()=>{for(const e of [event('catalogue',true),event('hero',false,true)]){selectPreviewSection(e,[{id:'catalogue',type:'catalogue'},{id:'hero',type:'hero'}],()=>assert.fail('should not select'));assert.equal(e.prevented,undefined);}});
+test('announcements support heading-only content, item titles and ignore hidden sections',()=>{assert.deepEqual(announcementEntries([{id:'a',type:'announcement',visible:true,text:' ',title:'Welcome',items:[{text:'Second'},{title:'Third'}]},{id:'b',type:'announcement',visible:false,text:'Hidden'}],v=>v||''),[{id:'a',text:'Welcome'},{id:'a',text:'Second'},{id:'a',text:'Third'}]);});
+test('empty announcements have an editor-only prompt and never publish placeholder text',()=>{const sections=[{id:'a',type:'announcement',visible:true}];assert.deepEqual(announcementEntries(sections,v=>v||''),[]);assert.equal(announcementEntries(sections,v=>v||'',true)[0].text,'Add your announcement message');});

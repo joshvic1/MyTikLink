@@ -358,3 +358,24 @@
 /* Public storefront resets must not add space inside this title row. */
 .roselle .catalogue .catalogueHeading{padding:0!important}
 .roselle .catalogue .catalogueHeading .filterToggle{display:grid!important;place-items:center;padding:0!important;border-radius:50%!important;min-width:36px;min-height:36px;top:50%;transform:translateY(-50%);bottom:auto}
+
+.roselleMenuBackdrop{align-items:stretch!important;justify-content:flex-end!important;padding:12px!important;background:#35132366!important;backdrop-filter:blur(5px)}
+.roselleMenu{width:min(420px,100%)!important;max-width:420px!important;max-height:calc(100dvh - 24px)!important;height:auto!important;margin:0!important;border:1px solid var(--line)!important;border-radius:22px!important;background:var(--paper)!important;color:var(--ink)!important;font-family:var(--atelier-body)!important;box-shadow:0 20px 70px #35132330!important}
+.roselleMenu>header{background:transparent!important;border-bottom:1px solid var(--line)!important;padding:23px 24px!important}
+.roselleMenu>header h2{font:400 28px/1.2 var(--atelier-heading)!important;color:var(--ink)!important;letter-spacing:-.03em}
+.roselleMenu>header button{background:var(--atelier-secondary)!important;color:var(--ink)!important;border-radius:50%!important;display:grid;place-items:center}
+.roselleMenu>div{padding:24px!important;background:radial-gradient(ellipse at top right,var(--atelier-secondary),transparent 70%),var(--paper)}
+.roselleMenuIntro small{font-size:9px;letter-spacing:.18em;color:var(--atelier-accent)}
+.roselleMenuIntro p{font:400 24px/1.2 var(--atelier-heading);margin:10px 0 24px;color:var(--ink)}
+.roselleMenuLinks{display:grid}
+.roselleMenuLinks a{display:flex;align-items:center;gap:12px;padding:20px 0;border-top:1px solid var(--line);color:var(--ink);text-decoration:none}
+.roselleMenuLinks a small{font-size:9px;color:var(--atelier-accent)}
+.roselleMenuLinks a span{font:400 25px/1.2 var(--atelier-heading);flex:1}
+.roselleMenuLinks a svg{color:var(--atelier-accent);flex-shrink:0}
+.roselleMenuLinks a:hover{color:var(--atelier-accent)}
+.roselleMenuFoot{border-top:1px solid var(--line);padding-top:24px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:12px}
+.roselleMenuFoot a{display:inline-flex;align-items:center;gap:8px;color:var(--atelier-accent);text-decoration:none}
+.roselleMenu a:focus-visible{outline:2px solid var(--atelier-accent);outline-offset:3px}
+@media(max-width:700px){.roselleMenuBackdrop{padding:8px!important}.roselleMenu{max-height:calc(100dvh - 16px)!important;border-radius:18px!important}.roselleMenu>div{padding:20px!important}.roselleMenu>header{padding:20px!important}}
+
+.roselleMenu>header:before,.roselleMenu>header:after{display:none!important}

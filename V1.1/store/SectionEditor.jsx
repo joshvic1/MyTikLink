@@ -74,7 +74,7 @@ export default function SectionEditor({ design, onChange, products = [] }) {
             <summary className={styles.sectionSummary}>
               <span className={styles.sectionName}>{label}</span>
               <span className={styles.sectionActions}>
-                <button type="button" aria-label={`${s.visible ? 'Hide' : 'Show'} ${label}`} title={required.includes(s.type) ? `${label} is required` : `${s.visible ? 'Hide' : 'Show'} ${label}`} aria-pressed={!!s.visible} disabled={required.includes(s.type)} onClick={e=>{e.preventDefault();e.stopPropagation();update(s.id,{visible:!s.visible});}}>{s.visible ? <Eye size={15}/> : <EyeOff size={15}/>}</button>
+                <button type="button" aria-label={`${s.visible ? 'Hide' : 'Show'} ${label}`} title={required.includes(s.type) ? `${label} is required` : `${s.visible ? 'Hide' : 'Show'} ${label}`} aria-pressed={!!s.visible} disabled={required.includes(s.type)} onClick={e=>{e.preventDefault();e.stopPropagation();update(s.id,{visible:!s.visible,...(s.type==="announcement"&&!s.visible&&!s.text?.trim()&&!s.title?.trim()&&!(s.items||[]).some(i=>(i.text||i.title||"").trim())?{text:"Welcome to {{store.name}}"}:{})});}}>{s.visible ? <Eye size={15}/> : <EyeOff size={15}/>}</button>
                 <button type="button" aria-label={`Move ${label} up`} title="Move up" disabled={!canMove(i,i-1)} onClick={e=>{e.preventDefault();e.stopPropagation();reorder(i,i-1);}}><ArrowUp size={14}/></button>
                 <button type="button" aria-label={`Move ${label} down`} title="Move down" disabled={!canMove(i,i+1)} onClick={e=>{e.preventDefault();e.stopPropagation();reorder(i,i+1);}}><ArrowDown size={14}/></button>
               </span>
@@ -105,14 +105,14 @@ export default function SectionEditor({ design, onChange, products = [] }) {
             </div>
             {!["header", "categories"].includes(s.type) && (
               <>
-                <Field label="Heading">
+                <Field label={s.type==="announcement"?"Announcement heading (optional)":"Heading"}>
                   <input
                     value={s.title}
                     maxLength={120}
                     onChange={(e) => update(s.id, { title: e.target.value })}
                   />
                 </Field>
-                <Field label="Description">
+                <Field label={s.type==="announcement"?"Announcement message":"Description"}>
                   <textarea
                     value={s.text}
                     maxLength={3000}
@@ -213,6 +213,7 @@ export default function SectionEditor({ design, onChange, products = [] }) {
                 </Field>
                 <Field label="Button label">
                   <input
+                    data-editor-field="ctaLabel"
                     maxLength={50}
                     value={settings.ctaLabel || ""}
                     onChange={(e) => set("ctaLabel", e.target.value)}

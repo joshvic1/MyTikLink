@@ -1,11 +1,14 @@
-import { apiRequest } from "../lib/api";
-export async function uploadStoreImage(file, { onProgress = () => {} } = {}) {
+import {v11ApiBase} from "../lib/apiBase.js";
+import {uploadWithProgress} from "./uploadProgress.mjs";
+import { apiRequest, getToken } from "../lib/api";
+export async function uploadStoreImage(file, { onProgress = () => {}, onUploadProgress } = {}) {
   if (
     !["image/jpeg", "image/png", "image/webp"].includes(file.type) ||
     file.size > 5 * 1024 * 1024
   )
     throw Error("Choose a JPG, PNG or WebP image under 5 MB.");
   const root = "/v1-1/store-studio/commerce/media";
+  onUploadProgress?.(0);
   onProgress("Uploading image…");
   const signed = await apiRequest(`${root}/sign`, {
     method: "POST",
@@ -13,7 +16,7 @@ export async function uploadStoreImage(file, { onProgress = () => {} } = {}) {
   });
   let response;
   try {
-    response = await fetch(signed.uploadUrl, {
+    response = onUploadProgress ? await uploadWithProgress(signed.uploadUrl,{method:"PUT",headers:signed.headers,file,onProgress:onUploadProgress}) : await fetch(signed.uploadUrl, {
       method: "PUT",
       headers: signed.headers,
       body: file,
@@ -22,13 +25,15 @@ export async function uploadStoreImage(file, { onProgress = () => {} } = {}) {
   } catch {
     response = null;
   }
-  if (!response?.ok)
-    await apiRequest(`${root}/${signed.id}/relay`, {
-      method: "POST",
-      headers: { "Content-Type": file.type },
-      body: file,
-      timeoutMs: 60000,
-    });
+  if (!response?.ok) {
+    if(onUploadProgress){
+      onUploadProgress(0);
+      const token=getToken();
+      const relay=await uploadWithProgress(`${v11ApiBase()}${root}/${signed.id}/relay`,{method:"POST",headers:{"Content-Type":file.type,...(token?{Authorization:`Bearer ${token}`}:{})},file,onProgress:onUploadProgress});
+      if(!relay.ok)throw Error("Image upload failed. Please try again.");
+    }else await apiRequest(`${root}/${signed.id}/relay`, {method:"POST",headers:{"Content-Type":file.type},body:file,timeoutMs:60000});
+  }
+  onUploadProgress?.(100);
   onProgress("Optimizing image in the background…");
   let result = await apiRequest(`${root}/${signed.id}/complete`, {
     method: "POST",

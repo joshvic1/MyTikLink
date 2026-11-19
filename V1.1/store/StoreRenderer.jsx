@@ -1,3 +1,4 @@
+import {selectPreviewSection} from './previewSelection.mjs';
 import ServiceCatalogue,{serviceHref} from '../services/ServiceCatalogue';
 import {servicesEnabled} from '../services/shared';
 import BrandCredit from "../../components/marketing/BrandCredit";
@@ -25,9 +26,9 @@ function StandardStoreRenderer({detail,design,store={},products=[],preview=false
  const searchField=<label className={styles.search}><Search size={16}/><input aria-label="Search store products" value={search} onChange={e=>{setSearch(e.target.value);onFilter?.({search:e.target.value,page:1});}} placeholder="Search the collection"/></label>;
  const sections=design.sections.filter(s=>s.type!=="announcement"&&(!detail||["header","categories","catalogue","footer"].includes(s.type))).filter(s=>s.type==="featured"?store.showFeatured===true&&featured.length>0:s.visible);
  if(servicesEnabled&&store.serviceBusiness&&sections.some(s=>s.type==='catalogue')&&!preview&&!detail)sections.splice(Math.max(1,sections.findIndex(s=>s.type==='catalogue')),0,{id:'service-catalogue',type:'service-catalogue'});
- return <div className={`${styles.store} ${styles[theme]} ${styles[brand.background]}`} style={{"--accent":brand.accent,"--radius":brand.radius==="square"?"0px":brand.radius==="rounded"?"26px":"16px","--heading":brand.font==="classic"?"Georgia,serif":"var(--font-v11-heading),sans-serif"}} onClickCapture={preview&&onSelectSection?e=>{const section=e.target.closest("[data-store-section]");if(section&&!e.target.closest("input,button,label,a")){e.preventDefault();onSelectSection(section.dataset.storeSection);}}:undefined}>
+ return <div className={`${styles.store} ${styles[theme]} ${styles[brand.background]}`} style={{"--accent":brand.accent,"--radius":brand.radius==="square"?"0px":brand.radius==="rounded"?"26px":"16px","--heading":brand.font==="classic"?"Georgia,serif":"var(--font-v11-heading),sans-serif"}} onClickCapture={preview&&onSelectSection?e=>selectPreviewSection(e,design.sections,onSelectSection):undefined}>
  {demo&&<div className={styles.demoNotice}>Sample products · preview only</div>}
- <AnnouncementBar sections={design.sections} store={store}/>
+ <AnnouncementBar sections={design.sections} store={store} editing={Boolean(preview&&onSelectSection)}/>
  {sections.map(s=>{switch(s.type){
  case 'service-catalogue':return <section id="store-catalogue" key={s.id} className={styles.section}><ServiceCatalogue slug={store.slug} onCount={setServiceCount} renderItems={productList}/></section>;
  case "header":return <header key={s.id} data-store-section="header" className={styles.header}><a className={styles.brand} href={preview?(interactivePreview?"#preview-product":undefined):`/v1-1/s/${store.slug}`}>{brand.logo&&<img src={brand.logo} alt=""/>}{store.name||"Your store"}</a><div className={styles.headerActions}><details><summary>Menu</summary><CurrencySelector/></details><button onClick={()=>setSearchOpen(v=>!v)} aria-expanded={searchOpen} aria-label="Search products"><Search size={20}/></button><button disabled={preview&&(!interactivePreview||!onCart)} onClick={onCart} aria-label="Open cart"><ShoppingBag size={20}/></button></div>{(searchOpen||theme==="digital")&&searchField}</header>;

@@ -552,3 +552,5 @@
 .publicModal.publicModal [data-popup-action="secondary"]{background:var(--store-paper)!important;color:var(--store-ink)!important;border-color:var(--store-line)!important;border-radius:var(--store-radius)!important}
 .publicModal.publicModal [data-popup-action]:before{display:none!important}
 .publicModal.publicModal .customerIcon{background:var(--store-paper);color:var(--store-accent);border:1px solid var(--store-line);border-radius:var(--store-radius)}
+
+.roselleUtility{margin:0!important;padding:0 20px max(16px,env(safe-area-inset-bottom))!important;border:0!important}.roselleUtility button{color:inherit;font-size:11px;opacity:.8;text-underline-offset:3px}
