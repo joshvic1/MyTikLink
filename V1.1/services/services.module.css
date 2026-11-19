@@ -16,3 +16,17 @@
 .editorModal .editorForm input:not([type=checkbox]):not([type=radio]),.editorModal .editorForm select,.editorModal .editorForm textarea{font-size:13px!important;padding:8px 10px!important;min-height:36px!important}.editorModal .editorForm input[type=file]{display:none!important}@media(max-width:540px){.editorModal .editorForm input:not([type=checkbox]):not([type=radio]),.editorModal .editorForm select,.editorModal .editorForm textarea{font-size:16px!important}}
 
 .editorModal :global(#service-editor) input:not([type=checkbox]):not([type=radio]),.editorModal :global(#service-editor) select,.editorModal :global(#service-editor) textarea{font-size:13px!important}@media(max-width:540px){.editorModal :global(#service-editor) input:not([type=checkbox]):not([type=radio]),.editorModal :global(#service-editor) select,.editorModal :global(#service-editor) textarea{font-size:16px!important}}
+
+/* Share the product card shell; keep service facts and actions in normal flow. */
+.compactServiceCard{align-items:center}
+.compactServiceCard .compactServiceImage{display:grid;place-items:center;background:#f6f1fc;border-radius:8px;color:#9470be;overflow:hidden}
+.compactServiceCard .serviceFacts{display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-width:0}
+.serviceFacts strong{margin:0;white-space:nowrap}
+.serviceDuration{display:inline-flex;align-items:center;gap:4px;color:#81738f;font-size:10px;white-space:nowrap}
+.serviceDuration svg{flex-shrink:0}
+.serviceCardBottom{display:flex;justify-content:space-between;align-items:center;gap:6px;margin-top:3px;flex-wrap:wrap}
+.compactServiceCard .serviceCardMeta{margin:0;padding:0;min-height:20px;gap:7px}
+.compactServiceCard .serviceCardActions{position:static;flex-shrink:0;margin-left:auto}
+.compactServiceSkeleton{height:78px;border-radius:12px;background:linear-gradient(90deg,#f1edf7,#faf8fd,#f1edf7);background-size:200% 100%;animation:pulse 1.5s infinite}
+@media(max-width:480px){.serviceDuration{font-size:9px}.compactServiceCard .serviceFacts{gap:7px}.compactServiceCard .serviceCardMeta{margin-right:0}.serviceCardBottom{gap:4px}}
+@media(prefers-reduced-motion:reduce){.compactServiceSkeleton{animation:none}}
