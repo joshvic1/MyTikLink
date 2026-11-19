@@ -1,18 +1,37 @@
-import {useState} from 'react';
-import {Copy,Check,CheckCircle2} from 'lucide-react';
-import {money,paymentLabels,statusLabel} from './shared';
+import {useEffect,useRef,useState} from 'react';
+import {createPortal} from 'react-dom';
+import {uploadPaymentProof} from '../../services/uploadService';
+import {scrollReceiptTop} from './bookingProgress';
+import {Copy,Check,CheckCircle2,UploadCloud} from 'lucide-react';
+import {serviceApi,money,paymentLabels,statusLabel} from './shared';
 import {locationLabel,durationLabel} from './servicePresentation.mjs';
 import ui from './publicService.module.css';
-export default function BookingReceipt({receipt:r,data,onClose}){
+export default function BookingReceipt({receipt:r,data,onClose,token,footerTarget,onBusyChange}){
+ const [proofOpen,setProofOpen]=useState(false),[file,setFile]=useState(null),[preview,setPreview]=useState(''),[busy,setBusy]=useState(false),[percent,setPercent]=useState(0),[uploaded,setUploaded]=useState(false),[complete,setComplete]=useState(Boolean(r.proofSubmittedAt)),[error,setError]=useState('');
+ const top=useRef(null),proof=useRef(null),uploadedUrl=useRef(''),lock=useRef(false);
+ useEffect(()=>{const frame=requestAnimationFrame(()=>scrollReceiptTop(top.current));return()=>cancelAnimationFrame(frame);},[complete]);
+ useEffect(()=>{if(!file){setPreview('');return;}const url=URL.createObjectURL(file);setPreview(url);return()=>URL.revokeObjectURL(url);},[file]);
+ useEffect(()=>{if(proofOpen){const frame=requestAnimationFrame(()=>{proof.current?.scrollIntoView({block:'center',behavior:'smooth'});proof.current?.focus({preventScroll:true});});return()=>cancelAnimationFrame(frame);}},[proofOpen]);
+ const submitProof=async()=>{
+  if(lock.current)return;if(!file){setError('Please upload your payment proof.');proof.current?.scrollIntoView({block:'center',behavior:'smooth'});return;}
+  lock.current=true;setBusy(true);onBusyChange(true);setError('');
+  try{if(!uploadedUrl.current){const upload=await uploadPaymentProof(file,e=>{if(e.total)setPercent(Math.round(e.loaded/e.total*100));});if(!upload.url)throw Error('The upload did not finish. Please try again.');uploadedUrl.current=upload.url;setPercent(100);setUploaded(true);}
+   await serviceApi(`/public/${encodeURIComponent(data.store.slug)}/bookings/${encodeURIComponent(r.reference)}/proof`,{token:null,method:'POST',headers:{'x-booking-token':token},body:JSON.stringify({paymentProof:uploadedUrl.current})});setComplete(true);
+  }catch(e){setError(e.message||'Could not submit your proof. Please try again.');}finally{lock.current=false;setBusy(false);onBusyChange(false);}
+ };
+ const bank=r.paymentMethod==='bank';
+ const action=<button type="button" className={ui.primary} disabled={busy} aria-busy={busy} onClick={complete||!bank?onClose:proofOpen?submitProof:()=>setProofOpen(true)}><span aria-hidden="true" className={ui.progressFill} style={{width:busy?percent+'%':'0%'}}/><span className={ui.buttonLabel}>{busy?(uploaded?'Sending payment proof…':`Uploading proof · ${percent}%`):complete||!bank?'Done':proofOpen?'Submit Payment Proof':'I have paid'}</span></button>;
  const [copied,setCopied]=useState(''),[copyError,setCopyError]=useState('');const service=r.service||data.service;
  const copy=async(label,value)=>{try{await navigator.clipboard.writeText(String(value));setCopied(label);setCopyError('');}catch{setCopyError('Could not copy. Please select and copy the details.');}};
  const row=(label,value,copyValue=value)=><div className={ui.transferRow} key={label}><div><small>{label}</small><strong>{value||'Not available'}</strong></div>{value&&<button type="button" aria-label={'Copy '+label.toLowerCase()} onClick={()=>copy(label,copyValue)}>{copied===label?<Check size={16}/>:<Copy size={16}/>}</button>}</div>;
- return <div className={ui.receipt}>
+ return <div className={ui.receipt} ref={top} tabIndex={-1}>
+ {complete?<section className={ui.proofSuccess} role="status"><CheckCircle2 size={42}/><h2>Payment proof received</h2><p>Your service request has been received and your payment is awaiting verification by {data.store.name}. You’ll receive an update when your payment is verified.</p><small>Booking reference · {r.reference}</small></section>:<>
  {r.paymentMethod==='bank'?<section className={ui.bankPanel}><h2>Transfer to the account below</h2><p>Use these details to pay for your service.</p>{row('Account number',data.bank?.accountNumber)}{row('Bank name',data.bank?.name)}{row('Account name',data.bank?.accountName)}{row('Amount',money(r.totalMinor,r.currency),String(r.totalMinor/100))}{row('Payment reference',r.reference)}<span className={ui.paymentPending}>Awaiting payment verification</span>{data.paymentInstructions?.bank&&<p>{data.paymentInstructions.bank}</p>}</section>:<header className={ui.receiptHeading}><CheckCircle2 size={28}/><div><h2>Booking received</h2><p>Your details have been sent to {data.store.name}.</p></div></header>}
  {copyError&&<p role="alert" className={ui.fieldError}>{copyError}</p>}{copied&&<small role="status">{copied} copied.</small>}
  <section className={ui.receiptSummary}><div className={ui.bookingSummary}>{service.images?.[0]&&<img src={service.images[0]} alt=""/>}<div><strong>{service.name}</strong><small>{durationLabel(service)}</small></div></div><dl>{[['Booking reference',r.reference],['Total',money(r.totalMinor,r.currency)],['Payment method',paymentLabels[r.paymentMethod]],['Booking status',statusLabel(r.serviceStatus)],['Payment status',statusLabel(r.paymentStatus)],['Appointment',r.appointmentStart?new Date(r.appointmentStart).toLocaleString(undefined,{timeZone:r.timezone})+' · '+r.timezone:null],['Service option',locationLabel(r.locationMode)],...(r.customerDetails||[]).map(f=>[f.label,f.value])].filter(([,v])=>v).map(([label,value],i)=><div key={i}><dt>{label}</dt><dd>{value}</dd></div>)}</dl></section>
  {r.holdUntil&&<p className={ui.notice}>Your time is held until {new Date(r.holdUntil).toLocaleTimeString()}. After the hold expires, contact the business before paying.</p>}
  {r.paymentMethod==='whatsapp'&&data.whatsapp&&<a className={ui.primary} href={`https://wa.me/${data.whatsapp.replace(/\D/g,'')}?text=${encodeURIComponent('Hello, about '+service.name+'. Booking '+r.reference+'. Total '+money(r.totalMinor,r.currency))}`} target="_blank" rel="noreferrer">Continue on WhatsApp ↗</a>}
  {r.paymentMethod==='cod'&&<p className={ui.notice}>You selected Pay after service. No payment has been collected.</p>}
- <button type="button" className={ui.primary} onClick={onClose}>Done</button></div>;
+ {bank&&proofOpen&&<section ref={proof} tabIndex={-1} className={ui.proofPanel}><UploadCloud size={27}/><h2>Upload your payment proof below</h2><p>{data.store.name} will review the transfer before confirming payment.</p><label className={ui.proofPicker}>{preview?<img src={preview} alt="Selected payment proof"/>:<UploadCloud size={30}/>}<strong>{file?file.name:'Choose payment proof'}</strong><small>JPG, PNG or WebP · up to 5 MB</small><input type="file" accept="image/jpeg,image/png,image/webp" disabled={busy} onChange={e=>{const next=e.target.files?.[0];if(!next)return;if(!['image/jpeg','image/png','image/webp'].includes(next.type)||!next.size||next.size>5*1024*1024){setError('Choose a JPG, PNG or WebP image smaller than 5 MB.');e.target.value='';return;}setFile(next);setError('');setPercent(0);setUploaded(false);uploadedUrl.current='';}}/></label>{busy&&<div className={ui.uploadStatus} role="status"><span style={{'--progress':percent+'%'}}>{percent}%</span><p>{uploaded?'Saving your proof…':'Uploading your receipt…'}</p></div>}{error&&<p role="alert" className={ui.fieldError}>{error}</p>}<small>Make sure the amount, date and transaction reference are readable.</small></section>}</>}
+ {footerTarget&&createPortal(action,footerTarget)}</div>;
 }
