@@ -1,0 +1,2 @@
+import {useEffect,useRef} from 'react';
+export default function useAnchorOffset(height){const ref=useRef(null);useEffect(()=>{const root=ref.current;if(!root)return;const header=root.querySelector('[data-store-section="header"]');const measure=()=>root.style.setProperty('--store-anchor-offset',((height||header?.getBoundingClientRect().height||72)+18)+'px');measure();if(!header)return;const observer=new ResizeObserver(measure);observer.observe(header);return()=>observer.disconnect();},[height]);return ref;}

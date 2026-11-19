@@ -1,3 +1,4 @@
+import useAnchorOffset from './useAnchorOffset';
 import {selectPreviewSection} from './previewSelection.mjs';
 import ServiceCatalogue,{serviceHref} from '../services/ServiceCatalogue';
 import {servicesEnabled} from '../services/shared';
@@ -11,6 +12,7 @@ import {Search,ShoppingBag,Home,ArrowUpRight,ArrowRight,Shirt,Headphones,Watch,P
 import styles from "./StorefrontTemplates.module.css";
 const demoProducts=[{_id:"demo-1",name:"Everyday hoodie",price:24000,category:"Clothing",DemoIcon:Shirt},{_id:"demo-2",name:"Wireless headphones",price:38000,category:"Accessories",DemoIcon:Headphones},{_id:"demo-3",name:"Classic watch",price:32000,category:"Accessories",DemoIcon:Watch},{_id:"demo-4",name:"Everyday tote",price:18000,category:"Accessories",DemoIcon:ShoppingBag}];
 function StandardStoreRenderer({detail,design,store={},products=[],preview=false,interactivePreview=false,onCart,onSelectSection,onFilter,onProduct,catalogueState}){
+ const anchorRef=useAnchorOffset();
  const money=useDisplayCurrency();
  const [serviceCount,setServiceCount]=useState(0);
  const [search,setSearch]=useState(""),[category,setCategory]=useState(""),[searchOpen,setSearchOpen]=useState(false);
@@ -26,7 +28,7 @@ function StandardStoreRenderer({detail,design,store={},products=[],preview=false
  const searchField=<label className={styles.search}><Search size={16}/><input aria-label="Search store products" value={search} onChange={e=>{setSearch(e.target.value);onFilter?.({search:e.target.value,page:1});}} placeholder="Search the collection"/></label>;
  const sections=design.sections.filter(s=>s.type!=="announcement"&&(!detail||["header","categories","catalogue","footer"].includes(s.type))).filter(s=>s.type==="featured"?store.showFeatured===true&&featured.length>0:s.visible);
  if(servicesEnabled&&store.serviceBusiness&&sections.some(s=>s.type==='catalogue')&&!preview&&!detail)sections.splice(Math.max(1,sections.findIndex(s=>s.type==='catalogue')),0,{id:'service-catalogue',type:'service-catalogue'});
- return <div className={`${styles.store} ${styles[theme]} ${styles[brand.background]}`} style={{"--accent":brand.accent,"--radius":brand.radius==="square"?"0px":brand.radius==="rounded"?"26px":"16px","--heading":brand.font==="classic"?"Georgia,serif":"var(--font-v11-heading),sans-serif"}} onClickCapture={preview&&onSelectSection?e=>selectPreviewSection(e,design.sections,onSelectSection):undefined}>
+ return <div ref={anchorRef} className={`${styles.store} ${styles[theme]} ${styles[brand.background]}`} style={{"--accent":brand.accent,"--radius":brand.radius==="square"?"0px":brand.radius==="rounded"?"26px":"16px","--heading":brand.font==="classic"?"Georgia,serif":"var(--font-v11-heading),sans-serif"}} onClickCapture={preview&&onSelectSection?e=>selectPreviewSection(e,design.sections,onSelectSection):undefined}>
  {demo&&<div className={styles.demoNotice}>Sample products · preview only</div>}
  <AnnouncementBar sections={design.sections} store={store} editing={Boolean(preview&&onSelectSection)}/>
  {sections.map(s=>{switch(s.type){
