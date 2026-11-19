@@ -396,15 +396,15 @@ export function Shell({ user, onLogout, children, onCreate, onAddProduct, hasSto
           </div>
           <div className={styles.desktopGreeting}>{activePath !== v11Routes.home && <span className={styles.desktopSectionLabel}>{({pages:"Landing pages",links:"Redirect links",store:"Storefront",products:"Products",orders:"Orders",services:"Services",bookings:"Bookings",storeSettings:"Store settings",design:"Store design",insights:"Analytics & Insights",tracking:"Pixels & Integrations",settings:"Account settings",affiliate:"Affiliate",integrations:"Integrations"})[current] || "MyTikLink workspace"}</span>}{activePath === v11Routes.home && <><h1>Welcome back{user?.name ? `, ${user.name.trim().split(" ")[0]}` : ""} <span aria-hidden="true">👋</span></h1><p>Here’s what’s happening with your MyTikLink account today.</p></>}</div>
           <div className={styles.topbarActions}>
-            {onAddProduct && (activePath === v11Routes.store || activePath === v11Routes.products || activePath.startsWith(`${v11Routes.products}/`)) && (
+            {onAddProduct && (activePath === v11Routes.store || activePath === "/v1-1/store/services" || activePath === v11Routes.products || activePath.startsWith(`${v11Routes.products}/`)) && (
               <Button
                 variant="secondary"
                 className={`${styles.topbarCreate} ${showUpgrade ? styles.topbarProductCompact : ""}`}
-                aria-label={serviceBusiness?"Add service":"Add product"}
-                title={serviceBusiness?"Add service":"Add product"}
+                aria-label={(activePath==="/v1-1/store/services"||serviceBusiness)?"Add service":"Add product"}
+                title={(activePath==="/v1-1/store/services"||serviceBusiness)?"Add service":"Add product"}
                 onClick={onAddProduct}
               >
-                <PackagePlus /><span>{serviceBusiness?"Add service":"Add product"}</span>
+                <PackagePlus /><span>{(activePath==="/v1-1/store/services"||serviceBusiness)?"Add service":"Add product"}</span>
               </Button>
             )}
             {showUpgrade && <Button className={`${styles.topbarUpgrade} ${expiredPlan ? styles.topbarUpgradeExpired : ""}`} onClick={() => openSubscription({ mode: expiredPlan ? "renew" : "upgrade", preselected: expiredPlan ? String(previousPayment?.plan||user?.plan||"pro").split("_")[0].replace("free","pro") : "pro", plan: previousPayment?.plan||user?.plan })}><Sparkles aria-hidden="true" />{expiredPlan ? "Renew" : "Upgrade"}</Button>}

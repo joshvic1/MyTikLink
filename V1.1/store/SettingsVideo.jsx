@@ -16,8 +16,8 @@ function VideoOverlay({topic,videoId,onClose}){
   <div className={css.stage}><iframe className={`${css.player} ${topic==='Physical products'?css.landscape:''}`} src={`https://www.youtube-nocookie.com/embed/${videoId}?playsinline=1&rel=0`} title={`${topic} YouTube video guide`} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen referrerPolicy="strict-origin-when-cross-origin"/></div>
  </dialog>,document.body);
 }
-export default function SettingsVideo({topic}){
+export default function SettingsVideo({topic,compact=false}){
  const [open,setOpen]=useState(false),videoId=videos[topic];
  if(!videoId)return null;
- return <><button className={css.trigger} type="button" aria-label={`Watch ${topic.toLowerCase()} video guide`} title={`Watch ${topic.toLowerCase()} video guide`} onClick={()=>setOpen(true)}><Youtube size={19}/></button>{open&&<VideoOverlay topic={topic} videoId={videoId} onClose={()=>setOpen(false)}/>}</>;
+ return <><button className={`${css.trigger} ${compact?css.compact:""}`} type="button" aria-label={`Watch ${topic.toLowerCase()} video guide`} title={`Watch ${topic.toLowerCase()} video guide`} onClick={()=>setOpen(true)}><Youtube size={19}/></button>{open&&<VideoOverlay topic={topic} videoId={videoId} onClose={()=>setOpen(false)}/>}</>;
 }

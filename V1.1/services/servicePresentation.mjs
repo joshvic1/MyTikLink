@@ -1,0 +1,4 @@
+export const locationLabel=mode=>({business:'Walk-in',customer:'Home delivery'})[mode]||'';
+export function locationPrice(service,mode){return service.serviceType==='physical'&&Number.isFinite(service.locationPrices?.[mode])?service.locationPrices[mode]:service.priceMinor;}
+export function priceRange(service){const modes=service.serviceType==='physical'?(service.physicalLocationMode==='choice'?['business','customer']:[service.physicalLocationMode]):[null];const prices=modes.map(m=>locationPrice(service,m));return {min:Math.min(...prices),max:Math.max(...prices)};}
+export function durationLabel(service){const minutes=service.durationMinutes||service.estimatedCompletionDays*1440;if(!minutes)return '';const [value,unit]=minutes%1440===0?[minutes/1440,'day']:minutes%60===0?[minutes/60,'hour']:[minutes,'minute'];return `${value} ${unit}${value===1?'':'s'}`;}
