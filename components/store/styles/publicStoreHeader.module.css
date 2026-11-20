@@ -77,3 +77,5 @@
 
   background: transparent;
 }
+
+.top{gap:14px}.top>div{min-width:0}.top h1{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.top button{flex-shrink:0}

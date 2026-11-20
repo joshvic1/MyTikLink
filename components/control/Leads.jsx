@@ -69,5 +69,5 @@ export function RecordFollowup({kind,id,className}){
  useEffect(()=>()=>{version.current++;},[]);
  const close=()=>{version.current++;setOpen(false);setItem(null);setError('');};
  const show=async()=>{const current=++version.current;setOpen(true);setItem(null);setError('');try{const result=await call('/record/'+kind+'/'+encodeURIComponent(id),{});if(current===version.current)setItem(result.item);}catch(e){if(current===version.current)setError(e.message);}};
- return <><button type="button" className={className} onClick={show}><Clock size={15}/>Schedule follow-up</button>{open&&(item?<QuickAction kind="followup" item={item} onClose={close} onSaved={close}/>:<Dialog title="Schedule follow-up" onClose={close}>{error?<ErrorBox error={error} retry={show}/>:<Loading/>}</Dialog>)}</>;
+ return <><button type="button" className={className} aria-label="Schedule follow-up" title="Schedule follow-up" onClick={show}><Clock size={15}/><span>Follow up</span></button>{open&&(item?<QuickAction kind="followup" item={item} onClose={close} onSaved={close}/>:<Dialog title="Schedule follow-up" onClose={close}>{error?<ErrorBox error={error} retry={show}/>:<Loading/>}</Dialog>)}</>;
 }

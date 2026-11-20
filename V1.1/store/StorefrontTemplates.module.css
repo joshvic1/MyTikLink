@@ -15,3 +15,6 @@
 .store button.productAction{font-size:11px;line-height:1.4;border:0;cursor:pointer}.store button.productAction:focus-visible{outline:2px solid var(--accent);outline-offset:3px}@container(max-width:520px){.store button.productAction{font-size:10px}}
 
 .footer .footerAction{display:flex;justify-content:center;margin:14px 0 0;padding-bottom:env(safe-area-inset-bottom);color:inherit}.footerAction button{border:0;background:none;color:inherit;font:inherit;font-size:11px;text-decoration:underline;text-underline-offset:3px;padding:6px;cursor:pointer}
+
+.brand{min-width:0;white-space:nowrap}.brand img{flex-shrink:0}.brandLabel{display:block;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.headerActions{flex-shrink:0}
+@media(max-width:700px){.brand{overflow:hidden;max-width:100%;flex-shrink:1}.brandLabel{flex:0 1 auto;max-width:100%}}

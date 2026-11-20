@@ -326,3 +326,20 @@
 @media(max-width:700px){.app .search{min-height:30px;height:30px;padding:3px 8px}.app .search input{font-size:12px;line-height:20px}.app .search input::placeholder{font-size:12px}.app .search button{right:-34px;padding:6px}.app .search button svg{width:16px;height:16px}.app .search input:focus,.settingsModal .form input:focus,.bottomSheet .filters input:focus{font-size:16px}.settingsModal .form input{font-size:12px}.settingsModal .modalBody{padding:10px}.bottomSheet .filters select{font-size:12px}}
 
 .alertCard{position:relative}.alertCard .alertRow{width:100%}.alertCard .alertRow>small{min-height:24px;display:flex;align-items:center;padding-right:32px}.markAlertRead{position:absolute;right:12px;bottom:10px;display:grid;place-items:center;width:28px;height:28px;padding:5px;border:1px solid #dce6ef;border-radius:8px;background:#f2f6fa;color:#6a829e;cursor:pointer}.markAlertRead svg{width:16px;height:16px}.markAlertRead:hover:not(:disabled){background:#e8f1e3;color:#5c7953}.markAlertRead:focus-visible{outline:2px solid #7451ad;outline-offset:2px}.markAlertRead:disabled{opacity:.5;cursor:wait}
+
+/* Compact recording controls stay within the composer on narrow screens. */
+.voiceRecorder{display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-width:0;width:100%;font-size:13px}
+.voiceRecorder button{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:34px;border:1px solid #ded6ed;border-radius:10px;padding:7px 11px;background:#f7f3fc;color:#583493;white-space:nowrap}
+.voiceRecorder button:disabled{opacity:.6}
+.recordingPreview{flex:1 1 100%;min-width:0;max-width:100%}
+.recordingPreview>div{width:100%!important}
+.rowCopy strong{font-size:13px}.rowPreview p{font-size:12px}.threadIdentity h2{font-size:15px}
+.chatComposer textarea{font-size:14px}.messageText{font-size:14px}
+.pagination{display:flex;justify-content:center;align-items:center;gap:14px}
+.followupTimeline{margin:12px 0;padding:13px 15px;border:1px solid #e6d8ac;background:#fff9e9;border-radius:12px;color:#695023;font-size:13px;text-align:left;white-space:pre-wrap}
+
+.app .rowCopy strong{font-size:13px;line-height:18px}.app .rowCopy p,.app .rowCopy .rowPreview p{font-size:12px;line-height:17px}.app .rowCopy time{font-size:10px}
+.app .bubble p,.app .whatsappThread .bubble p{font-size:14px;line-height:1.5}.app .bubble small,.app .bubble time{font-size:10px}
+.app .thread .chatComposer textarea::placeholder{font-size:14px}
+.app .thread .composerTools:has(.voiceRecorder){width:320px;max-width:calc(100% - 20px);overflow:visible;flex-wrap:wrap;padding:8px}
+.app .primary,.app .sendButton{background:#7041b7;color:#fff;border-color:#7041b7}
