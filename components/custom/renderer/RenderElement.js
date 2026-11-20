@@ -55,7 +55,7 @@ export default function RenderElement({
 
     case "store-products":
       if(page?.serviceDetail)return page.serviceDetail;
-      return (<>{page?.serviceBusiness&&<ServiceCatalogue showTitle={false} slug={page?.storeSlug} renderItems={services=><RenderStoreProducts element={{...el,title:'Services',badgeText:'',badgeIcon:''}} products={services.map(s=>({...s,storeSlug:page.storeSlug}))}/>}/>}
+      return (<>{page?.serviceBusiness&&!page?.builder&&<ServiceCatalogue showTitle={false} slug={page?.storeSlug} renderItems={services=><RenderStoreProducts element={{...el,title:'Services',badgeText:'',badgeIcon:''}} products={services.map(s=>({...s,storeSlug:page.storeSlug}))}/>}/>}
 
         <RenderStoreProducts
           element={el}

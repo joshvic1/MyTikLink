@@ -1,3 +1,4 @@
+import ServiceCardLink from '@/V1.1/services/ServiceCardLink';
 import styles from "./renderStoreProducts.module.css";
 import Link from "next/link";
 import demoProducts from "@/constants/demoProducts";
@@ -87,7 +88,7 @@ export default function RenderStoreProducts({
         }}
       >
         {displayProducts.map((product, i) => (
-          <Link
+          <ServiceCardLink linkComponent={Link} service={product.isService}
             href={builder ? "#" : product.isService?`/s/${product.storeSlug}/services/${product.slug}`:`/s/${product.storeSlug}/${product.slug}`}
             key={product._id || i}
             className={`${styles.card} ${builder ? styles.builderCard : ""}`}
@@ -137,7 +138,7 @@ export default function RenderStoreProducts({
                   color: element.titleColor,
                 }}
               >
-                {product.name || "Product Name"}
+                {product.isService?<a href={`/s/${product.storeSlug}/services/${product.slug}`}>{product.name}</a>:product.name || "Product Name"}
               </h3>
 
               <p
@@ -148,9 +149,9 @@ export default function RenderStoreProducts({
                 ₦{Number(product.price || 0).toLocaleString()}
               </p>
 
-              {product.isService?<span className={styles.cardBtn}>{product.serviceMode==='appointment'?'Book appointment':'Book service'}</span>:<button className={styles.cardBtn}>See More Details</button>}
+              {product.isService?<button type="button" onClick={product.onBook} disabled={builder||!product.onBook} className={styles.cardBtn}>{product.serviceMode==='appointment'?'Book appointment':'Book service'}</button>:<button className={styles.cardBtn}>See More Details</button>}
             </div>
-          </Link>
+          </ServiceCardLink>
         ))}
       </div>
 

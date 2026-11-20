@@ -1,3 +1,4 @@
+import {useDesignApi} from './DesignApi';
 import NumericInput from "../components/NumericInput";
 import PaletteInput from "../components/PaletteInput";
 import { useEffect, useState } from "react";
@@ -12,11 +13,12 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { Field, Button } from "../components/UI";
-import { apiRequest } from "../lib/api";
+
 import { sectionTypes, required, newSection } from "./design";
 import ImagePicker from "./ImagePicker";
 import styles from "./store.module.css";
 export default function SectionEditor({ design, onChange, products = [] }) {
+  const apiRequest=useDesignApi();
   const [addOpen, setAddOpen] = useState(false),
     [collections, setCollections] = useState([]);
   useEffect(() => {

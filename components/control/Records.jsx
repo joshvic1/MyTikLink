@@ -260,6 +260,7 @@ function Detail({module,record,onClose,onUpdated,actor}){
 
 
 
+ {module==='stores'&&allowed(actor,'stores.design')&&<a className={s.button} href={`/admin/store-design/${record._id}`} target="_blank" rel="noreferrer">Edit design ↗</a>}
  {module==='stores'&&<External href={`https://mytiklink.com/s/${encodeURIComponent(record.slug)}`}>Open storefront</External>}
 
 

@@ -1,7 +1,7 @@
 import {v11ApiBase} from "../lib/apiBase.js";
 import {uploadWithProgress} from "./uploadProgress.mjs";
 import { apiRequest, getToken } from "../lib/api";
-export async function uploadStoreImage(file, { onProgress = () => {}, onUploadProgress } = {}) {
+export async function uploadStoreImage(file, { onProgress = () => {}, onUploadProgress, request=apiRequest } = {}) {
   if (
     !["image/jpeg", "image/png", "image/webp"].includes(file.type) ||
     file.size > 5 * 1024 * 1024
@@ -10,7 +10,7 @@ export async function uploadStoreImage(file, { onProgress = () => {}, onUploadPr
   const root = "/v1-1/store-studio/commerce/media";
   onUploadProgress?.(0);
   onProgress("Uploading image…");
-  const signed = await apiRequest(`${root}/sign`, {
+  const signed = await request(`${root}/sign`, {
     method: "POST",
     body: JSON.stringify({ size: file.size, type: file.type }),
   });
@@ -31,11 +31,11 @@ export async function uploadStoreImage(file, { onProgress = () => {}, onUploadPr
       const token=getToken();
       const relay=await uploadWithProgress(`${v11ApiBase()}${root}/${signed.id}/relay`,{method:"POST",headers:{"Content-Type":file.type,...(token?{Authorization:`Bearer ${token}`}:{})},file,onProgress:onUploadProgress});
       if(!relay.ok)throw Error("Image upload failed. Please try again.");
-    }else await apiRequest(`${root}/${signed.id}/relay`, {method:"POST",headers:{"Content-Type":file.type},body:file,timeoutMs:60000});
+    }else await request(`${root}/${signed.id}/relay`, {method:"POST",headers:{"Content-Type":file.type},body:file,timeoutMs:60000});
   }
   onUploadProgress?.(100);
   onProgress("Optimizing image in the background…");
-  let result = await apiRequest(`${root}/${signed.id}/complete`, {
+  let result = await request(`${root}/${signed.id}/complete`, {
     method: "POST",
     timeoutMs: 20000,
   });
@@ -49,7 +49,7 @@ export async function uploadStoreImage(file, { onProgress = () => {}, onUploadPr
       );
     await new Promise((resolve) => setTimeout(resolve, delay));
     delay = Math.min(8000, Math.round(delay * 1.4));
-    result = await apiRequest(`${root}/${signed.id}`, { timeoutMs: 15000 });
+    result = await request(`${root}/${signed.id}`, { timeoutMs: 15000 });
   }
   if (!result.url)
     throw Error(

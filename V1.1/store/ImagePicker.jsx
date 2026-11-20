@@ -1,10 +1,12 @@
+import {useDesignApi} from './DesignApi';
 import {ImageIcon} from "lucide-react";
 import css from "./CatalogEditor.module.css";
 import {SmallLoading} from "./CatalogControls";
 import { uploadStoreImage } from "./storeMedia";
 import { useState } from "react";
-import { apiRequest } from "../lib/api";
+
 export default function ImagePicker({ label, value, onChange }) {
+  const apiRequest=useDesignApi();
   const [busy, setBusy] = useState(false),
     [error, setError] = useState(""),
     [progress, setProgress] = useState(""),
@@ -16,7 +18,7 @@ export default function ImagePicker({ label, value, onChange }) {
     setBusy(true);
     setError("");
     try {
-      const result = await uploadStoreImage(file, { onProgress: setProgress });
+      const result = await uploadStoreImage(file, { onProgress: setProgress, request:apiRequest });
       onChange(result.url);
     } catch (e) {
       setError(e.message);
