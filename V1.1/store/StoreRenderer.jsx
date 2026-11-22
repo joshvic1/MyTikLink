@@ -47,5 +47,5 @@ function StandardStoreRenderer({footerAction,detail,design,store={},products=[],
  </div>;
 }
 
-export const usesAtelierLayout=theme=>["roselle","forme","essential","boutique","atelier","streetline","atelier-services","streetline-services","digital-library","launchpad","signal-studio","dataflow"].includes(theme);
+export const usesAtelierLayout=theme=>["savour","roselle","forme","essential","boutique","atelier","streetline","atelier-services","streetline-services","digital-library","launchpad","signal-studio","dataflow"].includes(theme);
 export default function StoreRenderer(props){return usesAtelierLayout(props.design.theme) ? <AtelierStore {...props}/> : <StandardStoreRenderer {...props}/>;}

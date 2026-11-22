@@ -449,3 +449,53 @@
 
 .store .header .brand{min-width:0;white-space:nowrap}.store .header .brand img{flex-shrink:0}.store .header .brandLabel,.store .header .brandName{display:block;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.store .header .actions{flex-shrink:0}
 @container(max-width:700px){.store .header .brand{max-width:100%;overflow:hidden;min-width:0;flex-shrink:1}.store .header .brandLabel,.store .header .brandName{flex:0 1 auto;max-width:100%}}
+
+/* Essential: one desktop header row, with explicit placement for each group. */
+@container(min-width:701px){
+ .market .header{grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:clamp(18px,3vw,40px);min-height:76px;padding:16px clamp(20px,2.5vw,32px)}
+ .market .header .brand{grid-column:1;grid-row:1;justify-content:flex-start;text-align:left;min-width:0;max-width:100%;margin:0}
+ .market .header .nav{grid-column:2;grid-row:1;align-items:center;justify-content:center;flex-wrap:nowrap;gap:clamp(16px,2vw,28px);padding:0;margin:0;white-space:nowrap}
+ .market .header .actions{grid-column:3;grid-row:1;align-items:center;justify-content:flex-end;gap:8px}
+ .market .header .actions button{display:flex;align-items:center;justify-content:center;flex:none;width:38px;height:38px;padding:0;line-height:1}
+ .market .header .actions svg{display:block;margin:0;flex:none}
+ .market .header .search{grid-column:1/-1;grid-row:2;margin:6px auto 0}
+}
+
+/* Savour shares commerce and editor behaviour, with its own responsive presentation. */
+.savour{--muted:#786858}
+.savour .header{padding:20px clamp(18px,3vw,44px);grid-template-columns:minmax(0,1fr) auto auto;gap:28px;background:var(--paper);border-bottom:1px solid var(--line)}
+.savour .brand{grid-column:1;grid-row:1;justify-content:flex-start;text-align:left;letter-spacing:-.04em;text-transform:none;font-family:var(--atelier-body);font-size:25px;font-weight:700;min-width:0}
+.savour .brand img{width:38px;height:38px;border-radius:50%;object-fit:contain}
+.savour .nav{grid-column:2;grid-row:1;flex-wrap:nowrap;gap:24px;font-size:13px}
+.savour .actions{grid-column:3;grid-row:1;gap:5px}.savour .actions button{display:grid;place-items:center;width:36px;height:36px;padding:7px}
+.savour .actions svg{width:21px;height:21px}.savour .search{grid-row:2}
+.savour .roselleHero{position:relative;isolation:isolate;min-height:350px;margin:18px clamp(16px,3vw,44px) 28px;display:grid;grid-template-columns:1fr 1fr;border-radius:22px;overflow:hidden;background:var(--atelier-secondary)}
+.savour .roselleImage{position:relative;grid-column:2;grid-row:1;min-width:0;min-height:350px;overflow:hidden}
+.savour .roselleImage picture,.savour .roselleImage img,.savour .roselleImage video{width:100%;height:100%;display:block;object-fit:cover}
+.savour .roselleHero .roselleImage:after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,var(--atelier-secondary),transparent 38%);pointer-events:none}
+.savour .roselleCopy{grid-column:1;grid-row:1;align-self:center;padding:36px clamp(24px,4vw,60px);position:relative;z-index:1;min-width:0}
+.savour .roselleCopy h1{font-size:clamp(34px,4.4vw,62px);line-height:1.05;margin:0 0 18px;white-space:pre-line;letter-spacing:-.045em;font-weight:700}
+.savour .roselleCopy p{font-size:15px;line-height:1.6;margin:0 0 22px;max-width:440px;white-space:pre-line}
+.savour .cta{border-radius:9px;padding:12px 22px;font:600 13px var(--atelier-body)}
+.savour .roselleImagePlaceholder{grid-column:2;grid-row:1;display:grid;place-items:center;background:color-mix(in srgb,var(--atelier-accent) 12%,var(--atelier-secondary));font:700 120px var(--atelier-heading);color:var(--atelier-accent)}
+.savour .catalogue{padding:0 clamp(16px,3vw,44px) 32px}
+.savour .catalogueHeading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 16px}
+.savour .catalogueHeading h1,.savour .catalogue h2{font-size:clamp(24px,2.6vw,34px);line-height:1.2;margin:0;font-weight:700}
+.savour .filterToggle{border:1px solid var(--line);border-radius:10px;min-width:40px;height:40px;padding:10px;display:flex;align-items:center;justify-content:center;gap:6px;flex-shrink:0;font-size:12px}
+.savour .formeCategories{display:flex;gap:9px;overflow-x:auto;margin:0 0 18px;padding:2px 0 4px;scrollbar-width:thin}
+.savour .formeCategories button{flex-shrink:0;border:1px solid var(--line);border-radius:30px;padding:9px 18px;font:600 12px var(--atelier-body);background:var(--paper)}
+.savour .formeCategories button[aria-pressed=true]{background:var(--atelier-accent);border-color:var(--atelier-accent);color:var(--atelier-on-accent)}
+.savourSearch{display:flex;align-items:center;gap:9px;max-width:480px;border:1px solid var(--line);border-radius:11px;padding:10px 12px;margin-bottom:18px}
+.savourSearch input{border:0;background:transparent;min-width:0;width:100%;font-size:16px;outline:none}
+.savour .roselleAbout{margin:4px clamp(16px,3vw,44px) 28px;display:grid;grid-template-columns:1fr 1.5fr;border-radius:18px;overflow:hidden;background:var(--atelier-secondary)}
+.savour .roselleAbout .roselleImage,.savour .roselleAbout .roselleImagePlaceholder{grid-column:1;min-height:190px;max-height:240px}
+.savour .roselleAbout .roselleCopy{grid-column:2;padding:28px 34px}.savour .roselleAbout h2{font-size:30px;line-height:1.15;margin:0 0 12px}.savour .roselleAbout p{margin-bottom:0;font-size:13px}
+.savour .footer{background:var(--atelier-secondary);color:var(--ink);border-color:var(--line)}
+.savour .footerGrid{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:28px;padding:32px clamp(20px,3vw,44px)}
+.savour .footerGrid>div,.savour .footerGrid>nav{min-width:0}.savour .footerGrid h2{font:700 23px var(--atelier-body);margin:0 0 12px}.savour .footerGrid h3{font:700 12px var(--atelier-body);margin:0 0 12px}.savour .footerGrid p,.savour .footerGrid a,.savour .footerGrid address{font-size:12px;line-height:1.7}.savour .footerGrid .cta{font-size:12px;line-height:1.3}.savour .footerBottom{border-top:1px solid var(--line);padding:18px clamp(20px,3vw,44px);margin:0;color:var(--ink);font-size:11px}
+.savourCartSpace{display:none}.savourCart{display:flex;align-items:center;justify-content:space-between;gap:16px;background:var(--atelier-accent)!important;color:var(--atelier-on-accent)!important;border:0;border-radius:12px;padding:15px 18px;width:100%;font-size:14px!important;box-shadow:0 6px 24px #321c1226}.savourCart span,.savourCart strong{display:flex;align-items:center;gap:8px}
+@container(max-width:900px){.savour .header{gap:14px}.savour .nav{gap:12px}.savour .brand{font-size:21px}.savour .roselleCopy{padding:28px}.savour .roselleCopy h1{font-size:40px}}
+@container(max-width:700px){.savour .header{padding:14px 16px;grid-template-columns:minmax(0,1fr) auto 32px;gap:8px}.savour .brand{grid-column:1;font-size:21px}.savour .brand img{width:28px;height:28px}.savour .actions{grid-column:2;gap:0}.savour .actions button{width:30px;height:32px;padding:6px}.savour .menuButton{grid-column:3;grid-row:1;width:32px;height:32px;padding:5px}.savour .nav{grid-row:2;grid-column:1/-1;flex-wrap:wrap;justify-content:flex-start;padding:14px 0 2px;gap:18px}.savour .search{grid-row:3}.savour .roselleHero{min-height:360px;display:block;margin:12px 14px 24px;border-radius:16px}.savour .roselleHero .roselleImage,.savour .roselleHero .roselleImagePlaceholder{position:absolute;inset:0;min-height:0;width:100%;height:100%}.savour .roselleHero .roselleImage:after{background:linear-gradient(110deg,var(--atelier-secondary) 12%,color-mix(in srgb,var(--atelier-secondary) 96%,transparent) 35%,color-mix(in srgb,var(--atelier-secondary) 30%,transparent) 75%,transparent)}.savour .roselleHero .roselleCopy{padding:28px 22px;max-width:84%}.savour .roselleCopy h1{font-size:36px;margin-bottom:12px}.savour .roselleCopy p{font-size:13px;line-height:1.5;margin-bottom:16px;max-width:240px}.savour .cta{padding:11px 16px;font-size:12px}.savour .catalogue{padding:0 14px 24px}.savour .catalogueHeading h1,.savour .catalogue h2{font-size:25px}.savour .filterToggle span{display:none}.savour .formeCategories{gap:7px;margin-bottom:14px}.savour .formeCategories button{font-size:11px;padding:8px 13px}.savour .roselleAbout{margin:4px 14px 24px;grid-template-columns:1fr}.savour .roselleAbout .roselleImage{min-height:150px;height:150px;max-height:150px}.savour .roselleAbout .roselleCopy{grid-column:1;grid-row:2;padding:22px}.savour .roselleAbout h2{font-size:26px}.savour .footerGrid{grid-template-columns:1fr 1fr;gap:24px;padding:26px 20px}.savour .footerBrand{grid-column:1/-1}.savour .footerBottom{display:flex;flex-wrap:wrap;gap:12px;padding:18px 20px}.savourCartSpace{display:block;position:sticky;bottom:0;z-index:25;padding:12px 14px max(12px,env(safe-area-inset-bottom));background:var(--paper)}.savour:has(.savourCartSpace) .floatingWhatsapp{bottom:94px}}
+.savour .catalogueHeading .savourSearch{margin:0 0 0 auto;flex:0 1 360px}.savour .catalogueHeading .savourSearch input{font-size:14px}.savour .filterToggle{border-radius:10px!important}
+@container(max-width:700px){.savour .catalogueHeading{flex-wrap:wrap;gap:14px;margin-bottom:16px}.savour .catalogueHeading h1{flex:1}.savour .catalogueHeading .savourSearch{order:3;flex:1 0 100%;max-width:none;margin:0}.savour .catalogueHeading .savourSearch input{font-size:16px}.savour[data-live-store=true] .savourCartSpace{height:80px;padding:0;position:static}.savour[data-live-store=true] .savourCart{position:fixed;bottom:max(12px,env(safe-area-inset-bottom));left:14px;right:14px;width:calc(100% - 28px);z-index:25}}
+@container(max-width:700px){.savour .nav.navOpen{left:14px;right:14px;top:calc(100% + 4px);padding:8px 16px;gap:0;border:1px solid var(--line);border-radius:14px;box-shadow:0 12px 30px #321c1215}.savour .navOpen .menuHeading{display:none}.savour .navOpen a{font-size:13px;padding:12px 0}.savour .navOpen a:last-child{border-bottom:0}.savour .navOpen a:after{content:none}}

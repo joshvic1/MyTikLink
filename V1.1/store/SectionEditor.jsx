@@ -145,6 +145,7 @@ export default function SectionEditor({ design, onChange, products = [] }) {
                 </Field>
               </>
             )}
+            {s.type === "hero" && design.theme === "digital-library" && <Field label="Text above heading" hint="Edit the small label above your hero title. Leave it empty to hide it."><input maxLength={160} value={settings.heroEyebrow??"{{store.name}} / SMALL IDEAS, EVERYDAY HELP"} onChange={e=>set("heroEyebrow",e.target.value)}/></Field>}
             {s.type === "hero" && (
               <>
                 <Field label="Video URL (optional, HTTPS)">
