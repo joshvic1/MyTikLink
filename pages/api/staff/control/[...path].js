@@ -1,3 +1,5 @@
+import {Readable} from 'node:stream';
+import {pipeline} from 'node:stream/promises';
 import {adminBackend,sameOrigin,sessionCookie,sessionHeaders} from '@/utils/server/adminProxy';
 export const config={api:{bodyParser:{sizeLimit:'64kb'}},maxDuration:60};
 export default async function handler(req,res){
@@ -7,6 +9,6 @@ export default async function handler(req,res){
  const parts=req.query.path||[];if(!parts.length||parts.some(p=>!/^[-a-zA-Z0-9]+$/.test(p)))return res.status(404).json({message:'Unknown admin route.'});
  const base=adminBackend(req);if(!base)return res.status(503).json({message:'Administration API is not configured.'});
  const query=new URLSearchParams();for(const key of ['stage','assignedStaff','followup','whatsapp','registration','storeStatus','source','campaign','temperature','view','intent','category','accountType','businessMode','businessFocus','summary','recovery','from','to','productType','paymentStatus','provider','cohort','account','id','search','ownerSearch','owner','status','plan','cycle','page','limit','sort','template'])if(typeof req.query[key]==='string')query.set(key,req.query[key]);
- try{const response=await fetch(`${base}/api/control/${parts.join('/')}${query.size?'?'+query:''}`,{method:req.method,headers:{...sessionHeaders(req),'Content-Type':'application/json'},...(req.method==='GET'?{}:{body:JSON.stringify(req.body||{})}),signal:AbortSignal.timeout(30000)});if(response.status===401)sessionCookie(res,'');res.status(response.status).json(await response.json());}
- catch{res.status(502).json({message:'The administration service could not be reached. Please try again.'});}
+ try{const response=await fetch(`${base}/api/control/${parts.join('/')}${query.size?'?'+query:''}`,{method:req.method,headers:{...sessionHeaders(req),'Content-Type':'application/json'},...(req.method==='GET'?{}:{body:JSON.stringify(req.body||{})}),signal:AbortSignal.timeout(parts[0]==='storefront-audience'?55000:30000)});if(response.status===401)sessionCookie(res,'');if(parts.join('/')==='storefront-audience/download'&&response.ok&&response.headers.get('content-type')?.startsWith('text/csv')){res.status(response.status);res.setHeader('Content-Type','text/csv; charset=utf-8');res.setHeader('Content-Disposition',response.headers.get('content-disposition'));res.setHeader('X-Content-Type-Options','nosniff');await pipeline(Readable.fromWeb(response.body),res);return;}res.status(response.status).json(await response.json());}
+ catch{if(res.headersSent){res.destroy();return;}res.status(502).json({message:'The administration service could not be reached. Please try again.'});}
 }

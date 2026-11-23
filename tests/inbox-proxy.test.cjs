@@ -5,4 +5,5 @@ test('inbox proxy forwards list cursors and history parameters',async()=>{
  const res={setHeader(){},status(){return this},json(){},send(){},end(){}};
  await module.exports({method:'GET',headers:{},cookies:{staff_session:'fixture'},query:{path:['conversations'],cursor:'cursor-value',initial:'1',focus:'0123456789abcdef01234567'}},res);
  assert.equal(target.searchParams.get('cursor'),'cursor-value');assert.equal(target.searchParams.get('initial'),'1');assert.equal(target.searchParams.get('focus'),'0123456789abcdef01234567');
+ await module.exports({method:'GET',headers:{},cookies:{staff_session:'fixture'},query:{path:['read-states']}},res);assert.equal(target.pathname,'/api/staff/read-states');
 });

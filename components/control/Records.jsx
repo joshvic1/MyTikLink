@@ -1,3 +1,4 @@
+import AudienceExport from './AudienceExport';
 import {RecordFollowup} from './Leads';
 import RecordRelations,{recordHref} from './RecordRelations';
 
@@ -87,7 +88,7 @@ export default function Records({module}){
 
 
 
- return <><div className={`${s.filterBar} ${['users','stores'].includes(module)?s.recordFilters:''}`}>{['users','stores'].includes(module)&&<div className={s.filterTitle}><span><SlidersHorizontal size={16}/>Search & filters</span><small>Find the records you need</small></div>}<label className={s.search}><Search size={17}/><input aria-label="Search records" placeholder={`Search ${module.replace(/-/g,' ')}…`} value={search} onChange={e=>{setSearch(e.target.value);setPage(1);}}/></label>
+ return <><div className={`${s.filterBar} ${['users','stores'].includes(module)?s.recordFilters:''}`}>{['users','stores'].includes(module)&&<div className={s.filterTitle}><span><SlidersHorizontal size={16}/>Search & filters</span>{module==='stores'&&allowed(actor,'stores.export')?<AudienceExport/>:<small>Find the records you need</small>}</div>}<label className={s.search}><Search size={17}/><input aria-label="Search records" placeholder={`Search ${module.replace(/-/g,' ')}…`} value={search} onChange={e=>{setSearch(e.target.value);setPage(1);}}/></label>
 
 
 
