@@ -2,7 +2,7 @@ import {shouldPromptNotifications} from './notificationState.mjs';
 import {useEffect,useState,useRef} from 'react';
 import {Bell,BellRing,ShieldCheck} from 'lucide-react';
 import s from './Notifications.module.css';
-const labels={mention:['Staff mentions','When a teammate tags you in an internal note.'],privateMessage:['Staff messages','When a teammate sends you a private message.'],assignment:['Chat assigned to me','When a conversation is assigned to you.'],newConversation:['New conversations','When a new conversation is available to you.'],customerMessage:['Every customer message','Notify me about each incoming customer message.'],followup:['Scheduled follow-ups','When your follow-up reminder is due.'],previews:['Names and message previews','Show contact names and message previews on this device.']};
+const labels={mention:['Staff mentions','When a teammate tags you in an internal note.'],followup:['Scheduled follow-ups','When your follow-up reminder is due.'],previews:['Names and message previews','Show contact names and message previews on this device.']};
 const defaults=Object.fromEntries(Object.keys(labels).map(k=>[k,k!=='customerMessage']));
 const keyBytes=value=>Uint8Array.from(atob(value.replace(/-/g,'+').replace(/_/g,'/')),c=>c.charCodeAt(0));
 export default function Notifications({api,user,demo,settings=false}){const [prefs,setPrefs]=useState(defaults),[enabled,setEnabled]=useState(false),[prompt,setPrompt]=useState(false),[busy,setBusy]=useState(false),[error,setError]=useState(''),[supported,setSupported]=useState(true);const registration=useRef(),config=useRef();const storage='inbox-notifications:'+user._id;
