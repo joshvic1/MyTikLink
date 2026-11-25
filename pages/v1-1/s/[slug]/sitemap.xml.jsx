@@ -1,7 +1,8 @@
+import {storefrontUrl,sitemapUrl} from '../../../../V1.1/domains/publicUrls.mjs';
 export default function Sitemap() {
   return null;
 }
-export async function getServerSideProps({ params, query, res }) {
+export async function getServerSideProps({ params, query, res, req }) {
   const base = (
     process.env.NODE_ENV === "development" &&
     process.env.NEXT_PUBLIC_V11_API_URL
@@ -19,6 +20,8 @@ export async function getServerSideProps({ params, query, res }) {
     return { props: {} };
   }
   const data = await response.json();
+  const domainHost=req?.headers?.["x-domain-host"]||null;
+  data.urls=data.urls.map(u=>({...u,loc:sitemapUrl(u.loc,domainHost,params.slug)})).filter(u=>u.loc);
   const escape = (v) =>
     String(v).replace(
       /[<>&"']/g,
@@ -32,9 +35,9 @@ export async function getServerSideProps({ params, query, res }) {
         })[c],
     );
   res.setHeader("Content-Type", "application/xml; charset=utf-8");
-  res.setHeader("Cache-Control", "public, s-maxage=300");
+  res.setHeader("Cache-Control", domainHost?"private, no-store":"public, s-maxage=300");
   if (!query.page && data.totalPages > 1) {
-    const root = `https://mytiklink.com/v1-1/s/${encodeURIComponent(params.slug)}/sitemap.xml`;
+    const root = storefrontUrl(domainHost,params.slug,'/sitemap.xml');
     res.write(
       `<?xml version="1.0" encoding="UTF-8"?><sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${Array.from({ length: Math.min(data.totalPages, 1000) }, (_, i) => `<sitemap><loc>${escape(root + "?page=" + (i + 1))}</loc></sitemap>`).join("")}</sitemapindex>`,
     );

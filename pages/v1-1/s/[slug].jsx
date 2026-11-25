@@ -3,6 +3,7 @@ import PublicStore from "../../../V1.1/store/PublicStore";
 export default function Storefront({
   slug,
   initialData,
+  domainHost,
   initialProducts,
   initialCatalogue,
   initialProduct,
@@ -29,6 +30,7 @@ export default function Storefront({
   return (
     <PublicStore
       slug={slug}
+      domainHost={domainHost}
       initialData={initialData}
       initialProducts={initialProducts}
       initialCatalogue={initialCatalogue}
@@ -41,7 +43,7 @@ export default function Storefront({
     />
   );
 }
-export async function getServerSideProps({ params, query, res, productPage=false, categoryPage=false, shopPage=false, categoriesPage=false }) {
+export async function getServerSideProps({ params, query, res, req, productPage=false, categoryPage=false, shopPage=false, categoriesPage=false }) {
   if(!productPage&&typeof query.product==="string")return {redirect:{destination:`/v1-1/s/${encodeURIComponent(params.slug)}/products/${encodeURIComponent(query.product)}`,permanent:true}};
   if(!categoryPage&&!productPage&&typeof query.category==="string"&&query.category)return {redirect:{destination:`/v1-1/s/${encodeURIComponent(params.slug)}/categories/${encodeURIComponent(query.category)}`,permanent:true}};
   const slug = params.slug,
@@ -73,12 +75,13 @@ export async function getServerSideProps({ params, query, res, productPage=false
     if(categoryPage&&!data.store.productCategories.some(c=>c.visible&&c.slug===query.category))return {notFound:true};
     res.setHeader(
       "Cache-Control",
-      "public, s-maxage=30, stale-while-revalidate=30",
+      req?.headers?.["x-domain-host"] ? "private, no-store" : "public, s-maxage=30, stale-while-revalidate=30",
     );
     return {
       props: {
         slug,
         initialData: data,
+        domainHost: req?.headers?.["x-domain-host"] || null,
         initialProducts: catalogue.products,
         initialCatalogue: {
           filters: {pageSize:shopPage||categoryPage?24:10,page:catalogue.page,category:String(query.category||""),collection:String(query.collection||""),search:String(query.search||""),sort:String(query.sort||"featured")},

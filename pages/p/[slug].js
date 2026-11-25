@@ -410,7 +410,7 @@ function LoadingScreen() {
   );
 }
 
-export default function PublicPage({initialPage=null,initialInactive=null,initialError=false}) {
+export default function PublicPage({domainCanonical=null,initialPage=null,initialInactive=null,initialError=false}) {
   const router = useRouter();
   const { slug } = router.query;
 
@@ -613,6 +613,7 @@ export default function PublicPage({initialPage=null,initialInactive=null,initia
       <>
         <Head>
           <title>{page.title}</title>
+          {domainCanonical&&<link rel="canonical" href={domainCanonical}/>}
         </Head>
 
         <PublicTracking kind="page" slug={page.slug}/>
@@ -648,6 +649,7 @@ export default function PublicPage({initialPage=null,initialInactive=null,initia
     <>
       <Head>
         <title>{title}</title>
+        {domainCanonical&&<link rel="canonical" href={domainCanonical}/>}
       </Head>
 
       {template.css && (

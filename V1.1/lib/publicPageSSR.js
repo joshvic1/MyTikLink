@@ -1,3 +1,4 @@
+import {domainOrigin} from '../domains/publicUrls.mjs';
 import {resolveStorefront} from './storefrontRouting.mjs';
 export async function loadPublicLandingPage(context,versioned=false){
  const base=(versioned&&process.env.NODE_ENV==='development'&&process.env.NEXT_PUBLIC_V11_API_URL?process.env.NEXT_PUBLIC_V11_API_URL:process.env.NEXT_PUBLIC_API_URL)?.replace(/\/$/,'');
@@ -7,6 +8,7 @@ export async function loadPublicLandingPage(context,versioned=false){
  if(response.status===403)return {redirect:{destination:'/expired',permanent:false}};
  if(response.status===404)return {notFound:true};
  if(!response.ok)throw Error('Page unavailable');
- return {props:{slug:context.params.slug,initialPage:data,initialInactive:null}};
+ const origin=domainOrigin(context.req?.headers?.['x-domain-host']),path=context.req?.headers?.['x-domain-path'];
+ return {props:{slug:context.params.slug,initialPage:data,initialInactive:null,domainCanonical:origin&&typeof path==='string'&&path.startsWith('/')?origin+path:null}};
  }catch{context.res.statusCode=503;return {props:{slug:context.params.slug,initialPage:null,initialInactive:null,initialError:true}};}
 }

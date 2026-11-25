@@ -62,7 +62,7 @@ export default function App({ Component, pageProps }) {
   // The public referral signup URL uses the same standalone shell as V1.1.
   if (router.pathname === "/register" || router.pathname === "/v1-1" || router.pathname.startsWith("/v1-1/")) {
     return <main className={plusJakarta.className} style={{ minHeight: "100dvh", background: "#fff" }}>
-      <KeyboardViewport /><Component {...pageProps} /><SmartAssistant hideLauncher /><V11Toaster />
+      <KeyboardViewport /><Component {...pageProps} />{!isCustomDomain&&<SmartAssistant hideLauncher />}<V11Toaster />
     </main>;
   }
 

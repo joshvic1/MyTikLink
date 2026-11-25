@@ -73,6 +73,24 @@ export default function AtelierSection({
         {v.ctaLabel}
       </a>
     ) : null;
+  if(theme==='digital'&&s.type==='hero'){
+    const cover=coverSources(getCategoryCover(store.categoryId||store.category,{allowParent:true}));
+    const image=s.image||store.banner||cover?.src;
+    return <section className={styles.editHero} data-store-section={s.id}>
+      <div className={styles.editHeroCopy}>
+        {store.category&&<span className={styles.editEyebrow}>{store.category}</span>}
+        <h1>{content(s.title)||store.name}</h1>
+        {(content(s.text)||store.description)&&<p>{content(s.text)||store.description}</p>}
+        {cta}
+      </div>
+      <div className={styles.editHeroVisual}>
+        {v.video?<video src={v.video} poster={image} controls playsInline preload="none"/>:image?<picture>
+          {v.mobileImage&&<source media="(max-width:700px)" srcSet={v.mobileImage}/>}
+          <img src={image} srcSet={storeImageSrcSet(image)} sizes="(max-width:700px) 100vw, 50vw" alt={v.alt||store.category||''} fetchPriority="high" style={{objectPosition:`${v.focalX??50}% ${v.focalY??50}%`}}/>
+        </picture>:<span aria-hidden="true">{(store.name||'E').slice(0,1)}</span>}
+      </div>
+    </section>;
+  }
   if(['roselle','savour'].includes(theme)&&(s.type==='hero'||s.type==='about')){const cover=coverSources(getCategoryCover(store.categoryId||store.category,{allowParent:true}));const image=s.image||store.banner||store.cover||cover?.src;const hero=s.type==='hero';return <section id={hero?undefined:'atelier-about'} className={hero?styles.roselleHero:styles.roselleAbout} data-store-section={s.id}>{image?<div className={styles.roselleImage}>{hero&&v.video?<video src={v.video} poster={image} controls playsInline preload="none"/>:<picture>{hero&&v.mobileImage&&<source media="(max-width:700px)" srcSet={v.mobileImage}/>}<img src={image} srcSet={storeImageSrcSet(image)} sizes={hero?'(max-width:700px) 100vw, 55vw':'(max-width:700px) 100vw, 35vw'} alt={v.alt||store.category||''} loading={hero?'eager':'lazy'} fetchPriority={hero?'high':undefined} style={{objectPosition:`${v.focalX??50}% ${v.focalY??50}%`}}/></picture>}</div>:<div className={styles.roselleImagePlaceholder} aria-hidden="true">{(store.name||'R').slice(0,1)}</div>}<div className={styles.roselleCopy}>{hero?<h1>{content(s.title)||store.name}</h1>:<h2>{content(s.title)}</h2>}<p>{content(s.text)||store.description}</p>{cta}</div></section>;}
   if(theme==='forme'&&s.type==='hero')return <section className={styles.formeHero} data-store-section={s.id}><div className={styles.formeHeroCopy}><small>{store.category||'CARE, BEAUTIFULLY CONSIDERED'}</small><h1>{content(s.title)||store.name}</h1><p>{content(s.text)||store.description}</p>{cta}</div><div className={styles.formeHeroImage}>{v.video?<video src={v.video} poster={s.image||'/v1-1/store/forme/hero-1200.webp'} controls playsInline preload="none"/>:<picture><source media="(max-width:700px)" srcSet={v.mobileImage||s.image||'/v1-1/store/forme/hero-640.webp'}/><img src={s.image||'/v1-1/store/forme/hero-1200.webp'} alt={v.alt||'A moment of calm in a warm, light-filled studio'} fetchPriority="high" style={{objectPosition:`${v.focalX??50}% ${v.focalY??50}%`}}/></picture>}</div></section>;
   if(theme==='forme'&&s.type==='about')return <section id="atelier-about" data-store-section={s.id} className={styles.formeAbout}>{<img src={s.image||'/v1-1/store/forme/studio-640.webp'} alt={v.alt||'A calm, welcoming studio'} loading="lazy"/>}<div><h2>{content(s.title)}</h2><p>{content(s.text)}</p>{cta}</div></section>;
