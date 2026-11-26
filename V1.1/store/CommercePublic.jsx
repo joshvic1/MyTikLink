@@ -1,3 +1,4 @@
+import useGallerySwipe from './useGallerySwipe';
 import {isColor,colorHex} from './optionLibrary.mjs';
 import FlagIcon from '../components/FlagIcon';
 import {checkoutErrors} from "./checkoutValidation.mjs";
@@ -95,6 +96,9 @@ export function ProductDetails({
     [error, setError] = useState("");
   const [attempted,setAttempted]=useState(false),[optionToast,setOptionToast]=useState(0);
   const optionsRef=useRef(null);
+  const imageCount=product.images?.length||0;
+  const gallerySwipe=useGallerySwipe(imageCount,setImage);
+  useEffect(()=>{setImage(0);},[product._id,product.slug,imageCount]);
   useEffect(()=>{if(!optionToast)return;const timer=setTimeout(()=>setOptionToast(0),4000);return()=>clearTimeout(timer);},[optionToast]);
   const groups = product.variantGroups || [],
     row = product.inventory?.find((r) =>
@@ -111,6 +115,10 @@ export function ProductDetails({
           {product.images?.[image] && (
             <img
               className={css.mainImage}
+              {...gallerySwipe}
+              draggable={false}
+              tabIndex={imageCount>1?0:undefined}
+              aria-label={imageCount>1?`${product.name}, image ${image+1} of ${imageCount}. Swipe or use left and right arrow keys to browse.`:undefined}
               src={product.images[image]}
               srcSet={storeImageSrcSet(product.images[image])}
               sizes="(max-width:700px) 100vw, 50vw"

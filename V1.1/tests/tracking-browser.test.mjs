@@ -23,8 +23,8 @@ test('Meta sends browser and server dedup identifiers for both landing-page conv
  const calls=[];global.window={fbq:(...args)=>calls.push(args)};global.document={querySelector:()=>true};
  try {for(const type of ['lead','contact'])browserEvent({meta:{pixelId:'meta-owner',server:true}},type,type+'-id');
   assert.deepEqual(calls.filter(x=>x[0]==='trackSingle'),[
-   ['trackSingle','meta-owner','CompleteRegistration',{}, {eventID:'lead-id'}],
-   ['trackSingle','meta-owner','CompleteRegistration',{}, {eventID:'contact-id'}]
+   ['trackSingle','meta-owner','Lead',{}, {eventID:'lead-id'}],
+   ['trackSingle','meta-owner','Lead',{}, {eventID:'contact-id'}]
   ]);
  }finally{delete global.window;delete global.document;}
 });

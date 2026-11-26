@@ -179,13 +179,12 @@ export default function RenderButton({ element, page, phoneNumber }) {
   };
 
   const handleClick = (event) => {
-    event.nativeEvent.__v11Tracked = true;
-    if (loading) return;
+    if (loading || !element.url?.trim() || element.url.trim().startsWith("#")) return;
 
     setLoading(true);
     const redirectUrl = element.url;
 
-    if (page?.slug) announceTracking("page", page.slug, "contact");
+    if (page?.slug) {event.nativeEvent.__v11Tracked = true;announceTracking("page", page.slug, "contact");}
 
     // =========================
     // DELAY REDIRECT
@@ -206,6 +205,8 @@ export default function RenderButton({ element, page, phoneNumber }) {
       }}
     >
       <button
+        type="button"
+        data-tracking-url={element.url}
         onClick={handleClick}
         disabled={loading}
         style={{

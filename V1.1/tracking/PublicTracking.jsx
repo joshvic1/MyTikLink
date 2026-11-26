@@ -1,3 +1,4 @@
+import {interactionQueue,clickDestination} from './interactionQueue.mjs';
 import {useEffect,useState,useRef} from 'react';
 import {apiRequest} from '../lib/api';
 import {trackingData,browserEvent} from './browser';
@@ -16,6 +17,23 @@ export default function PublicTracking({kind,slug,consent:providedConsent,conten
   return()=>controller.abort();
  },[identity,kind,slug,initialConnections]);
  const allowed=kind==='page'||providedConsent===true;
+ const interactions=useRef(null);
+ if(interactions.current?.identity!==identity)interactions.current={identity,queue:interactionQueue()};
+ const queue=interactions.current.queue;
+ // Subscribe before configuration arrives, including newly inserted page buttons.
+ useEffect(()=>{
+  if(!allowed||!slug)return;
+  const enqueue=(type,id)=>{
+   // Do not lose a fast redirect while pixel configuration is still in flight.
+   // The server checks the owner's connections and deduplicates this same event ID.
+   if(type==='contact'&&configuration?.identity!==identity){const attribution=trackingData(kind,slug);if(attribution)apiRequest(`/v1-1/tracking/public/${kind}/${encodeURIComponent(slug)}`,{token:null,method:'POST',keepalive:true,body:JSON.stringify({type,id,attribution})}).catch(()=>{});}
+   queue.push(type,id);
+  };
+  const event=e=>{if(e.detail?.kind===kind&&e.detail?.slug===slug)enqueue(e.detail.type,e.detail.id||crypto.randomUUID());};
+  const click=e=>{if(e.__v11Tracked||!clickDestination(e.target,kind,location.href))return;e.__v11Tracked=true;enqueue('contact',crypto.randomUUID());};
+  document.addEventListener('v11:tracking',event);document.addEventListener('click',click);
+  return()=>{document.removeEventListener('v11:tracking',event);document.removeEventListener('click',click);};
+ },[allowed,kind,slug,queue,configuration,identity]);
  useEffect(()=>{
   if(!allowed||configuration?.identity!==identity)return;
   const connections=configuration.connections;
@@ -34,14 +52,8 @@ export default function PublicTracking({kind,slug,consent:providedConsent,conten
   if(contentIdentity&&!viewed.current.has('content:'+identity+':'+contentIdentity)){
    viewed.current.add('content:'+identity+':'+contentIdentity);send('content');
   }
-  const event=e=>{if(e.detail?.kind===kind&&e.detail?.slug===slug)send(e.detail.type,e.detail.id);};
-  const click=e=>{
-   if(e.__v11Tracked)return;
-   const link=e.target.closest?.('a[href]');
-   if(link&&!link.getAttribute('href')?.startsWith('#')&&/^(https?:|mailto:|tel:)/i.test(link.href)&&(kind==='page'||/^(https?:\/\/wa.me|https?:\/\/api.whatsapp.com|mailto:|tel:)/i.test(link.href)))send('contact');
-  };
-  document.addEventListener('v11:tracking',event);document.addEventListener('click',click);
-  return()=>{document.removeEventListener('v11:tracking',event);document.removeEventListener('click',click);};
- },[allowed,configuration,identity,kind,slug,contentKey]);
+  queue.ready(send);
+  return()=>queue.pause();
+ },[allowed,configuration,identity,kind,slug,contentKey,queue]);
  return null;
 }
