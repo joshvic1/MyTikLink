@@ -1,3 +1,4 @@
+import {copyPublicLink} from '../domains/copyPublicLink';
 import useStoreSetup from '../store/useStoreSetup';
 import {deliveryAction} from '../store/setupProgress.mjs';
 import {
@@ -308,7 +309,7 @@ export function HomePage({ user, data, onCreate }) {
     );
   const copyRecentUrl = async (item) => {
     try {
-      await navigator.clipboard.writeText(
+      await copyPublicLink(
         new URL(
           item.publicHref,
           process.env.NEXT_PUBLIC_SITE_URL || "https://mytiklink.com",

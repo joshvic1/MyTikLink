@@ -1,4 +1,6 @@
 "use client";
+import {copyPublicLink} from '../../../V1.1/domains/copyPublicLink';
+
 import PaletteInput from "../../../V1.1/components/PaletteInput";
 
 import { useEffect, useMemo, useState } from "react";
@@ -188,7 +190,7 @@ export default function StoreSettingsPage() {
 
   const copyUrl = async () => {
     try {
-      await navigator.clipboard.writeText(storeUrl);
+      await copyPublicLink(storeUrl);
       toast.success("Store link copied");
     } catch {
       toast.error("Could not copy link");
@@ -267,7 +269,7 @@ export default function StoreSettingsPage() {
   if (!store) return <Loader />;
   const copyText = async (text) => {
     try {
-      await navigator.clipboard.writeText(text);
+      await copyPublicLink(text);
       toast.success("Copied to clipboard");
     } catch (err) {
       toast.error("Could not copy");

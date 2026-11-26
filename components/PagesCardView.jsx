@@ -1,5 +1,7 @@
-// frontend/components/PagesCardView.jsx
 "use client";
+import {copyPublicLink} from '../V1.1/domains/copyPublicLink';
+// frontend/components/PagesCardView.jsx
+
 
 import { forwardRef } from "react";
 import { ExternalLink, Copy, Pencil, Trash2, Users } from "lucide-react";
@@ -57,7 +59,7 @@ const PagesCardView = forwardRef(function PagesCardView(
                 <button
                   className={styles.iconBtn}
                   onClick={() => {
-                    navigator.clipboard.writeText(pageUrl);
+                    copyPublicLink(pageUrl);
                     toast.success("Page link copied");
                   }}
                 >

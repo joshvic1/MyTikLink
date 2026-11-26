@@ -1,4 +1,6 @@
 "use client";
+import {copyPublicLink} from '../../../V1.1/domains/copyPublicLink';
+
 
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -179,7 +181,7 @@ export default function ProductsPage() {
     }
 
     try {
-      await navigator.clipboard.writeText(link);
+      await copyPublicLink(link);
       toast.success("Product link copied");
     } catch (err) {
       console.log(err);

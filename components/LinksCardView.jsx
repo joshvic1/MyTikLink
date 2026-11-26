@@ -1,5 +1,7 @@
-// frontend/components/LinksCardView.jsx
 "use client";
+import {copyPublicLink} from '../V1.1/domains/copyPublicLink';
+// frontend/components/LinksCardView.jsx
+
 
 import { forwardRef, useMemo, useState } from "react";
 import toast from "react-hot-toast";
@@ -57,7 +59,7 @@ const LinksCardView = forwardRef(function LinksCardView(
 
   const handleCopy = async (text) => {
     try {
-      await navigator.clipboard.writeText(text);
+      await copyPublicLink(text);
       setCopied(text);
       toast.success("Link copied to clipboard!");
       setTimeout(() => setCopied(null), 1500);

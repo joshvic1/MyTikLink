@@ -1,3 +1,4 @@
+import {copyPublicLink} from '../domains/copyPublicLink';
 import { useEffect, useRef, useState } from 'react';
 import { SummaryMetrics } from '../components/SummaryMetrics';
 import { notify } from '../components/Notifications';
@@ -14,7 +15,7 @@ export function LinksPage({onCreate,onEdit,revision=0}) {
  const data=useLinkCollection(query,page,revision),timer=useRef(null);
  useEffect(()=>()=>clearTimeout(timer.current),[]);
  useEffect(()=>{if(!data.loading&&!data.error&&page>data.totalPages)setPage(data.totalPages);},[data.loading,data.error,data.totalPages,page]);
- const copy=async link=>{try{await navigator.clipboard.writeText(linkUrl(link));setCopiedId(link._id);clearTimeout(timer.current);timer.current=setTimeout(()=>setCopiedId(''),1800);}catch{notify.error('Could not copy. Please try again.');}};
+ const copy=async link=>{try{await copyPublicLink(linkUrl(link));setCopiedId(link._id);clearTimeout(timer.current);timer.current=setTimeout(()=>setCopiedId(''),1800);}catch{notify.error('Could not copy. Please try again.');}};
  const remove=async()=>{
   if(deleting)return;setDeleting(true);setDeleteError('');
   try{await v11Api.deleteLink(pendingDelete._id);setPendingDelete(null);notify.success('Redirect link and its click history deleted');await data.refresh();}catch(e){setDeleteError(e.message);}finally{setDeleting(false);}

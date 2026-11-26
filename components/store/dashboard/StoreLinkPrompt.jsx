@@ -1,4 +1,6 @@
 "use client";
+import {copyPublicLink} from '../../../V1.1/domains/copyPublicLink';
+
 
 import { useState } from "react";
 import { Check, Copy, Link2 } from "lucide-react";
@@ -25,7 +27,7 @@ export default function StoreLinkPrompt({
 
   const copyLink = async () => {
     try {
-      await navigator.clipboard.writeText(storeUrl);
+      await copyPublicLink(storeUrl);
       setCopied(true);
 
       setTimeout(() => {

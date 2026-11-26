@@ -1,3 +1,4 @@
+import {copyPublicLink} from '../domains/copyPublicLink';
 import CatalogueSwitch from '../services/CatalogueSwitch';
 import SettingsVideo from "./SettingsVideo";
 import NumericInput from "../components/NumericInput";
@@ -476,7 +477,7 @@ export default function ProductsManager({
     if (!store?.slug)
       return notify.error("Your storefront link is not ready yet.");
     try {
-      await navigator.clipboard.writeText(productUrl(product));
+      await copyPublicLink(productUrl(product));
       notify.success("Product link copied");
     } catch {
       notify.error("Couldn’t copy the product link.");

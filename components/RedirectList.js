@@ -1,4 +1,6 @@
 "use client";
+import {copyPublicLink} from '../V1.1/domains/copyPublicLink';
+
 import { useState } from "react";
 import toast from "react-hot-toast";
 import styles from "@/styles/RedirectList.module.css";
@@ -6,8 +8,8 @@ import styles from "@/styles/RedirectList.module.css";
 export default function RedirectList({ redirects, onUpdate }) {
   const [copiedId, setCopiedId] = useState(null);
 
-  const handleCopy = (url, id) => {
-    navigator.clipboard.writeText(url);
+  const handleCopy = async (url, id) => {
+    await copyPublicLink(url);
     setCopiedId(id);
     toast.success("Link copied to clipboard!");
     setTimeout(() => setCopiedId(null), 1500);

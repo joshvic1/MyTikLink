@@ -1,3 +1,4 @@
+import {copyPublicLink} from '../domains/copyPublicLink';
 import StarterPagePreview from "../components/StarterPagePreview";
 import { findFirstPageImage } from "../lib/pagePresentation";
 import { getThemeBlock } from "../landing/themeModel";
@@ -173,7 +174,7 @@ export function PagesPage({ onCreate, onLeads }) {
   };
   const copyUrl = async (page) => {
     try {
-      await navigator.clipboard.writeText(pageUrl(page));
+      await copyPublicLink(pageUrl(page));
       setCopiedId(page._id);
       notify.success("Page link copied");
     } catch {

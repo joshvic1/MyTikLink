@@ -1,4 +1,6 @@
 "use client";
+import {copyPublicLink} from '../V1.1/domains/copyPublicLink';
+
 import { useState } from "react";
 import toast from "react-hot-toast";
 import styles from "@/styles/LinksTable.module.css";
@@ -6,8 +8,8 @@ import styles from "@/styles/LinksTable.module.css";
 export default function LinksTable({ redirects, onDelete, onEdit }) {
   const [copiedId, setCopiedId] = useState(null);
 
-  const handleCopy = (text) => {
-    navigator.clipboard.writeText(text);
+  const handleCopy = async (text) => {
+    await copyPublicLink(text);
     setCopiedId(text);
     toast.success("Link copied to clipboard!");
     setTimeout(() => setCopiedId(null), 1500);

@@ -1,3 +1,4 @@
+import {copyPublicLink} from '../domains/copyPublicLink';
 import overview from '../store/StoreOverviewStatus.module.css';
 import ServiceOverview from '../services/ServiceOverview';
 import {servicesEnabled} from '../services/shared';
@@ -53,7 +54,7 @@ export function StorePage({ data,user }) {
   const hasStudioStatus = publication && (typeof publication.published === "boolean" || typeof publication.enabled === "boolean");
   const live = hasStudioStatus ? Boolean(publication.published && publication.enabled && publication.available!==false) : false;
   const recentOrders = [...data.orders].slice(0, 4);
-  const copyStoreUrl = async () => { try { await navigator.clipboard.writeText(storeUrl); notify.success("Link copied"); } catch { notify.error("Couldn’t copy link"); } };
+  const copyStoreUrl = async () => { try { await copyPublicLink(storeUrl); notify.success("Link copied"); } catch { notify.error("Couldn’t copy link"); } };
   const sellsPhysicalProducts = user?.onboarding?.businessFocus === "physical_products";
   const salesOutcome = sellsPhysicalProducts ? "getting orders" : "making sales";
   const storeName = store.businessName || store.name || "Your storefront";
