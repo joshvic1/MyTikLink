@@ -1,4 +1,4 @@
-import {copyPublicLink} from '../domains/copyPublicLink';
+import {copyPublicLink,preferredPublicLink} from '../domains/copyPublicLink';
 import overview from '../store/StoreOverviewStatus.module.css';
 import ServiceOverview from '../services/ServiceOverview';
 import {servicesEnabled} from '../services/shared';
@@ -44,13 +44,16 @@ export function StorePage({ data,user }) {
   const [publication, setPublication] = useState(null),[publicationError,setPublicationError]=useState(false);
   useEffect(() => { let active = true;setPublicationError(false); apiRequest("/v1-1/store-studio").then(result => {if(active)setPublication(result);}).catch(() => {if(active)setPublicationError(true);}); return () => { active = false; }; }, [data.products]);
   useEffect(()=>{if(!router.isReady||router.query.action!=="preview-store"||!publication||!data.store)return;setPreview(true);const {action,...query}=router.query;router.replace({pathname:router.pathname,query},undefined,{shallow:true});},[router.isReady,router.query.action,publication,data.store]);
+  const originalStoreUrl=data.store?.slug?`https://mytiklink.com/s/${data.store.slug}`:'';
+  const [preferredStore,setPreferredStore]=useState(null);
+  useEffect(()=>{let active=true;setPreferredStore(null);if(!originalStoreUrl)return;const refresh=()=>{if(!document.hidden)preferredPublicLink(originalStoreUrl).then(url=>{if(active)setPreferredStore({original:originalStoreUrl,url})})};refresh();window.addEventListener('focus',refresh);return()=>{active=false;window.removeEventListener('focus',refresh)}},[originalStoreUrl,user?._id,publication?.enabled,publication?.published]);
   if (!data.store) return <div className={`${styles.page} ${ready.emptyStorePage}`}><PageHeader title="Storefront"/><section className={ready.createCard}><div className={ready.createArt} aria-hidden="true"><i/><i/><i/></div><h2>Create an online store{user?.onboarding?.publicName ? ` for ${user.onboarding.publicName}` : " for your brand"}</h2><p>Choose a template, and we’ll build {user?.onboarding?.publicName ? `${user.onboarding.publicName}’s storefront` : "your storefront"} so you can upload products and start {user?.onboarding?.businessFocus==="physical_products"?"getting orders":"making sales"}.</p><Button onClick={()=>setChoosing(true)}>Select a template <ArrowRight size={16}/></Button></section>{choosing&&<StoreSetupPage user={user} onClose={()=>setChoosing(false)} onCreated={data.refresh}/>}</div>;
 
   const store = data.store, stats = data.storeStats || {};
   const pending = data.orders.filter(order => ["new", "pending"].includes(String(order.status).toLowerCase()));
   const lowStock = data.products.filter(product => !product.isDemo && product.trackStock !== false && Number(product.stock ?? product.quantity ?? 99) <= 3);
   const storePath = `/s/${store.slug}`;
-  const storeUrl = `https://mytiklink.com${storePath}`;
+  const storeUrl = preferredStore?.original===originalStoreUrl?preferredStore.url:originalStoreUrl;
   const hasStudioStatus = publication && (typeof publication.published === "boolean" || typeof publication.enabled === "boolean");
   const live = hasStudioStatus ? Boolean(publication.published && publication.enabled && publication.available!==false) : false;
   const recentOrders = [...data.orders].slice(0, 4);
@@ -63,7 +66,7 @@ export function StorePage({ data,user }) {
     <StorefrontHeader name={storeName}/>
 
     {preview&&<StoreReadyPreview detail={publication} onClose={()=>setPreview(false)} onUpgrade={()=>{setPreview(false);upgrade();}}/>}
-    <StoreStatusCard checking={!publication&&!publicationError} statusError={publicationError&&!publication} logo={[publication?.design?.brand?.logo,user?.onboarding?.brand?.imageUrl,store.logo].find(value=>typeof value==="string"&&value&&!value.includes("/category-covers/"))} image={publication?.design?.sections?.find(s=>s.type==="hero")?.image||store.cover||store.coverImage||"/v1-1/up-next/up-next-share-storefront.webp"} live={canUseLandingPages(user)&&live} url={storeUrl} onCopy={copyStoreUrl} onDesign={() => router.push(v11Routes.storeDesign)} onVisit={() => window.open(storePath, "_blank")} onPreview={!canUseLandingPages(user)?()=>setPreview(true):undefined} onUpgrade={!canUseLandingPages(user)?upgrade:undefined}/>
+    <StoreStatusCard checking={!publication&&!publicationError} statusError={publicationError&&!publication} logo={[publication?.design?.brand?.logo,user?.onboarding?.brand?.imageUrl,store.logo].find(value=>typeof value==="string"&&value&&!value.includes("/category-covers/"))} image={publication?.design?.sections?.find(s=>s.type==="hero")?.image||store.cover||store.coverImage||"/v1-1/up-next/up-next-share-storefront.webp"} live={canUseLandingPages(user)&&live} url={storeUrl} onCopy={copyStoreUrl} onDesign={() => router.push(v11Routes.storeDesign)} onVisit={() => window.open(storeUrl, "_blank", "noopener,noreferrer")} onPreview={!canUseLandingPages(user)?()=>setPreview(true):undefined} onUpgrade={!canUseLandingPages(user)?upgrade:undefined}/>
     {serviceBusiness&&<ServiceOverview/>}
     {showProductOverview&&<section className={styles.storeOverviewMetrics}>
       <article><span><WalletCards/></span><div><small>Confirmed sales</small><b>₦{Number(stats.totalRevenue || stats.orderValue || 0).toLocaleString()}</b></div></article>
