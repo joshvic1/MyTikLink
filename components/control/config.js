@@ -88,4 +88,4 @@ export const statuses={recovery:['active','awaiting_payment','converted','comple
 
 export const href=key=>key==='overview'?'/admin':`/admin/control/${key}`;
 
-export const allowed=(actor,p)=>actor?.superAdmin||actor?.permissions?.includes(p);
+export const allowed=(actor,p)=>actor?.superAdmin||(actor?.role==='storefront_calls'?p==='stores.view'&&actor?.permissions?.includes('stores.calls'):actor?.permissions?.includes(p));

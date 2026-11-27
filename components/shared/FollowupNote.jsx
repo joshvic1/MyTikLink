@@ -1,0 +1,11 @@
+import {useId,useRef,useState} from 'react';
+import {followupCommands,slashAt,insertCommand} from './followupCommands.mjs';
+import css from './FollowupNote.module.css';
+export default function FollowupNote({note='',required=false}){
+ const [value,setValue]=useState(note),[match,setMatch]=useState(null),[active,setActive]=useState(0);
+ const input=useRef(null),id=useId();
+ const options=match?followupCommands.filter(command=>command.includes(match.query.toLowerCase())):[];
+ const update=element=>{setMatch(slashAt(element.value,element.selectionStart));setActive(0)};
+ const choose=command=>{const next=insertCommand(value,match,command);if(next.value.length>4000)return;setValue(next.value);setMatch(null);requestAnimationFrame(()=>{input.current?.focus();input.current?.setSelectionRange(next.cursor,next.cursor)})};
+ return <div className={css.wrap}><label htmlFor={id}>Follow-up note</label><textarea id={id} ref={input} name="text" rows={3} value={value} required={required} minLength={3} maxLength={4000} placeholder="Add a note, or type / for a quick-reply keyword" aria-controls={options.length?id+'-commands':undefined} aria-expanded={options.length>0} aria-autocomplete="list" aria-activedescendant={options.length?id+'-command-'+active:undefined} onChange={e=>{setValue(e.target.value);update(e.target)}} onClick={e=>update(e.target)} onKeyUp={e=>{if(['ArrowLeft','ArrowRight','Home','End'].includes(e.key))update(e.target)}} onBlur={()=>setMatch(null)} onKeyDown={e=>{if(e.nativeEvent.isComposing||!options.length)return;if(e.key==='Escape'){e.preventDefault();setMatch(null)}else if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();setActive(i=>(i+(e.key==='ArrowDown'?1:-1)+options.length)%options.length)}else if(e.key==='Enter'||e.key==='Tab'){e.preventDefault();choose(options[active]||options[0])}}}/>{options.length>0&&<div className={css.menu} id={id+'-commands'} role="listbox" aria-label="Follow-up quick-reply keywords"><small>INSERT KEYWORD</small>{options.map((command,index)=><button key={command} id={id+'-command-'+index} type="button" role="option" aria-selected={index===active} onPointerDown={e=>e.preventDefault()} onMouseDown={e=>e.preventDefault()} onClick={()=>choose(command)}><span>/</span><strong>{command}</strong></button>)}</div>}</div>;
+}

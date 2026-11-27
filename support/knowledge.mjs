@@ -173,6 +173,26 @@ for (const item of knowledge) {
  }
 }
 
+// Store activation is subscription access, distinct from publishing a design.
+for (const version of ['v1-1','legacy']) {
+ const billing=version==='legacy'?'/dashboard/settings':'/v1-1/settings/billing';
+ const store=version==='legacy'?'/store':'/v1-1/store';
+ knowledge.push(article(`store-activation-${version}`,version,
+  'Activate my store: activation, enable shop, unlock storefront, go live, reactivate or renew',billing,[
+   'When a merchant says activate my store, I want to activate my shop, how do I make my storefront active, unlock my store, or similar wording, they normally mean obtaining paid storefront access. Explain directly: activate your store by upgrading to Pro, currently ₦5,000 per month. This is a monthly subscription, not a one-time activation fee. Free and Standard do not provide Pro storefront activation.',
+   `Click [Billing and Payments](${billing}) in account settings, or the dashboard Upgrade action. Choose Pro and Monthly, review the checkout total, then continue. Choose Pay with bank transfer or Pay with card. Complete the payment in the secure checkout and wait for verified confirmation. Payment details must come from that checkout; do not invent a bank account or ask for card details in chat.`,
+   `After confirmed payment, return to [Storefront](${store}). Pro supplies the required access; complete any remaining setup and publish your store design if it is still a draft. Do not confuse buying access with proof that an unpublished store is already public.`,
+   'If the user already has confirmed active Pro access or says they already paid, do not tell them to pay again. Check payment confirmation, expiry and publication/setup status using the available screens; escalate an unresolved access problem to support. Expired Pro requires renewal. Never claim to have activated their store or verified a payment yourself.',
+   'Interpret the meaning of the full question, including informal wording and spelling variations, rather than requiring an exact phrase. Activating auto-renewal, connecting a domain, configuring customer payment methods or verifying an email are separate tasks. Ask a short clarification when the intended activation is unclear.'
+  ],['backend/src/config/planConfig.js','V1.1/components/SubscriptionModal.jsx','V1.1/components/UpgradePayment.jsx'],
+  {updated:'2026-11-27',plan:'Active Pro is required. Pro Monthly currently costs NGN 5,000; review the actual checkout total before paying.',related:['store','billing','plan-payment-methods']}));
+}
+
+export function storeActivationIntent(question){
+ const text=String(question).toLowerCase();
+ return /\b(store|storefront|shop|website)\b/.test(text)&&/\b(activat\w*|activte|actvate|activaite|enable|unlock|reactivat\w*|renew|inactive)\b|\bgo live\b|\bmake\b.*\bactive\b/.test(text)&&! /auto.?renew|pixel|domain|email verification/.test(text);
+}
+
 export const supportRoutes=[...new Set(knowledge.map(a=>a.route).concat(['/v1-1/pages?action=choose-template','/v1-1/register','/v1-1/settings/profile?section=email','/v1-1/pages/create','/v1-1/pages/builder','/v1-1/pages/editor','/v1-1/analytics','/v1-1/store/settings','/v1-1/store/settings?tab=inventory','/store/products','/store/orders','/store/design','/dashboard/analytics','/FAQ','/store-tutorial']))];
 export function resolveVersion(question,saved){
  if(/\b(previous|legacy|old)\s+(dashboard|version)\b/i.test(question))return 'legacy';
@@ -181,7 +201,7 @@ export function resolveVersion(question,saved){
 }
 export function retrieveKnowledge(question,version,route=''){
  const words=question.toLowerCase().match(/[a-z0-9]{3,}/g)||[];
- return knowledge.filter(a=>version==='unknown'||a.version==='both'||a.version===version).map(a=>({a,score:words.reduce((n,w)=>n+(a.title.toLowerCase().includes(w)?5:0)+(a.steps.join(' ').toLowerCase().includes(w)?1:0),0)+(a.route===route?30:0)})).sort((a,b)=>b.score-a.score).slice(0,7).map(({a})=>a);
+ return knowledge.filter(a=>version==='unknown'||a.version==='both'||a.version===version).map(a=>({a,score:(a.id.startsWith('store-activation-')&&storeActivationIntent(question)?100:0)+words.reduce((n,w)=>n+(a.title.toLowerCase().includes(w)?5:0)+(a.steps.join(' ').toLowerCase().includes(w)?1:0),0)+(a.route===route?30:0)})).sort((a,b)=>b.score-a.score).slice(0,7).map(({a})=>a);
 }
 export function safeSupportHref(value){
  if(typeof value!=='string'||/[\\\s\x00-\x1f]/.test(value)||/%(?:2f|5c|2e)/i.test(value))return null;

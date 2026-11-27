@@ -7,11 +7,13 @@ import WhatsAppAutomations from './WhatsAppAutomations';
 import FeatureSuggestions from './FeatureSuggestions';
 import Adoption from './Adoption';
 import dynamic from 'next/dynamic';
-import Shell from './Shell';
+import Shell,{useAdmin} from './Shell';
+import StorefrontCalls from './StorefrontCalls';
+function StoreRecords({module}){const {actor}=useAdmin();return actor.role==='storefront_calls'?<StorefrontCalls/>:<Records module={module}/>}
 import {Loading} from './Shared';
 const SubscriberAnalytics=dynamic(()=>import('./SubscriberAnalytics'),{loading:Loading});
 const Overview=dynamic(()=>import('./Overview'),{loading:Loading});
 const Records=dynamic(()=>import('./Records'),{loading:Loading});
 const Staff=dynamic(()=>import('./Staff'),{loading:Loading});
 const Special=dynamic(()=>import('./Special'),{loading:Loading});
-export default function ControlApp({module='overview'}){return <Shell module={module}>{module==='domains'?<Domains/>:module==='crm'?<Leads/>:module==='affiliate'?<AffiliateManagement/>:module.startsWith('subscriber-')?<SubscriberAnalytics key={module} view={module.slice(11)}/>:module==='first-choice'?<FirstChoice/>:module==='auto-renewals'?<AutoRenewals/>:module==='whatsapp-automations'?<WhatsAppAutomations/>:module==='feature-suggestions'?<FeatureSuggestions/>:module==='adoption'?<Adoption/>:['overview','analytics','revenue'].includes(module)?<Overview key={module} module={module}/>:module==='staff'?<Staff/>:['plans','health','inbox','automations','roles','settings','themes'].includes(module)?<Special key={module} module={module}/>:<Records key={module} module={module}/>}</Shell>;}
+export default function ControlApp({module='overview'}){return <Shell module={module}>{module==='domains'?<Domains/>:module==='crm'?<Leads/>:module==='affiliate'?<AffiliateManagement/>:module.startsWith('subscriber-')?<SubscriberAnalytics key={module} view={module.slice(11)}/>:module==='first-choice'?<FirstChoice/>:module==='auto-renewals'?<AutoRenewals/>:module==='whatsapp-automations'?<WhatsAppAutomations/>:module==='feature-suggestions'?<FeatureSuggestions/>:module==='adoption'?<Adoption/>:['overview','analytics','revenue'].includes(module)?<Overview key={module} module={module}/>:module==='staff'?<Staff/>:['plans','health','inbox','automations','roles','settings','themes'].includes(module)?<Special key={module} module={module}/>:<StoreRecords key={module} module={module}/>}</Shell>;}
