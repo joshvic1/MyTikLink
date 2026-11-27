@@ -30,6 +30,31 @@ function load(filename) {
  const ready=Object.keys(manifest.entries);
  const html=instance=>renderToStaticMarkup(React.createElement(Renderer,{instance}));
  const make=profile=>model.createThemeInstance(template,profile);
+ test('web URL inputs normalize on blur while ordinary text remains unchanged',()=>{
+  const Field=load(path.join(root,'V1.1/landing/EditableText.jsx')).default;
+  let changed='';const tree=Field({label:'Destination',value:'www.example.com',url:true,onChange:v=>changed=v});
+  const input=tree.props.children[1];input.props.onBlur({target:{value:'www.example.com'}});
+  assert.equal(changed,'https://www.example.com');
+  assert.equal(Field({label:'Name',value:'example.com',onChange:()=>{}}).props.children[1].props.onBlur,undefined);
+ });
+ test('missing web schemes normalize and unsafe destinations stay rejected',()=>{
+  assert.equal(validDestination(' www.example.com/path?q=1 '),'https://www.example.com/path?q=1');
+  assert.equal(validDestination('example.com'),'https://example.com');
+  assert.equal(validDestination('javascript:alert(1)'),'');
+  assert.equal(validDestination('https://user:pass@example.com'),'');
+  assert.equal(validDestination('not a link'),'');
+  assert.equal(validDestination('person@example.com','email'),'mailto:person@example.com');
+ });
+ test('campaign, rhythm and studio render every valid added button',()=>{
+  for(const themeId of ['campaign-profile','rhythm-grid','studio-pass']){
+   const instance=make({publicName:'Buttons'});instance.themeId=themeId;
+   instance.personalization.actions=Array.from({length:12},(_,i)=>({id:'extra-'+i,kind:'link',label:'Extra '+i,url:'www.example.com/'+i}));
+   instance.personalization.actions.push({id:'hidden',kind:'link',label:'Hidden action',url:'https://example.com',visible:false});
+   const output=html(instance);
+   for(let i=0;i<12;i++)assert.ok(output.includes('href="https://www.example.com/'+i+'"'));
+   assert.ok(!output.includes('Hidden action'));
+  }
+ });
  const cases=[
  ['Hair vendor with uploaded logo',{publicName:'Hair studio',category:{id:'hair-grooming'},brand:{imageUrl:'https://example.com/logo.png'}}],
  ['Restaurant without logo',{publicName:'Kitchen',category:{id:'food-beverages/restaurants',label:'Restaurants'}}],

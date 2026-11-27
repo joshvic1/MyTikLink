@@ -28,7 +28,7 @@ export default function UniversalProfile({ instance, preview = false, verified =
   const service=instance.themeId === "service-profile";
   const tokens = brandTokens(instance.colorOverride || data.brandColor);
   const visible = data.visibility || {};
-  const candidates = (campaign || rhythm || studio) ? (data.actions || []).filter(action=>action.kind === "whatsapp").slice(0,1) : (data.actions || []);
+  const candidates = data.actions || [];
   const actions = candidates.filter(action=>action.visible !== false && action.label?.trim() && (actionDestination(action,data) || (preview && (music || action.kind === "whatsapp"))));
   return <div className={styles.canvas} data-design={music?"music":studio?"studio":rhythm?"rhythm":campaign?"campaign":service?"service":spotlight?"spotlight":"signature"} style={{"--brandPrimary":tokens.accent,"--brandPrimaryHover":tokens.hover,"--brandSoft":tokens.soft,"--brandContrast":tokens.onAccent,"--brandBorder":tokens.accent,"--surface":"#ffffff","--textPrimary":"#212126","--textSecondary":"#60606a"}}>
     <article className={styles.profile} data-template={music?"music-artist":studio?"studio-pass":rhythm?"rhythm-grid":campaign?"campaign-profile":service?"service-profile":spotlight?"spotlight-profile":"universal-profile"}>

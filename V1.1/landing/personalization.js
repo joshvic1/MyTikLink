@@ -1,3 +1,4 @@
+import {normalizeWebUrl} from "./normalizeWebUrl.mjs";
 import { musicActions, musicPlatforms } from "./musicPlatforms";
 import { getCategoryActions } from "./categoryActions";
 import categoryDescriptions from "./categoryDescriptions.generated.json";
@@ -5,7 +6,7 @@ import { getCategoryCover, coverSources, relatedCategoryCovers } from "../media/
 
 export const socialPlatforms = ["instagram", "tiktok", "facebook", "x", "youtube", "telegram", "website", "email", ...musicPlatforms.map(([id])=>id).filter(id=>id!=="youtube")];
 export function validDestination(value, platform = "") {
-  const text = String(value || "").trim();
+  const text = platform === "email" ? String(value || "").trim() : normalizeWebUrl(value);
   if (platform === "email") return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text.replace(/^mailto:/i, "")) ? `mailto:${text.replace(/^mailto:/i, "")}` : "";
   try {
     const url = new URL(text);
