@@ -452,7 +452,7 @@
 
 /* Essential: one desktop header row, with explicit placement for each group. */
 @container(min-width:701px){
- .market .header{grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:clamp(18px,3vw,40px);min-height:76px;padding:16px clamp(20px,2.5vw,32px)}
+ .market .header{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:clamp(18px,3vw,40px);min-height:76px;padding:16px clamp(20px,2.5vw,32px)}
  .market .header .brand{grid-column:1;grid-row:1;justify-content:flex-start;text-align:left;min-width:0;max-width:100%;margin:0}
  .market .header .nav{grid-column:2;grid-row:1;align-items:center;justify-content:center;flex-wrap:nowrap;gap:clamp(16px,2vw,28px);padding:0;margin:0;white-space:nowrap}
  .market .header .actions{grid-column:3;grid-row:1;align-items:center;justify-content:flex-end;gap:8px}
