@@ -7,7 +7,7 @@ test('audio plays inline without preloading and cycles 1x through 3x back to 1x'
  const react={useRef:()=>({current:player}),useState(initial){const i=cursor++;if(!(i in values))values[i]=initial;return[values[i],v=>values[i]=v];}};
  const module={exports:{}};
  const code=swc.transformSync(fs.readFileSync(root+'/components/StaffInbox/AudioPlayer.jsx','utf8'),{filename:'AudioPlayer.jsx',jsc:{parser:{syntax:'ecmascript',jsx:true},transform:{react:{runtime:'automatic'}}},module:{type:'commonjs'}}).code;
- vm.runInNewContext(code,{module,exports:module.exports,require(spec){if(spec==='react')return react;return require(require.resolve(spec,{paths:[root]}));}});
+ vm.runInNewContext(code,{module,exports:module.exports,require(spec){if(spec==='react')return react;if(spec.endsWith('.css'))return {};return require(require.resolve(spec,{paths:[root]}));}});
  const nodes=n=>!n||typeof n!=='object'?[]:[n,...[n.props?.children].flat(Infinity).flatMap(nodes)];
  const render=()=>{cursor=0;return nodes(module.exports.default({src:'/test-audio'}));};
  let tree=render();assert.equal(tree.find(n=>n.type==='audio').props.preload,'none');assert.equal(tree.find(n=>n.type==='audio').props.src,'/test-audio?playback=mp3');assert.equal(tree.find(n=>n.type==='audio').props.playsInline,true);assert.ok(!tree.some(n=>n.type==='select'));

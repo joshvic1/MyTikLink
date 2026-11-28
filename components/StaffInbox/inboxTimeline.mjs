@@ -18,6 +18,8 @@ export function chatDate(value,now=new Date()){
  return `${day}${suffix} ${month} ${date.getFullYear()}`;
 }
 export function visibleMessageText(message){
+ if(message.attachments?.some(a=>/\.(ogg|opus|mp3|m4a|wav|webm)$/i.test(a.name||'')&&String(message.text||'').trim()===a.name))return '';
+
  if(message.attachments?.some(a=>/^(image|audio|video)\//.test(a.mimeType||''))&&/^\[(?:audio|image|video)(?: message)?\]$/i.test((message.text||'').trim()))return '';
  return message.text;
 }

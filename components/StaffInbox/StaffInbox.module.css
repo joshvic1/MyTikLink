@@ -343,3 +343,12 @@
 .app .thread .chatComposer textarea::placeholder{font-size:14px}
 .app .thread .composerTools:has(.voiceRecorder){width:320px;max-width:calc(100% - 20px);overflow:visible;flex-wrap:wrap;padding:8px}
 .app .primary,.app .sendButton{background:#7041b7;color:#fff;border-color:#7041b7}
+
+/* Voice notes: recording controls stay aligned above the composer. */
+.voiceRecorder{background:#f2f8f4;border:1px solid #dcebe0;border-radius:20px;padding:12px;box-sizing:border-box;gap:10px}
+.voiceRecorder button{border:0;border-radius:18px;min-height:42px;background:#e1eee5;color:#286a51;padding:10px 14px}
+.voiceRecorder button:last-child:not(:first-child){background:#23845e;color:white;margin-left:auto}
+.recordingPreview{border-radius:16px;background:#e0efdc;overflow:hidden}
+.recordingStatus{display:flex;align-items:center;gap:8px;flex:1;color:#586c60;font-size:12px}.recordingStatus b{font-variant-numeric:tabular-nums;color:#264e3d}
+.recordingDot{width:8px;height:8px;border-radius:50%;background:#de5260;animation:recordingPulse 1.4s ease-in-out infinite}
+@keyframes recordingPulse{50%{opacity:.35}}@media(prefers-reduced-motion:reduce){.recordingDot{animation:none}}

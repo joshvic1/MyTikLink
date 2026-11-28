@@ -7,7 +7,7 @@ import s from './StaffInbox.module.css';
 export default function MessageAttachment({message,attachment,download,pending=false,failed=false}){
  const [viewer,setViewer]=useState(false),[active,setActive]=useState(false),[loaded,setLoaded]=useState(false),[error,setError]=useState(false),[attempt,setAttempt]=useState(0);
  const box=useRef(null),release=useRef(()=>{});
- const url='/api/staff/messages/'+message+'/attachments/'+attachment._id,type=attachment.mimeType||'',image=type.startsWith('image/'),video=type.startsWith('video/'),audio=type.startsWith('audio/');
+ const url='/api/staff/messages/'+message+'/attachments/'+attachment._id,type=attachment.mimeType||'',image=type.startsWith('image/'),video=type.startsWith('video/'),audio=type.startsWith('audio/')||((!type||['application/ogg','application/octet-stream'].includes(type))&&/\.(ogg|opus|mp3|m4a|wav|webm)$/i.test(attachment.name||''));
  useEffect(()=>{
   if(pending||(!image&&!video))return;
   let cancel=()=>{},timer,disposed=false;
